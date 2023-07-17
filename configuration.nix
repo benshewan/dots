@@ -224,8 +224,10 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # Nix store garabage collection
+  # Nix configuration
   nix = {
+    nixPath = [ "nixos-config=/home/ben/.nix/configuration.nix" ];
+    settings.experimental-features = [ "nix-command" "flakes" ];
     settings.auto-optimise-store = true;
     gc = {
       automatic = true;
