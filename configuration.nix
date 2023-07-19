@@ -4,6 +4,10 @@
 
 { config, pkgs, lib, ... }:
 
+let 
+user = "ben";
+userDescription = "Ben Shewan";
+in
 {
   imports =
     [
@@ -11,6 +15,8 @@
       ./hardware-configuration.nix
       ./shares-configuration.nix
     ];
+
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # Hacked together from 
   # https://github.com/NixOS/nixpkgs/issues/32556#issuecomment-1060118989 && https://github.com/NixOS/nixpkgs/issues/32556#issuecomment-1378261367
@@ -96,7 +102,12 @@
   programs.dconf.enable = true; # Only needed for gnome apps (like GDM)
   programs.xwayland.enable = true; # Enable XWayland support
   programs.kdeconnect.enable = true;
-
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-kde
+    ];
+  };
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -123,7 +134,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    wireplumber.enable = true;
+    # wireplumber.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
@@ -163,13 +174,13 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ben = {
+  users.users.${user} = {
     isNormalUser = true;
-    description = "Ben Shewan";
+    description = userDescription;
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.fish;
     packages = with pkgs; [
-      firefox
+      kitty
       kate
       vivaldi
       vivaldi-ffmpeg-codecs
@@ -194,6 +205,9 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     git
+    dig
+    toybox
+    neofetch
     libsForQt5.plasma-browser-integration # Might not get needed, look into fixing browser integration
     lightly-qt
     mpv
@@ -226,7 +240,11 @@
 
   # Nix configuration
   nix = {
-    nixPath = [ "nixos-config=/home/ben/.nix/configuration.nix" ];
+    nixPath = [ 
+      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
+      "nixos-config=/home/${user}/.nix/configuration.nix" 
+      "/nix/var/nix/profiles/per-user/root/channels"
+      ];
     settings.experimental-features = [ "nix-command" "flakes" ];
     settings.auto-optimise-store = true;
     gc = {
