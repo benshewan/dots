@@ -90,7 +90,7 @@ in
     displayManager.defaultSession = "plasmawayland";
   };
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    elisa
+    elisa 
     gwenview
     okular
     oxygen
@@ -99,15 +99,22 @@ in
     # plasma-browser-integration
     # print-manager
   ];
-  programs.dconf.enable = true; # Only needed for gnome apps (like GDM)
-  programs.xwayland.enable = true; # Enable XWayland support
-  programs.kdeconnect.enable = true;
+
+  # Desktop portal config
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-kde
     ];
   };
+
+  programs.dconf.enable = true; # Only needed for gnome apps (like GDM)
+  programs.xwayland.enable = true; # Enable XWayland support
+  
+  #  KDE Connect plus some magic to get browser integration working
+  programs.kdeconnect.enable = true;
+  environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+  
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -134,7 +141,7 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # wireplumber.enable = true;
+    wireplumber.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
@@ -208,7 +215,6 @@ in
     dig
     toybox
     neofetch
-    libsForQt5.plasma-browser-integration # Might not get needed, look into fixing browser integration
     lightly-qt
     mpv
     virt-manager
