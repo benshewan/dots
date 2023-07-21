@@ -4,9 +4,9 @@
 
 { config, pkgs, lib, ... }:
 
-let 
-user = "ben";
-userDescription = "Ben Shewan";
+let
+  user = "ben";
+  userDescription = "Ben Shewan";
 in
 {
   imports =
@@ -17,6 +17,8 @@ in
     ];
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
 
   # Hacked together from 
   # https://github.com/NixOS/nixpkgs/issues/32556#issuecomment-1060118989 && https://github.com/NixOS/nixpkgs/issues/32556#issuecomment-1378261367
@@ -90,7 +92,7 @@ in
     displayManager.defaultSession = "plasmawayland";
   };
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [
-    elisa 
+    elisa
     gwenview
     okular
     oxygen
@@ -110,11 +112,11 @@ in
 
   programs.dconf.enable = true; # Only needed for gnome apps (like GDM)
   programs.xwayland.enable = true; # Enable XWayland support
-  
+
   #  KDE Connect plus some magic to get browser integration working
   programs.kdeconnect.enable = true;
   environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
-  
+
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
@@ -130,8 +132,14 @@ in
   # Enable blueooth
   hardware.bluetooth = {
     enable = true;
-    settings = { General = { Enable = "Source,Sink,Media,Socket"; }; };
+    settings = {
+      General = {
+        Enable = "Source,Sink,Media,Socket";
+        Experimental = "true";
+      };
+    };
   };
+
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;
@@ -155,6 +163,12 @@ in
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = with pkgs; [
+      # intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      # vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -207,6 +221,19 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+  # Enable wayland support for chromium and most electron apps
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # Enable dark mode in vivaldi
+  nixpkgs.overlays = [
+    (final: prev: {
+      vivaldi = prev.vivaldi.override {
+        commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
+        # "--enable-features=TouchpadOverscrollHistoryNavigation";
+      };
+    })
+  ];
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -215,6 +242,8 @@ in
     dig
     toybox
     neofetch
+
+    firefox
     lightly-qt
     mpv
     virt-manager
@@ -246,11 +275,11 @@ in
 
   # Nix configuration
   nix = {
-    nixPath = [ 
+    nixPath = [
       "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "nixos-config=/home/${user}/.nix/configuration.nix" 
+      "nixos-config=/home/${user}/.nix/configuration.nix"
       "/nix/var/nix/profiles/per-user/root/channels"
-      ];
+    ];
     settings.experimental-features = [ "nix-command" "flakes" ];
     settings.auto-optimise-store = true;
     gc = {
