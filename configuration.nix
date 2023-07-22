@@ -206,6 +206,9 @@ in
       vivaldi
       vivaldi-ffmpeg-codecs
       plex-media-player
+
+      # Development
+      mongodb-compass
       jetbrains.webstorm
       # vscode and any extensions
       (vscode-with-extensions.override {
@@ -218,6 +221,8 @@ in
     ];
   };
 
+  # Enable Local MongoDB Server for Development
+  services.mongodb.enable = true;
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -233,6 +238,17 @@ in
       };
     })
   ];
+
+  # Fix mongodb-compass in wayland enviroments
+  pkgs.symlinkJoin {
+    name = "mongodb-compass";
+    paths = [ pkgs.mongodb-compass ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/mongodb-compass \
+        --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --ignore-additional-command-line-flags"
+    ''
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
