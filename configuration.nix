@@ -239,17 +239,6 @@ in
     })
   ];
 
-  # Fix mongodb-compass in wayland enviroments
-  pkgs.symlinkJoin {
-    name = "mongodb-compass";
-    paths = [ pkgs.mongodb-compass ];
-    buildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      wrapProgram $out/bin/mongodb-compass \
-        --add-flags "--enable-features=UseOzonePlatform --ozone-platform=wayland --ignore-additional-command-line-flags"
-    ''
-  };
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
