@@ -74,19 +74,19 @@ in
   # Enable the KDE Plasma Desktop Environment.
   services.xserver = {
     # SDDM
-    # sddm.enable = true;
+    # displayManager.sddm.enable = true;
 
     # LightDM
-    # lightdm = {
-    #   enable = true;
-    #   greeters.slick.enable = true;
-    # };
+    displayManager.lightdm = {
+      enable = true;
+      greeters.slick.enable = true;
+    };
 
     # GDM
-    displayManager.gdm = {
-      enable = true;
-      wayland = true;
-    };
+    # displayManager.gdm = {
+    #   enable = true;
+    #   wayland = true;
+    # };
 
     desktopManager.plasma5.enable = true;
     displayManager.defaultSession = "plasmawayland";
@@ -172,6 +172,12 @@ in
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.screenSection = ''
+    Option         "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
+    Option         "AllowIndirectGLXProtocol" "off"
+    Option         "TripleBuffer" "on"
+  '';
+    
 
   hardware.nvidia = {
 
@@ -191,14 +197,18 @@ in
 
   # Virtualization
   virtualisation.libvirtd.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+
+  # Enable support for razer devices
+  hardware.openrazer.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
     description = userDescription;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "openrazer" "docker" "audio" "plugdev" ];
     shell = pkgs.fish;
     packages = with pkgs; [
       kitty
@@ -206,6 +216,7 @@ in
       vivaldi
       vivaldi-ffmpeg-codecs
       plex-media-player
+      prismlauncher
 
       # Development
       mongodb-compass
@@ -215,6 +226,9 @@ in
         vscode = vscodium;
         vscodeExtensions = with vscode-extensions; [
           jnoortheen.nix-ide
+          catppuccin.catppuccin-vsc
+          pkief.material-product-icons
+          streetsidesoftware.code-spell-checker
         ];
       })
       nixpkgs-fmt # Needed for nix formatting in scode
@@ -228,6 +242,9 @@ in
 
   # Enable wayland support for chromium and most electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  # add support for ~/.local/bin
+  environment.localBinInPath = true;
 
   # Enable dark mode in vivaldi
   nixpkgs.overlays = [
@@ -247,6 +264,9 @@ in
     dig
     toybox
     neofetch
+    (python311.withPackages (ps: with ps; [
+      openrazer # Break into seprate flake for battery charge management
+    ]))
 
     firefox
     lightly-qt
