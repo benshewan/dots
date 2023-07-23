@@ -77,10 +77,22 @@ in
     # displayManager.sddm.enable = true;
 
     # LightDM
-    displayManager.lightdm = {
-      enable = true;
-      greeters.slick.enable = true;
-    };
+    displayManager.lightdm.greeters.mini = {
+            enable = true;
+            inherit user;
+            extraConfig = ''
+                [greeter]
+                show-password-label = false
+                password-alignment = left
+                show-image-on-all-monitors = true
+                [greeter-theme]
+                background-image = "/home/${user}/.local/share/wallpapers/lockscreen.jpeg"
+                password-border-width = 0px
+                border-width = 0px
+
+                font-size = 1.15em
+            '';
+        };
 
     # GDM
     # displayManager.gdm = {
@@ -177,7 +189,7 @@ in
     Option         "AllowIndirectGLXProtocol" "off"
     Option         "TripleBuffer" "on"
   '';
-    
+
 
   hardware.nvidia = {
 
@@ -212,7 +224,7 @@ in
     shell = pkgs.fish;
     packages = with pkgs; [
       kitty
-      kate
+      libsForQt5.kate
       vivaldi
       vivaldi-ffmpeg-codecs
       plex-media-player
@@ -231,7 +243,7 @@ in
           streetsidesoftware.code-spell-checker
         ];
       })
-      nixpkgs-fmt # Needed for nix formatting in scode
+      nixpkgs-fmt # Needed for nix formatting in vscode
     ];
   };
 
@@ -264,8 +276,20 @@ in
     dig
     toybox
     neofetch
+    nodejs_20
+    prefetch-npm-deps
+    nix-prefetch-github
+    bat
+    exa
+    wget
+    razergenie
     (python311.withPackages (ps: with ps; [
       openrazer # Break into seprate flake for battery charge management
+      # pygobject3
+      # pyqt5
+      # ruamel-yaml # Can't find libs in build but can in develop
+      # pyinotify
+      # pyqtwebengine
     ]))
 
     firefox
@@ -277,6 +301,7 @@ in
   # Fonts
   fonts.fonts = [
     pkgs.jetbrains-mono
+    pkgs.nerdfonts
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

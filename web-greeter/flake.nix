@@ -7,16 +7,13 @@
 
   outputs = { self, nixpkgs }:
     let
-      pkgs = import nixpkgs {
-        inherit system;
-        config.permittedInsecurePackages = [ "nodejs-16.20.1" "electron-16.2.3" ];
-      };
+      pkgs = import nixpkgs { inherit system; };
       system = "x86_64-linux";
     in
     {
       packages.${system} = {
-        nody-greeter = pkgs.callPackage ./. { };
-        default = self.packages.${system}.nody-greeter;
+        web-greeter = pkgs.callPackage ./. { };
+        default = self.packages.${system}.web-greeter;
       };
     };
 }

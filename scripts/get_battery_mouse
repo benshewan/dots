@@ -1,0 +1,19 @@
+#!/usr/bin/env python
+from openrazer.client import DeviceManager
+
+device_manager = DeviceManager()
+
+basilisk = None
+for device in device_manager.devices:
+    if "Razer Basilisk Ultimate" in device.name:
+        basilisk = device
+
+if None == basilisk:
+    print("")
+    exit
+
+charging = ''
+if basilisk.is_charging:
+    charging = '🔋'
+
+print(f"🖱️{basilisk.battery_level}{charging}%")
