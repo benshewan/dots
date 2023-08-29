@@ -36,7 +36,7 @@ in
   };
   boot = {
     loader = {
-      timeout = lib.mkDefault 0;
+      timeout = lib.mkDefault 5;
       efi.canTouchEfiVariables = true;
       systemd-boot = {
         enable = true;
@@ -77,28 +77,28 @@ in
     # displayManager.sddm.enable = true;
 
     # LightDM
-    displayManager.lightdm.greeters.mini = {
-            enable = true;
-            inherit user;
-            extraConfig = ''
-                [greeter]
-                show-password-label = false
-                password-alignment = left
-                show-image-on-all-monitors = true
-                [greeter-theme]
-                background-image = "/home/${user}/.local/share/wallpapers/lockscreen.jpeg"
-                password-border-width = 0px
-                border-width = 0px
+    # displayManager.lightdm.greeters.mini = {
+    #         enable = true;
+    #         inherit user;
+    #         extraConfig = ''
+    #             [greeter]
+    #             show-password-label = false
+    #             password-alignment = left
+    #             show-image-on-all-monitors = true
+    #             [greeter-theme]
+    #             background-image = "/home/${user}/.local/share/wallpapers/lockscreen.jpeg"
+    #             password-border-width = 0px
+    #             border-width = 0px
 
-                font-size = 1.15em
-            '';
-        };
+    #             font-size = 1.15em
+    #         '';
+    #     };
 
     # GDM
-    # displayManager.gdm = {
-    #   enable = true;
-    #   wayland = true;
-    # };
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
 
     desktopManager.plasma5.enable = true;
     displayManager.defaultSession = "plasmawayland";
@@ -137,6 +137,14 @@ in
 
   # Enable other packing formats
   services.flatpak.enable = true;
+
+  # environment.etc = {
+  #   "flatpak/remotes.d/flathub.flatpakrepo".source = pkgs.fetchurl {
+  #     url = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+  #     # Let this run once and you will get the hash as an error.
+  #     hash = "";
+  #   };
+  # };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -225,8 +233,11 @@ in
     packages = with pkgs; [
       kitty
       libsForQt5.kate
-      vivaldi
-      vivaldi-ffmpeg-codecs
+      (vivaldi.override {
+        proprietaryCodecs = true;
+        enableWidevine = true;
+        commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
+      })
       plex-media-player
       prismlauncher
 
@@ -259,19 +270,19 @@ in
   environment.localBinInPath = true;
 
   # Enable dark mode in vivaldi
-  nixpkgs.overlays = [
-    (final: prev: {
-      vivaldi = prev.vivaldi.override {
-        commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
-        # "--enable-features=TouchpadOverscrollHistoryNavigation";
-      };
-    })
-  ];
+  # nixpkgs.overlays = [
+  #   (final: prev: {
+  #     vivaldi = prev.vivaldi.override {
+  #       commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
+  #       # "--enable-features=TouchpadOverscrollHistoryNavigation";
+  #     };
+  #   })
+  # ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     git
     dig
     toybox
@@ -291,7 +302,6 @@ in
       # pyinotify
       # pyqtwebengine
     ]))
-
     firefox
     lightly-qt
     mpv
