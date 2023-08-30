@@ -32,7 +32,7 @@
     mpv # Media Player
     lightly-qt # KDE Application Theme
     virt-manager # Virtual Machine Manager
-    libsForQt5.kate # Text Editor
+    kate # Text Editor
 
     # Development Runtimes 
     # Note: most things should be in project specfic flakes but I'm lazy, sue me.
@@ -55,11 +55,6 @@
     xwayland.enable = true; # Enable XWayland support
     fish.enable = true;
   };
-  #  KDE Connect plus some magic to get browser integration working
-  # Note that native messaging hosts dont work with firefox-bin
-  programs.kdeconnect.enable = true;
-  environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
-  # Program Fixes
 
   # Enable wayland support for chromium and most electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

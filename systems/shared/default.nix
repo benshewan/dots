@@ -24,7 +24,7 @@
     initrd.verbose = false;
 
     loader = {
-      timeout = lib.mkDefault 0;
+      timeout = lib.mkDefault 5;
       efi.canTouchEfiVariables = true;
       systemd-boot = {
         enable = true;
