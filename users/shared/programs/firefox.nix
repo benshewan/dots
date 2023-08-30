@@ -22,7 +22,10 @@ in
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox firefoxPackage {
+    package = pkgs.firefox-devedition.override {
+
+      cfg.enablePlasmaBrowserIntegration = true;
+      # extraNativeMessagingHosts = [ pkgs.plasma-browser-integration ];
       extraPolicies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;
@@ -59,12 +62,12 @@ in
 
         # Firefox extensions
         ExtensionSettings = {
-          # "*" = {
-          #   "blocked_install_message" = "Custom error message.";
-          #   "install_sources" = [ "https://yourwebsite.com/*" ];
-          #   "installation_mode" = "allowed";
-          #   "allowed_types" = [ "extension" ];
-          # };
+          "*" = {
+            blocked_install_message = "All extensions must be declared in you home-manager config";
+            install_sources = [ "https://github.com/benshewan/dots/*" ];
+            installation_mode = "blocked";
+            allowed_types = [ "extension" ];
+          };
           # Helps add extensions to firefox policy
           "queryamoid@kaply.com" = {
             installation_mode = "force_installed";
@@ -94,12 +97,12 @@ in
           # Blocks Sponsor segments on Youtube videos
           "sponsorBlocker@ajay.app" = {
             installation_mode = "force_installed";
-            isntall_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
           };
           # Integration with KDE
-          "kde-connect@0xc0dedbad.com" = {
+          "plasma-browser-integration@kde.org" = {
             installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/kde_connect/latest.xpi";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
           # Bypass Website Paywalls
           "magnolia@12.34" = {

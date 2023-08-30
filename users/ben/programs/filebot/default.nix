@@ -6,5 +6,7 @@ home.packages = with pkgs; [
   ];
 
    #  Filebot license
-  home.file.".local/share/filebot/data/.license".source = ./.license;
+
+  #  Can't find file for some reason
+  # home.file.".local/share/filebot/data/.license".source = ./.license;
 }
