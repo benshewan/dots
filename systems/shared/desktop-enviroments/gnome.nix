@@ -19,6 +19,9 @@
     gnome-weather # weather app 
     gnome-maps # maps app
     gnome-contacts # manage contacts
+    yelp # help app
+    gnome-font-viewer # manage fonts
+    gnome-logs # view systemd logs
     totem # video player
     tali # poker game
     iagno # go game
