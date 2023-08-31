@@ -16,6 +16,9 @@
     # geary # email reader
     # evince # document viewer
     gnome-characters
+    gnome-weather # weather app 
+    gnome-maps # maps app
+    gnome-contacts # manage contacts
     totem # video player
     tali # poker game
     iagno # go game

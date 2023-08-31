@@ -1,4 +1,4 @@
-{ pkgs, flake_path, ... }:
+{ pkgs, lib, flake_path, ... }:
 {
   imports =
     [
@@ -13,7 +13,12 @@
   networking.hostName = "sirius";
 
   # Default DE
-  services.xserver.desktopManager.defaultSession = "plasmawayland";
+  services.xserver.displayManager.defaultSession = "plasmawayland";
+
+
+  # Force resolve conflict between GNOME and KDE
+  programs.ssh.askPassword = lib.mkForce "${pkgs.ksshaskpass.out}/bin/ksshaskpass"; # Prefer KDE
+  # programs.ssh.askPassword = lib.mkForce "${pkgs.gnome.seahorse.out}/libexec/seahorse/ssh-askpass"; # Prefer GNOME
 
 
   # Gaming
