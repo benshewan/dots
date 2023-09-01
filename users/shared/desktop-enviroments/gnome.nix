@@ -25,7 +25,7 @@ rec {
       accel-profile = "flat";
       speed = -0.58;
     };
-    "org/gnome/desktop/wm/preferences/resize-with-right-button" = mkValue true;
+    # "org/gnome/desktop/wm/preferences/resize-with-right-button" = mkValue true;
 
     # "org/gnome/desktop/session/idle-delay" = mkUint32 900;
 
@@ -36,7 +36,8 @@ rec {
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file://" + ../../../wallpapers/nix-black-4k.jpg;
+      picture-uri = "file://" + ../../../wallpapers/nix-black-4k.png;
+       picture-uri-dark = "file://" + ../../../wallpapers/nix-black-4k.png;
     };
     "org/gnome/shell/extensions/user-theme" = {
       name = config.gtk.theme.name;
