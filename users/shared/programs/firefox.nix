@@ -1,4 +1,4 @@
-{ pkgs, inputs, username, ... }:
+{ pkgs, config, lib, inputs, username, ... }:
 let
   firefox-userchromejs = pkgs.fetchgit {
     url = "https://github.com/alice0775/userChrome.js.git";
@@ -25,7 +25,7 @@ in
     package = pkgs.firefox-devedition.override {
 
       cfg.enablePlasmaBrowserIntegration = true;
-      # extraNativeMessagingHosts = [ pkgs.plasma-browser-integration ];
+      # cfg.enableGnomeExtensions = lib.optional (config.services.xserver.desktopManager.gnome.enable or false) true;
       extraPolicies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;
@@ -54,7 +54,8 @@ in
         };
 
         Preferences = {
-          "browser.startup.page" = {
+          # Doesn't seem to work - try a different setting
+          "browser.startup.page" = { 
             Value = 3;
             Status = "default";
           };
@@ -72,6 +73,11 @@ in
           "queryamoid@kaply.com" = {
             installation_mode = "force_installed";
             install_url = "https://github.com/mkaply/queryamoid/releases/download/v0.1/query_amo_addon_id-0.1-fx.xpi";
+          };
+          # Mouse Gestures - TODO: replace with userchromejs script to enable wider use
+          "{e839c3f9-298e-4cd0-99e0-464431cb7c34}" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/foxy-gestures/latest.xpi";
           };
           # Password Manager
           "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
@@ -104,6 +110,10 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
+          "gsconnect@andyholmes.github.io" = lib.mkIf (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
+          };
           # Bypass Website Paywalls
           "magnolia@12.34" = {
             installation_mode = "force_installed";
@@ -117,12 +127,18 @@ in
           # Torrent Control
           "{e6e36c9a-8323-446c-b720-a176017e38ff}" = {
             installation_mode = "force_installed";
+            default_area = "menupanel";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/torrent-control/latest.xpi";
           };
           # NZB Downloader
           "{96586e48-b9a2-45dd-b1a1-54fa85a97c91}" = {
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/nzb-unity/latest.xpi";
+          };
+          # Google Translate - TODO: Firefox is slowly replacing this with its own builtin translator, but doesn't yet support languages like russian or japanese
+          "{036a55b4-5e72-4d05-a06c-cba2dfcc134a}" = {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/traduzir-paginas-web/latest.xpi";
           };
         };
       };
