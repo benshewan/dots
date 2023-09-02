@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nur.url = github:nix-community/NUR;
-    inputs.spicetify-nix.url = github:the-argus/spicetify-nix;
+    spicetify-nix.url = github:the-argus/spicetify-nix;
     flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
     home-manager = {
       url = "github:nix-community/home-manager";
