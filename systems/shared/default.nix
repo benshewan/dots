@@ -1,8 +1,8 @@
 { lib, pkgs, username, userDescription, ... }:
 {
   imports = [
+    ./packages
     ./networking.nix
-    ./packages.nix
     ./services.nix
     ./hardware.nix
   ];

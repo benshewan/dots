@@ -110,10 +110,10 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
-          "gsconnect@andyholmes.github.io" = lib.mkIf (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
-          };
+          # "gsconnect@andyholmes.github.io" = lib.mkIf (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
+          #   installation_mode = "force_installed";
+          #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
+          # };
           # Bypass Website Paywalls
           "magnolia@12.34" = {
             installation_mode = "force_installed";

@@ -19,16 +19,6 @@
     prefetch-npm-deps
     home-manager
 
-    # Razer Specific Stuff
-    # razergenie
-    # (python311.withPackages (ps: with ps; [
-    #   openrazer # Break into seprate flake for battery charge management
-    #   # pygobject3
-    #   # pyqt5
-    #   # ruamel-yaml # Can't find libs in build but can in develop
-    #   # pyinotify
-    #   # pyqtwebengine
-    # ]))
     mpv # Media Player
     lightly-qt # KDE Application Theme
     virt-manager # Virtual Machine Manager

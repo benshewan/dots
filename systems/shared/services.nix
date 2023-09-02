@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, username, ... }:
 {
   services = {
     xserver = {
@@ -20,6 +20,21 @@
     openssh.enable = true;
 
   };
+
+  # services.cage.enable = true;
+  # environment.systemPackages = with pkgs; [
+  #   cage
+  # ];
+
+  # services.greetd = {
+  #   enable = true;
+  #   # settings.default_session = {
+  #   #   command = "cage -s -- regreet";
+  #   #   user = "greeter";
+  #   # };
+  # };
+  # programs.regreet.enable = true;
+
 
   # Virtualization
   virtualisation.libvirtd.enable = true;
