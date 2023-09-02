@@ -1,7 +1,7 @@
 { lib, pkgs, username, userDescription, ... }:
 {
   imports = [
-    ./packages
+    ./packages.nix
     ./networking.nix
     ./services.nix
     ./hardware.nix

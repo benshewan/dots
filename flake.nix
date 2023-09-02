@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nur.url = github:nix-community/NUR;
+    inputs.spicetify-nix.url = github:the-argus/spicetify-nix;
     flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -14,7 +15,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager,flatpaks, ... }@inputs:
+  outputs = { self, nixpkgs, nur, home-manager, flatpaks, spicetify-nix, ... }@inputs:
     let
       userDescription = "Ben Shewan";
       username = "ben";
@@ -27,14 +28,15 @@
       homeConfigurations = {
         "${username}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit username flake_path inputs; };
+          extraSpecialArgs = { inherit username flake_path inputs spicetify-nix; };
           modules = [
             ./users/${home_profile}
-            { nixpkgs.overlays = [ nur.overlay ]; }
             # Pin registry to flake
             { nix.registry.nixpkgs.flake = nixpkgs; }
             # Pin channel to flake 
             { home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}"; }
+            # Add support for NUR packages
+            { nixpkgs.overlays = [ nur.overlay ]; }
             # Enable support for KDE Configuration
             inputs.plasma-manager.homeManagerModules.plasma-manager
             # Enables support for declarative flatpaks

@@ -1,5 +1,6 @@
 { pkgs, flake_path, ... }:
 {
+
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
     # Terminal Commands
