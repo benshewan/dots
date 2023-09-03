@@ -23,12 +23,18 @@
     mpv # Media Player
     remmina # Remote desktop client
     kate # Text Editor
+    # via
 
     # Development Runtimes 
     # Note: most things should be in project specfic flakes but I'm lazy, sue me.
     nodejs_20
     nodePackages.nodemon
   ];
+
+  # fix for Via
+  # services.udev.packages = with pkgs; [
+  #   via
+  # ];
 
   #Fonts
   fonts.packages = with pkgs; [

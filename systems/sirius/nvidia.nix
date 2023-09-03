@@ -36,4 +36,5 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  programs.hyprland.enableNvidiaPatches = true;
 }

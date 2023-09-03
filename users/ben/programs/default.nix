@@ -21,7 +21,7 @@
 
     # plex-media-player # Plex Player (shitty TV version)
     prismlauncher # Minecraft launcher
-    via # Keyboard Configurator
+    # via # Keyboard Configurator
   ];
 
   programs.java = {

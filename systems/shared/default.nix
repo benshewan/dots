@@ -69,8 +69,6 @@
       description = userDescription;
       initialPassword = "admin";
       extraGroups = [ "wheel" "docker" "video" "libvirtd" "plugdev" "${username}" ];
-      packages = with pkgs; [
-      ];
     };
   };
 

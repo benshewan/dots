@@ -4,6 +4,7 @@
     nur.url = github:nix-community/NUR;
     spicetify-nix.url = github:the-argus/spicetify-nix;
     flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
+    hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -15,7 +16,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, flatpaks, spicetify-nix, ... }@inputs:
+  outputs = { self, nixpkgs, nur, home-manager, flatpaks, spicetify-nix, hyprland, ... }@inputs:
     let
       userDescription = "Ben Shewan";
       username = "ben";
@@ -28,7 +29,7 @@
       homeConfigurations = {
         "${username}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit username flake_path inputs spicetify-nix; };
+          extraSpecialArgs = { inherit inputs; };
           modules = [
             ./users/${home_profile}
             # Pin registry to flake
@@ -41,6 +42,8 @@
             inputs.plasma-manager.homeManagerModules.plasma-manager
             # Enables support for declarative flatpaks
             flatpaks.homeManagerModules.default
+            # Enables module for Hyprland configuration
+            hyprland.homeManagerModules.default
           ];
         };
       };
