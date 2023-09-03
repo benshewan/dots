@@ -24,7 +24,7 @@
   programs.fish.shellAbbrs = {
     nix-switch = "sudo nixos-rebuild switch --flake ${flake_path}#sirius";
   };
-  
+
   # Development
-  mongodb.enable = true;
+  services.mongodb.enable = true;
 }
