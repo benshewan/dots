@@ -2,10 +2,13 @@
 {
   # Install GNOME
   services.xserver.desktopManager.gnome.enable = true;
+  # Default DE
+  services.xserver.displayManager.defaultSession = "gnome";
 
   # Disable certain defaults for GNOME
   environment.gnome.excludePackages = (with pkgs; [
     gnome-photos
+    gnome-connections
     gnome-tour
   ]) ++ (with pkgs.gnome; [
     cheese # webcam tool
@@ -19,6 +22,7 @@
     gnome-weather # weather app 
     gnome-maps # maps app
     gnome-contacts # manage contacts
+    gnome-software # software store
     yelp # help app
     gnome-font-viewer # manage fonts
     gnome-logs # view systemd logs

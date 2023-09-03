@@ -2,6 +2,8 @@
 {
   # Install KDE
   services.xserver.desktopManager.plasma5.enable = true;
+  # Default DE
+  services.xserver.displayManager.defaultSession = "plasmawayland";
 
   # Disable certain defaults for KDE
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [
@@ -10,6 +12,10 @@
     okular
     oxygen
     khelpcenter
+  ];
+
+  environment.systemPackages = with pkgs; [
+    lightly-qt # KDE Application Theme
   ];
 
   # Enable xdg portal

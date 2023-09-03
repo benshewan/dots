@@ -16,15 +16,8 @@
 
     flatpak.enable = true;
     printing.enable = true;
-    mongodb.enable = true;
     openssh.enable = true;
-
   };
-
-  # services.cage.enable = true;
-  # environment.systemPackages = with pkgs; [
-  #   cage
-  # ];
 
   # services.greetd = {
   #   enable = true;

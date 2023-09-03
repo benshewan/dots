@@ -21,8 +21,7 @@
     home-manager
 
     mpv # Media Player
-    lightly-qt # KDE Application Theme
-    virt-manager # Virtual Machine Manager
+    remmina # Remote desktop client
     kate # Text Editor
 
     # Development Runtimes 
@@ -38,8 +37,6 @@
     noto-fonts-emoji
   ];
 
-
-
   #Programs
   programs = {
     dconf.enable = true; # Needed for many GTK apps (like GDM)
@@ -49,5 +46,4 @@
 
   # Enable wayland support for chromium and most electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
-
 }
