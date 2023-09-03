@@ -16,7 +16,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nur, home-manager, flatpaks, spicetify-nix, hyprland, ... }@inputs:
+  outputs = { self, nixpkgs, nur, home-manager, ... }@inputs:
     let
       userDescription = "Ben Shewan";
       username = "ben";
@@ -29,21 +29,21 @@
       homeConfigurations = {
         "${username}" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit inputs; };
+          extraSpecialArgs = { inherit username userDescription flake_path inputs; };
           modules = [
             ./users/${home_profile}
             # Pin registry to flake
             { nix.registry.nixpkgs.flake = nixpkgs; }
             # Pin channel to flake 
             { home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}"; }
-            # Add support for NUR packages
+            # Enables support for NUR packages
             { nixpkgs.overlays = [ nur.overlay ]; }
-            # Enable support for KDE Configuration
+            # Enables support for KDE Configuration
             inputs.plasma-manager.homeManagerModules.plasma-manager
             # Enables support for declarative flatpaks
-            flatpaks.homeManagerModules.default
+            inputs.flatpaks.homeManagerModules.default
             # Enables module for Hyprland configuration
-            hyprland.homeManagerModules.default
+            inputs.hyprland.homeManagerModules.default
           ];
         };
       };
