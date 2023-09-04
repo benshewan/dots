@@ -34,12 +34,12 @@
   ]);
 
   # Enable xdg portal
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
-    ];
-  };
+  # xdg.portal = {
+  #   enable = true;
+  #   extraPortals = with pkgs; [
+  #     xdg-desktop-portal-gnome
+  #   ];
+  # };
 
   # Other GNOME Apps
   environment.systemPackages = with pkgs; [

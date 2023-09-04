@@ -22,7 +22,7 @@
       username = "ben";
       system = "x86_64-linux";
       home_profile = "ben";
-      flake_path = "~/.nix";
+      flake_path = "/home/${username}/.nix";
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
@@ -38,12 +38,6 @@
             { home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}"; }
             # Enables support for NUR packages
             { nixpkgs.overlays = [ nur.overlay ]; }
-            # Enables support for KDE Configuration
-            inputs.plasma-manager.homeManagerModules.plasma-manager
-            # Enables support for declarative flatpaks
-            inputs.flatpaks.homeManagerModules.default
-            # Enables module for Hyprland configuration
-            inputs.hyprland.homeManagerModules.default
           ];
         };
       };
