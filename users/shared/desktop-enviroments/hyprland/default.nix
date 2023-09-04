@@ -12,7 +12,10 @@
 , ...
 }:
 {
-  imports = [ ./waybar.nix ];
+  imports = [ 
+    ./waybar.nix 
+    ./wofi.nix
+    ];
 
   home.packages = with pkgs; [
     swaybg
@@ -24,6 +27,12 @@
 
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     settings = {
+
+      monitor = [
+        "DP-2, 1920x1080@75,1920x0,1"
+        "HDMI-A-2, 1920x1080@75,0x0,1"
+        ",preferred,auto,auto"
+      ];
 
       exec-once = [
         "waybar"
@@ -39,10 +48,6 @@
 
       input = {
         kb_layout = "us";
-        kb_variant = "";
-        kb_model = "";
-        kb_options = "";
-        kb_rules = "";
 
         follow_mouse = 1;
         repeat_delay = 160;
@@ -197,9 +202,19 @@
         # ",Print,exec, ~/.config/hypr/scripts/screenshot.sh"
         # "SUPER,space,exec, bemenu-run"
         # SUPER,space,exec,wofi --show drun -I -s ~/.config/wofi/style.css DP-3
+        "ALT,space,exec,wofi --show drun -I DP-2"
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
         # "SUPER $mainMod SHIFT,B,exec, killall -3 eww & sleep 1 && ~/.config/hypr/themes/winter/eww/launch_bar"
+
+        # Tell wireplumber to toggle mute volume on mute key 
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+      ];
+
+      binde = [
+        # Tell wireplumber to raise/lower volume with volume keys
+        ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-"
+        ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+"
       ];
 
       bindm = [
@@ -234,6 +249,7 @@
         "float,class:^(error)$"
         "float,class:^(confirmreset)$"
         "float,title:^(Open File)$"
+        "float,title:^(Save As)$"
         "float,title:^(branchdialog)$"
         "float,title:^(Confirm to replace files)$"
         "float,title:^(File Operation Progress)$"

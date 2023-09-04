@@ -1,6 +1,6 @@
 { ... }:
 let
-  custom = {
+  custom = rec {
     font = "RobotoMono Nerd Font";
     fontsize = "12";
     primary_accent = "cba6f7";
@@ -9,7 +9,7 @@ let
     background = "11111B";
     opacity = ".85";
     cursor = "Numix-Cursor";
-    palette = rec {
+    palette = {
       font = "RobotoMono Nerd Font";
       fontsize = "12";
       primary_accent = "cba6f7";
@@ -25,7 +25,6 @@ let
         primary_background_hex = "11111B";
         secondary_background_hex = "1b1b2b";
         tertiary_background_hex = "25253a";
-
         primary_accent_rgba = "rgba(203,166,247,${opacity})";
         secondary_accent_rgba = "rgba(137,180,250,${opacity})";
         tertiary_accent_rgba = "rgba(245,245,245,${opacity})";
@@ -240,11 +239,11 @@ in
       }
 
       window#waybar {
-          background: ${custom.palette.primary_background_rgba};
+          background: rgba(17,17,27,.85);
       }
 
       #cava.left, #cava.right {
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           margin: 5px; 
           padding: 8px 16px;
           color: #${custom.primary_accent};
@@ -256,7 +255,7 @@ in
           border-radius: 10px 24px 10px 24px;
       }
       #workspaces {
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           margin: 5px 5px;
           padding: 8px 5px;
           border-radius: 16px;
@@ -267,7 +266,7 @@ in
           margin: 0px 3px;
           border-radius: 16px;
           color: transparent;
-          background: ${custom.palette.primary_background_rgba};
+          background: rgba(17,17,27,.85);
           transition: all 0.3s ease-in-out;
       }
 
@@ -290,7 +289,7 @@ in
 
       #tray, #pulseaudio, #network, #battery,
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           font-weight: bold;
           margin: 5px 0px;
       }
@@ -302,7 +301,7 @@ in
       }
       #clock {
           color: #${custom.tertiary_accent};
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           border-radius: 0px 0px 0px 40px;
           padding: 10px 10px 15px 25px;
           margin-left: 7px;
@@ -311,7 +310,7 @@ in
       }
       #custom-launcher {
           color: #${custom.secondary_accent};
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           border-radius: 0px 0px 40px 0px;
           margin: 0px;
           padding: 0px 35px 0px 15px;
@@ -319,7 +318,7 @@ in
       }
 
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           font-size: 22px;
       }
       #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
@@ -342,7 +341,7 @@ in
           margin-right: 7px
       }
       #custom-playerlabel {
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           color: #${custom.tertiary_accent};
           padding: 0 20px;
           border-radius: 24px 10px 24px 10px;
@@ -350,7 +349,7 @@ in
           font-weight: bold;
       }
       #window{
-          background: #${custom.palette.tertiary_background_hex};
+          background: #25253a;
           padding-left: 15px;
           padding-right: 15px;
           border-radius: 16px;
