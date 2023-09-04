@@ -12,12 +12,11 @@
 , ...
 }:
 {
-
-  # Enables module for Hyprland configuration
-  # imports = [ inputs.hyprland.homeManagerModules.default ];
+  imports = [ ./waybar.nix ];
 
   home.packages = with pkgs; [
     swaybg
+    dolphin
   ];
 
   wayland.windowManager.hyprland = {
@@ -30,7 +29,7 @@
         "waybar"
         "swaybg -i ${../../../../wallpapers/nix-black-4k.png}"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''
-        # "hyprctl setcursor ${custom.cursor} ${custom.fontsize}"
+        "hyprctl setcursor ${custom.cursor} ${custom.fontsize}"
         # "swaync"
       ];
 
@@ -39,7 +38,7 @@
       };
 
       input = {
-        kb_layout = "br";
+        kb_layout = "us";
         kb_variant = "";
         kb_model = "";
         kb_options = "";
@@ -193,7 +192,8 @@
         # "SUPER,e,exec, emacsclient -c -a 'emacs'"
         # "SUPER,o,exec, obsidian"
 
-        # "SUPER,RETURN,exec, foot"
+        "SUPER,RETURN,exec, kitty"
+        "SUPER,f,exec, firefox"
         # ",Print,exec, ~/.config/hypr/scripts/screenshot.sh"
         # "SUPER,space,exec, bemenu-run"
         # SUPER,space,exec,wofi --show drun -I -s ~/.config/wofi/style.css DP-3

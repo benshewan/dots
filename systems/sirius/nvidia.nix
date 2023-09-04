@@ -37,4 +37,5 @@
   };
 
   programs.hyprland.enableNvidiaPatches = true;
+  environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = "1";
 }

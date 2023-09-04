@@ -44,6 +44,11 @@ in
     source = "${theme-gtk}/share/themes/${theme-gtk-name}/gtk-4.0/assets";
   };
 
+  # home.packages = with pkgs;[
+  #   qt5ct
+  #   lightly-qt
+  # ];
+
   qt = {
     enable = true;
     platformTheme = "gnome";

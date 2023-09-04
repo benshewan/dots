@@ -1,4 +1,4 @@
-{ pkgs, flake_path, ... }:
+{ pkgs, flake_path,username, ... }:
 {
 
   # List packages installed in system profile
@@ -23,7 +23,6 @@
     mpv # Media Player
     remmina # Remote desktop client
     kate # Text Editor
-    # via
 
     # Development Runtimes 
     # Note: most things should be in project specfic flakes but I'm lazy, sue me.
