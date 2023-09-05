@@ -18,6 +18,7 @@
 
   #Packages
   home.packages = with pkgs; [
+    playerctl
     # speedtest-cli
     # gcc
     # (nerdfonts.override { fonts = [ "RobotoMono" ]; })

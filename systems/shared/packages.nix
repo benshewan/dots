@@ -8,6 +8,7 @@
     git
     dig
     htop
+    btop
     toybox
     neofetch
     bat

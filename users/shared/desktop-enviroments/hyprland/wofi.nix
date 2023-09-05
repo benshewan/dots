@@ -52,7 +52,7 @@ in
         enable = true;
         settings = {
             allow_images = true;
-            width = "25%";
+            width = "33%";
             hide_scroll = true;
             term = "kitty";
         };
@@ -67,8 +67,8 @@ in
         }
         #input {
           border-radius: 100px;
-          margin: 20px;
-          padding: 15px 25px;
+          margin: 10px;
+          padding: 5px 15px;
           background: rgba(37,37,58,.85);
           color: #${custom.tertiary_accent};
         }
@@ -78,7 +78,7 @@ in
         }
         #entry {
           margin: 10px 80px;
-          padding: 20px 20px;
+          padding: 10px;
           border-radius: 200px;
         }
         #entry:selected{
