@@ -1,4 +1,4 @@
-{ pkgs, flake_path,username, ... }:
+{ pkgs, flake_path, username, ... }:
 {
 
   # List packages installed in system profile
@@ -15,6 +15,7 @@
     exa
     clipboard-jh
     wget
+    nixd
 
     # nix stuff
     nix-prefetch-github
@@ -29,6 +30,9 @@
     # Development Runtimes 
     # Note: most things should be in project specfic flakes but I'm lazy, sue me.
     nodejs_20
+    (python311.withPackages (ps: with ps; [
+      openrazer
+    ]))
     nodePackages.nodemon
   ];
 

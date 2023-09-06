@@ -21,6 +21,7 @@
       "window.titleBarStyle" = "custom";
       "git.confirmSync"= false;
       "git.autofetch" = true;
+      "nix.enableLanguageServer" =  true;
     };
   };
 }

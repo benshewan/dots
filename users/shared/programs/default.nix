@@ -1,7 +1,7 @@
 { ... }:
 {
   imports = [
-    ./firefox.nix
+    ./firefox
     ./vscode.nix
     ./kitty.nix
     ./flatpaks.nix

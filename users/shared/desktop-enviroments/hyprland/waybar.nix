@@ -1,4 +1,4 @@
-{ ... }:
+{ flake_path,... }:
 let
   custom = rec {
     font = "RobotoMono Nerd Font";
@@ -56,12 +56,11 @@ in
         "custom/playerlabel"
       ];
       modules-center = [
-        "cava#left"
         "wlr/workspaces"
-        "cava#right"
       ];
       modules-right = [
         "tray"
+        "custom/headset"
         "battery"
         "pulseaudio"
         "network"
@@ -87,58 +86,6 @@ in
           default = "";
           sort-by-number = true;
         };
-      };
-      "cava#left" = {
-        framerate = 60;
-        autosens = 1;
-        sensitivity = 100;
-        bars = 18;
-        lower_cutoff_freq = 50;
-        higher_cutoff_freq = 10000;
-        method = "pipewire";
-        source = "auto";
-        stereo = true;
-        reverse = false;
-        bar_delimiter = 0;
-        monstercat = false;
-        waves = false;
-        input_delay = 2;
-        format-icons = [
-          "<span foreground='#${custom.primary_accent}'>▁</span>"
-          "<span foreground='#${custom.primary_accent}'>▂</span>"
-          "<span foreground='#${custom.primary_accent}'>▃</span>"
-          "<span foreground='#${custom.primary_accent}'>▄</span>"
-          "<span foreground='#${custom.secondary_accent}'>▅</span>"
-          "<span foreground='#${custom.secondary_accent}'>▆</span>"
-          "<span foreground='#${custom.secondary_accent}'>▇</span>"
-          "<span foreground='#${custom.secondary_accent}'>█</span>"
-        ];
-      };
-      "cava#right" = {
-        framerate = 60;
-        autosens = 1;
-        sensitivity = 100;
-        bars = 18;
-        lower_cutoff_freq = 50;
-        higher_cutoff_freq = 10000;
-        method = "pipewire";
-        source = "auto";
-        stereo = true;
-        reverse = false;
-        bar_delimiter = 0;
-        monstercat = false;
-        waves = false;
-        input_delay = 2;
-        format-icons = [
-          "<span foreground='#${custom.primary_accent}'>▁</span>"
-          "<span foreground='#${custom.primary_accent}'>▂</span>"
-          "<span foreground='#${custom.primary_accent}'>▃</span>"
-          "<span foreground='#${custom.primary_accent}'>▄</span>"
-          "<span foreground='#${custom.secondary_accent}'>▅</span>"
-          "<span foreground='#${custom.secondary_accent}'>▆</span>"
-          "<span foreground='#${custom.secondary_accent}'>▇</span>"
-          "<span foreground='#${custom.secondary_accent}'>█</span>"
-        ];
       };
       "custom/playerctl#backward" = {
         format = "󰙣 ";
@@ -228,6 +175,11 @@ in
         # on-click-right= "bash $HOME/.config/rofi/run.sh"; 
         tooltip = "false";
       };
+       "custom/headset" = {
+        format = "󰋋 {}";
+        interval = 5;
+        exec = "${flake_path}/scripts/get_battery_headset";
+       };
     };
     style = ''
       * {
@@ -293,7 +245,7 @@ in
           font-weight: bold;
           margin: 5px 0px;
       }
-      #tray, #pulseaudio, #network, #battery{
+      #tray, #pulseaudio, #network, #battery, #custom-headset {
           color: #${custom.tertiary_accent};
           border-radius: 10px 24px 10px 24px;
           padding: 0 20px;

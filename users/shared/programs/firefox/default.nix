@@ -5,12 +5,6 @@ let
     rev = "f11141337a931bb75e3b269f68562626b1d83f54";
     sha256 = "0sbq2z9xwxxw06c10i17amjq4lzmj2dvbpsyf47daszlf59qshnw";
   };
-  firefox-cascade-theme = pkgs.fetchFromGitHub {
-    owner = "andreasgrafen";
-    repo = "cascade";
-    rev = "2f70e8619ce5c721fe9c0736b25c5a79938f1215";
-    sha256 = "sha256-HOOBQ1cNjsDTFSymB3KjiZ1jw3GL16LF/RQxdn0sxr0=";
-  };
   firefox-gnome-theme = pkgs.fetchFromGitHub {
     owner = "rafaelmardojai";
     repo = "firefox-gnome-theme";
@@ -34,77 +28,7 @@ in
     recursive = true;
     source = "${firefox-gnome-theme}";
   };
-
-  home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".text = ''
-  #back-button, #forward-button {
-  display: none;
-}
-/* not actually removing the buttons */
-#window-controls,
-#titlebar > .browser-toolbar > .titlebar-buttonbox-container{ display: none }
-
-  #sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] #sidebar-header {
-  visibility: collapse;
-}
-
-/* Source file https://github.com/MrOtherGuy/firefox-csshacks/tree/master/chrome/autohide_sidebar.css made available under Mozilla Public License v. 2.0
-See the above repository for updates as well as full license text. */
-
-/* Show sidebar only when the cursor is over it  */
-/* The border controlling sidebar width will be removed so you'll need to modify these values to change width */
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] {
-  --uc-sidebar-width: 48px !important;
-  --uc-sidebar-hover-width: 250px;
-  --uc-autohide-sidebar-delay: 300ms; /* Wait 0.3s before hiding sidebar */
-  position: relative;
-  min-width: var(--uc-sidebar-width) !important;
-  width: var(--uc-sidebar-width) !important;
-  max-width: var(--uc-sidebar-width) !important;
-  z-index:1;
-}
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] > #sidebar-splitter {
-  display: none
-}
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] > #sidebar {
-  transition: min-width 115ms linear var(--uc-autohide-sidebar-delay) !important;
-  min-width: var(--uc-sidebar-width) !important;
-  will-change: min-width;
-}
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"]:hover > #sidebar{
-  min-width: var(--uc-sidebar-hover-width) !important;
-  transition-delay: 0ms !important
-}
-
-/* Add sidebar divider and give it background */
-
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] > #sidebar,
-#sidebar-box[sidebarcommand="_3c078156-979c-498b-8990-85f7987dd929_-sidebar-action"] > #sidebar-header {
-  background-color: var(--toolbar-bgcolor) !important;
-/*  border-inline: 1px solid var(--sidebar-border-color) !important;*/
-  border-inline: 1px solid var(--chrome-content-separator-color) !important;
-  border-inline-width: 0px 1px;
-}
-#sidebar-box[positionend]{
-  direction: rtl
-}
-#sidebar-box[positionend] > *{
-  direction: ltr
-}
-
-#sidebar-box[positionend]:-moz-locale-dir(rtl){
-  direction: ltr
-}
-#sidebar-box[positionend]:-moz-locale-dir(rtl) > *{
-  direction: rtl
-}
-  '';
-  
-  
-
+  home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".source = ./customChrome.css;
 
   programs.firefox = {
     enable = true;
@@ -189,7 +113,7 @@ See the above repository for updates as well as full license text. */
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
           };
-          # Integration with KDE
+          # Integration with KDE / Hyprland
           "plasma-browser-integration@kde.org" = {
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
