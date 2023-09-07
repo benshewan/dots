@@ -19,9 +19,10 @@
     userSettings = {
       "workbench.colorTheme" = "Catppuccin Mocha";
       "window.titleBarStyle" = "custom";
-      "git.confirmSync"= false;
+      "git.confirmSync" = false;
       "git.autofetch" = true;
-      "nix.enableLanguageServer" =  true;
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = "nixd";
     };
   };
 }

@@ -7,6 +7,9 @@
 
   environment.systemPackages = with pkgs; [
     wofi
+    swaybg
+    dolphin
+    ark
   ];
 
   # KDE Connect plus some magic to get chromium browser integration working
