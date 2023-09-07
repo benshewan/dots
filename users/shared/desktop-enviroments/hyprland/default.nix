@@ -17,11 +17,6 @@
     ./wofi.nix
     ];
 
-  home.packages = with pkgs; [
-    swaybg
-    dolphin
-  ];
-
   wayland.windowManager.hyprland = {
     enable = true;
 
