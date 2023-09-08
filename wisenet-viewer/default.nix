@@ -36,8 +36,7 @@ stdenv.mkDerivation {
     substituteInPlace $out/share/applications/wisenet-viewer.desktop \
       --replace "/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh" "$out/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh" \
 
-    c $out/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh \
-      --replace "#!/bin/sh" "#!/usr/bin/env sh" \
-      --replace "\$\(dirname \"\$\(readlink -f \"\$0\"\)\"\)" "$out/opt/HanwhaVision/WisenetViewer" \
+    substituteInPlace $out/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh \
+      --replace '$(dirname "$(readlink -f "$0")")' "$out/opt/HanwhaVision/WisenetViewer" \
   '';
 }
