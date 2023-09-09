@@ -7,8 +7,6 @@
     opacity = ".85";
     cursor = "Numix-Cursor";
   }
-, inputs
-, pkgs
 , ...
 }:
 {
@@ -248,6 +246,7 @@
         "float,title:^(branchdialog)$"
         "float,title:^(Confirm to replace files)$"
         "float,title:^(File Operation Progress)$"
+        "float,title:^(Picture-in-Picture)$"
         "float,title:^(mpv)$"
         "opacity 1.0 1.0,class:^(wofi)$"
         "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"

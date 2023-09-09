@@ -1,4 +1,4 @@
-{ pkgs, flake_path, username, ... }:
+{ pkgs, ... }:
 {
 
   # List packages installed in system profile
@@ -15,7 +15,7 @@
     exa
     clipboard-jh
     wget
-    nixd
+    nil
 
     # nix stuff
     nix-prefetch-github

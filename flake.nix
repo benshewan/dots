@@ -1,10 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nur.url = github:nix-community/NUR;
-    spicetify-nix.url = github:the-argus/spicetify-nix;
+    nur.url = "github:nix-community/NUR";
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
     flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
-    hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

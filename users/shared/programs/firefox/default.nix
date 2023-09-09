@@ -1,9 +1,15 @@
-{ pkgs, config, lib, inputs, username, ... }:
+{ pkgs, ... }:
 let
-  firefox-userchromejs = pkgs.fetchgit {
-    url = "https://github.com/alice0775/userChrome.js.git";
-    rev = "f11141337a931bb75e3b269f68562626b1d83f54";
-    sha256 = "0sbq2z9xwxxw06c10i17amjq4lzmj2dvbpsyf47daszlf59qshnw";
+  # firefox-userchromejs = pkgs.fetchgit {
+  #   url = "https://github.com/alice0775/userChrome.js.git";
+  #   rev = "f11141337a931bb75e3b269f68562626b1d83f54";
+  #   sha256 = "0sbq2z9xwxxw06c10i17amjq4lzmj2dvbpsyf47daszlf59qshnw";
+  # };
+  firefox-userchromejs = pkgs.fetchFromGitHub {
+    owner = "xiaoxiaoflood";
+    repo = "firefox-scripts";
+    rev = "b013243f1916576166a02d816651c2cc6416f63e";
+    sha256 = "sha256-Zp1pRMqgAM3Xh3JCkAC0hWp2Gl2phkyAwJ8KB2tA9jE=";
   };
   firefox-gnome-theme = pkgs.fetchFromGitHub {
     owner = "rafaelmardojai";
@@ -14,14 +20,18 @@ let
   firefoxPackage = pkgs.firefox-devedition-unwrapped.overrideAttrs (old: {
     postInstall = ''
       mkdir -p $out/lib/firefox/browser/defaults/preferences
-      ln -s ${firefox-userchromejs}/117/install_folder/config.js $out/lib/firefox/config.js
-      ln -s ${firefox-userchromejs}/117/install_folder/defaults/pref/config-prefs.js $out/lib/firefox/browser/defaults/preferences/config-prefs.js
+      cp ${firefox-userchromejs}/installation-folder/config.js $out/lib/firefox/config.js
+      cp ${firefox-userchromejs}/installation-folder/config-prefs.js $out/lib/firefox/browser/defaults/preferences/config-prefs.js
     '';
   });
 in
 {
   # Custom userChrome.js files
-  home.file.".mozilla/firefox/dev-edition-default/chrome/MouseGestures2_e10s.uc.js".source = "${firefox-userchromejs}/117/MouseGestures2_e10s.uc.js";
+  home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures" = {
+    source = "${firefox-userchromejs}/chrome/mouseGestures";
+    recursive = true;
+  };
+  home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures.uc.js".source = "${firefox-userchromejs}/chrome/mouseGestures.uc.js";
 
   # Custom theme
   home.file.".mozilla/firefox/dev-edition-default/chrome" = {
@@ -32,7 +42,7 @@ in
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition.override {
+    package = pkgs.wrapFirefox firefoxPackage {
 
       cfg.enablePlasmaBrowserIntegration = true;
       # cfg.enableGnomeExtensions = lib.optional (config.services.xserver.desktopManager.gnome.enable or false) true;
@@ -82,11 +92,6 @@ in
             installation_mode = "force_installed";
             install_url = "https://github.com/mkaply/queryamoid/releases/download/v0.1/query_amo_addon_id-0.1-fx.xpi";
           };
-          # Mouse Gestures - TODO: replace with userchromejs script to enable wider use
-          "{e839c3f9-298e-4cd0-99e0-464431cb7c34}" = {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/foxy-gestures/latest.xpi";
-          };
           # Password Manager
           "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
             installation_mode = "force_installed";
@@ -118,10 +123,6 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
-          # "gsconnect@andyholmes.github.io" = lib.mkIf (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
-          #   installation_mode = "force_installed";
-          #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
-          # };
           # Bypass Website Paywalls
           "magnolia@12.34" = {
             installation_mode = "force_installed";
@@ -155,10 +156,11 @@ in
       dev-edition-default = {
         id = 0;
         isDefault = true;
-        extraConfig = builtins.fetchurl {
-          url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4e44dc28202cda4b0b92401157839bf511dfceb3/user.js";
-          sha256 = "1islaj99psf20n8f072g84rni32l5lxh53dwg3mlc05h3k5n7i6j";
-        } + ''
+        extraConfig = builtins.fetchurl
+          {
+            url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4e44dc28202cda4b0b92401157839bf511dfceb3/user.js";
+            sha256 = "1islaj99psf20n8f072g84rni32l5lxh53dwg3mlc05h3k5n7i6j";
+          } + ''
           user_pref("svg.context-properties.content.enabled", true);
           user_pref("gnomeTheme.extensions.tabCenterReborn", true);
         '';
