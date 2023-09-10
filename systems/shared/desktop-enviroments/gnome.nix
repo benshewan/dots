@@ -4,6 +4,11 @@
   services.xserver.desktopManager.gnome.enable = true;
   # Default DE
   services.xserver.displayManager.defaultSession = "gnome";
+  # Login Manager
+  services.xserver.displayManager.gdm = {
+    enable = true;
+    wayland = true;
+  };
 
   # Disable certain defaults for GNOME
   environment.gnome.excludePackages = (with pkgs; [
@@ -32,14 +37,6 @@
     hitori # sudoku game
     atomix # puzzle game
   ]);
-
-  # Enable xdg portal
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = with pkgs; [
-  #     xdg-desktop-portal-gnome
-  #   ];
-  # };
 
   # Other GNOME Apps
   environment.systemPackages = with pkgs; [

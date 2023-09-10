@@ -27,7 +27,7 @@ in
   nixpkgs.config.allowUnfreePredicate = _: true; # Workaround for the above borked option
 
   #  home.shellAliases = { };
-  programs.fish.functions = {
+  home.shellAliases = {
     home-switch = "home-manager switch --flake ${flake_path}#${username}";
     sudo = "sudo -E";
     sudopath = "sudo env PATH=$PATH";

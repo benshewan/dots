@@ -31,7 +31,7 @@ in
     source = "${firefox-userchromejs}/chrome/mouseGestures";
     recursive = true;
   };
-  home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures.uc.js".source = "${firefox-userchromejs}/chrome/mouseGestures.uc.js";
+  home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures.uc.js".source = ./mouseGestures.uc.js;
 
   # Custom theme
   home.file.".mozilla/firefox/dev-edition-default/chrome" = {
@@ -81,12 +81,12 @@ in
 
         # Firefox extensions
         ExtensionSettings = {
-          # "*" = {
-          #   blocked_install_message = "All extensions must be declared in you home-manager config";
-          #   install_sources = [ "https://github.com/benshewan/dots/*" ];
-          #   installation_mode = "blocked";
-          #   allowed_types = [ "extension" ];
-          # };
+          "*" = {
+            blocked_install_message = "All extensions must be declared in you home-manager config";
+            install_sources = [ "https://github.com/benshewan/dots/*" ];
+            installation_mode = "blocked";
+            allowed_types = [ "extension" ];
+          };
           # Helps add extensions to firefox policy
           "queryamoid@kaply.com" = {
             installation_mode = "force_installed";
@@ -151,7 +151,16 @@ in
           };
 
           # Legacy Extensions
-
+          "advancedlocationbar@veg.by" = {
+              installation_mode = "force_installed";
+              install_url = "file:/${./AdvancedLocationbar2_1.2.1.7.xpi}";
+          };
+          "backtrack@byalexv.co.uk" = {
+            installation_mode = "force_installed";
+            install_url = "file:/${./BackTrack.xpi}";
+          };
+          # Tab Mix Plus
+          # "{dc572301-7619-498c-a57d-39143191b318}"
         };
       };
     };

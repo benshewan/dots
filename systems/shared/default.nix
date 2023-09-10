@@ -29,6 +29,7 @@
       systemd-boot = {
         enable = true;
         editor = false;
+        consoleMode = "auto";
         configurationLimit = 100;
       };
     };
@@ -75,11 +76,6 @@
   # NixOS Stuff
   nixpkgs.config.allowUnfree = true;
   nix = {
-    nixPath = [
-      "nixpkgs=/nix/var/nix/profiles/per-user/root/channels/nixos"
-      "nixos-config=/home/${username}/.nix/configuration.nix"
-      "/nix/var/nix/profiles/per-user/root/channels"
-    ];
     settings.experimental-features = [ "nix-command" "flakes" ];
     settings.auto-optimise-store = true;
     gc = {

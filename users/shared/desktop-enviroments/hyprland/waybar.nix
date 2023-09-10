@@ -1,8 +1,7 @@
-{ flake_path, config, pkgs,inputs, ... }:
+{ flake_path, config, pkgs, inputs, ... }:
 let
   custom = {
     font = "RobotoMono Nerd Font";
-    cursor = "Numix-Cursor";
   };
 in
 {
@@ -164,7 +163,7 @@ in
       }
 
       window#waybar {
-          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00},.85);
+          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base01},.85);
       }
       #workspaces {
           background: #${config.colorScheme.colors.base02};
@@ -178,7 +177,7 @@ in
           margin: 0px 3px;
           border-radius: 16px;
           color: transparent;
-          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00},.85);
+          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base01},.85);
           transition: all 0.3s ease-in-out;
       }
 
@@ -200,7 +199,7 @@ in
       }
 
       #tray, #pulseaudio, #network, #battery,
-      #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
+      #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward, #custom-headset {
           background: #${config.colorScheme.colors.base02};
           font-weight: bold;
           margin: 5px 0px;

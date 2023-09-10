@@ -1,4 +1,4 @@
-{ pkgs, lib, flake_path, ... }:
+{ pkgs, flake_path, ... }:
 {
   imports =
     [
@@ -20,11 +20,8 @@
   ];
 
 
-  #Programs
-  programs.fish.shellAbbrs = {
+  environment.shellAliases = {
     nix-switch = "sudo nixos-rebuild switch --flake ${flake_path}#sirius";
+    reboot = "systemctl reboot";
   };
-
-  # Development
-  services.mongodb.enable = true;
 }

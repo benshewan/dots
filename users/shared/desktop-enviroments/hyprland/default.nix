@@ -1,19 +1,9 @@
-{ custom ? {
-    fontsize = "12";
-    primary_accent = "cba6f7";
-    secondary_accent = "89b4fa";
-    tertiary_accent = "f5f5f5";
-    background = "11111B";
-    opacity = ".85";
-    cursor = "Numix-Cursor";
-  }
-, ...
-}:
+{ config,lib, ... }:
 {
-  imports = [ 
-    ./waybar.nix 
+  imports = [
+    ./waybar.nix
     ./wofi.nix
-    ];
+  ];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -28,10 +18,11 @@
       ];
 
       exec-once = [
+        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "waybar"
         "swaybg -i ${../../../../wallpapers/nix-black-4k.png}"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''
-        "hyprctl setcursor ${custom.cursor} ${custom.fontsize}"
+        "hyprctl setcursor ${config.gtk.cursorTheme.name} ${lib.strings.floatToString config.gtk.cursorTheme.size}"
         # "swaync"
       ];
 
@@ -58,9 +49,8 @@
         gaps_in = 4;
         gaps_out = 8;
         border_size = 1;
-        # "col.active_border" = "rgb(${custom.primary_accent})";
-        "col.active_border" = "rgb(${custom.background})";
-        "col.inactive_border" = "rgba(${custom.background}00)";
+        "col.active_border" = "rgb(${config.colorScheme.colors.base01})";
+        "col.inactive_border" = "rgba(${config.colorScheme.colors.base01}00)";
         layout = "master";
         apply_sens_to_raw = 1; # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
       };
@@ -72,9 +62,8 @@
         drop_shadow = true;
         shadow_range = 15;
         shadow_render_power = 2;
-        # "col.shadow" = "rgb(${custom.primary_accent})";
-        "col.shadow" = "rgb(${custom.background})";
-        "col.shadow_inactive" = "rgba(${custom.background}00)";
+        "col.shadow" = "rgb(${config.colorScheme.colors.base01})";
+        "col.shadow_inactive" = "rgba(${config.colorScheme.colors.base01}00)";
         blur = {
           enabled = true;
           size = 6;
@@ -220,20 +209,8 @@
         "SUPER,mouse:273,resizewindow"
       ];
 
-      windowrule = [
-        # Window rules
-        "tile,title:^(kitty)$"
-        "float,title:^(fly_is_kitty)$"
-        "opacity 1.0 override 1.0 override,^(foot)$" # Active/inactive opacity
-        "opacity 1.0 override 1.0 override,^(kitty)$" # Active/inactive opacity
-        "tile,^(Spotify)$"
-        "tile,^(neovide)$"
-        "tile,^(wps)$"
-        "opacity 1.0 override 1.0 override,^(neovide)$" # Active/inactive opacity
-      ];
-
       windowrulev2 = [
-        "opacity ${custom.opacity} ${custom.opacity},class:^(thunar)$"
+        "opacity .85 .85,class:^(thunar)$"
         # "opacity ${custom.opacity} ${custom.opacity},class:^(WebCord)$"
         "float,class:^(pavucontrol)$"
         "float,class:^(file_progress)$"
@@ -258,5 +235,4 @@
       ];
     };
   };
-
 }

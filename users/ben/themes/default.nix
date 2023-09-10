@@ -12,7 +12,6 @@ in
 
   imports = [ inputs.nix-colors.homeManagerModules.default ];
   colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
-
   gtk = {
     enable = true;
     # font.name = "${custom.font} ${custom.fontsize}";
