@@ -9,7 +9,10 @@
   ];
 
   programs.eza.enableAliases = true;
-  programs.fish.shellInit = "set fish_greeting";
+  programs.fish.shellInit = ''
+  set fish_greeting
+  direnv hook fish | source
+  '';
   programs.fish.interactiveShellInit = ''
     
   '';

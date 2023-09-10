@@ -13,6 +13,7 @@
       catppuccin.catppuccin-vsc
       pkief.material-product-icons
       streetsidesoftware.code-spell-checker
+      mkhl.direnv
     ];
     userSettings = {
       workbench.colorTheme = "Catppuccin Mocha";

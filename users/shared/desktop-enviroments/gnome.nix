@@ -6,6 +6,7 @@ rec {
     vitals
     dash-to-dock
     blur-my-shell
+    gsconnect
     appindicator
   ];
 

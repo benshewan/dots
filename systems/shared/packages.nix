@@ -28,13 +28,9 @@
     remmina # Remote desktop client
     kate # Text Editor
 
-    # Development Runtimes 
-    # Note: most things should be in project specfic flakes but I'm lazy, sue me.
-    nodejs_20
     (python311.withPackages (ps: with ps; [
       openrazer
     ]))
-    nodePackages.nodemon
   ];
 
   # fix for Via
@@ -53,6 +49,7 @@
   programs = {
     dconf.enable = true; # Needed for many GTK apps (like GDM)
     xwayland.enable = true; # Enable XWayland support
+    direnv.enable = true; # Allows nix shells to be auto run when entering the directory
     fish.enable = true;
   };
 
