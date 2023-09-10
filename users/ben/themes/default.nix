@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 let
   theme-gtk = pkgs.catppuccin-gtk.override {
     accents = [ "blue" ];
@@ -9,6 +9,10 @@ let
   theme-gtk-name = "Catppuccin-Mocha-Standard-Blue-dark";
 in
 {
+
+  imports = [ inputs.nix-colors.homeManagerModules.default ];
+  colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
+
   gtk = {
     enable = true;
     # font.name = "${custom.font} ${custom.fontsize}";

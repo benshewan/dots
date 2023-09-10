@@ -81,12 +81,12 @@ in
 
         # Firefox extensions
         ExtensionSettings = {
-          "*" = {
-            blocked_install_message = "All extensions must be declared in you home-manager config";
-            install_sources = [ "https://github.com/benshewan/dots/*" ];
-            installation_mode = "blocked";
-            allowed_types = [ "extension" ];
-          };
+          # "*" = {
+          #   blocked_install_message = "All extensions must be declared in you home-manager config";
+          #   install_sources = [ "https://github.com/benshewan/dots/*" ];
+          #   installation_mode = "blocked";
+          #   allowed_types = [ "extension" ];
+          # };
           # Helps add extensions to firefox policy
           "queryamoid@kaply.com" = {
             installation_mode = "force_installed";
@@ -149,6 +149,9 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/traduzir-paginas-web/latest.xpi";
           };
+
+          # Legacy Extensions
+
         };
       };
     };

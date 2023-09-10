@@ -16,6 +16,7 @@
     clipboard-jh
     wget
     nil
+    playerctl
 
     # nix stuff
     nix-prefetch-github

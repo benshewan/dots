@@ -190,6 +190,8 @@
         # "SUPER,e,exec, emacsclient -c -a 'emacs'"
         # "SUPER,o,exec, obsidian"
 
+        "SUPER SHIFT,c,exec,hyprpicker -a -f hex"
+
         "SUPER,RETURN,exec, kitty"
         "SUPER,f,exec, firefox"
         # ",Print,exec, ~/.config/hypr/scripts/screenshot.sh"

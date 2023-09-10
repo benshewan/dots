@@ -9,6 +9,10 @@
     bluetuith
     wofi
     swaybg
+    hyprpicker
+    ark
+  ] ++ [
+    # Dolphin
     libsForQt5.dolphin
     libsForQt5.baloo
     libsForQt5.dolphin-plugins
@@ -17,8 +21,7 @@
     libsForQt5.kio-extras
     taglib
     ffmpegthumbnailer
-    ark
-   ];
+  ];
 
   # KDE Connect plus some magic to get chromium browser integration working
   programs.kdeconnect.enable = true;

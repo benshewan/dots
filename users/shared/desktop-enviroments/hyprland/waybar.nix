@@ -1,43 +1,16 @@
-{ flake_path,... }:
+{ flake_path, config, pkgs,inputs, ... }:
 let
-  custom = rec {
+  custom = {
     font = "RobotoMono Nerd Font";
-    fontsize = "12";
-    primary_accent = "cba6f7";
-    secondary_accent = "89b4fa";
-    tertiary_accent = "f5f5f5";
-    background = "11111B";
-    opacity = ".85";
     cursor = "Numix-Cursor";
-    palette = {
-      font = "RobotoMono Nerd Font";
-      fontsize = "12";
-      primary_accent = "cba6f7";
-      secondary_accent = "89b4fa";
-      tertiary_accent = "f5f5f5";
-      background = "11111B";
-      opacity = ".85";
-      cursor = "Numix-Cursor";
-      palette = {
-        primary_accent_hex = "cba6f7";
-        secondary_accent_hex = "89b4fa";
-        tertiary_accent_hex = "f5f5f5";
-        primary_background_hex = "11111B";
-        secondary_background_hex = "1b1b2b";
-        tertiary_background_hex = "25253a";
-        primary_accent_rgba = "rgba(203,166,247,${opacity})";
-        secondary_accent_rgba = "rgba(137,180,250,${opacity})";
-        tertiary_accent_rgba = "rgba(245,245,245,${opacity})";
-        primary_background_rgba = "rgba(17,17,27,${opacity})";
-        secondary_background_rgba = "rgba(27,27,43,${opacity})";
-        tertiary_background_rgba = "rgba(37,37,58,${opacity})";
-
-        opacity = ".85";
-      };
-    };
   };
 in
 {
+
+  home.packages = with pkgs;[
+
+  ];
+
   programs.waybar = {
     enable = true;
     settings.mainBar = {
@@ -175,11 +148,11 @@ in
         # on-click-right= "bash $HOME/.config/rofi/run.sh"; 
         tooltip = "false";
       };
-       "custom/headset" = {
+      "custom/headset" = {
         format = "󰋋 {}";
         interval = 5;
         exec = "${flake_path}/scripts/get_battery_headset";
-       };
+      };
     };
     style = ''
       * {
@@ -191,40 +164,27 @@ in
       }
 
       window#waybar {
-          background: rgba(17,17,27,.85);
-      }
-
-      #cava.left, #cava.right {
-          background: #25253a;
-          margin: 5px; 
-          padding: 8px 16px;
-          color: #${custom.primary_accent};
-      }
-      #cava.left {
-          border-radius: 24px 10px 24px 10px;
-      }
-      #cava.right {
-          border-radius: 10px 24px 10px 24px;
+          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00},.85);
       }
       #workspaces {
-          background: #25253a;
+          background: #${config.colorScheme.colors.base02};
           margin: 5px 5px;
           padding: 8px 5px;
           border-radius: 16px;
-          color: #${custom.primary_accent}
+          color: #${config.colorScheme.colors.base09}
       }
       #workspaces button {
           padding: 0px 5px;
           margin: 0px 3px;
           border-radius: 16px;
           color: transparent;
-          background: rgba(17,17,27,.85);
+          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00},.85);
           transition: all 0.3s ease-in-out;
       }
 
       #workspaces button.active {
-          background-color: #${custom.secondary_accent};
-          color: #${custom.background};
+          background-color: #${config.colorScheme.colors.base0D};
+          color: #${config.colorScheme.colors.base00};
           border-radius: 16px;
           min-width: 50px;
           background-size: 400% 400%;
@@ -232,8 +192,8 @@ in
       }
 
       #workspaces button:hover {
-          background-color: #${custom.tertiary_accent};
-          color: #${custom.background};
+          background-color: #${config.colorScheme.colors.base05};
+          color: #${config.colorScheme.colors.base00};
           border-radius: 16px;
           min-width: 50px;
           background-size: 400% 400%;
@@ -241,19 +201,19 @@ in
 
       #tray, #pulseaudio, #network, #battery,
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward{
-          background: #25253a;
+          background: #${config.colorScheme.colors.base02};
           font-weight: bold;
           margin: 5px 0px;
       }
       #tray, #pulseaudio, #network, #battery, #custom-headset {
-          color: #${custom.tertiary_accent};
+          color: #${config.colorScheme.colors.base05};
           border-radius: 10px 24px 10px 24px;
           padding: 0 20px;
           margin-left: 7px;
       }
       #clock {
-          color: #${custom.tertiary_accent};
-          background: #25253a;
+          color: #${config.colorScheme.colors.base05};
+          background: #${config.colorScheme.colors.base02};
           border-radius: 0px 0px 0px 40px;
           padding: 10px 10px 15px 25px;
           margin-left: 7px;
@@ -261,8 +221,8 @@ in
           font-size: 16px;
       }
       #custom-launcher {
-          color: #${custom.secondary_accent};
-          background: #25253a;
+          color: #${config.colorScheme.colors.base0D};
+          background: #${config.colorScheme.colors.base02};
           border-radius: 0px 0px 40px 0px;
           margin: 0px;
           padding: 0px 35px 0px 15px;
@@ -270,38 +230,38 @@ in
       }
 
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-          background: #25253a;
+          background: #${config.colorScheme.colors.base02};
           font-size: 22px;
       }
       #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
-          color: #${custom.tertiary_accent};
+          color: #${config.colorScheme.colors.base01};
       }
       #custom-playerctl.backward {
-          color: #${custom.primary_accent};
+          color: #${config.colorScheme.colors.base0E};
           border-radius: 24px 0px 0px 10px;
           padding-left: 16px;
           margin-left: 7px;
       }
       #custom-playerctl.play {
-          color: #${custom.secondary_accent};
+          color: #${config.colorScheme.colors.base0D};
           padding: 0 5px;
       }
       #custom-playerctl.foward {
-          color: #${custom.primary_accent};
+          color: #${config.colorScheme.colors.base0E};
           border-radius: 0px 10px 24px 0px;
           padding-right: 12px;
           margin-right: 7px
       }
       #custom-playerlabel {
-          background: #25253a;
-          color: #${custom.tertiary_accent};
+          background: #${config.colorScheme.colors.base02};
+          color: #${config.colorScheme.colors.base05};
           padding: 0 20px;
           border-radius: 24px 10px 24px 10px;
           margin: 5px 0;
           font-weight: bold;
       }
       #window{
-          background: #25253a;
+          background: #${config.colorScheme.colors.base02};
           padding-left: 15px;
           padding-right: 15px;
           border-radius: 16px;

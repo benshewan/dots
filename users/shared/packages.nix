@@ -1,4 +1,4 @@
-{ pkgs, inputs, username, ... }:
+{ pkgs, ... }:
 {
 
   # Default application configuration
@@ -18,7 +18,7 @@
 
   #Packages
   home.packages = with pkgs; [
-    playerctl
+    bottles
     # speedtest-cli
     # gcc
     # (nerdfonts.override { fonts = [ "RobotoMono" ]; })
