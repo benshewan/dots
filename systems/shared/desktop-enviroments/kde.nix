@@ -4,6 +4,11 @@
   services.xserver.desktopManager.plasma5.enable = true;
   # Default DE
   services.xserver.displayManager.defaultSession = "plasmawayland";
+  # Login Manager
+  services.xserver.displayManager.gdm = {
+    enable = true;
+    wayland = true;
+  };
 
   # Disable certain defaults for KDE
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [

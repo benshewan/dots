@@ -7,5 +7,10 @@
         DontCheckDefaultBrowser = true;
       };
     };
+    profiles = {
+      default = {
+        isDefault = true;
+      };
+    };
   };
 }

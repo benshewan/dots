@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 let
   # firefox-userchromejs = pkgs.fetchgit {
   #   url = "https://github.com/alice0775/userChrome.js.git";
@@ -44,8 +44,9 @@ in
     enable = true;
     package = pkgs.wrapFirefox firefoxPackage {
 
-      cfg.enablePlasmaBrowserIntegration = true;
-      # cfg.enableGnomeExtensions = lib.optional (config.services.xserver.desktopManager.gnome.enable or false) true;
+      cfg.enablePlasmaBrowserIntegration = lib.optional (builtins.hasAttr "plasma" config.programs) true;
+      cfg.enableGnomeExtensions = lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) true;
+      
       extraPolicies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;
@@ -118,11 +119,18 @@ in
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
           };
-          # Integration with KDE / Hyprland
-          "plasma-browser-integration@kde.org" = {
+
+          # Integration with KDE / Hyprland / GNOME
+          "gsconnect@andyholmes.github.io" = lib.optionalAttrs (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
+          };
+          "plasma-browser-integration@kde.org" = lib.optionalAttrs (builtins.hasAttr "plasma" config.programs) {
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
+
+
           # Bypass Website Paywalls
           "magnolia@12.34" = {
             installation_mode = "force_installed";
@@ -152,8 +160,8 @@ in
 
           # Legacy Extensions
           "advancedlocationbar@veg.by" = {
-              installation_mode = "force_installed";
-              install_url = "file:/${./AdvancedLocationbar2_1.2.1.7.xpi}";
+            installation_mode = "force_installed";
+            install_url = "file:/${./AdvancedLocationbar2_1.2.1.7.xpi}";
           };
           "backtrack@byalexv.co.uk" = {
             installation_mode = "force_installed";

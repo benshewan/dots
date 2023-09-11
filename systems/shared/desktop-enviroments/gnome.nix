@@ -38,6 +38,11 @@
     atomix # puzzle game
   ]);
 
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+  };
+
   # Other GNOME Apps
   environment.systemPackages = with pkgs; [
     gnome.gnome-tweaks

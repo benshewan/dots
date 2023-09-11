@@ -6,8 +6,8 @@ rec {
     vitals
     dash-to-dock
     blur-my-shell
-    gsconnect
     appindicator
+    gsconnect
   ];
 
   # GNOME Settings
@@ -30,7 +30,7 @@ rec {
     # Mouse Settings
     "org/gnome/desktop/peripherals/mouse" = {
       accel-profile = "flat";
-      speed = -0.58;
+      speed = 0;
     };
     "org/gnome/desktop/wm/preferences" = {
       resize-with-right-button = true;
