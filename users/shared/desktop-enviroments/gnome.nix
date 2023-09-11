@@ -45,9 +45,8 @@ rec {
     };
 
     # Time before screen goes dark (seconds)
-    "org/gnome/desktop/session" = {
-      idle-delay = mkUint32 900;
-    };
+    "org/gnome/desktop/session".idle-delay = mkUint32 900;
+    
 
     # i3-like workspace indicator
     "org/gnome/shell/extensions/space-bar/behavior" = {
@@ -57,6 +56,7 @@ rec {
       scroll-wheel = "disabled";
       smart-workspace-names = false;
     };
+    "org/gnome/shell/extensions/dash-to-dock".hot-keys = false;
 
     "org/gnome/shell/extensions/space-bar/appearance" = {
       workspaces-bar-padding = mkUint32 12;
@@ -70,26 +70,22 @@ rec {
     };
 
     "org/gnome/shell/extensions/space-bar/shortcuts" = {
-      enable-activate-workspace-shortcuts = false;
-      enable-move-to-workspace-shortcuts = false;
+      enable-activate-workspace-shortcuts = true;
+      enable-move-to-workspace-shortcuts = true;
       activate-empty-key = [ ];
       activate-previous-key = [ ];
       open-menu = [ ];
     };
 
     # Visual Settings
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
+    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
       picture-uri = "file://" + ../../../wallpapers/nix-black-4k.png;
       picture-uri-dark = "file://" + ../../../wallpapers/nix-black-4k.png;
     };
-    "org/gnome/shell/extensions/user-theme" = {
-      name = config.gtk.theme.name;
-    };
+    "org/gnome/shell/extensions/user-theme".name = config.gtk.theme.name;
     "org/gnome/desktop/wm/preferences" = {
       num-workspaces = 10;
       workspace-names = [
