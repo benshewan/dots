@@ -44,9 +44,12 @@ in
     enable = true;
     package = pkgs.wrapFirefox firefoxPackage {
 
-      cfg.enablePlasmaBrowserIntegration = lib.optional (builtins.hasAttr "plasma" config.programs) true;
-      cfg.enableGnomeExtensions = lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) true;
-      
+      cfg.enablePlasmaBrowserIntegration = if (builtins.hasAttr "plasma" config.programs) then true else false;
+      # enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
+      extraNativeMessagingHosts = [ ]
+        ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
+
+
       extraPolicies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;
