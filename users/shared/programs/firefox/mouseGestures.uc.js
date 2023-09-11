@@ -58,6 +58,12 @@ UC.MGest = {
         UC.MGest.actor.cmd({ action: 'newTab' });
       }
     },
+    '2D': {
+      name: 'Open new tab',
+      cmd: function (win) {
+       win.document.getElementById("cmd_newNavigatorTab").doCommand();
+      }
+    },
     '2L': {
       name: 'Copy URL from element',
       cmd: function (win) {
@@ -80,13 +86,13 @@ UC.MGest = {
           UC.MGest.actor.cmd({ action: 'copySelection', fallback: 'copyImage' });
       }
     },
-    '2U': {
+    '': {
       name: 'Go to top of page (strict)',
       cmd: function (win) {
         UC.MGest.actor.cmd({ action: 'scroll', direction: 'up' });
       }
     },
-    '2D': {
+    '': {
       name: 'Go to bottom of page (strict) / Image search',
       cmd: function (win) {
         UC.MGest.actor.cmd({
