@@ -225,6 +225,7 @@
         "float,title:^(branchdialog)$"
         "float,title:^(Confirm to replace files)$"
         "float,title:^(File Operation Progress)$"
+        "float,title:^(About Mozilla Thunderbird)$"
         "float,title:^(Picture-in-Picture)$"
         "float,title:^(mpv)$"
         "opacity 1.0 1.0,class:^(wofi)$"

@@ -5,15 +5,16 @@
       ./hardware-configuration.nix
       ./nvidia.nix
       ../shared
-      ../shared/desktop-enviroments/hyprland.nix
+      ../shared/desktop-enviroments/kde.nix
       # ../shared/desktop-enviroments/gnome.nix
+      # ../shared/desktop-enviroments/hyprland.nix
     ];
 
   # System
   networking.hostName = "sirius";
 
 
-  # Gaming
+  # Gaming - Should be moved to home
   programs.steam.enable = true;
   environment.systemPackages = with pkgs; [
     mangohud # FPS Overlay

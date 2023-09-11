@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
 
-  home.packages = with pkgs; [ nixpkgs-fmt ];
+  home.packages = with pkgs; [ nixpkgs-fmt nil ];
   home.sessionVariables = { EDITOR = "codium"; };
   programs.vscode = {
     enable = true;
@@ -16,10 +16,22 @@
       mkhl.direnv
     ];
     userSettings = {
+
+      # General Config
+      files.autoSave = "onFocusChange";
+
+      # Theme Config
       workbench.colorTheme = "Catppuccin Mocha";
       window.titleBarStyle = "custom";
+
+      # Spell Checker Config
+      # cSpell.enableFiletypes = [ "nix" ];
+
+      # Git Config
       git.confirmSync = false;
       git.autofetch = true;
+
+      # Nix LSP Config
       nix.enableLanguageServer = true;
       nix.serverPath = "nil";
       nix.serverSettings = {

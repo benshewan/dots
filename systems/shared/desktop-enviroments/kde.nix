@@ -12,10 +12,14 @@
     okular
     oxygen
     khelpcenter
+    # konsole
+    # plasma-browser-integration
+    # print-manager
   ];
 
   environment.systemPackages = with pkgs; [
     lightly-qt # KDE Application Theme
+    latte-dock # Fancy docks and panels for KDE
   ];
 
   # Enable xdg portal

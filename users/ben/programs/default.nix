@@ -22,6 +22,7 @@
     # plex-media-player # Plex Player (shitty TV version)
     prismlauncher # Minecraft launcher
     obs-studio
+    thunderbird
     # via # Keyboard Configurator
   ];
 

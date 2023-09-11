@@ -2,6 +2,7 @@
 {
   imports = [
     ./firefox
+    ./thunderbird.nix
     ./fish.nix
     ./vscode.nix
     ./kitty.nix

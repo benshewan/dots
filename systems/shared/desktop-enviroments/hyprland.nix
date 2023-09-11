@@ -57,6 +57,7 @@ in
     wofi
     swaybg
     hyprpicker
+    wl-clipboard
     ark
   ] ++ [
     # Dolphin
