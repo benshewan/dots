@@ -28,5 +28,8 @@
     enable = true;
     userName = "benshewan";
     userEmail = "benbshewan@gmail.com";
+    extraConfig = {
+      pull.rebase = false;
+    };
   };
 }
