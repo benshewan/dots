@@ -22,6 +22,7 @@ let
 in
 {
   programs.waybar.enable = true;
+  security.polkit.enable = true;
   programs.hyprland = {
     enable = true;
   };
@@ -58,11 +59,14 @@ in
     swaybg # Wallpaper ultility
     hyprpicker # Color picker
     wl-clipboard # Clipboard
+    polkit_gnome # Graphical root elevation
+    gnome.gnome-keyring # Store secrets securely (Wifi passwords,git tokens, etc...)
+    gparted
     
     # Dolphin and assorted dependencies for it
     taglib
     ffmpegthumbnailer
-  ]) ++ (with libsForQt5; [
+  ]) ++ (with pkgs.libsForQt5; [
     dolphin
     ark
     baloo

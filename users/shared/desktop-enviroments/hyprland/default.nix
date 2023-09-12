@@ -1,4 +1,4 @@
-{ config,lib, ... }:
+{ config, lib, pkgs, ... }:
 {
   imports = [
     ./waybar.nix
@@ -19,6 +19,7 @@
 
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
         "waybar"
         "swaybg -i ${../../../../wallpapers/nix-black-4k.png}"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''

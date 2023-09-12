@@ -1,4 +1,4 @@
-{ flake_path, config, pkgs, inputs, ... }:
+{ flake-path, config, pkgs, inputs, ... }:
 let
   custom = {
     font = "RobotoMono Nerd Font";
@@ -150,7 +150,7 @@ in
       "custom/headset" = {
         format = "󰋋 {}";
         interval = 5;
-        exec = "${flake_path}/scripts/get_battery_headset";
+        exec = "${flake-path}/scripts/get_battery_headset";
       };
     };
     style = ''

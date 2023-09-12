@@ -21,17 +21,17 @@
       userDescription = "Ben Shewan";
       username = "ben";
       system = "x86_64-linux";
-      home_profile = "ben";
-      flake_path = "/home/${username}/.nix";
+      home-profile = "ben";
+      flake-path = "/home/${username}/.nix";
       pkgs = nixpkgs.legacyPackages.${system};
     in
     {
       homeConfigurations = {
         ben = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          extraSpecialArgs = { inherit username userDescription flake_path inputs; };
+          extraSpecialArgs = { inherit username userDescription flake-path inputs; };
           modules = [
-            ./users/${home_profile}
+            ./users/${home-profile}
             # Pin registry to flake
             { nix.registry.nixpkgs.flake = nixpkgs; }
             # Pin channel to flake 
@@ -44,7 +44,7 @@
       nixosConfigurations = {
         sirius = nixpkgs.lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit username userDescription flake_path inputs; };
+          specialArgs = { inherit username userDescription flake-path inputs; };
           modules = [
             ./systems/sirius
             { nixpkgs.overlays = [ nur.overlay ]; }

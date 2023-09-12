@@ -1,4 +1,4 @@
-{ pkgs, flake_path, ... }:
+{ pkgs, flake-path, ... }:
 {
   imports =
     [
@@ -22,7 +22,7 @@
 
 
   environment.shellAliases = {
-    nix-switch = "sudo nixos-rebuild switch --flake ${flake_path}#sirius";
+    nix-switch = "sudo nixos-rebuild switch --flake ${flake-path}#sirius";
     reboot = "systemctl reboot";
   };
 }

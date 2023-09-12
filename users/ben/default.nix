@@ -1,4 +1,4 @@
-{ inputs, username, flake_path, ... }:
+{ inputs, username, flake-path, ... }:
 let
   # Variables to share accross configs
   custom = {
@@ -28,7 +28,7 @@ in
 
   #  home.shellAliases = { };
   home.shellAliases = {
-    home-switch = "home-manager switch --flake ${flake_path}#${username}";
+    home-switch = "home-manager switch --flake ${flake-path}#${username}";
     sudo = "sudo -E";
     sudopath = "sudo env PATH=$PATH";
   };
