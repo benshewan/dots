@@ -27,7 +27,7 @@
     in
     {
       homeConfigurations = {
-        "${username}" = home-manager.lib.homeManagerConfiguration {
+        ben = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = { inherit username userDescription flake_path inputs; };
           modules = [

@@ -52,24 +52,26 @@ in
   #   };
   # };
 
-  environment.systemPackages = with pkgs; [
-    bluetuith
-    wofi
-    swaybg
-    hyprpicker
-    wl-clipboard
-    ark
-  ] ++ [
-    # Dolphin
-    libsForQt5.dolphin
-    libsForQt5.baloo
-    libsForQt5.dolphin-plugins
-    libsForQt5.kdegraphics-thumbnailers
-    libsForQt5.kio
-    libsForQt5.kio-extras
+  environment.systemPackages = (with pkgs; [
+    bluetuith # TUI Bluetooth manager
+    wofi # Runner
+    swaybg # Wallpaper ultility
+    hyprpicker # Color picker
+    wl-clipboard # Clipboard
+    
+    # Dolphin and assorted dependencies for it
     taglib
     ffmpegthumbnailer
-  ];
+  ]) ++ (with libsForQt5; [
+    dolphin
+    ark
+    baloo
+    dolphin-plugins
+    kdegraphics-thumbnailers
+    kio
+    kio-extras
+    breeze-icons
+  ]);
 
   # KDE Connect plus some magic to get chromium browser integration working
   programs.kdeconnect.enable = true;
