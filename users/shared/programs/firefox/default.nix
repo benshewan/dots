@@ -45,7 +45,7 @@ in
     package = pkgs.wrapFirefox firefoxPackage {
 
       cfg.enablePlasmaBrowserIntegration = if (builtins.hasAttr "plasma" config.programs) then true else false;
-      # enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
+      cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
       extraNativeMessagingHosts = [ ]
         ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
 
@@ -133,6 +133,11 @@ in
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
 
+          # Gnome Shell Integration
+          "chrome-gnome-shell@gnome.org" = lib.optionalAttrs (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
+            installation_mode = "force_installed";
+            install_url = "https://addons.mozilla.org/firefox/downloads/latest/gnome-shell-integration/latest.xpi";
+          };
 
           # Bypass Website Paywalls
           "magnolia@12.34" = {

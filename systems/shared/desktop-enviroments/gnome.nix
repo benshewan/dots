@@ -42,7 +42,8 @@
     enable = true;
     package = pkgs.gnomeExtensions.gsconnect;
   };
-
+  services.gnome.gnome-browser-connector.enable = true;
+  services.gnome.sushi.enable = true;
   # Other GNOME Apps
   environment.systemPackages = with pkgs; [
     gnome.gnome-tweaks

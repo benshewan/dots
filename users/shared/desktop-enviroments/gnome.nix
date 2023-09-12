@@ -7,15 +7,18 @@ let
 in
 rec {
   # GNOME Extensions
-  home.packages = with pkgs.gnomeExtensions; [
+  home.packages = (with pkgs.gnomeExtensions; [
     user-themes
     dash-to-dock
     blur-my-shell
+    search-light
+    fuzzy-app-search
+    just-perfection
     space-bar
     auto-move-windows
     appindicator
     gsconnect
-  ];
+  ]);
 
   # GNOME Settings
   dconf.settings = with lib.hm.gvariant; {
@@ -46,7 +49,8 @@ rec {
 
     # Time before screen goes dark (seconds)
     "org/gnome/desktop/session".idle-delay = mkUint32 900;
-    
+    "org/gnome/shell/extensions/search-light".shortcut-search = [ "<Alt>space" ];
+
 
     # i3-like workspace indicator
     "org/gnome/shell/extensions/space-bar/behavior" = {
