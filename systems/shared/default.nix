@@ -22,6 +22,7 @@
     plymouth.enable = true;
     consoleLogLevel = 0;
     initrd.verbose = false;
+    initrd.systemd.enable = true;
 
     loader = {
       timeout = lib.mkDefault 5;
