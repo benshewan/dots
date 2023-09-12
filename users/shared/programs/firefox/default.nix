@@ -44,10 +44,10 @@ in
     enable = true;
     package = pkgs.wrapFirefox firefoxPackage {
 
-      cfg.enablePlasmaBrowserIntegration = if (builtins.hasAttr "plasma" config.programs) then true else false;
-      cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
-      extraNativeMessagingHosts = [ ]
-        ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
+      cfg.enablePlasmaBrowserIntegration = true;
+      # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
+      # extraNativeMessagingHosts = [ ]
+      #   ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
 
 
       extraPolicies = {
@@ -124,20 +124,20 @@ in
           };
 
           # Integration with KDE / Hyprland / GNOME
-          "gsconnect@andyholmes.github.io" = lib.optionalAttrs (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
-          };
-          "plasma-browser-integration@kde.org" = lib.optionalAttrs (builtins.hasAttr "plasma" config.programs) {
+          # "gsconnect@andyholmes.github.io" = lib.optionalAttrs (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
+          #   installation_mode = "force_installed";
+          #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/gsconnect/latest.xpi";
+          # };
+          "plasma-browser-integration@kde.org" = {
             installation_mode = "force_installed";
             install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
           };
 
           # Gnome Shell Integration
-          "chrome-gnome-shell@gnome.org" = lib.optionalAttrs (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
-            installation_mode = "force_installed";
-            install_url = "https://addons.mozilla.org/firefox/downloads/latest/gnome-shell-integration/latest.xpi";
-          };
+          # "chrome-gnome-shell@gnome.org" = lib.optionalAttrs (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) {
+          #   installation_mode = "force_installed";
+          #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/gnome-shell-integration/latest.xpi";
+          # };
 
           # Bypass Website Paywalls
           "magnolia@12.34" = {

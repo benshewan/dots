@@ -6,8 +6,8 @@
       ./nvidia.nix
       ../shared
       # ../shared/desktop-enviroments/kde.nix
-      ../shared/desktop-enviroments/gnome.nix
-      # ../shared/desktop-enviroments/hyprland.nix
+      # ../shared/desktop-enviroments/gnome.nix
+      ../shared/desktop-enviroments/hyprland.nix
     ];
 
   # System
