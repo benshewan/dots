@@ -1,4 +1,4 @@
-{ pkgs, flake-path, ... }:
+{ pkgs, flake-path, inputs, ... }:
 {
   imports =
     [
@@ -8,6 +8,11 @@
       # ../shared/desktop-enviroments/kde.nix
       # ../shared/desktop-enviroments/gnome.nix
       ../shared/desktop-enviroments/hyprland.nix
+
+      # Hardware
+      inputs.nixos-hardware.nixosModules.common-cpu-amd
+      inputs.nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+      inputs.nixos-hardware.nixosModules.common-pc-ssd
     ];
 
   # System

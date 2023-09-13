@@ -1,8 +1,12 @@
 { ... }:
 {
 
-  # Enable Razer support
-  # hardware.openrazer.enable = true;
+  # OpenGL
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
 
   # Bluetooth Audio
   hardware.bluetooth = {
