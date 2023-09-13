@@ -12,10 +12,10 @@
 
   # Temp until full reformat
   boot.loader = {
+    efi.efiSysMountPoint = "/boot/efi";
     systemd-boot.enable = lib.mkForce false;
     grub = {
       enable = true;
-      version = 2;
       device = "nodev";
       efiSupport = true;
     };
