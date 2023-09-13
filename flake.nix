@@ -56,7 +56,7 @@
           inherit system;
           specialArgs = { inherit username userDescription flake-path inputs; };
           modules = [
-            ./systems/corvis
+            ./systems/corvus
             { nixpkgs.overlays = [ nur.overlay ]; }
             { nix.registry.nixpkgs.flake = nixpkgs; }
             { nix.nixPath = [ "nixpkgs=configflake:nixpkgs" ]; }
