@@ -22,7 +22,6 @@ let
 in
 {
   programs.waybar.enable = true;
-  security.polkit.enable = true;
   programs.hyprland = {
     enable = true;
   };
@@ -52,6 +51,7 @@ in
   #     # };
   #   };
   # };
+  services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
 
   environment.systemPackages = (with pkgs; [
     bluetuith # TUI Bluetooth manager
@@ -60,7 +60,6 @@ in
     hyprpicker # Color picker
     wl-clipboard # Clipboard
     polkit_gnome # Graphical root elevation
-    gnome.gnome-keyring # Store secrets securely (Wifi passwords,git tokens, etc...)
     gparted
     
     # Dolphin and assorted dependencies for it
