@@ -1,20 +1,7 @@
 { inputs, username, flake-path, ... }:
-let
-  # Variables to share accross configs
-  custom = {
-    font = "RobotoMono Nerd Font";
-    fontsize = "12";
-    primary_accent = "cba6f7";
-    secondary_accent = "89b4fa";
-    tertiary_accent = "f5f5f5";
-    background = "11111B";
-    opacity = ".85";
-    cursor = "Numix-Cursor";
-  };
-in
 {
   # My main home config
-  _module.args = { inherit inputs username custom; };
+  _module.args = { inherit inputs username; };
   imports = [
     ./general
     ./programs
@@ -28,7 +15,7 @@ in
 
   #  home.shellAliases = { };
   home.shellAliases = {
-    home-switch = "home-manager switch --flake ${flake-path}#${username}";
+    home-switch = "home-manager switch --flake ${flake-path}#ben";
     sudo = "sudo -E";
     sudopath = "sudo env PATH=$PATH";
   };
