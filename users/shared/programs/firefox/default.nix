@@ -1,22 +1,22 @@
 { pkgs, lib, config, ... }:
 let
-  # firefox-userchromejs = pkgs.fetchgit {
-  #   url = "https://github.com/alice0775/userChrome.js.git";
-  #   rev = "f11141337a931bb75e3b269f68562626b1d83f54";
-  #   sha256 = "0sbq2z9xwxxw06c10i17amjq4lzmj2dvbpsyf47daszlf59qshnw";
-  # };
+  # userChrome.js loader
   firefox-userchromejs = pkgs.fetchFromGitHub {
     owner = "xiaoxiaoflood";
     repo = "firefox-scripts";
     rev = "b013243f1916576166a02d816651c2cc6416f63e";
     sha256 = "sha256-Zp1pRMqgAM3Xh3JCkAC0hWp2Gl2phkyAwJ8KB2tA9jE=";
   };
+  # Custom CSS styles
+  firefox-gnome-dark = (import ./firefox-gnome-theme.nix).gnome-theme; # ????
   firefox-gnome-theme = pkgs.fetchFromGitHub {
     owner = "rafaelmardojai";
     repo = "firefox-gnome-theme";
     rev = "67cc89691b17bc09f110efa7fd6011c19d763597";
     sha256 = "sha256-SnSXskFvJP1OMFuDdhuxxbFpQKzSz3YLJyoxWscmDSA=";
   };
+
+  # Add userChrome.js loader to firefox developer edition (Warning: Will force firefox to recompile!)
   firefoxPackage = pkgs.firefox-devedition-unwrapped.overrideAttrs (old: {
     postInstall = ''
       mkdir -p $out/lib/firefox/browser/defaults/preferences
@@ -26,7 +26,7 @@ let
   });
 in
 {
-  # Custom userChrome.js files
+  # Custom userChrome.js scripts
   home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures" = {
     source = "${firefox-userchromejs}/chrome/mouseGestures";
     recursive = true;
@@ -39,6 +39,7 @@ in
     source = "${firefox-gnome-theme}";
   };
   home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".source = ./customChrome.css;
+  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
   programs.firefox = {
     enable = true;

@@ -56,6 +56,11 @@
           specialArgs = { inherit username userDescription flake-path inputs; };
           modules = [ ./systems/corvus ] ++ defaultNixOSModules;
         };
+        lepus = nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit username userDescription flake-path inputs; };
+          modules = [ ./systems/lepus ] ++ defaultNixOSModules;
+        };
       };
     };
 }
