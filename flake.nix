@@ -23,46 +23,38 @@
       userDescription = "Ben Shewan";
       username = "ben";
       system = "x86_64-linux";
-      home-profile = "ben";
       flake-path = "/home/${username}/.nix";
       pkgs = nixpkgs.legacyPackages.${system};
+
+      defaultNixOSModules = [
+        { nix.registry.nixpkgs.flake = nixpkgs; }
+        { nix.nixPath = [ "nixpkgs=configflake:nixpkgs" ]; }
+        { nixpkgs.overlays = [ nur.overlay ]; }
+      ];
+      defaultHomeManagerModules = [
+        { nix.registry.nixpkgs.flake = nixpkgs; }
+        { home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}"; }
+        { nixpkgs.overlays = [ nur.overlay ]; }
+      ];
     in
     {
       homeConfigurations = {
         ben = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           extraSpecialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [
-            ./users/${home-profile}
-            # Pin registry to flake
-            { nix.registry.nixpkgs.flake = nixpkgs; }
-            # Pin channel to flake 
-            { home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}"; }
-            # Enables support for NUR packages
-            { nixpkgs.overlays = [ nur.overlay ]; }
-          ];
+          modules = [ ./users/ben ] ++ defaultHomeManagerModules;
         };
       };
       nixosConfigurations = {
         sirius = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [
-            ./systems/sirius
-            { nixpkgs.overlays = [ nur.overlay ]; }
-            { nix.registry.nixpkgs.flake = nixpkgs; }
-            { nix.nixPath = [ "nixpkgs=configflake:nixpkgs" ]; }
-          ];
+          modules = [ ./systems/sirius ] ++ defaultNixOSModules;
         };
         corvus = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [
-            ./systems/corvus
-            { nixpkgs.overlays = [ nur.overlay ]; }
-            { nix.registry.nixpkgs.flake = nixpkgs; }
-            { nix.nixPath = [ "nixpkgs=configflake:nixpkgs" ]; }
-          ];
+          modules = [ ./systems/corvus ] ++ defaultNixOSModules;
         };
       };
     };

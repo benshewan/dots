@@ -1,21 +1,16 @@
 { lib, pkgs, username, userDescription, ... }:
 let
-  #nixos-boot-src = import ../default.nix;
-  # Fetch the repository
   nixos-boot-src = pkgs.fetchFromGitHub {
     owner = "Melkor333";
     repo = "nixos-boot";
     rev = "main";
     sha256 = "sha256-kcYd39n58MVI2mFn/PSh5O/Wzr15kEYWgszMRtSQ+1w=";
   };
-  # define the theme you want to use
-  nixos-boot = pkgs.callPackage nixos-boot-src { };
 
-  # You might want to override the theme
-  #nixos-boot = pkgs.callPackage nixos-boot-src {
-  #  bgColor = "0.1, 1, 0.8"; # Weird 0-1 range RGB. In this example roughly mint
-  #  theme = "load_unload";
-  #};
+  nixos-boot = pkgs.callPackage nixos-boot-src {
+    bgColor = "0.067, 0.067, 0.145"; # Weird 0-1 range RGB.
+    theme = "load_unload";
+  };
 in
 {
   imports = [
@@ -26,24 +21,19 @@ in
   ];
 
   # Boot Configuration
-
-  # Hacked together from 
-  # https://github.com/NixOS/nixpkgs/issues/32556#issuecomment-1060118989 && https://github.com/NixOS/nixpkgs/issues/32556#issuecomment-1378261367
-  # console = {
-  # font = "ter-132n";
-  # packages = [ pkgs.terminus_font ];
-  # useXkbConfig = true;
-  # earlySetup = false;
-  # };
   boot = {
-    kernelParams = [ "quiet" ];
+    # Plymouth
+    kernelParams = [ "quiet" "splash" ];
     initrd.systemd.enable = true;
+    consoleLogLevel = 0;
+    initrd.verbose = false;
     plymouth = {
       enable = true;
       themePackages = [ nixos-boot ];
       theme = "load_unload";
     };
 
+    # Systemd-boot
     loader = {
       timeout = lib.mkDefault 5;
       efi.canTouchEfiVariables = true;
