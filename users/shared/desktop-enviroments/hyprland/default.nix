@@ -19,7 +19,8 @@
 
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
+        "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+        "copyq --start-server"
         "waybar"
         "swaybg -i ${../../../../wallpapers/nix-black-4k.png}"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''
@@ -228,6 +229,7 @@
         "float,title:^(File Operation Progress)$"
         "float,title:^(About Mozilla Thunderbird)$"
         "float,title:^(Picture-in-Picture)$"
+        "float,title:^(Authentication Required — PolicyKit1 KDE Agent)$"
         "float,title:^(mpv)$"
         "opacity 1.0 1.0,class:^(wofi)$"
         "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"

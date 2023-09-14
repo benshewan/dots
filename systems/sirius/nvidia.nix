@@ -1,13 +1,5 @@
 { config, ... }:
 {
-
-  services.xserver.screenSection = ''
-    Option         "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-    Option         "AllowIndirectGLXProtocol" "off"
-    Option         "TripleBuffer" "on"
-  '';
-
-
   hardware.nvidia = {
 
     # Modesetting is needed for most wayland compositors
@@ -19,6 +11,9 @@
 
     # Enable the nvidia settings menu
     nvidiaSettings = false;
+
+    # Can fix screen tearing on X11
+    forceFullCompositionPipeline = false;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;

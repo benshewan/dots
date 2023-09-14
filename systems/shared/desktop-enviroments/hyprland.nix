@@ -58,9 +58,9 @@ in
     wofi # Runner
     swaybg # Wallpaper ultility
     hyprpicker # Color picker
-    wl-clipboard # Clipboard
-    polkit_gnome # Graphical root elevation
-    gparted
+    wl-clipboard copyq # Clipboard
+    libsForQt5.polkit-kde-agent # Graphical root elevation
+    gparted # Test polkit
     
     # Dolphin and assorted dependencies for it
     taglib
@@ -71,8 +71,7 @@ in
     baloo
     dolphin-plugins
     kdegraphics-thumbnailers
-    kio
-    kio-extras
+    kio kio-extras
     breeze-icons
   ]);
 

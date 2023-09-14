@@ -1,12 +1,16 @@
-{ inputs, username, flake-path, ... }:
+{ inputs, username, flake-path, lib, ... }:
 {
   # My main home config
   _module.args = { inherit inputs username; };
   imports = [
-    ./general
+    ../shared
     ./programs
     ./themes
-  ];
+  ]
+  # Not perfect as you need to have the desktop loaded before you can switch
+  ++ lib.optional (builtins.getEnv "XDG_CURRENT_DESKTOP" == "Hyprland") ../shared/desktop-enviroments/hyprland
+  ++ lib.optional (builtins.getEnv "XDG_CURRENT_DESKTOP" == "KDE") ../shared/desktop-enviroments/kde.nix
+  ++ lib.optional (builtins.getEnv "XDG_CURRENT_DESKTOP" == "GNOME") ../shared/desktop-enviroments/gnome.nix;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
