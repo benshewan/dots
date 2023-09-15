@@ -6,7 +6,7 @@
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium.override {
-      commandLineArgs = lib.optional (builtins.getEnv "XDG_CURRENT_DESKTOP" == "Hyprland") ''--password-store="gnome"'';
+      commandLineArgs = ''--password-store="gnome"'';
     };
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
