@@ -77,12 +77,12 @@
           extraSpecialArgs = { inherit inputs outputs; };
         };
         "ben@corus" = lib.homeManagerConfiguration {
-          modules = [ ./users/ben/corvus.nix ] ++ defaultHomeManagerModules;
+          modules = [ ./home/ben/corvus.nix ] ++ defaultHomeManagerModules;
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
         "ben@lepus" = lib.homeManagerConfiguration {
-          modules = [ ./users/ben/lepus.nix ] ++ defaultHomeManagerModules;
+          modules = [ ./home/ben/lepus.nix ] ++ defaultHomeManagerModules;
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };

@@ -81,7 +81,7 @@ in
 
         Preferences = {
           "browser.startup.page" = 3;
-          toolkit.legacyUserProfileCustomizations.stylesheets = true;
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
 
         # Firefox extensions

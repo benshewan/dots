@@ -62,6 +62,9 @@ rec {
     };
     "org/gnome/shell/extensions/dash-to-dock".hot-keys = false;
 
+    # Nautilus configuration
+    "org/gtk/gtk4/settings/file-chooser".sort-directories-first = true;
+
     "org/gnome/shell/extensions/space-bar/appearance" = {
       workspaces-bar-padding = mkUint32 12;
       workspace-margin = mkUint32 4;
