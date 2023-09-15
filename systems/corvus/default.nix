@@ -1,4 +1,4 @@
-{ inputs, lib, outputs, ... }:
+{ inputs, lib, outputs, pkgs, ... }:
 {
   imports =
     [
@@ -10,6 +10,12 @@
 
   # System
   networking.hostName = "corvus";
+
+  # Remote management of Lepus
+  services.tailscale.enable = true;
+  environment.systemPackages = with pkgs;[
+    moonlight-qt
+  ];
 
   # Temp until full reformat
   boot.loader = {
