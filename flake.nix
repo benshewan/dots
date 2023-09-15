@@ -66,7 +66,7 @@
       };
 
       homeConfigurations = {
-        "ben@generic" = home-manager.lib.homeManagerConfiguration {
+        "ben@generic" = lib.homeManagerConfiguration {
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [ ./home/ben/global ] ++ defaultHomeManagerModules;
@@ -76,7 +76,7 @@
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
         };
-        "ben@corus" = lib.homeManagerConfiguration {
+        "ben@corvus" = lib.homeManagerConfiguration {
           modules = [ ./home/ben/corvus.nix ] ++ defaultHomeManagerModules;
           pkgs = pkgsFor.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };

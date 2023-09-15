@@ -11,5 +11,5 @@
       confirm_os_window_close = 0;
     };
   };
-  programs.fish.functions = { ssh = "kitty +kitten ssh"; };
+  home.shellAliases.ssh = "kitty +kitten ssh";
 }
