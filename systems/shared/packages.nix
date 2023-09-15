@@ -33,7 +33,7 @@
     ]))
   ];
 
-  # fix for Via
+  # fix for Via # Doesn't work - look into maybe
   # services.udev.packages = with pkgs; [
   #   via
   # ];

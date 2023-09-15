@@ -1,15 +1,12 @@
-{ flake-path, config, pkgs, inputs, ... }:
+{ config, inputs, outputs, ... }:
 let
   custom = {
     font = "RobotoMono Nerd Font";
   };
+  hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
+  colors = config.colorScheme.colors;
 in
 {
-
-  home.packages = with pkgs;[
-
-  ];
-
   programs.waybar = {
     enable = true;
     settings.mainBar = {
@@ -150,7 +147,7 @@ in
       "custom/headset" = {
         format = "󰋋 {}";
         interval = 5;
-        exec = "${flake-path}/scripts/get_battery_headset";
+        exec = "${outputs.flake-path}/scripts/get_battery_headset";
       };
     };
     style = ''
@@ -163,27 +160,27 @@ in
       }
 
       window#waybar {
-          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base01},.85);
+          background: rgba(${hexToRGBString "," colors.base01},.85);
       }
       #workspaces {
-          background: #${config.colorScheme.colors.base02};
+          background: #${colors.base02};
           margin: 5px 5px;
           padding: 8px 5px;
           border-radius: 16px;
-          color: #${config.colorScheme.colors.base09}
+          color: #${colors.base09}
       }
       #workspaces button {
           padding: 0px 5px;
           margin: 0px 3px;
           border-radius: 16px;
           color: transparent;
-          background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base01},.85);
+          background: rgba(${hexToRGBString "," colors.base01},.85);
           transition: all 0.3s ease-in-out;
       }
 
       #workspaces button.active {
-          background-color: #${config.colorScheme.colors.base0D};
-          color: #${config.colorScheme.colors.base00};
+          background-color: #${colors.base0D};
+          color: #${colors.base00};
           border-radius: 16px;
           min-width: 50px;
           background-size: 400% 400%;
@@ -191,8 +188,8 @@ in
       }
 
       #workspaces button:hover {
-          background-color: #${config.colorScheme.colors.base05};
-          color: #${config.colorScheme.colors.base00};
+          background-color: #${colors.base05};
+          color: #${colors.base00};
           border-radius: 16px;
           min-width: 50px;
           background-size: 400% 400%;
@@ -200,19 +197,19 @@ in
 
       #tray, #pulseaudio, #network, #battery,
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward, #custom-headset {
-          background: #${config.colorScheme.colors.base02};
+          background: #${colors.base02};
           font-weight: bold;
           margin: 5px 0px;
       }
       #tray, #pulseaudio, #network, #battery, #custom-headset {
-          color: #${config.colorScheme.colors.base05};
+          color: #${colors.base05};
           border-radius: 10px 24px 10px 24px;
           padding: 0 20px;
           margin-left: 7px;
       }
       #clock {
-          color: #${config.colorScheme.colors.base05};
-          background: #${config.colorScheme.colors.base02};
+          color: #${colors.base05};
+          background: #${colors.base02};
           border-radius: 0px 0px 0px 40px;
           padding: 10px 10px 15px 25px;
           margin-left: 7px;
@@ -220,8 +217,8 @@ in
           font-size: 16px;
       }
       #custom-launcher {
-          color: #${config.colorScheme.colors.base0D};
-          background: #${config.colorScheme.colors.base02};
+          color: #${colors.base0D};
+          background: #${colors.base02};
           border-radius: 0px 0px 40px 0px;
           margin: 0px;
           padding: 0px 35px 0px 15px;
@@ -229,38 +226,38 @@ in
       }
 
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-          background: #${config.colorScheme.colors.base02};
+          background: #${colors.base02};
           font-size: 22px;
       }
       #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
-          color: #${config.colorScheme.colors.base01};
+          color: #${colors.base01};
       }
       #custom-playerctl.backward {
-          color: #${config.colorScheme.colors.base0E};
+          color: #${colors.base0E};
           border-radius: 24px 0px 0px 10px;
           padding-left: 16px;
           margin-left: 7px;
       }
       #custom-playerctl.play {
-          color: #${config.colorScheme.colors.base0D};
+          color: #${colors.base0D};
           padding: 0 5px;
       }
       #custom-playerctl.foward {
-          color: #${config.colorScheme.colors.base0E};
+          color: #${colors.base0E};
           border-radius: 0px 10px 24px 0px;
           padding-right: 12px;
           margin-right: 7px
       }
       #custom-playerlabel {
-          background: #${config.colorScheme.colors.base02};
-          color: #${config.colorScheme.colors.base05};
+          background: #${colors.base02};
+          color: #${colors.base05};
           padding: 0 20px;
           border-radius: 24px 10px 24px 10px;
           margin: 5px 0;
           font-weight: bold;
       }
       #window{
-          background: #${config.colorScheme.colors.base02};
+          background: #${colors.base02};
           padding-left: 15px;
           padding-right: 15px;
           border-radius: 16px;

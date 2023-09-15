@@ -1,11 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
 
   home.packages = with pkgs; [ nixpkgs-fmt nil ];
   home.sessionVariables = { EDITOR = "codium"; };
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium;
+    package = pkgs.vscodium.override {
+      commandLineArgs = lib.optional (builtins.getEnv "XDG_CURRENT_DESKTOP" == "Hyprland") ''--password-store="gnome"'';
+    };
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     extensions = with pkgs.vscode-extensions; [

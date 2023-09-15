@@ -1,4 +1,4 @@
-{ inputs, flake-path, lib, ... }:
+{ inputs, outputs, ... }:
 {
   imports =
     [
@@ -14,7 +14,7 @@
   networking.hostName = "lepus";
 
   environment.shellAliases = {
-    nix-switch = "sudo nixos-rebuild switch --flake ${flake-path}#lepus";
-    reboot = "systemctl reboot";
+    nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#lepus";
+    home-switch = "home-manager switch --flake ${outputs.flake-path}#ben@lepus";
   };
 }

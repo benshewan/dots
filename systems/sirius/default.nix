@@ -1,12 +1,10 @@
-{ pkgs, flake-path, inputs, ... }:
+{ pkgs, outputs, inputs, ... }:
 {
   imports =
     [
       ./hardware-configuration.nix
       ./nvidia.nix
       ../shared
-      # ../shared/desktop-enviroments/kde.nix
-      # ../shared/desktop-enviroments/gnome.nix
       ../shared/desktop-enviroments/hyprland.nix
 
       # Hardware
@@ -28,7 +26,7 @@
 
 
   environment.shellAliases = {
-    nix-switch = "sudo nixos-rebuild switch --flake ${flake-path}#sirius";
-    reboot = "systemctl reboot";
+    nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#sirius";
+    home-switch = "home-manager switch --flake ${outputs.flake-path}#ben@sirius";
   };
 }

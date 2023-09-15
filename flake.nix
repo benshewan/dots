@@ -18,14 +18,19 @@
     };
   };
 
+  # Heavily inspired by the absoluely wonderful sourcehut:~misterio/nix-config
   outputs = { self, nixpkgs, nur, home-manager, ... }@inputs:
     let
-      userDescription = "Ben Shewan";
+      inherit (self) outputs;
+      lib = nixpkgs.lib // home-manager.lib;
       username = "ben";
-      system = "x86_64-linux";
+      userDescription = "Ben Shewan";
       flake-path = "/home/${username}/.nix";
-      pkgs = nixpkgs.legacyPackages.${system};
+      systems = [ "x86_64-linux" "aarch64-linux" ];
+      forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
+      pkgsFor = nixpkgs.legacyPackages;
 
+      # Is this needed?
       defaultNixOSModules = [
         { nix.registry.nixpkgs.flake = nixpkgs; }
         { nix.nixPath = [ "nixpkgs=configflake:nixpkgs" ]; }
@@ -38,28 +43,48 @@
       ];
     in
     {
-      homeConfigurations = {
-        ben = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          extraSpecialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [ ./users/ben ] ++ defaultHomeManagerModules;
+      inherit lib username userDescription flake-path;
+      
+      wallpapers = import "${flake-path}/wallpapers";
+
+      nixosConfigurations = {
+        # Main desktop
+        sirius = lib.nixosSystem {
+          modules = [ ./systems/sirius ] ++ defaultNixOSModules;
+          specialArgs = { inherit inputs outputs; };
+        };
+        # Personal laptop
+        corvus = lib.nixosSystem {
+          modules = [ ./systems/corvus ] ++ defaultNixOSModules;
+          specialArgs = { inherit inputs outputs; };
+        };
+        # Work desktop
+        lepus = lib.nixosSystem {
+          modules = [ ./systems/lepus ] ++ defaultNixOSModules;
+          specialArgs = { inherit inputs outputs; };
         };
       };
-      nixosConfigurations = {
-        sirius = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [ ./systems/sirius ] ++ defaultNixOSModules;
+
+      homeConfigurations = {
+        "ben@generic" = home-manager.lib.homeManagerConfiguration {
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [ ./home/ben/global ] ++ defaultHomeManagerModules;
         };
-        corvus = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [ ./systems/corvus ] ++ defaultNixOSModules;
+        "ben@sirius" = lib.homeManagerConfiguration {
+          modules = [ ./home/ben/sirius.nix ] ++ defaultHomeManagerModules;
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
         };
-        lepus = nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit username userDescription flake-path inputs; };
-          modules = [ ./systems/lepus ] ++ defaultNixOSModules;
+        "ben@corus" = lib.homeManagerConfiguration {
+          modules = [ ./users/ben/corvus.nix ] ++ defaultHomeManagerModules;
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+        };
+        "ben@lepus" = lib.homeManagerConfiguration {
+          modules = [ ./users/ben/lepus.nix ] ++ defaultHomeManagerModules;
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
         };
       };
     };

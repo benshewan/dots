@@ -3,6 +3,8 @@ let
   custom = {
     font = "RobotoMono Nerd Font";
   };
+  hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
+  colors = config.colorScheme.colors;
 in
 {
   programs.wofi = {
@@ -20,14 +22,14 @@ in
       }
       #window {
         border-radius: 40px;
-        background: rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base01},.85);
+        background: rgba(${hexToRGBString "," colors.base01},.85);
       }
       #input {
         border-radius: 100px;
         margin: 10px;
         padding: 5px 15px;
-        background:rgba(${inputs.nix-colors.lib.conversions.hexToRGBString "," config.colorScheme.colors.base00},1);
-        color: #${config.colorScheme.colors.base05};
+        background:rgba(${hexToRGBString "," colors.base00},1);
+        color: #${colors.base05};
       }
       #outer-box {
         font-weight: bold;
@@ -39,8 +41,8 @@ in
         border-radius: 200px;
       }
       #entry:selected{
-        background-color:#${config.colorScheme.colors.base0D};
-        color: #${config.colorScheme.colors.base01};
+        background-color:#${colors.base0D};
+        color: #${colors.base01};
       }
       #entry:hover {
       }

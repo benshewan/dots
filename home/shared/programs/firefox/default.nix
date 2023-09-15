@@ -8,7 +8,7 @@ let
     sha256 = "sha256-Zp1pRMqgAM3Xh3JCkAC0hWp2Gl2phkyAwJ8KB2tA9jE=";
   };
   # Custom CSS styles
-  firefox-gnome-dark = (import ./firefox-gnome-theme.nix).gnome-theme; # ????
+  # firefox-gnome-dark = (import ./firefox-gnome-theme.nix).gnome-theme; # ????
   firefox-gnome-theme = pkgs.fetchFromGitHub {
     owner = "rafaelmardojai";
     repo = "firefox-gnome-theme";
@@ -39,7 +39,7 @@ in
     source = "${firefox-gnome-theme}";
   };
   home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".source = ./customChrome.css;
-  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
+  # home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
   programs.firefox = {
     enable = true;

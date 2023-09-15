@@ -1,4 +1,4 @@
-{ lib, pkgs, username, userDescription, ... }:
+{ lib, pkgs, outputs, ... }:
 let
   nixos-boot-src = pkgs.fetchFromGitHub {
     owner = "Melkor333";
@@ -48,7 +48,6 @@ in
 
   # Firmware / Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  # hardware.enableRedistributableFirmware = true;
   hardware.enableAllFirmware = true;
 
   # Set your time zone.
@@ -56,6 +55,10 @@ in
 
   # Add support for ~/.local/bin
   environment.localBinInPath = true;
+
+  environment.shellAliases = {
+    reboot = "systemctl reboot";
+  };
 
   # Enviroment vars
   # environment.sessionVariables = rec {
@@ -74,13 +77,13 @@ in
   users = {
     defaultUserShell = pkgs.fish;
     groups = {
-      "${username}" = { };
+      "${outputs.username}" = { };
     };
-    users.${username} = {
+    users.${outputs.username} = {
       isNormalUser = true;
-      description = userDescription;
+      description = outputs.userDescription;
       initialPassword = "admin";
-      extraGroups = [ "wheel" "docker" "video" "libvirtd" "plugdev" "${username}" ];
+      extraGroups = [ "wheel" "docker" "video" "libvirtd" "plugdev" "${outputs.username}" ];
     };
   };
 
