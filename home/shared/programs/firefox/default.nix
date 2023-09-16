@@ -185,11 +185,11 @@ in
           # Legacy Extensions
           "advancedlocationbar@veg.by" = {
             installation_mode = "force_installed";
-            install_url = "file:/${./AdvancedLocationbar2_1.2.1.7.xpi}";
+            install_url = "file://${./AdvancedLocationbar2_1.2.1.7.xpi}";
           };
           "backtrack@byalexv.co.uk" = {
             installation_mode = "force_installed";
-            install_url = "file:/${./BackTrack.xpi}";
+            install_url = "file://${firefox-userchromejs}/extensions/backtrack/BackTrack.xpi";
           };
           # Tab Mix Plus
           # "{dc572301-7619-498c-a57d-39143191b318}"
@@ -200,11 +200,11 @@ in
       dev-edition-default = {
         id = 0;
         isDefault = true;
-        extraConfig = builtins.fetchurl
+        extraConfig = builtins.readFile (builtins.fetchurl
           {
             url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4e44dc28202cda4b0b92401157839bf511dfceb3/user.js";
             sha256 = "1islaj99psf20n8f072g84rni32l5lxh53dwg3mlc05h3k5n7i6j";
-          } + ''
+          }) + ''
           user_pref("svg.context-properties.content.enabled", true);
           user_pref("gnomeTheme.extensions.tabCenterReborn", true);
         '';
