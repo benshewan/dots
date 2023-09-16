@@ -7,6 +7,12 @@ let
     rev = "b013243f1916576166a02d816651c2cc6416f63e";
     sha256 = "sha256-Zp1pRMqgAM3Xh3JCkAC0hWp2Gl2phkyAwJ8KB2tA9jE=";
   };
+# Patched userChrome.js loader files for firefox 117+
+userchromejs-utils = pkgs.fetchzip {
+  url = "https://github.com/xiaoxiaoflood/firefox-scripts/files/12099137/utils.zip";
+  sha256 = "sha256-MBdyxByEA85JhLCa9mXLHuB9RI4F9qCZvG3446eO7lQ=";
+};
+
   # Custom CSS styles
   # firefox-gnome-dark = (import ./firefox-gnome-theme.nix).gnome-theme; # ????
   firefox-gnome-theme = pkgs.fetchFromGitHub {
@@ -27,6 +33,10 @@ let
 in
 {
   # Custom userChrome.js scripts
+  home.file.".mozilla/firefox/dev-edition-default/chrome/utils" = {
+    source = userchromejs-utils;
+    recursive = true;
+  };
   home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures" = {
     source = "${firefox-userchromejs}/chrome/mouseGestures";
     recursive = true;
