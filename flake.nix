@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nix-alien.url = "github:thiagokokada/nix-alien"; # Allows running apps in an FHS enviroment
     nur.url = "github:nix-community/NUR"; # Community app support
     # Home Manager modules
     home-manager = {
