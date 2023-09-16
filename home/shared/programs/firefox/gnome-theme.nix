@@ -1,22 +1,20 @@
-{ pkgs, config,... }:
+{ pkgs, config, ... }:
+let
+  colors = config.colorScheme.colors;
+in
 {
-  gnome-theme = pkgs.writeText "gnome-theme-dark" ''
+  dark = pkgs.writeText "dark.css" ''
     		@namespace xul url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
-
-    		/* Variables that start with --gnome- are added by me and are assigned
-    		* to elements somewhere in this code. The rest of the variables are
-    		* built-in in Firefox, so you need to add an !important if you wanna
-    		* override them. */
     		@media (prefers-color-scheme: dark) {	
     			:root {
     				/* Accent */
     				--gnome-accent-bg: var(--gnome-palette-blue-3);
-    				--gnome-accent: #78aeed;
+    				--gnome-accent: #${colors.base0D};
 
     				--gnome-toolbar-star-button: var(--gnome-palette-yellow-1);
 
     				/* Window */
-    				--gnome-window-background: #242424;
+    				--gnome-window-background: #${colors.base00};
     				--gnome-window-color: white;
     				--gnome-view-background: #1e1e1e;
 
@@ -25,14 +23,14 @@
     				--gnome-card-shade-color: color-mix(in srgb, black 36%, transparent);
 
     				/* Menu */
-    				--gnome-menu-background: #383838;
+    				--gnome-menu-background: #${colors.base02};
 
     				/* Header bar */
-    				--gnome-headerbar-background: #${config.colorScheme.colors.base01};
+    				--gnome-headerbar-background: #${colors.base01};
     				--gnome-headerbar-shade-color: color-mix(in srgb, black 36%, transparent);
 
     				/* Toolbars */
-    				--gnome-toolbar-icon-fill: #eeeeec;
+    				--gnome-toolbar-icon-fill: #${colors.base05};
 
     				/* Tabs */
     				--gnome-tabbar-tab-hover-background: #3f3f3f; /* Hardcoded color */
