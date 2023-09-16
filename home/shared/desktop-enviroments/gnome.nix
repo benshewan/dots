@@ -15,6 +15,7 @@ rec {
     fuzzy-app-search
     just-perfection
     space-bar
+    pop-shell
     auto-move-windows
     appindicator
     gsconnect

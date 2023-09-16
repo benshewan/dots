@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   services = {
     xserver = {
@@ -16,5 +16,13 @@
 
 
   # Virtualization
-  virtualisation.libvirtd.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    onBoot = "ignore";
+  };
+  virtualisation.spiceUSBRedirection.enable = true;
+  # systemd.services.libvirtd-config.script = lib.mkAfter ''
+  #   mkdir -p  /var/lib/libvirt/qemu/networks/autostart
+  #   cp ${pkgs.libvirt}/var/lib/libvirt/qemu/networks/autostart/default.xml /var/lib/libvirt/qemu/networks/autostart/default.xml
+  # '';
 }
