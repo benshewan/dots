@@ -21,6 +21,7 @@
 
       # General Config
       files.autoSave = "onFocusChange";
+      editor.formatOnSave =  true;
 
       # Theme Config
       workbench.colorTheme = "Catppuccin Mocha";
