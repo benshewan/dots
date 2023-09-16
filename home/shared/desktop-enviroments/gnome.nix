@@ -16,6 +16,7 @@ rec {
     just-perfection
     space-bar
     pop-shell
+    rounded-window-corners
     auto-move-windows
     appindicator
     gsconnect
@@ -47,10 +48,13 @@ rec {
       resize-with-right-button = true;
       button-layout = "icon:close";
     };
+    "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;
 
     # Time before screen goes dark (seconds)
     "org/gnome/desktop/session".idle-delay = mkUint32 900;
-    "org/gnome/shell/extensions/search-light".shortcut-search = [ "<Alt>space" ];
+
+    # Spotlight-like searching
+    "org/gnome/shell/extensions/search-light".shortcut-search = [ "<Ctrl>space" ];
 
 
     # i3-like workspace indicator
@@ -62,6 +66,10 @@ rec {
       smart-workspace-names = false;
     };
     "org/gnome/shell/extensions/dash-to-dock".hot-keys = false;
+
+    # Window Tiling
+    "org/gnome/mutter".edge-tiling = false;
+    "org/gnome/shell/extensions/pop-shell".tile-by-default = true;
 
     # Nautilus configuration
     "org/gtk/gtk4/settings/file-chooser".sort-directories-first = true;
