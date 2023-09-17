@@ -62,8 +62,8 @@
       wofi # Runner
       swaybg # Wallpaper ultility
       hyprpicker # Color picker
-      wl-clipboard
-      copyq # Clipboard
+      wl-clipboard # Clipboard
+      cliphist # Clipboard Manager
       libsForQt5.polkit-kde-agent # Graphical root elevation
       gparted # Test polkit
 

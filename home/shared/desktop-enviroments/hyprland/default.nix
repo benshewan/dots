@@ -20,10 +20,12 @@
         ",preferred,auto,auto"
       ];
 
+      # Bad - should switch all this stuff to using ${pkgs.blah}/bin/blah
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
-        "copyq --start-server"
+        "wl-paste --type text --watch cliphist store"
+        "wl-paste --type image --watch cliphist store"
         "waybar"
         "swaybg -i ${../../../../wallpapers/nix-black-4k.png}"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''
@@ -192,6 +194,7 @@
         # "SUPER,space,exec, bemenu-run"
         # SUPER,space,exec,wofi --show drun -I -s ~/.config/wofi/style.css DP-3
         "ALT,space,exec,wofi --show drun -I DP-2"
+        "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
         # "SUPER $mainMod SHIFT,B,exec, killall -3 eww & sleep 1 && ~/.config/hypr/themes/winter/eww/launch_bar"
