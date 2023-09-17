@@ -39,6 +39,15 @@ rec {
       ];
     };
 
+
+    # Just Perfection COnfiguration
+    "org/gnome/shell/extensions/just-perfection" = {
+      accessibility-menu = false;
+      show-apps-button = false;
+      world-clock = false;
+      app-menu = false;
+    };
+
     # Mouse Settings
     "org/gnome/desktop/peripherals/mouse" = {
       accel-profile = "flat";
@@ -92,9 +101,21 @@ rec {
       activate-previous-key = [ ];
       open-menu = [ ];
     };
+    # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+    #   name = "Firefox";
+    #   command = "firefox";
+    #   binding = "<Super>j";
+    # };
+    # "org/gnome/settings-daemon/plugins/media-keys".custom-keybindings = [
+    #   "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+    # ];
 
     # Visual Settings
-    "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+    "org/gnome/shell/extensions/rounded-window-corners".tweak-kitty-terminal = true;
+    "org/gnome/desktop/interface" = {
+      show-battery-percentage = true;
+      color-scheme = "prefer-dark";
+    };
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";

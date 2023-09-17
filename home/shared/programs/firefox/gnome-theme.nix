@@ -15,7 +15,7 @@ in
 
     				/* Window */
     				--gnome-window-background: #${colors.base00};
-    				--gnome-window-color: white;
+    				--gnome-window-color: #${colors.base05};
     				--gnome-view-background: #1e1e1e;
 
     				/* Card */
