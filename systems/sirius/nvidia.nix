@@ -1,7 +1,5 @@
-{ config, ... }:
-{
+{config, ...}: {
   hardware.nvidia = {
-
     # Modesetting is needed for most wayland compositors
     modesetting.enable = true;
 

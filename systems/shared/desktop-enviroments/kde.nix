@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Install KDE
   services.xserver.desktopManager.plasma5.enable = true;
   # Default DE

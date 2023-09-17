@@ -1,16 +1,17 @@
-{ pkgs, inputs, ... }:
-let
+{
+  pkgs,
+  inputs,
+  ...
+}: let
   theme-gtk = pkgs.catppuccin-gtk.override {
-    accents = [ "blue" ];
+    accents = ["blue"];
     size = "standard"; # compact
-    tweaks = [ ];
+    tweaks = [];
     variant = "mocha";
   };
   theme-gtk-name = "Catppuccin-Mocha-Standard-Blue-dark";
-in
-{
-
-  imports = [ inputs.nix-colors.homeManagerModules.default ];
+in {
+  imports = [inputs.nix-colors.homeManagerModules.default];
   colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
   gtk = {
     enable = true;

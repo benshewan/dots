@@ -1,12 +1,14 @@
-{ config, inputs, ... }:
-let
+{
+  config,
+  inputs,
+  ...
+}: let
   custom = {
     font = "RobotoMono Nerd Font";
   };
   hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
   colors = config.colorScheme.colors;
-in
-{
+in {
   programs.wofi = {
     enable = true;
     settings = {

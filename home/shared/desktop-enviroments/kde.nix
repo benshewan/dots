@@ -1,8 +1,6 @@
-{ inputs, ... }:
-{
-  
+{inputs, ...}: {
   # Enables support for KDE Configuration
-  imports = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+  imports = [inputs.plasma-manager.homeManagerModules.plasma-manager];
 
   programs.plasma = {
     enable = true;

@@ -1,13 +1,11 @@
-{ stdenv
-, fetchurl
-, unzip
-, dpkg
-, buildFHSUserEnv
-, ...
-}:
-
-let
-
+{
+  stdenv,
+  fetchurl,
+  unzip,
+  dpkg,
+  buildFHSUserEnv,
+  ...
+}: let
   version = "1.04.00";
 
   src = fetchurl {
@@ -18,13 +16,12 @@ let
     pname = "wisenet-viewer";
     inherit src version;
 
-    nativeBuildInputs = [ dpkg unzip ];
+    nativeBuildInputs = [dpkg unzip];
 
     unpackPhase = ''
       unzip $src
       dpkg-deb -x ./WisenetViewer_1.04.00_20230511.deb .
     '';
-
 
     installPhase = ''
       mkdir -p $out/etc
@@ -40,28 +37,28 @@ let
         --replace '$(dirname "$(readlink -f "$0")")' "$out/opt/HanwhaVision/WisenetViewer" \
     '';
   };
-in
-(buildFHSUserEnv {
+in (buildFHSUserEnv {
   name = "wisenet-viewer";
-  targetPkgs = p: with p; [
-    wisenet-viewer-environment
-    fontconfig
-    freetype
-    xorg.libX11
-    libusb1.out
-    xorg.xcbutilwm
-    xorg.xcbutilimage
-    xorg.xcbutil
-    xorg.xcbutilkeysyms
-    xorg.xcbutilrenderutil
-    libxkbcommon
-    libpng
-    libGL
-    libpulseaudio
-    glib
-    zlib
-    krb5
-    xorg.libxcb
-  ];
+  targetPkgs = p:
+    with p; [
+      wisenet-viewer-environment
+      fontconfig
+      freetype
+      xorg.libX11
+      libusb1.out
+      xorg.xcbutilwm
+      xorg.xcbutilimage
+      xorg.xcbutil
+      xorg.xcbutilkeysyms
+      xorg.xcbutilrenderutil
+      libxkbcommon
+      libpng
+      libGL
+      libpulseaudio
+      glib
+      zlib
+      krb5
+      xorg.libxcb
+    ];
   runScript = "/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh";
 })

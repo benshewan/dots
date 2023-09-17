@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
   imports = [
     ./waybar.nix
     ./wofi.nix
@@ -10,7 +14,6 @@
 
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     settings = {
-
       monitor = [
         "DP-2, 1920x1080@75,1920x0,1"
         "HDMI-A-2, 1920x1080@75,0x0,1"
@@ -193,7 +196,7 @@
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
         # "SUPER $mainMod SHIFT,B,exec, killall -3 eww & sleep 1 && ~/.config/hypr/themes/winter/eww/launch_bar"
 
-        # Tell wireplumber to toggle mute volume on mute key 
+        # Tell wireplumber to toggle mute volume on mute key
         ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
       ];
 

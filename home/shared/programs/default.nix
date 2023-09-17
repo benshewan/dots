@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [
     ./firefox
     ./thunderbird.nix

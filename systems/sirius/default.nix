@@ -1,24 +1,27 @@
-{ pkgs, outputs, inputs, ... }:
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./nvidia.nix
-      ../shared
-      ../shared/desktop-enviroments/hyprland.nix
+  pkgs,
+  outputs,
+  inputs,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ./nvidia.nix
+    ../shared
+    ../shared/desktop-enviroments/hyprland.nix
 
-      # Hardware
-      inputs.nixos-hardware.nixosModules.common-pc
-      inputs.nixos-hardware.nixosModules.common-pc-ssd
-      inputs.nixos-hardware.nixosModules.common-cpu-amd
-      inputs.nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
-    ];
+    # Hardware
+    inputs.nixos-hardware.nixosModules.common-pc
+    inputs.nixos-hardware.nixosModules.common-pc-ssd
+    inputs.nixos-hardware.nixosModules.common-cpu-amd
+    inputs.nixos-hardware.nixosModules.common-gpu-nvidia-nonprime
+  ];
 
   # System
   networking.hostName = "sirius";
 
   # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
-  nixpkgs.overlays = [ outputs.overlays.additions ];
+  nixpkgs.overlays = [outputs.overlays.additions];
   # Gaming - Should be moved to home
   programs.steam = {
     enable = true;

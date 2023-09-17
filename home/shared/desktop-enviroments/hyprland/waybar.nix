@@ -1,12 +1,15 @@
-{ config, inputs, outputs, ... }:
-let
+{
+  config,
+  inputs,
+  outputs,
+  ...
+}: let
   custom = {
     font = "RobotoMono Nerd Font";
   };
   hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
   colors = config.colorScheme.colors;
-in
-{
+in {
   programs.waybar = {
     enable = true;
     settings.mainBar = {
@@ -98,7 +101,7 @@ in
         format-charging = "  {capacity}%";
         format-plugged = " {capacity}% ";
         format-alt = "{icon} {time}";
-        format-icons = [ "" "" "" "" "" ];
+        format-icons = ["" "" "" "" ""];
       };
 
       memory = {
@@ -126,7 +129,7 @@ in
         format = "{icon} {volume}%";
         format-muted = "󰝟";
         format-icons = {
-          default = [ "󰕿" "󰖀" "󰕾" ];
+          default = ["󰕿" "󰖀" "󰕾"];
         };
         # on-scroll-up= "bash ~/.scripts/volume up";
         # on-scroll-down= "bash ~/.scripts/volume down";
@@ -141,7 +144,7 @@ in
       "custom/launcher" = {
         format = "";
         # on-click= "bash $HOME/.config/rofi/launcher.sh";
-        # on-click-right= "bash $HOME/.config/rofi/run.sh"; 
+        # on-click-right= "bash $HOME/.config/rofi/run.sh";
         tooltip = "false";
       };
       "custom/headset" = {

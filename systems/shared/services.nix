@@ -1,11 +1,14 @@
-{ pkgs, lib, ... }:
 {
+  pkgs,
+  lib,
+  ...
+}: {
   services = {
     xserver = {
       enable = true;
       layout = "us";
       xkbVariant = "";
-      excludePackages = [ pkgs.xterm ];
+      excludePackages = [pkgs.xterm];
     };
 
     flatpak.enable = true;
@@ -13,7 +16,6 @@
     openssh.enable = true;
     upower.enable = true;
   };
-
 
   # Virtualization
   virtualisation.libvirtd = {

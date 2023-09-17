@@ -1,13 +1,16 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 # let
 # exec "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP"
 # input "type:touchpad" {
 #   tap enabled
 # }
 # seat seat0 xcursor_theme Bibata-Modern-Classic 24
-
 # xwayland disable
-
 # bindsym XF86MonBrightnessUp exec light -A 5
 # bindsym XF86MonBrightnessDown exec light -U 5
 # bindsym Print exec ${lib.getExe pkgs.grim} /tmp/regreet.png
@@ -53,29 +56,31 @@
   };
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
 
-  environment.systemPackages = (with pkgs; [
-    bluetuith # TUI Bluetooth manager
-    wofi # Runner
-    swaybg # Wallpaper ultility
-    hyprpicker # Color picker
-    wl-clipboard
-    copyq # Clipboard
-    libsForQt5.polkit-kde-agent # Graphical root elevation
-    gparted # Test polkit
+  environment.systemPackages =
+    (with pkgs; [
+      bluetuith # TUI Bluetooth manager
+      wofi # Runner
+      swaybg # Wallpaper ultility
+      hyprpicker # Color picker
+      wl-clipboard
+      copyq # Clipboard
+      libsForQt5.polkit-kde-agent # Graphical root elevation
+      gparted # Test polkit
 
-    # Dolphin and assorted dependencies for it
-    taglib
-    ffmpegthumbnailer
-  ]) ++ (with pkgs.libsForQt5; [
-    dolphin
-    ark
-    baloo
-    dolphin-plugins
-    kdegraphics-thumbnailers
-    kio
-    kio-extras
-    breeze-icons
-  ]);
+      # Dolphin and assorted dependencies for it
+      taglib
+      ffmpegthumbnailer
+    ])
+    ++ (with pkgs.libsForQt5; [
+      dolphin
+      ark
+      baloo
+      dolphin-plugins
+      kdegraphics-thumbnailers
+      kio
+      kio-extras
+      breeze-icons
+    ]);
 
   # KDE Connect plus some magic to get chromium browser integration working
   programs.kdeconnect.enable = true;

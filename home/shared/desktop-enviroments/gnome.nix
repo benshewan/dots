@@ -1,13 +1,17 @@
-{ pkgs, lib, config, inputs, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: let
   toWorkspace = w: apps:
     map (name: "${name}.desktop:${toString w}") apps;
   hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
   colors = config.colorScheme.colors;
-in
-rec {
+in rec {
   # GNOME Extensions
-  home.packages = (with pkgs.gnomeExtensions; [
+  home.packages = with pkgs.gnomeExtensions; [
     user-themes
     dash-to-dock
     blur-my-shell
@@ -20,16 +24,15 @@ rec {
     auto-move-windows
     appindicator
     gsconnect
-  ]);
+  ];
 
   # GNOME Settings
   dconf.settings = with lib.hm.gvariant; {
-
     "org/gnome/shell" = {
       # Extension Settings
       disable-user-extensions = false;
       enabled-extensions = map (extension: extension.extensionUuid) home.packages;
-      disabled-extensions = [ ];
+      disabled-extensions = [];
       # Pinned Apps
       favorite-apps = [
         "firefox.desktop"
@@ -38,7 +41,6 @@ rec {
         "kitty.desktop"
       ];
     };
-
 
     # Just Perfection COnfiguration
     "org/gnome/shell/extensions/just-perfection" = {
@@ -63,8 +65,7 @@ rec {
     "org/gnome/desktop/session".idle-delay = mkUint32 900;
 
     # Spotlight-like searching
-    "org/gnome/shell/extensions/search-light".shortcut-search = [ "<Ctrl>space" ];
-
+    "org/gnome/shell/extensions/search-light".shortcut-search = ["<Ctrl>space"];
 
     # i3-like workspace indicator
     "org/gnome/shell/extensions/space-bar/behavior" = {
@@ -97,9 +98,9 @@ rec {
     "org/gnome/shell/extensions/space-bar/shortcuts" = {
       enable-activate-workspace-shortcuts = true;
       enable-move-to-workspace-shortcuts = true;
-      activate-empty-key = [ ];
-      activate-previous-key = [ ];
-      open-menu = [ ];
+      activate-empty-key = [];
+      activate-previous-key = [];
+      open-menu = [];
     };
     # "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
     #   name = "Firefox";
@@ -145,26 +146,26 @@ rec {
         (toWorkspace 1 [
           "vivaldi"
           "firefox-devedition"
-        ]) ++
-
+        ])
+        ++
         # 2. Dev (Terminals, editors, ..etc)
         (toWorkspace 2 [
           "codium"
           "org.gnome.Console"
           "org.kitty"
-        ]) ++
-
+        ])
+        ++
         # 3. Notes (Obsidian)
         (toWorkspace 3 [
           "obsidian"
-        ]) ++
-
+        ])
+        ++
         # 4. Social (Slack, Discord ..etc)
         (toWorkspace 4 [
           "discord"
           "slack"
-        ]) ++
-
+        ])
+        ++
         # 10. Temporarily access (Spotify, 1Password, Settings ..etc)
         (toWorkspace 10 [
           "1password"

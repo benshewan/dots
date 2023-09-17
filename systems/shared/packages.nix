@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
     # Terminal Commands
@@ -28,9 +26,10 @@
     remmina # Remote desktop client
     kate # Text Editor
 
-    (python311.withPackages (ps: with ps; [
-      openrazer
-    ]))
+    (python311.withPackages (ps:
+      with ps; [
+        openrazer
+      ]))
   ];
 
   # fix for Via # Doesn't work - look into maybe
@@ -40,7 +39,7 @@
 
   #Fonts
   fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "JetBrainsMono" "RobotoMono" ]; })
+    (nerdfonts.override {fonts = ["JetBrainsMono" "RobotoMono"];})
     noto-fonts-cjk
     noto-fonts-emoji
   ];

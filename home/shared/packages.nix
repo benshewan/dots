@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   # Default application configuration
   xdg.mimeApps = {
     enable = true;
@@ -33,8 +31,6 @@
 
   # Fonts
   fonts.fontconfig.enable = true;
-
-
 
   #Packages
   home.packages = with pkgs; [

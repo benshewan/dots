@@ -1,19 +1,23 @@
-{ inputs, lib, outputs, pkgs, ... }:
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ../shared
-      ../shared/desktop-enviroments/gnome.nix
-      inputs.nixos-hardware.nixosModules.dell-xps-15-9560-intel
-    ];
+  inputs,
+  lib,
+  outputs,
+  pkgs,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../shared
+    ../shared/desktop-enviroments/gnome.nix
+    inputs.nixos-hardware.nixosModules.dell-xps-15-9560-intel
+  ];
 
   # System
   networking.hostName = "corvus";
 
   # Remote management of Lepus
   services.tailscale.enable = true;
-  environment.systemPackages = with pkgs;[
+  environment.systemPackages = with pkgs; [
     moonlight-qt
   ];
 

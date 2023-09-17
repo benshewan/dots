@@ -1,10 +1,9 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   programs.fish = {
     enable = true;
   };
 
-  home.packages = with pkgs;[
+  home.packages = with pkgs; [
     eza
   ];
 
@@ -14,6 +13,6 @@
     direnv hook fish | source
   '';
   programs.fish.interactiveShellInit = ''
-    
+
   '';
 }

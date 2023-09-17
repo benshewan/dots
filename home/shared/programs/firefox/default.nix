@@ -1,5 +1,9 @@
-{ pkgs, lib, config, ... }:
-let
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
   # userChrome.js loader
   firefox-userchromejs = pkgs.fetchFromGitHub {
     owner = "xiaoxiaoflood";
@@ -14,8 +18,9 @@ let
   };
 
   # Custom CSS styles
-  firefox-gnome-dark = (import ./gnome-theme.nix { inherit pkgs config; }).dark;
-  firefox-gnome-theme = builtins.filterSource (path: type: type == "directory" || baseNameOf path != "dark.css")
+  firefox-gnome-dark = (import ./gnome-theme.nix {inherit pkgs config;}).dark;
+  firefox-gnome-theme =
+    builtins.filterSource (path: type: type == "directory" || baseNameOf path != "dark.css")
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
@@ -31,8 +36,7 @@ let
       cp ${firefox-userchromejs}/installation-folder/config-prefs.js $out/lib/firefox/browser/defaults/preferences/config-prefs.js
     '';
   });
-in
-{
+in {
   # Custom userChrome.js scripts
   home.file.".mozilla/firefox/dev-edition-default/chrome/utils" = {
     source = userchromejs-utils;
@@ -63,7 +67,6 @@ in
   programs.firefox = {
     enable = true;
     package = pkgs.wrapFirefox firefoxPackage {
-
       # Enable Native Messaging Hosts
       cfg.enablePlasmaBrowserIntegration = true;
       # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
@@ -99,24 +102,26 @@ in
         SearchEngines.Default = "Google";
 
         # Firefox extensions
-        ExtensionSettings = import ./extensions.nix { inherit pkgs; };
+        ExtensionSettings = import ./extensions.nix {inherit pkgs;};
       };
     };
     profiles = {
       dev-edition-default = {
         id = 0;
         isDefault = true;
-        extraConfig = builtins.readFile
+        extraConfig =
+          builtins.readFile
           (builtins.fetchurl
             {
               url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4e44dc28202cda4b0b92401157839bf511dfceb3/user.js";
               sha256 = "1islaj99psf20n8f072g84rni32l5lxh53dwg3mlc05h3k5n7i6j";
-            }) + ''
-          user_pref("svg.context-properties.content.enabled", true);
-          user_pref("gnomeTheme.extensions.tabCenterReborn", true);
-          user_pref("browser.startup.page", 3);
-          user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-        '';
+            })
+          + ''
+            user_pref("svg.context-properties.content.enabled", true);
+            user_pref("gnomeTheme.extensions.tabCenterReborn", true);
+            user_pref("browser.startup.page", 3);
+            user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+          '';
       };
     };
   };

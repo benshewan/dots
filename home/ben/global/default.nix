@@ -1,5 +1,4 @@
-{ outputs, ... }:
-{
+{outputs, ...}: {
   imports = [
     ../../shared
     ./programs
@@ -21,7 +20,6 @@
   # paths it should manage.
   home.username = "${outputs.username}";
   home.homeDirectory = "/home/${outputs.username}";
-
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

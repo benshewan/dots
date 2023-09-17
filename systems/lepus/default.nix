@@ -1,21 +1,25 @@
-{ inputs, outputs, pkgs, lib, ... }:
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ../shared
-      ../shared/desktop-enviroments/gnome.nix
-      inputs.nixos-hardware.nixosModules.common-pc
-      inputs.nixos-hardware.nixosModules.common-pc-ssd
-      inputs.nixos-hardware.nixosModules.common-cpu-intel
-    ];
+  inputs,
+  outputs,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [
+    ./hardware-configuration.nix
+    ../shared
+    ../shared/desktop-enviroments/gnome.nix
+    inputs.nixos-hardware.nixosModules.common-pc
+    inputs.nixos-hardware.nixosModules.common-pc-ssd
+    inputs.nixos-hardware.nixosModules.common-cpu-intel
+  ];
 
   # System
   networking.hostName = "lepus";
 
   # Remote Management
   services.tailscale.enable = true;
-  environment.systemPackages = with pkgs;[
+  environment.systemPackages = with pkgs; [
     trayscale
     sunshine
     gnome.gnome-remote-desktop
@@ -32,8 +36,8 @@
   environment.sessionVariables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";
   systemd.services.sunshine = {
     description = "Sunshine self-hosted game stream host for Moonlight.";
-    after = [ "graphical.target" ];
-    wantedBy = [ "graphical.target" ];
+    after = ["graphical.target"];
+    wantedBy = ["graphical.target"];
     startLimitIntervalSec = 500;
     startLimitBurst = 5;
     serviceConfig = {
@@ -42,7 +46,7 @@
       RestartSec = "5s";
     };
   };
-  networking.firewall.allowedTCPPorts = [ 47984 47989 ];
+  networking.firewall.allowedTCPPorts = [47984 47989];
 
   # Machine specific aliases
   environment.shellAliases = {

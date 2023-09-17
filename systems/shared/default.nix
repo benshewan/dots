@@ -1,5 +1,9 @@
-{ lib, pkgs, outputs, ... }:
-let
+{
+  lib,
+  pkgs,
+  outputs,
+  ...
+}: let
   nixos-boot-src = pkgs.fetchFromGitHub {
     owner = "Melkor333";
     repo = "nixos-boot";
@@ -11,8 +15,7 @@ let
     bgColor = "0.067, 0.067, 0.145"; # Weird 0-1 range RGB.
     theme = "load_unload";
   };
-in
-{
+in {
   imports = [
     ./packages.nix
     ./networking.nix
@@ -23,13 +26,13 @@ in
   # Boot Configuration
   boot = {
     # Plymouth
-    kernelParams = [ "quiet" "splash" ];
+    kernelParams = ["quiet" "splash"];
     initrd.systemd.enable = true;
     consoleLogLevel = 0;
     initrd.verbose = false;
     plymouth = {
       enable = true;
-      themePackages = [ nixos-boot ];
+      themePackages = [nixos-boot];
       theme = "load_unload";
     };
 
@@ -69,7 +72,7 @@ in
 
   #   # Not officially in the specification
   #   XDG_BIN_HOME    = "$HOME/.local/bin";
-  #   PATH = [ 
+  #   PATH = [
   #     "${XDG_BIN_HOME}"
   #   ];
   # };
@@ -77,20 +80,20 @@ in
   users = {
     defaultUserShell = pkgs.fish;
     groups = {
-      "${outputs.username}" = { };
+      "${outputs.username}" = {};
     };
     users.${outputs.username} = {
       isNormalUser = true;
       description = outputs.userDescription;
       initialPassword = "admin";
-      extraGroups = [ "wheel" "docker" "video" "libvirtd" "plugdev" "${outputs.username}" ];
+      extraGroups = ["wheel" "docker" "video" "libvirtd" "plugdev" "${outputs.username}"];
     };
   };
 
   # NixOS Stuff
   nixpkgs.config.allowUnfree = true;
   nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    settings.experimental-features = ["nix-command" "flakes"];
     settings.auto-optimise-store = true;
     gc = {
       automatic = true;

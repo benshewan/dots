@@ -1,6 +1,4 @@
-{ ... }:
-{
-
+{...}: {
   # OpenGL
   hardware.opengl = {
     enable = true;
@@ -36,5 +34,4 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
 }
