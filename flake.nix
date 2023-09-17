@@ -45,7 +45,10 @@
     in
     {
       inherit lib username userDescription flake-path;
-      
+
+      packages = forEachSystem (pkgs: import ./pkgs { inherit pkgs; });
+      overlays = import ./overlays { inherit inputs; };
+
       wallpapers = import "${flake-path}/wallpapers";
 
       nixosConfigurations = {

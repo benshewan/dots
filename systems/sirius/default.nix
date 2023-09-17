@@ -17,7 +17,8 @@
   # System
   networking.hostName = "sirius";
 
-  nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
+  # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
+  nixpkgs.overlays = [ outputs.overlays.additions ];
   # Gaming - Should be moved to home
   programs.steam = {
     enable = true;
@@ -25,9 +26,10 @@
   };
   environment.systemPackages = with pkgs; [
     mangohud # FPS Overlay
-    nix-alien
+    wisenet-viewer
+    # nix-alien
   ];
-  programs.nix-ld.enable = true;
+  # programs.nix-ld.enable = true;
 
   environment.shellAliases = {
     nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#sirius";
