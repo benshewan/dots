@@ -27,6 +27,7 @@
   environment.systemPackages = with pkgs; [
     mangohud # FPS Overlay
     wisenet-viewer
+    blueberry
     # nix-alien
   ];
   # programs.nix-ld.enable = true;

@@ -10,7 +10,7 @@
 // initially forked from https://web.archive.org/web/20131025160814/http://www.cnblogs.com/ziyunfei/archive/2011/12/15/2289504.html
 
 const { XPCOMUtils } = ChromeUtils.import('resource://gre/modules/XPCOMUtils.jsm');
-XPCOMUtils.defineLazyGetter(this, 'SelectionUtils', function() {
+XPCOMUtils.defineLazyGetter(this, 'SelectionUtils', function () {
   let { SelectionUtils } = Cu.import('resource://gre/modules/SelectionUtils.jsm');
   return SelectionUtils;
 });
@@ -61,7 +61,7 @@ UC.MGest = {
     '2D': {
       name: 'Open new tab',
       cmd: function (win) {
-       win.document.getElementById("cmd_newNavigatorTab").doCommand();
+        win.document.getElementById("cmd_newNavigatorTab").doCommand();
       }
     },
     '2L': {
@@ -101,7 +101,8 @@ UC.MGest = {
           templateURL: 'https://www.google.com/searchbyimage?sbisrc=cr_1_5_2&image_url=%s',
           encode: true,
           fallback: 'scroll',
-          direction: 'down' });
+          direction: 'down'
+        });
       }
     },
     '20': {
@@ -142,54 +143,11 @@ UC.MGest = {
     '2DR': {
       name: 'Close current tab',
       cmd: function (win) {
-        win.gBrowser.removeCurrentTab();
+        if (!win.gBrowser.selectedTab.pinned) win.gBrowser.removeCurrentTab();
       }
     },
-    '0F': {
-      name: 'Switch to next group',
-      cmd: function (win) {
-        UC.webExts.get(UC.MGest.webExts.get('SDB')).messageManager.sendAsyncMessage('UCJS:MGest', 'next_panel');
-      }
-    },
-    '0B': {
-      name: 'Switch to previous group',
-      cmd: function (win) {
-        UC.webExts.get(UC.MGest.webExts.get('SDB')).messageManager.sendAsyncMessage('UCJS:MGest', 'prev_panel');
-      }
-    },
-    '1F': {
-      name: 'Video 2× speed',
-      cmd: function () {
-        function speedUpVideo (win) {
-          let video = win.document.querySelector('html > div > video');
-          if (video)
-            video.playbackRate = video.playbackRate == video.defaultPlaybackRate ? 3 : video.defaultPlaybackRate;
-        };
-        UC.MGest.actor.cmd({ action: 'eval', code: speedUpVideo.toString(), name: this.name });
-      }
-    },
-    '2F': {
-      name: 'Video advance 5 seconds',
-      cmd: function () {
-        function advanceVideo (win) {
-          let video = win.document.querySelector('html > div > video');
-          if (video)
-            video.currentTime += 5;
-        };
-        UC.MGest.actor.cmd({ action: 'eval', code: advanceVideo.toString(), name: this.name });
-      }
-    },
-    '2B': {
-      name: 'Video rewind 5 seconds',
-      cmd: function () {
-        function rewindVideo (win) {
-          let video = win.document.querySelector('html > div > video');
-          if (video)
-            video.currentTime -= 5;
-        };
-        UC.MGest.actor.cmd({ action: 'eval', code: rewindVideo.toString(), name: this.name });
-      }
-    },
+
+
   },
 
   webExts: new Map([
@@ -321,7 +279,7 @@ UC.MGest = {
       let topWin = win.windowRoot.ownerGlobal;
       this.prevent = true;
       this.hideAutoScroll(topWin.gBrowser);
-      if  (/[UDLR]/.test(gst))
+      if (/[UDLR]/.test(gst))
         await this.stoppedOutside(win);
       win.document.documentElement.removeEventListener('mouseleave', this, false);
       if (!this.cancel)
@@ -334,10 +292,10 @@ UC.MGest = {
     const win = event.view.windowRoot.ownerGlobal;
     const { document: doc } = win;
     let delX,
-        delY,
-        absDX,
-        absDY,
-        direction;
+      delY,
+      absDX,
+      absDY,
+      direction;
 
     switch (event.type) {
       case 'mousedown':

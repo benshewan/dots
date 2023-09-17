@@ -1,8 +1,10 @@
-{ pkgs, lib, ... }:
 {
-
-  home.packages = with pkgs; [ nixpkgs-fmt nil ];
-  home.sessionVariables = { EDITOR = "codium"; };
+  pkgs,
+  lib,
+  ...
+}: {
+  home.packages = with pkgs; [alejandra nil];
+  home.sessionVariables = {EDITOR = "codium";};
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium.override {
@@ -18,10 +20,10 @@
       mkhl.direnv
     ];
     userSettings = {
-
       # General Config
       files.autoSave = "onFocusChange";
-      editor.formatOnSave =  true;
+      editor.formatOnSave = true;
+      explorer.confirmDelete = false;
 
       # Theme Config
       workbench.colorTheme = "Catppuccin Mocha";
@@ -39,7 +41,7 @@
       nix.serverPath = "nil";
       nix.serverSettings = {
         nil = {
-          formatting.command = [ "nixpkgs-fmt" ];
+          formatting.command = ["alejandra"];
           nix.binary = "nix";
           nix.maxMemoryMB = 2560;
           nix.flake.autoArchive = true;
