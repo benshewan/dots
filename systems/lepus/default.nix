@@ -44,7 +44,7 @@
     };
   };
   networking.firewall.allowedTCPPorts = [48010 47984 47989];
-  networking.firewall.allowedUDPPorts = [48000 48010];
+  networking.firewall.allowedUDPPorts = [48000 48010 47999];
 
   # networking.bridges = {
   #   "br0" = {

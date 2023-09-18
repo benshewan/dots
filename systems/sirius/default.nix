@@ -19,7 +19,7 @@
 
   # System
   networking.hostName = "sirius";
-
+  services.tailscale.enable = true;
   # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
   nixpkgs.overlays = [outputs.overlays.additions];
   # Gaming - Should be moved to home
