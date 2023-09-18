@@ -17,19 +17,16 @@
   # System
   networking.hostName = "lepus";
 
+  nixpkgs.overlays = [outputs.overlays.additions];
   # Remote Management
   services.tailscale.enable = true;
+  services.mongodb.enable = true;
   environment.systemPackages = with pkgs; [
     trayscale
     sunshine
-    gnome.gnome-remote-desktop
     inkscape
+    wisenet-viewer
   ];
-  services.xrdp.enable = true;
-  services.xrdp.defaultWindowManager = "gnome-xorg";
-  services.xrdp.openFirewall = true;
-  programs.gamescope.enable = true;
-  networking.firewall.enable = lib.mkForce false;
 
   # Sunshine remote desktop
   environment.variables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";
@@ -46,7 +43,20 @@
       RestartSec = "5s";
     };
   };
-  networking.firewall.allowedTCPPorts = [47984 47989];
+  networking.firewall.allowedTCPPorts = [48010 47984 47989];
+  networking.firewall.allowedUDPPorts = [48000 48010];
+
+  # networking.bridges = {
+  #   "br0" = {
+  #     interfaces = ["enp2s0"];
+  #   };
+  # };
+  # networking.interfaces.br0.ipv4.addresses = [
+  #   {
+  #     address = "192.168.0.24";
+  #     prefixLength = 24;
+  #   }
+  # ];
 
   # Machine specific aliases
   environment.shellAliases = {

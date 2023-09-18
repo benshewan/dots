@@ -19,7 +19,7 @@ in rec {
     fuzzy-app-search
     just-perfection
     space-bar
-    pop-shell
+    forge
     rounded-window-corners
     auto-move-windows
     appindicator
@@ -60,6 +60,7 @@ in rec {
       button-layout = "icon:close";
     };
     "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;
+    "org/gnome/desktop/wm/preferences".focus-mode = "sloppy";
 
     # Time before screen goes dark (seconds)
     "org/gnome/desktop/session".idle-delay = mkUint32 900;

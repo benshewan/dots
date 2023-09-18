@@ -13,7 +13,7 @@
     sha256 = "sha256-WTets2nGNFm7baNiBQq/2FW9N0s5jKRTFYTFet8LGKI=";
   };
   wisenet-viewer-environment = stdenv.mkDerivation {
-    pname = "wisenet-viewer";
+    pname = "wisenet-viesenet-viewer-environwer";
     inherit src version;
 
     nativeBuildInputs = [dpkg unzip];
@@ -42,6 +42,7 @@ in (buildFHSUserEnv {
   targetPkgs = p:
     with p; [
       wisenet-viewer-environment
+
       fontconfig
       freetype
       xorg.libX11
@@ -51,6 +52,11 @@ in (buildFHSUserEnv {
       xorg.xcbutil
       xorg.xcbutilkeysyms
       xorg.xcbutilrenderutil
+      xorg.libXcomposite
+      xorg.libXdamage
+      xorg.libXrender
+      xorg.libXrandr
+      xorg.libXcursor
       libxkbcommon
       libpng
       libGL
@@ -59,6 +65,8 @@ in (buildFHSUserEnv {
       zlib
       krb5
       xorg.libxcb
+      nss
+      nspr
     ];
   runScript = "/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh";
 })
