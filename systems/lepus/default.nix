@@ -23,40 +23,47 @@
   services.mongodb.enable = true;
   environment.systemPackages = with pkgs; [
     trayscale
-    sunshine
     inkscape
     wisenet-viewer
+    nodejs
+    mongodb-tools
+    networkmanagerapplet
   ];
 
   # Sunshine remote desktop
-  environment.variables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";
-  environment.sessionVariables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";
-  systemd.services.sunshine = {
-    description = "Sunshine self-hosted game stream host for Moonlight.";
-    after = ["graphical.target"];
-    wantedBy = ["graphical.target"];
-    startLimitIntervalSec = 500;
-    startLimitBurst = 5;
-    serviceConfig = {
-      ExecStart = "${pkgs.sunshine}/bin/sunshine";
-      Restart = "on-failure";
-      RestartSec = "5s";
-    };
-  };
-  networking.firewall.allowedTCPPorts = [48010 47984 47989];
-  networking.firewall.allowedUDPPorts = [48000 48010 47999];
-
-  # networking.bridges = {
-  #   "br0" = {
-  #     interfaces = ["enp2s0"];
+  # environment.variables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";
+  # environment.sessionVariables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";
+  # systemd.services.sunshine = {
+  #   description = "Sunshine self-hosted game stream host for Moonlight.";
+  #   after = ["graphical.target"];
+  #   wantedBy = ["graphical.target"];
+  #   startLimitIntervalSec = 500;
+  #   startLimitBurst = 5;
+  #   serviceConfig = {
+  #     ExecStart = "${pkgs.sunshine}/bin/sunshine";
+  #     Restart = "on-failure";
+  #     RestartSec = "5s";
   #   };
   # };
-  # networking.interfaces.br0.ipv4.addresses = [
-  #   {
-  #     address = "192.168.0.24";
-  #     prefixLength = 24;
-  #   }
-  # ];
+
+  # Enable RDP through GNOME remote desktop
+  services.gnome.gnome-remote-desktop.enable = true;
+  networking.firewall.allowedTCPPorts = [3389];
+  networking.firewall.allowedUDPPorts = [3389];
+
+  # networking.interfaces.enp2s0.useDHCP = true;
+  # networking.interfaces.br0.useDHCP = true;
+  networking.bridges = {
+    "br0" = {
+      interfaces = ["enp2s0"];
+    };
+  };
+  networking.interfaces.br0.ipv4.addresses = [
+    {
+      address = "192.168.0.144";
+      prefixLength = 24;
+    }
+  ];
 
   # Machine specific aliases
   environment.shellAliases = {

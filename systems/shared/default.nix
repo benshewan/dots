@@ -18,7 +18,6 @@
 in {
   imports = [
     ./packages.nix
-    ./networking.nix
     ./services.nix
     ./hardware.nix
   ];
