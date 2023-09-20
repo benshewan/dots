@@ -58,9 +58,16 @@ in {
   # Add support for ~/.local/bin
   environment.localBinInPath = true;
 
+  # Shell
+  programs.command-not-found.enable = true;
   environment.shellAliases = {
     reboot = "systemctl reboot";
   };
+
+  # Printing
+  environment.systemPackages = with pkgs; [
+    foomatic-db-ppds-withNonfreeDb
+  ];
 
   # Enviroment vars
   # environment.sessionVariables = rec {

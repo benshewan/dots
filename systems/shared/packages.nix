@@ -10,10 +10,8 @@
     toybox
     neofetch
     bat
-    exa
     clipboard-jh
     wget
-    nil
     playerctl
 
     # nix stuff

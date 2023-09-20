@@ -2,8 +2,11 @@
   config,
   lib,
   pkgs,
+  outputs,
   ...
-}: {
+}: let
+  colors = config.colorScheme.colors;
+in {
   imports = [
     ./waybar.nix
     ./wofi.nix
@@ -14,20 +17,20 @@
 
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     settings = {
+      # Bad - move to seperate home configurations
       monitor = [
         "DP-2, 1920x1080@75,1920x0,1"
         "HDMI-A-2, 1920x1080@75,0x0,1"
         ",preferred,auto,auto"
       ];
 
-      # Bad - should switch all this stuff to using ${pkgs.blah}/bin/blah
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
-        "wl-paste --type text --watch cliphist store"
-        "wl-paste --type image --watch cliphist store"
-        "waybar"
-        "swaybg -i ${../../../../wallpapers/nix-black-4k.png}"
+        "${pkgs.cliphist}/bin/wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
+        "${pkgs.cliphist} --type image --watch ${lib.getExe pkgs.cliphist} store"
+        "${lib.getExe pkgs.waybar}"
+        "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''
         "hyprctl setcursor ${config.gtk.cursorTheme.name} ${lib.strings.floatToString config.gtk.cursorTheme.size}"
         # "swaync"
@@ -56,8 +59,8 @@
         gaps_in = 4;
         gaps_out = 8;
         border_size = 1;
-        "col.active_border" = "rgb(${config.colorScheme.colors.base01})";
-        "col.inactive_border" = "rgba(${config.colorScheme.colors.base01}00)";
+        "col.active_border" = "rgb(${colors.base01})";
+        "col.inactive_border" = "rgba(${colors.base01}00)";
         layout = "master";
         apply_sens_to_raw = 1; # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
       };
@@ -69,8 +72,8 @@
         drop_shadow = true;
         shadow_range = 15;
         shadow_render_power = 2;
-        "col.shadow" = "rgb(${config.colorScheme.colors.base01})";
-        "col.shadow_inactive" = "rgba(${config.colorScheme.colors.base01}00)";
+        "col.shadow" = "rgb(${colors.base01})";
+        "col.shadow_inactive" = "rgba(${colors.base01}00)";
         blur = {
           enabled = true;
           size = 6;
@@ -127,12 +130,6 @@
         "SUPER,up,movefocus,u"
         "SUPER,right,movefocus,d"
 
-        #CTRL,1,workspace,1
-        #CTRL,2,workspace,2
-        #CTRL,3,workspace,3
-        #CTRL,4,workspace,4
-        #CTRL,5,workspace,5
-        #CTRL,6,workspace,6
         "SUPER,1,workspace,1"
         "SUPER,2,workspace,2"
         "SUPER,3,workspace,3"
@@ -141,9 +138,6 @@
         "SUPER,6,workspace,6"
         "SUPER,7,workspace,7"
         "SUPER,8,workspace,8"
-        # "SUPER,9,workspace,9"
-        # "SUPER,0,workspace,10"
-        # "SUPER,z,exec,waybar"
 
         ################################## Move ###########################################
         # "SUPER SHIFT, H, movewindow, l"
@@ -179,22 +173,24 @@
         "SUPER $mainMod SHIFT, 6, movetoworkspacesilent, 6"
         "SUPER $mainMod SHIFT, 7, movetoworkspacesilent, 7"
         "SUPER $mainMod SHIFT, 8, movetoworkspacesilent, 8"
-        # "SUPER $mainMod SHIFT, 9, movetoworkspacesilent, 9"
-        # "SUPER $mainMod SHIFT, 0, movetoworkspacesilent, 10"
+        "SUPER $mainMod SHIFT, 9, movetoworkspacesilent, 9"
+        "SUPER $mainMod SHIFT, 0, movetoworkspacesilent, 10"
 
         # "SUPER,n,exec,~/.local/bin/lvimn"
         # "SUPER,e,exec, emacsclient -c -a 'emacs'"
         # "SUPER,o,exec, obsidian"
 
-        "SUPER SHIFT,c,exec,hyprpicker -a -f hex"
+        # Color Picker
+        "SUPER SHIFT,c,exec,${lib.getExe' pkgs.hyprpicker "hyprpicker"} -a -f hex"
 
+        # Program Keybinds
         "SUPER,RETURN,exec, kitty"
         "SUPER,f,exec, firefox"
-        # ",Print,exec, ~/.config/hypr/scripts/screenshot.sh"
-        # "SUPER,space,exec, bemenu-run"
-        # SUPER,space,exec,wofi --show drun -I -s ~/.config/wofi/style.css DP-3
-        "ALT,space,exec,wofi --show drun -I DP-2"
-        "SUPER, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy"
+
+        # Wofi keybinds
+        "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun -I DP-2"
+        "SUPER, V, exec, cliphist list | ${lib.getExe pkgs.wofi} --dmenu | cliphist decode | wl-copy"
+
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
         # "SUPER $mainMod SHIFT,B,exec, killall -3 eww & sleep 1 && ~/.config/hypr/themes/winter/eww/launch_bar"
@@ -218,8 +214,7 @@
       ];
 
       windowrulev2 = [
-        "opacity .85 .85,class:^(thunar)$"
-        # "opacity ${custom.opacity} ${custom.opacity},class:^(WebCord)$"
+        "opacity .85 .85,class:^(org.kde.dolphin)$"
         "float,class:^(pavucontrol)$"
         "float,class:^(file_progress)$"
         "float,class:^(confirm)$"
