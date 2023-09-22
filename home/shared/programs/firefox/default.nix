@@ -62,7 +62,7 @@ in {
   };
   home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors".enable = false;
   home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".source = ./customChrome.css;
-  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = lib.mkForce firefox-gnome-dark;
+  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
   programs.firefox = {
     enable = true;

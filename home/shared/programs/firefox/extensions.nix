@@ -83,7 +83,7 @@ in {
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
   };
 
-  # Website Specific Cusomizations
+  # Website Specific Customizations
   # ----------------------------------------------------------------------------------
 
   # Youtube customization
