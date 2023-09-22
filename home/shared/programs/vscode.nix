@@ -3,7 +3,6 @@
   lib,
   ...
 }: {
-  home.packages = with pkgs; [alejandra nil];
   home.sessionVariables = {EDITOR = "codium";};
   programs.vscode = {
     enable = true;
@@ -38,10 +37,10 @@
 
       # Nix LSP Config
       nix.enableLanguageServer = true;
-      nix.serverPath = "nil";
+      nix.serverPath = "${pkgs.nil}";
       nix.serverSettings = {
         nil = {
-          formatting.command = ["alejandra"];
+          formatting.command = ["${pkgs.alejandra}"];
           nix.binary = "nix";
           nix.maxMemoryMB = 2560;
           nix.flake.autoArchive = true;

@@ -189,7 +189,7 @@ in {
 
         # Wofi keybinds
         "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun -I DP-2"
-        "SUPER, V, exec, cliphist list | ${lib.getExe pkgs.wofi} --dmenu | cliphist decode | wl-copy"
+        "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | ${pkgs.cliphist}/bin/wl-copy"
 
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
