@@ -20,16 +20,16 @@ in {
   fileSystems."/home/${outputs.username}/Shares/backup" = {
     device = "//100.91.115.100/backup";
     fsType = "cifs";
-    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
+    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=991"];
   };
   fileSystems."/home/${outputs.username}/Shares/media" = {
     device = "//100.91.115.100/media";
     fsType = "cifs";
-    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
+    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=991"];
   };
   fileSystems."/home/${outputs.username}/Shares/downloads" = {
     device = "//100.91.115.100/downloads";
     fsType = "cifs";
-    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
+    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=991"];
   };
 }
