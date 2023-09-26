@@ -21,13 +21,7 @@
     home-manager
 
     mpv # Media Player
-    remmina # Remote desktop client
     kate # Text Editor
-
-    (python311.withPackages (ps:
-      with ps; [
-        openrazer
-      ]))
   ];
 
   # fix for Via # Doesn't work - look into maybe
