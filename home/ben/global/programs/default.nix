@@ -19,6 +19,7 @@
 
     # plex-media-player # Plex Player (shitty TV version)
     prismlauncher # Minecraft launcher
+    libreoffice-fresh
     # via # Keyboard Configurator
   ];
 
