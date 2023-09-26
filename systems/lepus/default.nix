@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./networking.nix
     ../shared
     ../shared/desktop-enviroments/gnome.nix
     inputs.nixos-hardware.nixosModules.common-pc
