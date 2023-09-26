@@ -20,6 +20,7 @@
     # plex-media-player # Plex Player (shitty TV version)
     prismlauncher # Minecraft launcher
     remmina # Remote desktop client
+    libreoffice-fresh
     # via # Keyboard Configurator
   ];
 
