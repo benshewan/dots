@@ -7,6 +7,7 @@
   imports = [
     ./hardware-configuration.nix
     ./nvidia.nix
+    ./razer.nix
     ./networking.nix
     ../shared
     ../shared/desktop-enviroments/hyprland.nix

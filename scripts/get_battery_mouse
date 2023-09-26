@@ -5,7 +5,6 @@ device_manager = DeviceManager()
 
 basilisk = None
 for device in device_manager.devices:
-    print(device)
     if "Razer Basilisk Ultimate" in device.name:
         basilisk = device
 
@@ -17,4 +16,4 @@ charging = ''
 if basilisk.is_charging:
     charging = '🔋'
 
-print(f"{basilisk.battery_level}{charging}%")
+print(f"{charging}{basilisk.battery_level}%")
