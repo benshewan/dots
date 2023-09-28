@@ -18,6 +18,9 @@
   # System
   networking.hostName = "lepus";
 
+# Low memory hurts FreeCore development
+  # zramSwap.enable = true;
+
   nixpkgs.overlays = [outputs.overlays.additions];
   # Remote Management
   services.tailscale.enable = true;
@@ -30,6 +33,8 @@
     mongodb-tools
     networkmanagerapplet
   ];
+
+  virtualisation.waydroid.enable = true;
 
   # Sunshine remote desktop
   # environment.variables.MUTTER_DEBUG_DISABLE_HW_CURSORS = "1";

@@ -26,13 +26,11 @@ in rec {
     gsconnect
   ];
   
-  xdg.mimeApps = {
-    defaultApplications = {
+  xdg.mimeApps.associations.added = {
       # GSconnect
       "x-scheme-handler/sms"="org.gnome.Shell.Extensions.GSConnect.desktop";
       "x-scheme-handler/tel"="org.gnome.Shell.Extensions.GSConnect.desktop";
     };
-  };
 
   # GNOME Settings
   dconf.settings = with lib.hm.gvariant; {
@@ -84,7 +82,11 @@ in rec {
       scroll-wheel = "disabled";
       smart-workspace-names = false;
     };
-    "org/gnome/shell/extensions/dash-to-dock".hot-keys = false;
+    "org/gnome/shell/extensions/dash-to-dock" = {
+      hot-keys = false;
+      multi-monitor = true;
+      intellihide-mode = "ALL_WINDOWS";
+    };
 
     # Window Tiling
     "org/gnome/mutter".edge-tiling = false;
