@@ -40,8 +40,18 @@
   programs = {
     dconf.enable = true; # Needed for many GTK apps (like GDM)
     xwayland.enable = true; # Enable XWayland support
-    direnv.enable = true; # Allows nix shells to be auto run when entering the directory
     fish.enable = true;
+     # Allows nix shells to be auto run when entering the directory
+    direnv = {
+    package = pkgs.direnv;
+    silent = false;
+    loadInNixShell = true;
+    direnvrcExtra = "";
+    nix-direnv = {
+      enable = true;
+      package = pkgs.nix-direnv;
+    };
+  };
   };
 
   # Enable wayland support for chromium and most electron apps
