@@ -18,8 +18,8 @@
   # System
   networking.hostName = "lepus";
 
-# Low memory hurts FreeCore development
-# Note: seems to cause reandom full systems freezes, presumably due to OOM
+  # Low memory hurts FreeCore development
+  # Note: seems to cause reandom full systems freezes, presumably due to OOM
   # zramSwap.enable = true;
 
   nixpkgs.overlays = [outputs.overlays.additions];
@@ -73,13 +73,13 @@
   #   }
   # ];
 
-# I'll admit that I can't seem to figure out kvm network bridges, so I guess I'm using this for now.
-# Warning: will need to be built from source since it's unfree, so expect a lot of waiting.
-#  users.${outputs.username}.extraGroups = ["vboxusers"];
-#   virtualisation.virtualbox.host = {
-#     enable = true;
-#     enableExtensionPack = true;
-#   };
+  # I'll admit that I can't seem to figure out kvm network bridges, so I guess I'm using this for now.
+  # Warning: will need to be built from source since it's unfree, so expect a lot of waiting.
+  #  users.${outputs.username}.extraGroups = ["vboxusers"];
+  #   virtualisation.virtualbox.host = {
+  #     enable = true;
+  #     enableExtensionPack = true;
+  #   };
 
   # Machine specific aliases
   environment.shellAliases = {

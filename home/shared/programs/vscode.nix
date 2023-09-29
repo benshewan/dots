@@ -37,7 +37,7 @@
 
       # Nix LSP Config
       nix.enableLanguageServer = true;
-      nix.serverPath = pkgs.nil;
+      nix.serverPath = lib.getExe pkgs.nil;
       nix.serverSettings = {
         nil = {
           formatting.command = [(lib.getExe pkgs.alejandra)];
