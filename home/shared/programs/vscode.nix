@@ -37,11 +37,10 @@
 
       # Nix LSP Config
       nix.enableLanguageServer = true;
-      nix.serverPath = "${pkgs.nil}";
-      nix.formatterPath = pkgs.alejandra;
+      nix.serverPath = pkgs.nil;
       nix.serverSettings = {
         nil = {
-          formatting.command = [pkgs.alejandra];
+          formatting.command = [(lib.getExe pkgs.alejandra)];
           nix.binary = "nix";
           nix.maxMemoryMB = 2560;
           nix.flake.autoArchive = true;
