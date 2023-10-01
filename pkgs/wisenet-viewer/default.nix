@@ -57,6 +57,12 @@ in (buildFHSUserEnv {
       xorg.libXrender
       xorg.libXrandr
       xorg.libXcursor
+      xorg.libXi
+      xorg.libXtst
+      xorg.libXfixes
+      alsa-lib
+      expat
+      dbus
       libxkbcommon
       libpng
       libGL

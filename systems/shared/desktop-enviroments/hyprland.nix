@@ -59,13 +59,6 @@
   environment.systemPackages =
     (with pkgs; [
       bluetuith # TUI Bluetooth manager
-      wofi # Runner
-      swaybg # Wallpaper ultility
-      hyprpicker # Color picker
-      wl-clipboard # Clipboard
-      cliphist # Clipboard Manager
-      libsForQt5.polkit-kde-agent # Graphical root elevation
-      gparted # Test polkit
 
       # Dolphin and assorted dependencies for it
       taglib

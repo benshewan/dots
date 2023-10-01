@@ -26,6 +26,12 @@ in rec {
     gsconnect
   ];
 
+  xdg.mimeApps.associations.added = {
+    # GSconnect
+    "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+    "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+  };
+
   # GNOME Settings
   dconf.settings = with lib.hm.gvariant; {
     "org/gnome/shell" = {

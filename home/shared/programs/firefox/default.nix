@@ -62,7 +62,7 @@ in {
   };
   home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors".enable = false;
   home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".source = ./customChrome.css;
-  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = lib.mkForce firefox-gnome-dark;
+  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
   programs.firefox = {
     enable = true;
@@ -117,9 +117,12 @@ in {
               sha256 = "1islaj99psf20n8f072g84rni32l5lxh53dwg3mlc05h3k5n7i6j";
             })
           + ''
-            user_pref("svg.context-properties.content.enabled", true);
+            user_pref("browser.startup.page", 3); // browser should restore previous session
+            user_pref("widget.gtk.ignore-bogus-leave-notify", 1); //fix for hover on drag (fixes sideberry tab drag)
+
+            // Firefox Gnome Theme Tweaks
             user_pref("gnomeTheme.extensions.tabCenterReborn", true);
-            user_pref("browser.startup.page", 3);
+            user_pref("svg.context-properties.content.enabled", true);
             user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
           '';
       };

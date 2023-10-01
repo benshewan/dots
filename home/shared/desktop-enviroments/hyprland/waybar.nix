@@ -32,10 +32,10 @@ in {
       ];
       modules-right = [
         "tray"
+        "custom/mouse"
         "custom/headset"
         "battery"
         "pulseaudio"
-        "network"
         "clock"
       ];
       clock = {
@@ -103,17 +103,6 @@ in {
         format-alt = "{icon} {time}";
         format-icons = ["" "" "" "" ""];
       };
-
-      memory = {
-        format = "󰍛 {}%";
-        format-alt = "󰍛 {used}/{total} GiB";
-        interval = 5;
-      };
-      cpu = {
-        format = "󰻠 {usage}%";
-        format-alt = "󰻠 {avg_frequency} GHz";
-        interval = 5;
-      };
       network = {
         format-wifi = "  {signalStrength}%";
         format-ethernet = "󰈀 100% ";
@@ -136,21 +125,15 @@ in {
         scroll-step = 5;
         on-click = "pavucontrol";
       };
-      "custom/randwall" = {
-        format = "󰏘";
-        # on-click= "bash $HOME/.config/hypr/randwall.sh";
-        # on-click-right= "bash $HOME/.config/hypr/wall.sh";
-      };
-      "custom/launcher" = {
-        format = "";
-        # on-click= "bash $HOME/.config/rofi/launcher.sh";
-        # on-click-right= "bash $HOME/.config/rofi/run.sh";
-        tooltip = "false";
-      };
       "custom/headset" = {
         format = "󰋋 {}";
         interval = 5;
         exec = "${outputs.flake-path}/scripts/get_battery_headset";
+      };
+      "custom/mouse" = {
+        format = "󰍽 {}";
+        interval = 5;
+        exec = "${outputs.flake-path}/scripts/get_battery_mouse";
       };
     };
     style = ''
@@ -199,12 +182,12 @@ in {
       }
 
       #tray, #pulseaudio, #network, #battery,
-      #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward, #custom-headset {
+      #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward, #custom-headset,#custom-mouse {
           background: #${colors.base02};
           font-weight: bold;
           margin: 5px 0px;
       }
-      #tray, #pulseaudio, #network, #battery, #custom-headset {
+      #tray, #pulseaudio, #network, #battery, #custom-headset,#custom-mouse {
           color: #${colors.base05};
           border-radius: 10px 24px 10px 24px;
           padding: 0 20px;

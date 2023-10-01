@@ -7,6 +7,8 @@
   imports = [
     ./hardware-configuration.nix
     ./nvidia.nix
+    ./razer.nix
+    ./networking.nix
     ../shared
     ../shared/desktop-enviroments/hyprland.nix
 
@@ -20,7 +22,6 @@
   # System
   networking.hostName = "sirius";
   services.tailscale.enable = true;
-  # nixpkgs.overlays = [ inputs.nix-alien.overlays.default ];
   nixpkgs.overlays = [outputs.overlays.additions];
   # Gaming - Should be moved to home
   programs.steam = {
@@ -31,9 +32,7 @@
     mangohud # FPS Overlay
     wisenet-viewer
     blueberry
-    # nix-alien
   ];
-  # programs.nix-ld.enable = true;
 
   environment.shellAliases = {
     nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#sirius";
