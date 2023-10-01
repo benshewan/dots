@@ -8,7 +8,7 @@
   imports = [
     ./hardware-configuration.nix
     ../shared
-    ../shared/desktop-enviroments/kde.nix
+    ../shared/desktop-enviroments/gnome.nix
     inputs.nixos-hardware.nixosModules.dell-xps-15-9560-intel
   ];
 

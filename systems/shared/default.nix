@@ -48,6 +48,8 @@ in {
     };
   };
 
+  networking.networkmanager.enable = true;
+
   # Firmware / Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
   hardware.enableAllFirmware = true;

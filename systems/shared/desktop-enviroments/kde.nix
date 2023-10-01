@@ -4,9 +4,8 @@
   # Default DE
   services.xserver.displayManager.defaultSession = "plasmawayland";
   # Login Manager
-  services.xserver.displayManager.gdm = {
+  services.xserver.displayManager.sddm = {
     enable = true;
-    wayland = true;
   };
 
   # Disable certain defaults for KDE
@@ -27,12 +26,12 @@
   ];
 
   # Enable xdg portal
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-kde
-    ];
-  };
+  # xdg.portal = {
+  #   enable = true;
+  #   extraPortals = with pkgs; [
+  #     xdg-desktop-portal-kde
+  #   ];
+  # };
 
   # KDE Connect plus some magic to get chromium browser integration working
   programs.kdeconnect.enable = true;
