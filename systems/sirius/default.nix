@@ -10,7 +10,7 @@
     ./razer.nix
     ./networking.nix
     ../shared
-    ../shared/desktop-enviroments/kde.nix
+    ../shared/desktop-enviroments/hyprland.nix
 
     # Hardware
     inputs.nixos-hardware.nixosModules.common-pc

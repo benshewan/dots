@@ -46,20 +46,15 @@
 #   };
 # };
 {
-  programs.waybar.enable = true;
-  programs.hyprland = {
+  programs.hyprland.enable = true;
+  services.xserver.displayManager.sddm = {
     enable = true;
-  };
-  services.xserver.displayManager.gdm = {
-    enable = true;
-    wayland = true;
+    # wayland = true;
   };
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
 
   environment.systemPackages =
     (with pkgs; [
-      bluetuith # TUI Bluetooth manager
-
       # Dolphin and assorted dependencies for it
       taglib
       ffmpegthumbnailer
