@@ -10,7 +10,7 @@
     ./razer.nix
     ./networking.nix
     ../shared
-    ../shared/desktop-enviroments/hyprland.nix
+    ../shared/desktop-enviroments/kde.nix
 
     # Hardware
     inputs.nixos-hardware.nixosModules.common-pc
@@ -30,7 +30,7 @@
   };
   environment.systemPackages = with pkgs; [
     mangohud # FPS Overlay
-    wisenet-viewer
+    # wisenet-viewer
     blueberry
   ];
 
