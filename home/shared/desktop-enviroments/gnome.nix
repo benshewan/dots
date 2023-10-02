@@ -25,12 +25,12 @@ in rec {
     appindicator
     gsconnect
   ];
-  
+
   xdg.mimeApps.associations.added = {
-      # GSconnect
-      "x-scheme-handler/sms"="org.gnome.Shell.Extensions.GSConnect.desktop";
-      "x-scheme-handler/tel"="org.gnome.Shell.Extensions.GSConnect.desktop";
-    };
+    # GSconnect
+    "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+    "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
+  };
 
   # GNOME Settings
   dconf.settings = with lib.hm.gvariant; {
@@ -48,7 +48,7 @@ in rec {
       ];
     };
 
-    # Just Perfection COnfiguration
+    # Just Perfection Configuration
     "org/gnome/shell/extensions/just-perfection" = {
       accessibility-menu = false;
       show-apps-button = false;
@@ -74,6 +74,9 @@ in rec {
     # Spotlight-like searching
     "org/gnome/shell/extensions/search-light".shortcut-search = ["<Ctrl>space"];
 
+    # Email
+    "org/gnome/Geary".images-trusted-domains = ["*"];
+
     # i3-like workspace indicator
     "org/gnome/shell/extensions/space-bar/behavior" = {
       show-empty-workspaces = false;
@@ -84,13 +87,20 @@ in rec {
     };
     "org/gnome/shell/extensions/dash-to-dock" = {
       hot-keys = false;
-      multi-monitor = true;
       intellihide-mode = "ALL_WINDOWS";
+      multi-monitor = true;
+      show-trash = false;
+      custom-background-color = true;
+      background-color = "rgb(${hexToRGBString "," colors.base01})";
     };
 
     # Window Tiling
     "org/gnome/mutter".edge-tiling = false;
-    "org/gnome/shell/extensions/pop-shell".tile-by-default = true;
+    "org/gnome/shell/extensions/forge" = {
+      focus-border-toggle = false;
+      preview-hint-enabled = false;
+      window-gap-size = mkUint32 2;
+    };
 
     # Nautilus configuration
     "org/gtk/gtk4/settings/file-chooser".sort-directories-first = true;

@@ -8,7 +8,7 @@
   imports = [
     ./hardware-configuration.nix
     ../shared
-    ../shared/desktop-enviroments/gnome.nix
+    ../shared/desktop-enviroments/kde.nix
     inputs.nixos-hardware.nixosModules.dell-xps-15-9560-intel
   ];
 
@@ -19,6 +19,7 @@
   services.tailscale.enable = true;
   environment.systemPackages = with pkgs; [
     moonlight-qt
+    libreoffice-fresh
   ];
 
   # Temp until full reformat
