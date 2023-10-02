@@ -1,4 +1,5 @@
 {config, ...}: {
+  services.xserver.videoDrivers = ["nvidia"];
   hardware.nvidia = {
     # Modesetting is needed for most wayland compositors
     modesetting.enable = true;
@@ -9,6 +10,8 @@
 
     # Enable the nvidia settings menu
     nvidiaSettings = false;
+
+    powerManagement.enable = true;
 
     # Can fix screen tearing on X11
     forceFullCompositionPipeline = false;

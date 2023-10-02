@@ -9,6 +9,7 @@
 in {
   imports = [
     ./waybar.nix
+    ./dunst.nix
     ./wofi.nix
   ];
 
@@ -29,6 +30,7 @@ in {
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
         "${pkgs.cliphist}/bin/wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
         "${pkgs.cliphist} --type image --watch ${lib.getExe pkgs.cliphist} store"
+        "${lib.getExe pkgs.dunst}"
         "${lib.getExe pkgs.waybar}"
         "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
         # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''

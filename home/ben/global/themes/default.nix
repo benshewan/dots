@@ -55,8 +55,8 @@ in {
 
   qt = {
     enable = true;
-    platformTheme = "gnome";
-    style.name = "adwaita-dark";
+    platformTheme = "gtk";
+    style.name = "gtk2";
     # style = {
     #   package = pkgs.catppuccin-kde.override { flavour = [ "mocha" ]; };
     #   name = "Catppuccin-Mocha-Blue";
