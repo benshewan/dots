@@ -21,6 +21,7 @@
     prismlauncher # Minecraft launcher
     remmina # Remote desktop client
     libreoffice-fresh
+    bitwarden
     # via # Keyboard Configurator
   ];
 

@@ -7,7 +7,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./networking.nix
+    # ./networking.nix
     ../shared
     ../shared/desktop-enviroments/gnome.nix
     inputs.nixos-hardware.nixosModules.common-pc
@@ -19,7 +19,7 @@
   networking.hostName = "lepus";
 
   # Low memory hurts FreeCore development
-  # Note: seems to cause reandom full systems freezes, presumably due to OOM
+  # Note: seems to cause reandom full systems freezes, presumably due to OOM Management
   # zramSwap.enable = true;
 
   nixpkgs.overlays = [outputs.overlays.additions];
@@ -29,7 +29,7 @@
   environment.systemPackages = with pkgs; [
     trayscale
     inkscape
-    wisenet-viewer
+    # wisenet-viewer
     nodejs
     mongodb-tools
     networkmanagerapplet

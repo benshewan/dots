@@ -15,7 +15,7 @@ in rec {
     user-themes
     dash-to-dock
     blur-my-shell
-    search-light
+    # search-light
     fuzzy-app-search
     just-perfection
     space-bar
@@ -72,7 +72,7 @@ in rec {
     "org/gnome/desktop/session".idle-delay = mkUint32 900;
 
     # Spotlight-like searching
-    "org/gnome/shell/extensions/search-light".shortcut-search = ["<Ctrl>space"];
+    # "org/gnome/shell/extensions/search-light".shortcut-search = ["<Ctrl>space"];
 
     # Email
     "org/gnome/Geary".images-trusted-domains = ["*"];
