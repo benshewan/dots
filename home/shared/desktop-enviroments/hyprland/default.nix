@@ -28,8 +28,8 @@ in {
       exec-once = [
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
-        "${pkgs.cliphist}/bin/wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
-        "${pkgs.cliphist} --type image --watch ${lib.getExe pkgs.cliphist} store"
+        "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
+        "${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${lib.getExe pkgs.cliphist} store"
         "${lib.getExe pkgs.dunst}"
         "${lib.getExe pkgs.waybar}"
         "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
@@ -191,7 +191,7 @@ in {
 
         # Wofi keybinds
         "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun -I DP-2"
-        "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | ${pkgs.cliphist}/bin/wl-copy"
+        "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | ${pkgs.wl-clipboard}/bin/wl-copy"
 
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
@@ -229,6 +229,10 @@ in {
         "float,title:^(Save As)$"
         "float,title:^(branchdialog)$"
         "float,title:^(Confirm to replace files)$"
+
+        # "float,title:^(Share)(.*)$"
+        # "stayfocused,title:^(Share)(.*)$"
+
         "float,title:^(File Operation Progress)$"
         "float,title:^(About Mozilla Thunderbird)$"
         "float,title:^(Picture-in-Picture)$"
