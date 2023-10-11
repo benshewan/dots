@@ -2,6 +2,7 @@
   pkgs,
   outputs,
   config,
+  lib,
   ...
 }: let
   # this line prevents hanging on network split
@@ -32,4 +33,20 @@ in {
     fsType = "cifs";
     options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
   };
+
+  # Services from Orion
+  networking.extraHosts = lib.concatMapStrings (x: "192.168.2.39 " + x + ".benshewan.dev\n") [
+    "plex"
+    "sonarr"
+    "radarr"
+    "prowlarr"
+    "overseerr"
+    "downloads"
+    "auth"
+    "tautulli"
+    "invite"
+    "portainer"
+    "files"
+    "admin"
+  ];
 }
