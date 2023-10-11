@@ -8,5 +8,6 @@
     ./flatpaks.nix
     ./spotify.nix
     ./virt-manager.nix
+    ./kdeconnect.nix
   ];
 }

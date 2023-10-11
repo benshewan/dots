@@ -49,9 +49,11 @@
   programs.hyprland.enable = true;
   services.xserver.displayManager.sddm = {
     enable = true;
-    # wayland = true;
   };
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
+  programs.seahorse.enable = true; # Manage Keys with a GUI
+
+  services.udisks2.enable = true; # Auto mount removable drives on connect
 
   environment.systemPackages =
     (with pkgs; [
@@ -69,6 +71,11 @@
       kio-extras
       breeze-icons
     ]);
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
+  };
 
   # KDE Connect plus some magic to get chromium browser integration working
   programs.kdeconnect.enable = true;

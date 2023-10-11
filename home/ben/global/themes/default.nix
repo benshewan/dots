@@ -55,11 +55,7 @@ in {
 
   qt = {
     enable = true;
-    platformTheme = "gtk";
-    style.name = "gtk2";
-    # style = {
-    #   package = pkgs.catppuccin-kde.override { flavour = [ "mocha" ]; };
-    #   name = "Catppuccin-Mocha-Blue";
-    # };
+    platformTheme = "gtk2";
+    style = "gtk2";
   };
 }

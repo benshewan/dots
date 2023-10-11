@@ -13,6 +13,13 @@ in {
     ./wofi.nix
   ];
 
+  home.packages = with pkgs; [
+    wl-clipboard
+    pavucontrol
+    grim
+    slurp
+  ];
+
   wayland.windowManager.hyprland = {
     enable = true;
 
@@ -26,10 +33,17 @@ in {
       ];
 
       exec-once = [
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+        # System
+        # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
-        "${pkgs.wl-clipboard}/bin/wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
-        "${pkgs.wl-clipboard}/bin/wl-paste --type image --watch ${lib.getExe pkgs.cliphist} store"
+        "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
+
+        # Clipboard
+        "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
+        "wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
+        "wl-paste --type image --watch ${lib.getExe pkgs.cliphist} store"
+
+        # Style
         "${lib.getExe pkgs.dunst}"
         "${lib.getExe pkgs.waybar}"
         "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
@@ -191,7 +205,7 @@ in {
 
         # Wofi keybinds
         "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun -I DP-2"
-        "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | ${pkgs.wl-clipboard}/bin/wl-copy"
+        "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
