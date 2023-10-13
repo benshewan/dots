@@ -83,6 +83,11 @@ in {
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
   };
 
+  "extension@tabliss.io" = {
+    installation_mode = "force_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
+  };
+
   # Website Specific Customizations
   # ----------------------------------------------------------------------------------
 
@@ -102,6 +107,21 @@ in {
   "jid1-xUfzOsOFlzSOXg@jetpack" = {
     installation_mode = "force_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/reddit-enhancement-suite/latest.xpi";
+  };
+
+  # Development
+  # ----------------------------------------------------------------------------------
+
+  # React Integration
+  "@react-devtools" = {
+    installation_mode = "force_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/react-devtools/latest.xpi";
+  };
+
+  # Redux Integration
+  "extension@redux.devtools" = {
+    installation_mode = "force_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/reduxdevtools/latest.xpi";
   };
 
   # Other
