@@ -3,5 +3,5 @@
     ./packages.nix
     ./programs
   ];
-  nixpkgs.overlays = [outputs.overlays.additions];
+  nixpkgs.overlays = [outputs.overlays.additions outputs.overlays.modifications];
 }
