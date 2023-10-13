@@ -29,6 +29,7 @@
   environment.systemPackages = with pkgs; [
     trayscale
     inkscape
+    ppsspp
     # wisenet-viewer
     nodejs
     mongodb-tools
