@@ -22,7 +22,6 @@
   # System
   networking.hostName = "sirius";
   services.tailscale.enable = true;
-  nixpkgs.overlays = [outputs.overlays.additions];
   # Gaming - Should be moved to home
   programs.steam = {
     enable = true;

@@ -23,7 +23,6 @@
   # Note: seems to cause random full systems freezes, presumably due to OOM Management
   zramSwap.enable = true;
 
-  nixpkgs.overlays = [outputs.overlays.additions];
   # Remote Management
   services.tailscale.enable = true;
   services.mongodb.enable = true;

@@ -2,6 +2,7 @@
   lib,
   pkgs,
   outputs,
+  inputs,
   ...
 }: let
   nixos-boot-src = pkgs.fetchFromGitHub {
@@ -104,6 +105,11 @@ in {
       options = "--delete-older-than 7d";
     };
   };
+  nixpkgs.overlays = [
+    outputs.overlays.additions
+    outputs.overlays.modifications
+    inputs.nur.overlay
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
