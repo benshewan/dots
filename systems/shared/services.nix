@@ -12,9 +12,16 @@
     };
 
     flatpak.enable = true;
-    printing.enable = true;
     openssh.enable = true;
     upower.enable = true;
+
+    printing.enable = true;
+    printing.drivers = [pkgs.foomatic-db-ppds-withNonfreeDb];
+    avahi = {
+      enable = true;
+      nssmdns = true;
+      openFirewall = true;
+    };
   };
 
   # Virtualization

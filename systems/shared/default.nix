@@ -66,11 +66,6 @@ in {
     reboot = "systemctl reboot";
   };
 
-  # Printing
-  environment.systemPackages = with pkgs; [
-    foomatic-db-ppds-withNonfreeDb
-  ];
-
   # Enviroment vars
   # environment.sessionVariables = rec {
   #   XDG_CACHE_HOME  = "$HOME/.cache";

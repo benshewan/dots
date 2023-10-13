@@ -7,6 +7,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    # Note: seems that having netowrk shares makes nautilus take forever to start
     # ./networking.nix
     ../shared
     ../shared/desktop-enviroments/gnome.nix
@@ -19,8 +20,8 @@
   networking.hostName = "lepus";
 
   # Low memory hurts FreeCore development
-  # Note: seems to cause reandom full systems freezes, presumably due to OOM Management
-  # zramSwap.enable = true;
+  # Note: seems to cause random full systems freezes, presumably due to OOM Management
+  zramSwap.enable = true;
 
   nixpkgs.overlays = [outputs.overlays.additions];
   # Remote Management
