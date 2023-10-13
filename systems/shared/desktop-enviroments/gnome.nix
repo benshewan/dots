@@ -32,7 +32,7 @@
       yelp # help app
       gnome-font-viewer # manage fonts
       gnome-logs # view systemd logs
-      totem # video player
+      # totem # video player
       tali # poker game
       iagno # go game
       hitori # sudoku game
