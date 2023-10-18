@@ -42,7 +42,7 @@
 
   programs.git = {
     enable = true;
-    userName = "benshewan";
+    userName = "Ben Shewan";
     userEmail = "benbshewan@gmail.com";
     extraConfig = {
       pull.rebase = false;
