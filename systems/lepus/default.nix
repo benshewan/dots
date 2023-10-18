@@ -25,14 +25,11 @@
 
   # Remote Management
   services.tailscale.enable = true;
-  services.mongodb.enable = true;
   environment.systemPackages = with pkgs; [
     trayscale
     inkscape
     ppsspp
     # wisenet-viewer
-    nodejs
-    mongodb-tools
     networkmanagerapplet
   ];
 
