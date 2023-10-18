@@ -2,6 +2,7 @@
   lib,
   pkgs,
   outputs,
+  inputs,
   ...
 }: let
   nixos-boot-src = pkgs.fetchFromGitHub {
@@ -66,11 +67,6 @@ in {
     reboot = "systemctl reboot";
   };
 
-  # Printing
-  environment.systemPackages = with pkgs; [
-    foomatic-db-ppds-withNonfreeDb
-  ];
-
   # Enviroment vars
   # environment.sessionVariables = rec {
   #   XDG_CACHE_HOME  = "$HOME/.cache";
@@ -109,6 +105,11 @@ in {
       options = "--delete-older-than 7d";
     };
   };
+  nixpkgs.overlays = [
+    outputs.overlays.additions
+    outputs.overlays.modifications
+    inputs.nur.overlay
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

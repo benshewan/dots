@@ -39,12 +39,10 @@
     defaultNixOSModules = [
       {nix.registry.nixpkgs.flake = nixpkgs;}
       {nix.nixPath = ["nixpkgs=configflake:nixpkgs"];}
-      {nixpkgs.overlays = [nur.overlay];}
     ];
     defaultHomeManagerModules = [
       {nix.registry.nixpkgs.flake = nixpkgs;}
       {home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}";}
-      {nixpkgs.overlays = [nur.overlay];}
     ];
   in {
     inherit lib username userDescription flake-path;

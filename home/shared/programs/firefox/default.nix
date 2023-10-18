@@ -5,7 +5,7 @@
   ...
 }: let
   # userChrome.js loader
-  firefox-userchromejs = pkgs.fetchFromGitHub {
+  userchromejs-scripts = pkgs.fetchFromGitHub {
     owner = "xiaoxiaoflood";
     repo = "firefox-scripts";
     rev = "b013243f1916576166a02d816651c2cc6416f63e";
@@ -27,15 +27,6 @@
       rev = "67cc89691b17bc09f110efa7fd6011c19d763597";
       sha256 = "sha256-SnSXskFvJP1OMFuDdhuxxbFpQKzSz3YLJyoxWscmDSA=";
     });
-
-  # Add userChrome.js loader to firefox developer edition (Warning: Will force firefox to recompile!)
-  firefoxPackage = pkgs.firefox-devedition-unwrapped.overrideAttrs (old: {
-    postInstall = ''
-      mkdir -p $out/lib/firefox/browser/defaults/preferences
-      cp ${firefox-userchromejs}/installation-folder/config.js $out/lib/firefox/config.js
-      cp ${firefox-userchromejs}/installation-folder/config-prefs.js $out/lib/firefox/browser/defaults/preferences/config-prefs.js
-    '';
-  });
 in {
   # Custom userChrome.js scripts
   home.file.".mozilla/firefox/dev-edition-default/chrome/utils" = {
@@ -43,12 +34,12 @@ in {
     recursive = true;
   };
   # userChrome.js manager
-  home.file.".mozilla/firefox/dev-edition-default/chrome/rebuild_userChrome.uc.js".source = "${firefox-userchromejs}/chrome/rebuild_userChrome.uc.js";
+  home.file.".mozilla/firefox/dev-edition-default/chrome/rebuild_userChrome.uc.js".source = "${userchromejs-scripts}/chrome/rebuild_userChrome.uc.js";
   # Private Tab
-  home.file.".mozilla/firefox/dev-edition-default/chrome/privateTab.uc.js".source = "${firefox-userchromejs}/chrome/privateTab.uc.js";
+  home.file.".mozilla/firefox/dev-edition-default/chrome/privateTab.uc.js".source = "${userchromejs-scripts}/chrome/privateTab.uc.js";
   # Mouse gestures
   home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures" = {
-    source = "${firefox-userchromejs}/chrome/mouseGestures";
+    source = "${userchromejs-scripts}/chrome/mouseGestures";
     recursive = true;
   };
   home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures.uc.js".source = ./mouseGestures.uc.js;
@@ -66,7 +57,7 @@ in {
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox firefoxPackage {
+    package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {
       # Enable Native Messaging Hosts
       cfg.enablePlasmaBrowserIntegration = true;
       # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
@@ -78,7 +69,7 @@ in {
         DisableFirefoxStudies = true;
         DisablePocket = true;
         DisableTelemetry = true;
-        DisableFirefoxAccounts = false;
+        # DisableFirefoxAccounts = false;
         DisableSetDesktopBackground = true;
         DisableFeedbackCommands = true;
         DisableProfileImport = true;
