@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  outputs,
+  ...
+}: {
   # List packages installed in system profile
   environment.systemPackages = with pkgs; [
     # Terminal Commands
@@ -13,7 +17,6 @@
     clipboard-jh
     wget
     playerctl
-    android-tools
 
     # nix stuff
     nix-prefetch-github
@@ -42,6 +45,7 @@
     dconf.enable = true; # Needed for many GTK apps (like GDM)
     xwayland.enable = true; # Enable XWayland support
     fish.enable = true;
+    adb.enable = true;
     # Allows nix shells to be auto run when entering the directory
     direnv = {
       package = pkgs.direnv;
@@ -54,6 +58,8 @@
       };
     };
   };
+
+  users.users.${outputs.username}.extraGroups = ["adbusers"];
 
   # Enable wayland support for chromium and most electron apps
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
