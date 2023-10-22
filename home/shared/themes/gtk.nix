@@ -6,7 +6,7 @@
   ...
 }: let
   inherit (inputs.nix-colors.lib.contrib {inherit pkgs;}) gtkThemeFromScheme;
-in rec {
+in {
   gtk = {
     enable = true;
     # font = {
@@ -19,7 +19,7 @@ in rec {
       size = 32;
     };
     theme = lib.mkDefault {
-      name = "${config.gtk.theme.name}";
+      name = "${config.colorScheme.slug}";
       package = gtkThemeFromScheme {scheme = config.colorScheme;};
     };
     iconTheme = lib.mkDefault {
@@ -30,14 +30,14 @@ in rec {
   services.xsettingsd = {
     enable = true;
     settings = {
-      "Net/ThemeName" = "${gtk.theme.name}";
-      "Net/IconThemeName" = "${gtk.iconTheme.name}";
+      "Net/ThemeName" = "${config.gtk.theme.name}";
+      "Net/IconThemeName" = "${config.gtk.iconTheme.name}";
     };
   };
-  home.file.".config/gtk-4.0/gtk.css".source = "${gtk.theme.package}/share/themes/${gtk.theme.name}/gtk-4.0/gtk.css";
-  home.file.".config/gtk-4.0/gtk-dark.css".source = "${gtk.theme.package}/share/themes/${gtk.theme.name}/gtk-4.0/gtk-dark.css";
+  home.file.".config/gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";
+  home.file.".config/gtk-4.0/gtk-dark.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk-dark.css";
   home.file.".config/gtk-4.0/assets" = {
     recursive = true;
-    source = "${gtk.theme.package}/share/themes/${gtk.theme.name}/gtk-4.0/assets";
+    source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/assets";
   };
 }
