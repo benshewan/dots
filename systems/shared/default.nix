@@ -17,11 +17,13 @@
     theme = "load_unload";
   };
 in {
-  imports = [
-    ./packages.nix
-    ./services.nix
-    ./hardware.nix
-  ];
+  imports =
+    [
+      ./packages.nix
+      ./services.nix
+      ./hardware.nix
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   # Boot Configuration
   boot = {
@@ -105,11 +107,7 @@ in {
       options = "--delete-older-than 7d";
     };
   };
-  nixpkgs.overlays = [
-    outputs.overlays.additions
-    outputs.overlays.modifications
-    inputs.nur.overlay
-  ];
+  nixpkgs.overlays = builtins.attrValues outputs.overlays ++ [inputs.nur.overlay];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

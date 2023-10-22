@@ -25,12 +25,20 @@ in {
 
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     settings = {
-      # Bad - move to seperate home configurations
-      monitor = [
-        "DP-2, 1920x1080@75,1920x0,1"
-        "HDMI-A-2, 1920x1080@75,0x0,1"
-        ",preferred,auto,auto"
-      ];
+      monitor = map (
+        m: let
+          resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+          position = "${toString m.x}x${toString m.y}";
+        in "${m.name},${
+          if m.enabled
+          then "${resolution},${position},1"
+          else "disable"
+        }"
+      ) (config.monitors);
+
+      workspace = map (
+        m: "${m.name},${m.workspace}"
+      ) (lib.filter (m: m.enabled && m.workspace != null) config.monitors);
 
       exec-once = [
         # System

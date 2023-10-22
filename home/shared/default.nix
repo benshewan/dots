@@ -3,13 +3,11 @@
   inputs,
   ...
 }: {
-  imports = [
-    ./programs
-    ./themes
-  ];
-  nixpkgs.overlays = [
-    outputs.overlays.additions
-    outputs.overlays.modifications
-    inputs.nur.overlay
-  ];
+  imports =
+    [
+      ./programs
+      ./themes
+    ]
+    ++ (builtins.attrValues outputs.homeManagerModules);
+  nixpkgs.overlays = builtins.attrValues outputs.overlays ++ [inputs.nur.overlay];
 }
