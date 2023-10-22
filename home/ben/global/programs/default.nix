@@ -11,14 +11,15 @@
     jetbrains.webstorm
 
     # Chromium browser of choice
-    (vivaldi.override {
-      proprietaryCodecs = true;
-      enableWidevine = true;
-      commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
-    })
+    # Note: Should replace with thorium when that becomes available
+    chromium
+    # (vivaldi.override {
+    #   proprietaryCodecs = true;
+    #   enableWidevine = true;
+    #   commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
+    # })
 
     # plex-media-player # Plex Player (shitty TV version)
-    prismlauncher # Minecraft launcher
     remmina # Remote desktop client
     libreoffice-fresh
     bitwarden

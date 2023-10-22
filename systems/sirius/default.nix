@@ -30,6 +30,7 @@
   };
   environment.systemPackages = with pkgs; [
     mangohud # FPS Overlay
+    prismlauncher # Minecraft launcher
     # wisenet-viewer
     blueberry
   ];
