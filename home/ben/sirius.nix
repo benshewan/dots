@@ -16,9 +16,4 @@
       wlrobs
     ];
   };
-
-  qt = {
-    platformTheme = lib.mkForce "kde";
-    # style.name = "gtk2";
-  };
 }

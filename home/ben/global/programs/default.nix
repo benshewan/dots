@@ -22,11 +22,21 @@
     remmina # Remote desktop client
     libreoffice-fresh
     bitwarden
+    bottles
     # via # Keyboard Configurator
   ];
 
   programs.java = {
     enable = true;
     package = pkgs.jdk17;
+  };
+
+  programs.git = {
+    enable = true;
+    userName = "Ben Shewan";
+    userEmail = "benbshewan@gmail.com";
+    extraConfig = {
+      pull.rebase = false;
+    };
   };
 }

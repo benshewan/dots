@@ -4,8 +4,8 @@
   ...
 }: {
   imports = [
-    ./packages.nix
     ./programs
+    ./themes
   ];
   nixpkgs.overlays = [
     outputs.overlays.additions
