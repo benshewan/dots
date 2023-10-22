@@ -8,8 +8,9 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
     nix-colors.url = "github:misterio77/nix-colors";
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
     flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
     plasma-manager = {
       url = "github:pjones/plasma-manager";

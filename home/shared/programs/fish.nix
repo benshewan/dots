@@ -1,14 +1,11 @@
 {pkgs, ...}: {
-  programs.fish = {
-    enable = true;
-  };
-
   programs = {
     direnv = {
       enable = true;
       enableBashIntegration = true;
       nix-direnv.enable = true;
     };
+    fish.enable = true;
     bash.enable = true; # see note on other shells below
   };
 

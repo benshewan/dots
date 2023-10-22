@@ -1,8 +1,12 @@
 {
   pkgs,
   lib,
+  inputs,
+  config,
   ...
-}: {
+}: let
+  extensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
+in {
   home.sessionVariables = {EDITOR = "codium";};
   programs.vscode = {
     enable = true;
@@ -17,6 +21,7 @@
       pkief.material-product-icons
       streetsidesoftware.code-spell-checker
       mkhl.direnv
+      # extensions.vscode-marketplace.golf1052.base16-generator
     ];
     userSettings = {
       # General Config
