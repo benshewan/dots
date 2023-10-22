@@ -1,12 +1,29 @@
-{pkgs, ...}: {
-  # KDEConnect user service
-  systemd.user.services.kdeconnect = {
-    Unit.Description = "KDEConnect Service";
-    Service = {
-      Type = "simple";
-      ExecStart = "${pkgs.kdeconnect}/bin/kdeconnect-indicator";
-      TimeoutStopSec = 5;
+{...}: {
+  xdg.desktopEntries = {
+    "org.kde.kdeconnect.sms" = {
+      exec = "";
+      name = "KDE Connect SMS";
+      settings.NoDisplay = "true";
     };
-    Install.WantedBy = ["graphical-session.target"];
+    "org.kde.kdeconnect.nonplasma" = {
+      exec = "";
+      name = "KDE Connect Indicator";
+      settings.NoDisplay = "true";
+    };
+    "org.kde.kdeconnect.app" = {
+      exec = "";
+      name = "KDE Connect";
+      settings.NoDisplay = "true";
+    };
+    "org.kde.kdeconnect_open" = {
+      exec = "";
+      name = "Open on connected device via KDE Connect";
+      settings.NoDisplay = "true";
+    };
+  };
+
+  services.kdeconnect = {
+    enable = true;
+    indicator = true;
   };
 }
