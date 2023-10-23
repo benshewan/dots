@@ -1,16 +1,24 @@
-{outputs, ...}: {
+{
+  outputs,
+  inputs,
+  ...
+}: {
   imports = [
     ../../shared
     ./programs
-    ./themes
   ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
+  # Set Color Theme
+  colorScheme = inputs.nix-colors.colorSchemes.catppuccin-mocha;
+
+  # Allow unfree software
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.allowUnfreePredicate = _: true;
 
+  # Common Aliases
   home.shellAliases = {
     sudo = "sudo -E";
     sudopath = "sudo env PATH=$PATH";

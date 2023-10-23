@@ -48,6 +48,9 @@
   in {
     inherit lib username userDescription flake-path;
 
+    nixosModules = import ./modules/nixos;
+    homeManagerModules = import ./modules/home-manager;
+
     packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
     overlays = import ./overlays {inherit inputs;};
 
