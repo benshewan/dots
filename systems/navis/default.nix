@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ../shared
@@ -16,4 +20,21 @@
 
   # Remote management of Navis
   services.tailscale.enable = true;
+
+  # Power management
+  services.power-profiles-daemon.enable = true;
+
+  # Maybe needed for Thunderbolt - not sure yet
+  # services.hardware.bolt.enable = true;
+
+  # Need to set regulatory domain for AMD RZ616 wifi card
+  # hardware.wirelessRegulatoryDatabase = true;
+  #  boot.extraModprobeConfig = ''
+  #   options cfg80211 ieee80211_regdom="CA"
+  # '';
+
+  # Audio Configuration https://github.com/ceiphr/ee-framework-presets
+  environment.systemPackages = with pkgs; [
+    easyeffects
+  ];
 }
