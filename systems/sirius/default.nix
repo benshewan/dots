@@ -34,9 +34,4 @@
     # wisenet-viewer
     blueberry
   ];
-
-  environment.shellAliases = {
-    nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#sirius";
-    home-switch = "home-manager switch --flake ${outputs.flake-path}#ben@sirius";
-  };
 }

@@ -3,6 +3,7 @@
   pkgs,
   outputs,
   inputs,
+  config,
   ...
 }: let
   nixos-boot-src = pkgs.fetchFromGitHub {
@@ -67,6 +68,10 @@ in {
   programs.command-not-found.enable = true;
   environment.shellAliases = {
     reboot = "systemctl reboot";
+    nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#${config.networking.hostName}";
+    home-switch = "home-manager switch --flake ${outputs.flake-path}#${outputs.username}@${config.networking.hostName}";
+  };
+  environment.shellAliases = {
   };
 
   # Enviroment vars

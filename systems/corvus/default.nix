@@ -19,7 +19,6 @@
   services.tailscale.enable = true;
   environment.systemPackages = with pkgs; [
     moonlight-qt
-    libreoffice-fresh
   ];
 
   # Temp until full reformat
@@ -31,10 +30,5 @@
       device = "nodev";
       efiSupport = true;
     };
-  };
-
-  environment.shellAliases = {
-    nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#corvus";
-    home-switch = "home-manager switch --flake ${outputs.flake-path}#ben@corvus";
   };
 }

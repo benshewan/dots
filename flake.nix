@@ -62,7 +62,7 @@
         modules = [./systems/sirius] ++ defaultNixOSModules;
         specialArgs = {inherit inputs outputs;};
       };
-      # Personal laptop
+      # Personal laptop - Old Dell
       corvus = lib.nixosSystem {
         modules = [./systems/corvus] ++ defaultNixOSModules;
         specialArgs = {inherit inputs outputs;};
@@ -70,6 +70,11 @@
       # Work desktop
       lepus = lib.nixosSystem {
         modules = [./systems/lepus] ++ defaultNixOSModules;
+        specialArgs = {inherit inputs outputs;};
+      };
+      # Personal laptop - Framework 13 AMD
+      navis = lib.nixosSystem {
+        modules = [./systems/navis] ++ defaultNixOSModules;
         specialArgs = {inherit inputs outputs;};
       };
     };
@@ -92,6 +97,11 @@
       };
       "ben@lepus" = lib.homeManagerConfiguration {
         modules = [./home/ben/lepus.nix] ++ defaultHomeManagerModules;
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {inherit inputs outputs;};
+      };
+      "ben@navis" = lib.homeManagerConfiguration {
+        modules = [./home/ben/navis.nix] ++ defaultHomeManagerModules;
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };

@@ -7,7 +7,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    # Note: seems that having netowrk shares makes nautilus take forever to start
+    # Note: seems that having network shares makes nautilus take forever to start
     # ./networking.nix
     ../shared
     ../shared/desktop-enviroments/gnome.nix
@@ -28,7 +28,6 @@
   environment.systemPackages = with pkgs; [
     trayscale
     inkscape
-    ppsspp
     # wisenet-viewer
     networkmanagerapplet
   ];
@@ -78,10 +77,4 @@
   #     enable = true;
   #     enableExtensionPack = true;
   #   };
-
-  # Machine specific aliases
-  environment.shellAliases = {
-    nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#lepus";
-    home-switch = "home-manager switch --flake ${outputs.flake-path}#ben@lepus";
-  };
 }
