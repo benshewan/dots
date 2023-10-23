@@ -26,12 +26,6 @@ in rec {
     gsconnect
   ];
 
-  xdg.mimeApps.associations.added = {
-    # GSconnect
-    "x-scheme-handler/sms" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-    "x-scheme-handler/tel" = "org.gnome.Shell.Extensions.GSConnect.desktop";
-  };
-
   # GNOME Settings
   dconf.settings = with lib.hm.gvariant; {
     "org/gnome/shell" = {
@@ -66,7 +60,7 @@ in rec {
       button-layout = "icon:close";
     };
     "org/gnome/desktop/peripherals/touchpad".tap-to-click = true;
-    "org/gnome/desktop/wm/preferences".focus-mode = "sloppy";
+    # "org/gnome/desktop/wm/preferences".focus-mode = "sloppy";
 
     # Time before screen goes dark (seconds)
     "org/gnome/desktop/session".idle-delay = mkUint32 900;
