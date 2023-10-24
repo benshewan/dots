@@ -18,13 +18,13 @@
     theme = "load_unload";
   };
 in {
-  imports =
-    [
-      ./packages.nix
-      ./services.nix
-      ./hardware.nix
-    ]
-    ++ (builtins.attrValues outputs.nixosModules);
+  imports = [
+    ./packages.nix
+    ./services.nix
+    ./hardware.nix
+  ];
+  # Note, must have something to evaluate
+  # ++ (builtins.attrValues outputs.nixosModules);
 
   # Boot Configuration
   boot = {
