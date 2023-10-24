@@ -37,4 +37,7 @@
   environment.systemPackages = with pkgs; [
     easyeffects
   ];
+
+  # potential fix if encoutering the "white flashes" bug in bios 3.02
+  # boot.kernelParams = ["amdgpu.sg_display=0"];
 }
