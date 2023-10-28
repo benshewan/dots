@@ -59,7 +59,10 @@ in {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {
       # Enable Native Messaging Hosts
-      cfg.enablePlasmaBrowserIntegration = true;
+      nativeMessagingHosts = [
+        pkgs.plasma-browser-integration
+        # pkgs.gnomeExtensions.gsconnect
+      ];
       # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
       # extraNativeMessagingHosts = [ ]
       #   ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
@@ -69,7 +72,7 @@ in {
         DisableFirefoxStudies = true;
         DisablePocket = true;
         DisableTelemetry = true;
-        # DisableFirefoxAccounts = false;
+        DisableFirefoxAccounts = false;
         DisableSetDesktopBackground = true;
         DisableFeedbackCommands = true;
         DisableProfileImport = true;
@@ -110,6 +113,7 @@ in {
           + ''
             user_pref("browser.startup.page", 3); // browser should restore previous session
             user_pref("widget.gtk.ignore-bogus-leave-notify", 1); //fix for hover on drag (fixes sideberry tab drag)
+            user_pref("widget.use-xdg-desktop-portal", true); // tell firefox to use my XDG Portal
 
             // Firefox Gnome Theme Tweaks
             user_pref("gnomeTheme.extensions.tabCenterReborn", true);

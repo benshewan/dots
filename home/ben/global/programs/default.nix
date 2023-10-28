@@ -12,7 +12,8 @@
 
     # Chromium browser of choice
     # Note: Should replace with thorium when that becomes available
-    chromium
+    thorium
+    # mercury
     # (vivaldi.override {
     #   proprietaryCodecs = true;
     #   enableWidevine = true;

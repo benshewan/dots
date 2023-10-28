@@ -1,17 +1,53 @@
-{inputs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
   # Enables support for KDE Configuration
   imports = [inputs.plasma-manager.homeManagerModules.plasma-manager];
+  home.packages = with pkgs; [
+    # Styles
+    lightly-qt
+    (catppuccin-kde.override {
+      flavour = ["mocha"];
+      accents = ["blue"];
+      winDecStyles = ["classic"];
+    })
+    catppuccin-cursors
+    (catppuccin-gtk.override
+      {
+        accents = ["blue"];
+        size = "standard"; # compact
+        tweaks = [];
+        variant = "mocha";
+      })
+
+    # Extensions
+    # libsForQt5.bismuth
+  ];
 
   programs.plasma = {
     enable = true;
 
-    # Some high-level settings:
+    # set dolphin click settings
     workspace.clickItemTo = "select";
 
     # hotkeys.commands."Launch Konsole" = {
     #   key = "Meta+Alt+K";
     #   command = "konsole";
     # };
+
+    # Theme
+    configFile.kcminputrc.Mouse.cursorTheme = "Breeze_Snow";
+    configFile.kdeglobals.KDE.widgetStyle = "Lightly";
+
+    # Mouse settings
+    configFile.kcminputrc.Mouse.X11LibInputXAccelProfileFlat = true;
+    configFile.kwinrc.MouseBindings.CommandAllWheel = "Maximize/Restore";
+    configFile.kwinrc.Windows.FocusPolicy = "FocusFollowsMouse";
+    # Navis Mouse settings
+    configFile.kcminputrc."Libinput.2362.628.PIXA3854:00 093A:0274 Touchpad".NaturalScroll = true;
+    configFile.kcminputrc."Libinput.2362.628.PIXA3854:00 093A:0274 Touchpad".TapToClick = true;
 
     # Some mid-level settings:
     # shortcuts = {
@@ -29,7 +65,14 @@
     # };
 
     # A low-level setting:
-    configFile."kdeglobals"."KDE"."widgetStyle" = "Lightly";
-    configFile."kdeglobals"."General"."BrowserApplication" = "firefox.desktop";
+    # configFile."kdeglobals"."General"."BrowserApplication" = "firefox.desktop";
+
+    # Colors?
+    # "kdeglobals"."WM"."activeBackground" = "30,30,46";
+    # "kdeglobals"."WM"."activeBlend" = "205,214,244";
+    # "kdeglobals"."WM"."activeForeground" = "205,214,244";
+    # "kdeglobals"."WM"."inactiveBackground" = "17,17,27";
+    # "kdeglobals"."WM"."inactiveBlend" = "166,173,200";
+    # "kdeglobals"."WM"."inactiveForeground" = "166,173,200";
   };
 }

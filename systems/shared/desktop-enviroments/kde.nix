@@ -4,7 +4,7 @@
   # Default DE
   services.xserver.displayManager.defaultSession = "plasmawayland";
   # Login Manager
-  services.xserver.displayManager.sddm = {
+  services.xserver.displayManager.gdm = {
     enable = true;
   };
 
@@ -21,16 +21,20 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    latte-dock # Fancy docks and panels for KDE
+    # latte-dock # Fancy docks and panels for KDE
   ];
 
+  environment.sessionVariables = {
+    GTK_USE_PORTAL = "1";
+  };
+
   # Enable xdg portal
-  # xdg.portal = {
-  #   enable = true;
-  #   extraPortals = with pkgs; [
-  #     xdg-desktop-portal-kde
-  #   ];
-  # };
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-kde
+    ];
+  };
 
   # KDE Connect plus some magic to get chromium browser integration working
   programs.kdeconnect.enable = true;

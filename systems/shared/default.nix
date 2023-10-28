@@ -35,8 +35,8 @@ in {
     initrd.verbose = false;
     plymouth = {
       enable = true;
-      themePackages = [nixos-boot];
-      theme = "load_unload";
+      # themePackages = [nixos-boot];
+      # theme = "load_unload";
     };
 
     # Systemd-boot
@@ -65,13 +65,11 @@ in {
   environment.localBinInPath = true;
 
   # Shell
-  programs.command-not-found.enable = true;
+  # programs.command-not-found.enable = true;
   environment.shellAliases = {
     reboot = "systemctl reboot";
     nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#${config.networking.hostName}";
     home-switch = "home-manager switch --flake ${outputs.flake-path}#${outputs.username}@${config.networking.hostName}";
-  };
-  environment.shellAliases = {
   };
 
   # Enviroment vars

@@ -8,6 +8,14 @@
   extensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
 in {
   home.sessionVariables = {EDITOR = "codium";};
+
+  xdg.desktopEntries = {
+    "codium" = {
+      name = "VSCodium";
+      exec = "codium --enable-features=UseOzonePlatform --ozone-platform=wayland %F";
+    };
+  };
+
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium.override {
@@ -28,6 +36,8 @@ in {
       files.autoSave = "onFocusChange";
       editor.formatOnSave = true;
       explorer.confirmDelete = false;
+      extensions.autoCheckUpdates = false;
+      update.mode = "none";
 
       # Theme Config
       workbench.colorTheme = "Catppuccin Mocha";

@@ -19,7 +19,7 @@ in {
       size = 32;
     };
     theme = lib.mkDefault {
-      name = "${config.colorScheme.slug}";
+      name = config.colorScheme.slug;
       package = gtkThemeFromScheme {scheme = config.colorScheme;};
     };
     iconTheme = lib.mkDefault {
@@ -30,8 +30,8 @@ in {
   services.xsettingsd = {
     enable = true;
     settings = {
-      "Net/ThemeName" = "${config.gtk.theme.name}";
-      "Net/IconThemeName" = "${config.gtk.iconTheme.name}";
+      "Net/ThemeName" = config.gtk.theme.name;
+      "Net/IconThemeName" = config.gtk.iconTheme.name;
     };
   };
   home.file.".config/gtk-4.0/gtk.css".source = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0/gtk.css";

@@ -47,7 +47,6 @@
   vulkan-loader,
   xdg-utils,
   xorg,
-  fetchFromGitHub,
 }:
 stdenv.mkDerivation rec {
   pname = "mercury-browser";
@@ -137,17 +136,10 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  postInstall = let
-    customjs-loader = fetchFromGitHub {
-      owner = "xiaoxiaoflood";
-      repo = "firefox-scripts";
-      rev = "b013243f1916576166a02d816651c2cc6416f63e";
-      sha256 = "sha256-Zp1pRMqgAM3Xh3JCkAC0hWp2Gl2phkyAwJ8KB2tA9jE=";
-    };
-  in ''
+  postInstall = ''
     mkdir -p $out/lib/firefox/browser/defaults/preferences
-     cp ${customjs-loader}/installation-folder/config.js $out/lib/firefox/config.js
-     cp ${customjs-loader}/installation-folder/config-prefs.js $out/lib/firefox/browser/defaults/preferences/config-prefs.js
+     cp ${src}/installation-folder/config.js $out/lib/firefox/config.js
+     cp ${src}/installation-folder/config-prefs.js $out/lib/firefox/browser/defaults/preferences/config-prefs.js
   '';
 
   meta = with lib; {
