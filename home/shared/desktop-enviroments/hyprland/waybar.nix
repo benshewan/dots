@@ -128,7 +128,7 @@ in {
         on-click = "pavucontrol";
       };
       "custom/headset" = {
-        format = "󰋋 {}";
+        format = "󰋋 {}%";
         interval = 5;
         on-click = "${pkgs.blueberry}/bin/blueberry";
         exec = "${outputs.flake-path}/scripts/get_battery_headset";
