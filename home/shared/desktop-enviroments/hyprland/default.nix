@@ -49,6 +49,7 @@ in {
         # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
         "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
+        "${pkgs.nm-tray}/bin/nm-tray"
 
         # Clipboard
         "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
@@ -193,16 +194,16 @@ in {
         # "SUPER $mainMod CTRL, left, movetoworkspace, -1"
         # "SUPER $mainMod CTRL, right, movetoworkspace, +1"
         # same as above, but doesnt switch to the workspace
-        "SUPER $mainMod SHIFT, 1, movetoworkspacesilent, 1"
-        "SUPER $mainMod SHIFT, 2, movetoworkspacesilent, 2"
-        "SUPER $mainMod SHIFT, 3, movetoworkspacesilent, 3"
-        "SUPER $mainMod SHIFT, 4, movetoworkspacesilent, 4"
-        "SUPER $mainMod SHIFT, 5, movetoworkspacesilent, 5"
-        "SUPER $mainMod SHIFT, 6, movetoworkspacesilent, 6"
-        "SUPER $mainMod SHIFT, 7, movetoworkspacesilent, 7"
-        "SUPER $mainMod SHIFT, 8, movetoworkspacesilent, 8"
-        "SUPER $mainMod SHIFT, 9, movetoworkspacesilent, 9"
-        "SUPER $mainMod SHIFT, 0, movetoworkspacesilent, 10"
+        "SUPER SHIFT, 1, movetoworkspacesilent, 1"
+        "SUPER SHIFT, 2, movetoworkspacesilent, 2"
+        "SUPER SHIFT, 3, movetoworkspacesilent, 3"
+        "SUPER SHIFT, 4, movetoworkspacesilent, 4"
+        "SUPER SHIFT, 5, movetoworkspacesilent, 5"
+        "SUPER SHIFT, 6, movetoworkspacesilent, 6"
+        "SUPER SHIFT, 7, movetoworkspacesilent, 7"
+        "SUPER SHIFT, 8, movetoworkspacesilent, 8"
+        "SUPER SHIFT, 9, movetoworkspacesilent, 9"
+        "SUPER SHIFT, 0, movetoworkspacesilent, 10"
 
         # "SUPER,n,exec,~/.local/bin/lvimn"
         # "SUPER,e,exec, emacsclient -c -a 'emacs'"
@@ -216,7 +217,7 @@ in {
         "SUPER,f,exec, firefox"
 
         # Wofi keybinds
-        "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun -I DP-2"
+        "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun"
         "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
@@ -259,7 +260,7 @@ in {
       ];
 
       windowrulev2 = [
-        "opacity .85 .85,class:^(org.kde.dolphin)$"
+        # "opacity .85 .85,class:^(org.kde.dolphin)$"
         "float,class:^(pavucontrol)$"
         "float,class:^(file_progress)$"
         "float,class:^(confirm)$"
@@ -273,13 +274,22 @@ in {
         "float,title:^(branchdialog)$"
         "float,title:^(Confirm to replace files)$"
 
+        # Wifi Settings
+        "float,title:^(nm-tray)$"
+        "stayfocused,title:^(nm-tray)$"
+        "move onscreen cursor 0 5,title:^(nm-tray)$"
         # "float,title:^(Share)(.*)$"
         # "stayfocused,title:^(Share)(.*)$"
 
         "float,title:^(File Operation Progress)$"
         "float,title:^(About Mozilla Thunderbird)$"
         "float,title:^(Picture-in-Picture)$"
-        "float,title:^(Authentication Required — PolicyKit1 KDE Agent)$"
+
+        # Polkit Request
+        "float,title:^(Authentication Required)(.*)$"
+        "dimaround,title:^(Authentication Required)(.*)$"
+        "stayfocused,title:^(Authentication Required)(.*)$"
+
         "float,title:^(mpv)$"
         "opacity 1.0 1.0,class:^(wofi)$"
         "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
