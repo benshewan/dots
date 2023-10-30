@@ -59,10 +59,10 @@ in {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {
       # Enable Native Messaging Hosts
-      nativeMessagingHosts = [
-        pkgs.plasma-browser-integration
-        # pkgs.gnomeExtensions.gsconnect
-      ];
+      # nativeMessagingHosts = [
+      # pkgs.plasma-browser-integration
+      # pkgs.gnomeExtensions.gsconnect
+      # ];
       # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
       # extraNativeMessagingHosts = [ ]
       #   ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;

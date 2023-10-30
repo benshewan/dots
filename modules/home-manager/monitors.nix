@@ -29,6 +29,10 @@ in {
           type = types.int;
           default = 60;
         };
+        scale = mkOption {
+          type = types.float;
+          default = 1;
+        };
         x = mkOption {
           type = types.int;
           default = 0;

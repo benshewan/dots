@@ -10,7 +10,7 @@ in {
   imports = [
     ./waybar.nix
     ./dunst.nix
-    ./wofi.nix
+    ./wofi
   ];
 
   home.packages = with pkgs; [
@@ -25,16 +25,20 @@ in {
 
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     settings = {
-      monitor = map (
-        m: let
-          resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
-          position = "${toString m.x}x${toString m.y}";
-        in "${m.name},${
-          if m.enabled
-          then "${resolution},${position},1"
-          else "disable"
-        }"
-      ) (config.monitors);
+      monitor =
+        (map (
+          m: let
+            resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+            position = "${toString m.x}x${toString m.y}";
+            scale = toString m.scale;
+          in "${m.name},${
+            if m.enabled
+            then "${resolution},${position},${scale}"
+            else "disable"
+          }"
+        ) (config.monitors))
+        # set default for any random monitor
+        ++ [",preferred,auto,1"];
 
       workspace = map (
         m: "${m.name},${m.workspace}"
@@ -228,6 +232,23 @@ in {
         ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-"
         ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+"
       ];
+
+      bindl = lib.flatten (map (
+          m: let
+            resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+            position = "${toString m.x}x${toString m.y}";
+            scale = toString m.scale;
+          in
+            if m.name == "eDP-1"
+            then [
+              # Tell laptop screen to turn off if lid is closed
+              # ",switch:Lid Switch,exec,${lib.getExe pkgs.swaylock}"
+              ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'"
+              ", switch:on:Lid Switch,exec,hyprctl keyword monitor '${m.name}, disable'"
+            ]
+            else []
+        )
+        config.monitors);
 
       bindm = [
         # Mouse binds

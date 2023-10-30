@@ -6,12 +6,12 @@
   imports = [
     ./hardware-configuration.nix
     ../shared
-    ../shared/desktop-enviroments/kde.nix
+    ../shared/desktop-enviroments/hyprland.nix
     # inputs.nixos-hardware.nixosModules.framework
     inputs.nixos-hardware.nixosModules.common-cpu-amd
     inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
     inputs.nixos-hardware.nixosModules.common-gpu-amd
-    inputs.nixos-hardware.nixosModules.common-pc-laptop
+    # inputs.nixos-hardware.nixosModules.common-pc-laptop
     inputs.nixos-hardware.nixosModules.common-pc-laptop-ssd
   ];
 
@@ -28,25 +28,35 @@
   # Remote management of Navis
   services.tailscale.enable = true;
 
-  # Power management
-  # services.power-profiles-daemon.enable = true;
-  services.auto-cpufreq = {
+  # Auto Brightness
+  location.provider = "geoclue2";
+  services.clight = {
     enable = true;
     settings = {
-      charger = {
-        governor = "preformance";
-        scaling_min_freq = 3300000; # 800MHz
-        scaling_max_freq = 5100000; # 1GHz
-        turbo = "auto";
-      };
-      battery = {
-        governor = "powersave";
-        scaling_min_freq = 800000; # 800MHz
-        scaling_max_freq = 3300000; # 1GHz
-        turbo = "auto";
-      };
+      # dimmer.disabled = false;
     };
   };
+
+  # Power management
+  services.power-profiles-daemon.enable = true;
+  # services.tlp.enable = true;
+  # services.auto-cpufreq = {
+  #   enable = true;
+  #   settings = {
+  #     charger = {
+  #       governor = "preformance";
+  #       scaling_min_freq = 3300000; # 800MHz
+  #       scaling_max_freq = 5100000; # 1GHz
+  #       turbo = "auto";
+  #     };
+  #     battery = {
+  #       governor = "powersave";
+  #       scaling_min_freq = 800000; # 800MHz
+  #       scaling_max_freq = 3300000; # 1GHz
+  #       turbo = "auto";
+  #     };
+  #   };
+  # };
   # Maybe needed for Thunderbolt - not sure yet
   services.hardware.bolt.enable = true;
 
