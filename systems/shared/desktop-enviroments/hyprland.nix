@@ -47,8 +47,9 @@
 # };
 {
   programs.hyprland.enable = true;
-  services.xserver.displayManager.sddm = {
+  services.xserver.displayManager.gdm = {
     enable = true;
+    wayland = true;
   };
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
   programs.seahorse.enable = true; # Manage Keys with a GUI
