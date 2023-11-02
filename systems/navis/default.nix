@@ -32,6 +32,9 @@
     options cfg80211 ieee80211_regdom="CA"
   '';
 
+  # Additional power savings
+  powerManagement.powertop.enable = true;
+
   # For fingerprint support
   services.fprintd.enable = lib.mkDefault true;
 

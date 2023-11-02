@@ -47,7 +47,7 @@ in {
         enable = true;
         editor = false;
         consoleMode = "auto";
-        configurationLimit = 100;
+        configurationLimit = 25;
       };
     };
   };
@@ -106,7 +106,7 @@ in {
     settings.auto-optimise-store = true;
     gc = {
       automatic = true;
-      dates = "weekly";
+      # dates = "weekly";
       options = "--delete-older-than 7d";
     };
   };

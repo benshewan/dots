@@ -10,6 +10,8 @@ in {
   imports = [
     ./waybar.nix
     ./dunst.nix
+    ./swaylock.nix
+    ./swayidle.nix
     ./wofi
   ];
 
@@ -48,8 +50,9 @@ in {
         # System
         # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
         "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+        "${lib.getExe config.services.swayidle.package}"
         "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
-        "${pkgs.nm-tray}/bin/nm-tray"
+        # "${pkgs.nm-tray}/bin/nm-tray" # Not working
 
         # Clipboard
         "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
@@ -60,7 +63,6 @@ in {
         "${lib.getExe pkgs.dunst}"
         "${lib.getExe pkgs.waybar}"
         "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
-        # ''swayidle -w timeout 1800 'swaylock -f -i ~/photos/wallpapers/wallpaper.png' timeout 1805 'swaymsg "output * dpms off"' resume 'swaymsg "output * dpms on"' before-sleep "swaylock -f -i ~/photos/wallpapers/wallpaper.png"''
         "hyprctl setcursor ${config.gtk.cursorTheme.name} ${lib.strings.floatToString config.gtk.cursorTheme.size}"
         # "swaync"
       ];
@@ -84,6 +86,10 @@ in {
         };
       };
 
+      gestures = {
+        workspace_swipe = true;
+      };
+
       general = {
         gaps_in = 4;
         gaps_out = 8;
@@ -96,7 +102,6 @@ in {
 
       decoration = {
         rounding = 10;
-        multisample_edges = true;
         shadow_ignore_window = true;
         drop_shadow = true;
         shadow_range = 15;
@@ -218,39 +223,53 @@ in {
 
         # Wofi keybinds
         "ALT,space,exec,${lib.getExe pkgs.wofi} --show drun"
-        "SUPER, V, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
+        "SUPER, v, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.wofi} --dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
         # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
         # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
         # "SUPER $mainMod SHIFT,B,exec, killall -3 eww & sleep 1 && ~/.config/hypr/themes/winter/eww/launch_bar"
-
-        # Tell wireplumber to toggle mute volume on mute key
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
       ];
 
+      # Repeat if held
       binde = [
         # Tell wireplumber to raise/lower volume with volume keys
         ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-"
         ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+"
+
+        # Control display brightness
+        ",XF86MonBrightnessDown,exec, brillo -q -U 5"
+        ",XF86MonBrightnessUp,exec,brillo -q -A 5"
       ];
 
-      bindl = lib.flatten (map (
-          m: let
-            resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
-            position = "${toString m.x}x${toString m.y}";
-            scale = toString m.scale;
-          in
-            if m.name == "eDP-1"
-            then [
-              # Tell laptop screen to turn off if lid is closed
-              # ",switch:Lid Switch,exec,${lib.getExe pkgs.swaylock}"
-              ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'"
-              ", switch:on:Lid Switch,exec,hyprctl keyword monitor '${m.name}, disable'"
-            ]
-            else []
-        )
-        config.monitors);
+      # Run even when screen locked
+      bindl =
+        [
+          # Set Mutli Media Keys
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioPlay, exec, playerctl play-pause"
+          ", XF86AudioNext, exec, playerctl next"
+          ", XF86AudioPrev, exec, playerctl previous"
+          "SUPER,l,exec,${lib.getExe config.programs.swaylock.package} -f"
+        ]
+        ++ lib.flatten (map (
+            m: let
+              resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
+              position = "${toString m.x}x${toString m.y}";
+              scale = toString m.scale;
+            in
+              if m.name == "eDP-1"
+              then [
+                # ",switch:Lid Switch,exec,${lib.getExe config.programs.swaylock.package} -f" # depricated - now handled by swayidle
+                # Tell laptop screen to turn off if lid is closed
+                # This should only run if more than one monitor is connected
+                # ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'"
+                # ", switch:on:Lid Switch,exec,hyprctl keyword monitor '${m.name}, disable'"
+              ]
+              else []
+          )
+          config.monitors);
 
+      # Bind Mouse Events
       bindm = [
         # Mouse binds
         # "SUPER,mouse_down,workspace,e+1"

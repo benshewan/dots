@@ -112,7 +112,8 @@ in {
             })
           + ''
             user_pref("browser.startup.page", 3); // browser should restore previous session
-            user_pref("widget.gtk.ignore-bogus-leave-notify", 1); //fix for hover on drag (fixes sideberry tab drag)
+            //fix for hover on drag (fixes sideberry tab drag, does not work on hyprland) https://bugzilla.mozilla.org/show_bug.cgi?id=1818517
+            user_pref("widget.gtk.ignore-bogus-leave-notify", 1);
             user_pref("widget.use-xdg-desktop-portal", true); // tell firefox to use my XDG Portal
 
             // Firefox Gnome Theme Tweaks
