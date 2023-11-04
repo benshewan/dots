@@ -51,9 +51,9 @@
 
   services.logind.extraConfig = ''
     # don't shutdown when power button is short-pressed
-    HandlePowerKey=ignore
+    HandlePowerKey=suspend
     # Lock laptop instead of sleeping
-    HandleLidSwitch=lock
+    # HandleLidSwitch=lock
   '';
 
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)

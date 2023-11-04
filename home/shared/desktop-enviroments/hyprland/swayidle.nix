@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }: let
   hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
@@ -12,7 +13,7 @@ in {
     timeouts = [
       {
         timeout = 10;
-        command = "if pgrep -x swaylock; then ${hyprctl} dispatch dpms off; fi";
+        command = "if ${lib.getExe' pkgs.toybox "pgrep"} -x swaylock; then ${hyprctl} dispatch dpms off; fi";
         resumeCommand = "${hyprctl} dispatch dpms on";
       }
       {
