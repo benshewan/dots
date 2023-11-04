@@ -2,12 +2,14 @@
   inputs,
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
     ../shared
     ../shared/desktop-enviroments/hyprland.nix
+    # ./tlp.nix
     inputs.nixos-hardware.nixosModules.common-cpu-amd
     inputs.nixos-hardware.nixosModules.common-cpu-amd-pstate
     inputs.nixos-hardware.nixosModules.common-gpu-amd
@@ -34,9 +36,15 @@
 
   # Additional power savings
   powerManagement.powertop.enable = true;
+  services.auto-cpufreq.enable = true;
 
   # For fingerprint support
   services.fprintd.enable = lib.mkDefault true;
+  # security.pam.system-auth = {
+  # };
+
+  # AMD OpenGL/Vulkan stuff
+  hardware.opengl.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
 
   # Custom udev rules
   services.udev.extraRules = ''
@@ -47,12 +55,15 @@
   # Needed for desktop environments to detect/manage display brightness
   hardware.sensor.iio.enable = lib.mkDefault true;
 
-  # boot.kernelParams = [
-  #   # For Power consumption
-  #   # https://kvark.github.io/linux/framework/2021/10/17/framework-nixos.html
-  #   # "mem_sleep_default=deep"
-  #   "acpi_osi=\"!Windows 2020\""
-  # ];
+  boot.kernelParams = [
+    # Potential fix for video stuttering
+    "amd_iommu=off"
+    # reported to help with flashing display issues
+    # "amdgpu.sg_display=0"
+  ];
+
+  # Add support for temp, voltage, current, and power reading
+  boot.extraModulePackages = with config.boot.kernelPackages; [zenpower];
 
   # System
   networking.hostName = "navis";
@@ -87,10 +98,7 @@
   environment.systemPackages = with pkgs; [
     # Audio Configuration https://github.com/ceiphr/ee-framework-presets
     easyeffects
-
-    # View Power Draw
     powertop
-
     nm-tray
   ];
 }
