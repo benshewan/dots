@@ -9,17 +9,10 @@
 in {
   home.sessionVariables = {EDITOR = "codium";};
 
-  xdg.desktopEntries = {
-    "codium" = {
-      name = "VSCodium";
-      exec = "codium --enable-features=UseOzonePlatform --ozone-platform=wayland %F";
-    };
-  };
-
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium.override {
-      commandLineArgs = ''--password-store="gnome"'';
+      commandLineArgs = ''--password-store="gnome" --enable-features=UseOzonePlatform --ozone-platform=wayland'';
     };
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
