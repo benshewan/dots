@@ -10,6 +10,7 @@ in {
     package = pkgs.swaylock-effects;
     settings = {
       screenshots = true;
+      image = "${../../../../wallpapers/nix-black-4k.png}";
       clock = true;
       indicator = true;
 
