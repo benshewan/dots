@@ -16,6 +16,7 @@
   # programs.eza.enableAliases = true;
   programs.fish.shellInit = ''
     set fish_greeting
+    ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
   '';
   programs.fish.interactiveShellInit = ''
 
