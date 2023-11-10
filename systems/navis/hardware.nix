@@ -24,6 +24,16 @@
   # Additional power savings
   powerManagement.powertop.enable = true;
   services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    battery = {
+      governor = "powersave";
+      turbo = "never";
+    };
+    charger = {
+      governor = "performance";
+      turbo = "auto";
+    };
+  };
 
   # For fingerprint support
   services.fprintd.enable = lib.mkDefault true;
