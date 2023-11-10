@@ -36,16 +36,6 @@
     systems = ["x86_64-linux" "aarch64-linux"];
     forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
     pkgsFor = nixpkgs.legacyPackages;
-
-    # Is this needed?
-    defaultNixOSModules = [
-      {nix.registry.nixpkgs.flake = nixpkgs;}
-      {nix.nixPath = ["nixpkgs=configflake:nixpkgs"];}
-    ];
-    defaultHomeManagerModules = [
-      {nix.registry.nixpkgs.flake = nixpkgs;}
-      {home.sessionVariables.NIX_PATH = "nixpkgs=nixpkgs=flake:nixpkgs$\{NIX_PATH:+:$NIX_PATH}";}
-    ];
   in {
     inherit lib username userDescription flake-path;
 
@@ -60,22 +50,22 @@
     nixosConfigurations = {
       # Main desktop
       sirius = lib.nixosSystem {
-        modules = [./systems/sirius] ++ defaultNixOSModules;
+        modules = [./systems/sirius];
         specialArgs = {inherit inputs outputs;};
       };
       # Personal laptop - Old Dell
       corvus = lib.nixosSystem {
-        modules = [./systems/corvus] ++ defaultNixOSModules;
+        modules = [./systems/corvus];
         specialArgs = {inherit inputs outputs;};
       };
       # Work desktop
       lepus = lib.nixosSystem {
-        modules = [./systems/lepus] ++ defaultNixOSModules;
+        modules = [./systems/lepus];
         specialArgs = {inherit inputs outputs;};
       };
       # Personal laptop - Framework 13 AMD
       navis = lib.nixosSystem {
-        modules = [./systems/navis] ++ defaultNixOSModules;
+        modules = [./systems/navis];
         specialArgs = {inherit inputs outputs;};
       };
     };
@@ -84,25 +74,25 @@
       "ben@generic" = lib.homeManagerConfiguration {
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
-        modules = [./home/ben/global] ++ defaultHomeManagerModules;
+        modules = [./home/ben/global];
       };
       "ben@sirius" = lib.homeManagerConfiguration {
-        modules = [./home/ben/sirius.nix] ++ defaultHomeManagerModules;
+        modules = [./home/ben/sirius.nix];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };
       "ben@corvus" = lib.homeManagerConfiguration {
-        modules = [./home/ben/corvus.nix] ++ defaultHomeManagerModules;
+        modules = [./home/ben/corvus.nix];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };
       "ben@lepus" = lib.homeManagerConfiguration {
-        modules = [./home/ben/lepus.nix] ++ defaultHomeManagerModules;
+        modules = [./home/ben/lepus.nix];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };
       "ben@navis" = lib.homeManagerConfiguration {
-        modules = [./home/ben/navis.nix] ++ defaultHomeManagerModules;
+        modules = [./home/ben/navis.nix];
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };
