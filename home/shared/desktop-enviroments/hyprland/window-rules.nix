@@ -28,6 +28,9 @@
     # Firefox
     "float,title:^(Picture-in-Picture)$"
     "pin,title:^(Picture-in-Picture)$"
+    # Not really working
+    "float,title:^(Extension: \(Bitwarden - Free Password Manager\).*)$"
+    "stayfocused,title:^(Extension: \(Bitwarden - Free Password Manager\).*)$"
 
     # Polkit Request
     "float,title:^(Authentication Required)(.*)$"

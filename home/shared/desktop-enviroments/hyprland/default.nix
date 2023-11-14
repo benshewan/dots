@@ -14,7 +14,7 @@ in {
 
     # Helper apps
     ./waybar.nix
-    ./dunst.nix
+    ./dunst
     ./swaylock.nix
     ./swayidle.nix
     ./rofi
@@ -23,11 +23,14 @@ in {
   home.packages = with pkgs; [
     wl-clipboard
     pavucontrol
-    grim
-    slurp
+    libnotify
   ];
 
   wayland.windowManager.hyprland.enable = true;
+
+  home.sessionVariables = {
+    GRIMBLAST_EDITOR = lib.getExe pkgs.swappy;
+  };
 
   # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
   wayland.windowManager.hyprland.settings = {
@@ -48,6 +51,7 @@ in {
       "${lib.getExe pkgs.dunst}"
       "${lib.getExe pkgs.waybar}"
       "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
+      # doesn't seem to quite work
       "hyprctl setcursor ${config.gtk.cursorTheme.name} ${lib.strings.floatToString config.gtk.cursorTheme.size}"
       # "swaync"
     ];

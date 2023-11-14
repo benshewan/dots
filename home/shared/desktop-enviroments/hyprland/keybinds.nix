@@ -81,9 +81,13 @@
       "SUPER,RETURN,exec, kitty"
       "SUPER,f,exec, firefox"
 
-      # Wofi keybinds
+      # Rofi keybinds
       "ALT,space,exec,${lib.getExe' config.programs.rofi.package "rofi"} -show drun"
-      "SUPER, v, exec, ${lib.getExe pkgs.cliphist} list | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
+      "SUPER,v,exec,${lib.getExe pkgs.cliphist} list | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
+
+      # Screenshot keybinds
+      "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify copy area"
+      "SUPER SHIFT, s, exec, ${lib.getExe pkgs.grimblast} --notify copy output"
 
       # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
       # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
@@ -93,22 +97,24 @@
     # Repeat if held
     binde = [
       # Tell wireplumber to raise/lower volume with volume keys
-      ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-"
-      ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+"
+      ", XF86AudioLowerVolume, exec, ${dunst/volume_brightness.sh} volume_down"
+      ", XF86AudioRaiseVolume, exec, ${dunst/volume_brightness.sh} volume_up"
 
       # Control display brightness
-      ",XF86MonBrightnessDown,exec, brillo -q -U 5"
-      ",XF86MonBrightnessUp,exec,brillo -q -A 5"
+      ",XF86MonBrightnessUp, exec, ${dunst/volume_brightness.sh} brightness_up"
+      ",XF86MonBrightnessDown, exec, ${dunst/volume_brightness.sh} brightness_down"
     ];
 
     # Run even when screen locked
     bindl =
       [
         # Set Mutli Media Keys
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPrev, exec, playerctl previous"
+        ", XF86AudioMute, exec, ${dunst/volume_brightness.sh} volume_mute"
+        ", XF86AudioPlay, exec, playerctl ${dunst/volume_brightness.sh} play_pause"
+        ", XF86AudioNext, exec, ${dunst/volume_brightness.sh} next_track"
+        ", XF86AudioPrev, exec, ${dunst/volume_brightness.sh} prev_track"
+
+        # Lock screen
         "SUPER,l,exec,${lib.getExe config.programs.swaylock.package} -f"
       ]
       ++ lib.flatten (map (
