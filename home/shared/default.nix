@@ -11,6 +11,7 @@
       ./themes
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
+
   nixpkgs.overlays = builtins.attrValues outputs.overlays ++ [inputs.nur.overlay];
   # This will add each flake input as a registry
   # To make nix3 commands consistent with your flake
@@ -20,4 +21,7 @@
   home.sessionVariables = {
     NIX_PATH = "nixpkgs=${inputs.nixpkgs}";
   };
+
+  # Nicely reload system units when changing configs
+  systemd.user.startServices = "sd-switch";
 }
