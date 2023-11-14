@@ -2,7 +2,7 @@
   description = "A declarative development enviroment for FreeCore";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
   };
 
   outputs = {
@@ -21,7 +21,7 @@
   in {
     devShells = forEachSupportedSystem ({pkgs}: {
       default = pkgs.mkShell {
-        packages = (with pkgs; [nodejs mongodb]) ++ (with pkgs.nodePackages; [nodemon]);
+        packages = with pkgs; [nodejs mongodb];
         shellHook = ''
           trap \
             "

@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
     devenv.url = "github:cachix/devenv";
   };
 
@@ -28,7 +28,6 @@
 
         devenv.shells.default = {
           # https://devenv.sh/reference/options/
-          packages = with pkgs; [nodePackages.nodemon];
           languages.javascript.enable = true;
           # languages.javascript.npm.install.enable = true; # only for projects that have their package.json at the same level as flake.nix
           services.mongodb.enable = true;
