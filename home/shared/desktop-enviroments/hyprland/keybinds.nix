@@ -9,7 +9,7 @@
       # Binds
       "SUPER,Q,killactive,"
       "SUPER,M,exit,"
-      "SUPER,S,togglefloating,"
+      "SUPER SHIFT, f, togglefloating,"
       "SUPER,g,togglegroup"
       # "SUPER,tab,changegroupactive"
       # "SUPER,P,pseudo,"
@@ -86,7 +86,7 @@
       "SUPER,v,exec,${lib.getExe pkgs.cliphist} list | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
       # Screenshot keybinds
-      "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify copy area"
+      "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | swappy -f -"
       "SUPER SHIFT, s, exec, ${lib.getExe pkgs.grimblast} --notify copy output"
 
       # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
@@ -110,7 +110,7 @@
       [
         # Set Mutli Media Keys
         ", XF86AudioMute, exec, ${dunst/volume_brightness.sh} volume_mute"
-        ", XF86AudioPlay, exec, playerctl ${dunst/volume_brightness.sh} play_pause"
+        ", XF86AudioPlay, exec, ${dunst/volume_brightness.sh} play_pause"
         ", XF86AudioNext, exec, ${dunst/volume_brightness.sh} next_track"
         ", XF86AudioPrev, exec, ${dunst/volume_brightness.sh} prev_track"
 

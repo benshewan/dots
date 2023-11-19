@@ -8,8 +8,8 @@
     };
 
     packages = [
-      "flathub:org.yuzu_emu.yuzu//stable"
-      "flathub:io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work
+      # "flathub:org.yuzu_emu.yuzu//stable"
+      # "flathub:io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work, steam will freak out
       "flathub:com.parsecgaming.parsec//stable"
     ];
   };

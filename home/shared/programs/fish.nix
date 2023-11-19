@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  ...
+}: {
   programs = {
     direnv = {
       enable = true;
@@ -16,9 +20,9 @@
   # programs.eza.enableAliases = true;
   programs.fish.shellInit = ''
     set fish_greeting
-    ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
   '';
-  programs.fish.interactiveShellInit = ''
 
+  programs.fish.interactiveShellInit = ''
+    ${lib.getExe pkgs.nix-your-shell} fish | source
   '';
 }

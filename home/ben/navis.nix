@@ -30,7 +30,7 @@
       workspace = "2";
       scale = 1.0;
       x = 903;
-      y = 1203;
+      y = -1203;
     }
     {
       name = "desc:Dell Inc. DELL P2417H KH0NG95F09UI";
@@ -40,7 +40,19 @@
       workspace = "3";
       scale = 1.0;
       x = 2823;
-      y = 1203;
+      y = -1203;
+    }
+
+    # Home Monitors
+    {
+      name = "desc:Samsung Electric Company C27F390 HTQK900407";
+      width = 1920;
+      height = 1080;
+      refreshRate = 60;
+      workspace = "4";
+      scale = 1.0;
+      x = 0;
+      y = -1080;
     }
   ];
 

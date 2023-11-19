@@ -4,6 +4,10 @@
   config,
   ...
 }: {
+  home.packages = with pkgs; [
+    rofi-bluetooth
+  ];
+
   programs.rofi = {
     enable = true;
     package = pkgs.rofi-wayland;
@@ -12,7 +16,6 @@
 
     plugins = with pkgs; [
       rofi-calc
-      rofi-bluetooth
       rofi-power-menu
     ];
 

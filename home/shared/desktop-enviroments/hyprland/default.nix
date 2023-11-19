@@ -24,6 +24,7 @@ in {
     wl-clipboard
     pavucontrol
     libnotify
+    blueberry
   ];
 
   wayland.windowManager.hyprland.enable = true;
@@ -50,7 +51,7 @@ in {
       # Style
       "${lib.getExe pkgs.dunst}"
       "${lib.getExe pkgs.waybar}"
-      "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png"
+      "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png --mode fill"
       # doesn't seem to quite work
       "hyprctl setcursor ${config.gtk.cursorTheme.name} ${lib.strings.floatToString config.gtk.cursorTheme.size}"
       # "swaync"
@@ -132,6 +133,10 @@ in {
     misc = {
       vfr = true; # misc:no_vfr -> misc:vfr. bool, heavily recommended to leave at default on. Saves on CPU usage.
       vrr = false; # misc:vrr -> Adaptive sync of your monitor. 0 (off), 1 (on), 2 (fullscreen only). Default 0 to avoid white flashes on select hardware.
+
+      # Stops hypr-chan from appearing when resizing firefox
+      disable_hyprland_logo = true;
+      force_hypr_chan = false;
     };
 
     # Dynamic settings
