@@ -93,9 +93,15 @@ in {
   # ----------------------------------------------------------------------------------
 
   # Youtube customization
-  "enhancerforyoutube@maximerf.addons.mozilla.org" = {
+  # "enhancerforyoutube@maximerf.addons.mozilla.org" = {
+  #   installation_mode = "force_installed";
+  #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/enhancer-for-youtube/latest.xpi";
+  # };
+
+  # Remove YouTube Shorts
+  "{88ebde3a-4581-4c6b-8019-2a05a9e3e938}" = {
     installation_mode = "force_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/enhancer-for-youtube/latest.xpi";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/hide-youtube-shorts/latest.xpi";
   };
 
   # View Xpi Id's in Firefox Extension Store

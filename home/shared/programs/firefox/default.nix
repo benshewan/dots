@@ -66,41 +66,40 @@ in {
       # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
       # extraNativeMessagingHosts = [ ]
       #   ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
-
-      extraPolicies = {
-        CaptivePortal = false;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DisableTelemetry = true;
-        DisableFirefoxAccounts = false;
-        DisableSetDesktopBackground = true;
-        DisableFeedbackCommands = true;
-        DisableProfileImport = true;
-        DontCheckDefaultBrowser = true;
-        EncryptedMediaExtensions = {
-          Enabled = true;
-          Locked = true;
-        };
-        NoDefaultBookmarks = true;
-        OfferToSaveLogins = false;
-        OfferToSaveLoginsDefault = false;
-        PasswordManagerEnabled = false;
-        FirefoxHome = {
-          Search = true;
-          Pocket = false;
-          Snippets = false;
-          TopSites = false;
-          Highlights = false;
-        };
-        UserMessaging = {
-          ExtensionRecommendations = false;
-          SkipOnboarding = true;
-        };
-        SearchEngines.Default = "Google";
-
-        # Firefox extensions
-        ExtensionSettings = import ./extensions.nix {inherit pkgs;};
+    };
+    policies = {
+      CaptivePortal = false;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableTelemetry = true;
+      DisableFirefoxAccounts = false;
+      DisableSetDesktopBackground = true;
+      DisableFeedbackCommands = true;
+      DisableProfileImport = true;
+      DontCheckDefaultBrowser = true;
+      EncryptedMediaExtensions = {
+        Enabled = true;
+        Locked = true;
       };
+      NoDefaultBookmarks = true;
+      OfferToSaveLogins = false;
+      OfferToSaveLoginsDefault = false;
+      PasswordManagerEnabled = false;
+      FirefoxHome = {
+        Search = true;
+        Pocket = false;
+        Snippets = false;
+        TopSites = false;
+        Highlights = false;
+      };
+      UserMessaging = {
+        ExtensionRecommendations = false;
+        SkipOnboarding = true;
+      };
+      SearchEngines.Default = "Google";
+
+      # Firefox extensions
+      ExtensionSettings = import ./extensions.nix {inherit pkgs;};
     };
     profiles = {
       dev-edition-default = {
