@@ -6,7 +6,7 @@
   # Programs
   home.packages = with pkgs; [
     # Development Tools
-    stable.mongodb-compass
+    # stable.mongodb-compass
     insomnia
     jetbrains.webstorm
 
