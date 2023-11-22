@@ -29,7 +29,7 @@
   ];
 
   # fix for Via # Doesn't work - look into maybe
-  # services.udev.packages = with pkgs; [
+  # services.udev.packages = with pkgs; [1
   #   via
   # ];
 
@@ -46,6 +46,8 @@
     xwayland.enable = true; # Enable XWayland support
     fish.enable = true;
     adb.enable = true;
+    nix-index-database.comma.enable = true; # Enable Comma, a tool to easily run any binary
+    command-not-found.enable = false;
     # Allows nix shells to be auto run when entering the directory
     direnv = {
       package = pkgs.direnv;

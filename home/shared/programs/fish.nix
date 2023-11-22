@@ -9,6 +9,7 @@
       enableBashIntegration = true;
       nix-direnv.enable = true;
     };
+    nix-index.enableFishIntegration = true;
     fish.enable = true;
     bash.enable = true; # see note on other shells below
   };

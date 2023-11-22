@@ -22,6 +22,7 @@ in {
     ./packages.nix
     ./services.nix
     ./hardware.nix
+    inputs.nix-index-database.nixosModules.nix-index
   ];
   # Note, must have something to evaluate
   # ++ (builtins.attrValues outputs.nixosModules);
@@ -65,7 +66,6 @@ in {
   environment.localBinInPath = true;
 
   # Shell
-  # programs.command-not-found.enable = true;
   environment.shellAliases = {
     reboot = "systemctl reboot";
     nix-switch = "sudo nixos-rebuild switch --flake ${outputs.flake-path}#${config.networking.hostName}";
