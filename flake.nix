@@ -9,7 +9,12 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Theming Stuff
     nix-colors.url = "github:misterio77/nix-colors";
+    stylix.url = "github:danth/stylix";
+
+    # App configuration helpers
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
     flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
@@ -45,7 +50,7 @@
     packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
     overlays = import ./overlays {inherit inputs;};
 
-    wallpapers = import "${flake-path}/wallpapers";
+    wallpapers = ./wallpapers;
 
     nixosConfigurations = {
       # Main desktop

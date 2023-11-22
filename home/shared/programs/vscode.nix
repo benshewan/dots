@@ -18,7 +18,6 @@ in {
     enableExtensionUpdateCheck = false;
     extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
-      catppuccin.catppuccin-vsc
       pkief.material-product-icons
       streetsidesoftware.code-spell-checker
       mkhl.direnv
@@ -33,8 +32,20 @@ in {
       update.mode = "none";
 
       # Theme Config
-      workbench.colorTheme = "Catppuccin Mocha";
+      #      workbench.colorTheme
       window.titleBarStyle = "custom";
+      workbench.layoutControl.enabled = false;
+      editor.fontLigatures = true;
+
+      # Testing fixing them with catppuccin
+      workbench.colorCustomizations = {
+        "[Stylix]" = {
+          "statusBar.background" = "#${config.lib.stylix.colors.base01}";
+          "scrollbarSlider.activeBackground" = "#${config.lib.stylix.colors.base04}aa";
+          "scrollbarSlider.background" = "#${config.lib.stylix.colors.base02}88";
+          "scrollbarSlider.hoverBackground" = "#${config.lib.stylix.colors.base03}88";
+        };
+      };
 
       # Spell Checker Config
       # cSpell.enableFiletypes = [ "nix" ];

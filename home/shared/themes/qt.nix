@@ -3,7 +3,7 @@
   config,
   ...
 }: {
-  home.packages = with pkgs; [qt5ct lightly-qt];
+  home.packages = with pkgs; [qt5ct lightly-qt papirus-icon-theme];
 
   qt = {
     enable = true;

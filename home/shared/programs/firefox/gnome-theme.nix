@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  colors = config.colorScheme.colors;
+  colors = config.lib.stylix.colors;
 in {
   dark = pkgs.writeText "dark.css" ''
     @namespace xul url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");

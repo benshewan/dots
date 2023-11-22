@@ -38,7 +38,7 @@
     # Potential fix for video stuttering
     # "amd_iommu=off"
     # reported to help with flashing display issues
-    # "amdgpu.sg_display=0"
+    "amdgpu.sg_display=0"
   ];
 
   # Add support for temp, voltage, current, and power reading

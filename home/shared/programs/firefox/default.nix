@@ -115,7 +115,7 @@ in {
           + ''
             //SmoothFox
             user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
-            user_pref("general.smoothScroll", true); // DEFAULT
+            user_pref("general.smoothScroll", false); // DEFAULT
             user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
             user_pref("general.smoothScroll.msdPhysics.enabled", true);
 
@@ -139,6 +139,7 @@ in {
             user_pref("browser.eme.ui.enabled", false); // hide DRM ui
             user_pref("identity.fxaccounts.enabled", true); // enable firefox sync
             user_pref("browser.tabs.firefox-view", false); // disable firefox view
+            user_pref("general.autoScroll", false); // disable middle click to scroll
 
             /** for 12 GB+ RAM ***/
             user_pref("browser.cache.disk.enable", false);

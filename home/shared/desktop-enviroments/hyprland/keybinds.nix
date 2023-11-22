@@ -82,7 +82,7 @@
       "SUPER,f,exec, firefox"
 
       # Rofi keybinds
-      "ALT,space,exec,${lib.getExe' config.programs.rofi.package "rofi"} -show drun"
+      "ALT,space,exec,${lib.getExe' config.programs.rofi.package "rofi"} -show drun -theme /home/ben/.config/rofi/launchers/type-1/style-1.rasi"
       "SUPER,v,exec,${lib.getExe pkgs.cliphist} list | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
       # Screenshot keybinds

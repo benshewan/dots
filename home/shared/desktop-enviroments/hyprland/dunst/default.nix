@@ -1,6 +1,6 @@
 {config, ...}: {
   services.dunst = {
     enable = true;
-    iconTheme = config.gtk.iconTheme;
+    # iconTheme = config.gtk.iconTheme;
   };
 }

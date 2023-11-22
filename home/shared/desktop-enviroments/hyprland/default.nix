@@ -51,9 +51,9 @@ in {
       # Style
       "${lib.getExe pkgs.dunst}"
       "${lib.getExe pkgs.waybar}"
-      "${lib.getExe pkgs.swaybg} -i ${outputs.flake-path}/wallpapers/nix-black-4k.png --mode fill"
+      "${lib.getExe pkgs.swaybg} -i ${config.stylix.image} --mode fill"
       # doesn't seem to quite work
-      "hyprctl setcursor ${config.gtk.cursorTheme.name} ${lib.strings.floatToString config.gtk.cursorTheme.size}"
+      "hyprctl setcursor ${config.stylix.cursor.name} ${toString config.stylix.cursor.size}"
       # "swaync"
     ];
 
@@ -84,8 +84,6 @@ in {
       gaps_in = 4;
       gaps_out = 8;
       border_size = 1;
-      "col.active_border" = "rgb(${colors.base01})";
-      "col.inactive_border" = "rgba(${colors.base01}00)";
       layout = "master";
       apply_sens_to_raw = 1; # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
     };
@@ -96,8 +94,6 @@ in {
       drop_shadow = true;
       shadow_range = 15;
       shadow_render_power = 2;
-      "col.shadow" = "rgb(${colors.base01})";
-      "col.shadow_inactive" = "rgba(${colors.base01}00)";
       blur = {
         enabled = true;
         size = 6;

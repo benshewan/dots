@@ -3,10 +3,25 @@
   lib,
   config,
   ...
-}: {
+}: let
+  # userChrome.js loader
+  rofi-themes = pkgs.fetchFromGitHub {
+    owner = "adi1090x";
+    repo = "rofi";
+    rev = "a3c2def145e354d3cb88fafbbccfe8bd37da88db";
+    sha256 = "sha256-Ew3Po2y20OlOtiX08A4ySxvdLC9KTrNQd32SQZz6DJM=";
+  };
+  rofi-themes-test = builtins.readDir rofi-themes;
+in {
   home.packages = with pkgs; [
     rofi-bluetooth
   ];
+
+  # Install rofi themes
+  home.file.".config/rofi" = {
+    recursive = true;
+    source = "${rofi-themes}/files";
+  };
 
   programs.rofi = {
     enable = true;
@@ -18,24 +33,5 @@
       rofi-calc
       rofi-power-menu
     ];
-
-    theme = let
-      # Use `mkLiteral` for string-like values that should show without
-      # quotes, e.g.:
-      # {
-      #   foo = "abc"; => foo: "abc";
-      #   bar = mkLiteral "abc"; => bar: abc;
-      # };
-      inherit (config.lib.formats.rasi) mkLiteral;
-    in {
-      "*" = {
-        background = mkLiteral "#1E1D2FFF";
-        background-alt = mkLiteral "#282839FF";
-        foreground = mkLiteral "#D9E0EEFF";
-        selected = mkLiteral "#7AA2F7FF";
-        active = mkLiteral "#ABE9B3FF";
-        urgent = mkLiteral "#F28FADFF";
-      };
-    };
   };
 }

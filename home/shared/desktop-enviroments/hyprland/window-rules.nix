@@ -32,6 +32,9 @@
     "float,title:^(Extension: \(Bitwarden - Free Password Manager\).*)$"
     "stayfocused,title:^(Extension: \(Bitwarden - Free Password Manager\).*)$"
 
+    # Vscode
+    "fakefullscreen, class:^(codium-url-handler)$"
+
     # Polkit Request
     "float,title:^(Authentication Required)(.*)$"
     "dimaround,title:^(Authentication Required)(.*)$"

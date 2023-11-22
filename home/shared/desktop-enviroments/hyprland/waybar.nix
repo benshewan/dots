@@ -1,17 +1,9 @@
 {
   config,
-  inputs,
   outputs,
   pkgs,
-  lib,
   ...
-}: let
-  custom = {
-    font = "RobotoMono Nerd Font";
-  };
-  hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
-  colors = config.colorScheme.colors;
-in {
+}: {
   programs.waybar = {
     enable = true;
     settings.mainBar = {
@@ -143,33 +135,28 @@ in {
       * {
           border: none;
           border-radius: 0px;
-          font-family: ${custom.font};
-          font-size: 14px;
           min-height: 0;
       }
 
-      window#waybar {
-          background: rgba(${hexToRGBString "," colors.base01},.85);
-      }
       #workspaces {
-          background: #${colors.base02};
+          background: @base02;
           margin: 5px 5px;
           padding: 8px 5px;
           border-radius: 16px;
-          color: #${colors.base09}
+          color: @base09
       }
       #workspaces button {
           padding: 0px 5px;
           margin: 0px 3px;
           border-radius: 16px;
           color: transparent;
-          background: rgba(${hexToRGBString "," colors.base01},.85);
+          background: alpha(@base01, ${toString config.stylix.opacity.desktop});
           transition: all 0.3s ease-in-out;
       }
 
       #workspaces button.active {
-          background-color: #${colors.base0D};
-          color: #${colors.base00};
+          background-color: @base0D;
+          color: @base00;
           border-radius: 16px;
           min-width: 50px;
           background-size: 400% 400%;
@@ -177,8 +164,8 @@ in {
       }
 
       #workspaces button:hover {
-          background-color: #${colors.base05};
-          color: #${colors.base00};
+          background-color: @base05;
+          color: @base00;
           border-radius: 16px;
           min-width: 50px;
           background-size: 400% 400%;
@@ -186,19 +173,19 @@ in {
 
       #tray, #pulseaudio, #network, #battery,
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward, #custom-headset,#custom-mouse {
-          background: #${colors.base02};
+          background: @base02;
           font-weight: bold;
           margin: 5px 0px;
       }
       #tray, #pulseaudio, #network, #battery, #custom-headset,#custom-mouse {
-          color: #${colors.base05};
+          color: @base05;
           border-radius: 10px 24px 10px 24px;
           padding: 0 20px;
           margin-left: 7px;
       }
       #clock {
-          color: #${colors.base05};
-          background: #${colors.base02};
+          color: @base05;
+          background: @base02;
           border-radius: 0px 0px 0px 40px;
           padding: 10px 10px 15px 25px;
           margin-left: 7px;
@@ -206,8 +193,8 @@ in {
           font-size: 16px;
       }
       #custom-launcher {
-          color: #${colors.base0D};
-          background: #${colors.base02};
+          color: @base0D;
+          background: @base02;
           border-radius: 0px 0px 40px 0px;
           margin: 0px;
           padding: 0px 35px 0px 15px;
@@ -215,38 +202,38 @@ in {
       }
 
       #custom-playerctl.backward, #custom-playerctl.play, #custom-playerctl.foward {
-          background: #${colors.base02};
+          background: @base02;
           font-size: 22px;
       }
       #custom-playerctl.backward:hover, #custom-playerctl.play:hover, #custom-playerctl.foward:hover{
-          color: #${colors.base01};
+          color: @base01;
       }
       #custom-playerctl.backward {
-          color: #${colors.base0E};
+          color: @base0E;
           border-radius: 24px 0px 0px 10px;
           padding-left: 16px;
           margin-left: 7px;
       }
       #custom-playerctl.play {
-          color: #${colors.base0D};
+          color: @base0D;
           padding: 0 5px;
       }
       #custom-playerctl.foward {
-          color: #${colors.base0E};
+          color: @base0E;
           border-radius: 0px 10px 24px 0px;
           padding-right: 12px;
           margin-right: 7px
       }
       #custom-playerlabel {
-          background: #${colors.base02};
-          color: #${colors.base05};
+          background: @base02;
+          color: @base05;
           padding: 0 20px;
           border-radius: 24px 10px 24px 10px;
           margin: 5px 0;
           font-weight: bold;
       }
       #window{
-          background: #${colors.base02};
+          background: @base02;
           padding-left: 15px;
           padding-right: 15px;
           border-radius: 16px;
