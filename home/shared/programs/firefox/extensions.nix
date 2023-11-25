@@ -10,12 +10,12 @@
   };
 in {
   # Force extensions to be defined here
-  "*" = {
-    blocked_install_message = "All extensions must be declared in you home-manager config";
-    install_sources = ["https://github.com/benshewan/dots/*"];
-    installation_mode = "blocked";
-    allowed_types = ["extension"];
-  };
+  # "*" = {
+  #   blocked_install_message = "All extensions must be declared in you home-manager config";
+  #   install_sources = ["https://github.com/benshewan/dots/*"];
+  #   installation_mode = "blocked";
+  #   allowed_types = ["extension"];
+  # };
 
   # Ad Blocking
   # ----------------------------------------------------------------------------------
@@ -84,9 +84,16 @@ in {
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
   };
 
+  # New Tab Home Page
   "extension@tabliss.io" = {
     installation_mode = "force_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
+  };
+
+  # Multi-Account Containers
+  "@testpilot-containers" = {
+    installation_mode = "force_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
   };
 
   # Website Specific Customizations

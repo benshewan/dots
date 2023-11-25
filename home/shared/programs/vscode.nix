@@ -11,7 +11,7 @@ in {
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscodium.override {
+    package = pkgs.vscode.override {
       commandLineArgs = ''--password-store="gnome" --enable-features=UseOzonePlatform --ozone-platform=wayland'';
     };
     enableUpdateCheck = false;
@@ -19,6 +19,7 @@ in {
     extensions = with pkgs.vscode-extensions; [
       jnoortheen.nix-ide
       pkief.material-product-icons
+      ms-vsliveshare.vsliveshare
       streetsidesoftware.code-spell-checker
       mkhl.direnv
       # extensions.vscode-marketplace.golf1052.base16-generator

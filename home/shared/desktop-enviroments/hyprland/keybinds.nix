@@ -86,8 +86,12 @@
       "SUPER,v,exec,${lib.getExe pkgs.cliphist} list | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
       # Screenshot keybinds
-      "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | swappy -f -"
+      "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze copy area"
       "SUPER SHIFT, s, exec, ${lib.getExe pkgs.grimblast} --notify copy output"
+
+      # Screen Recording - Use Ctrl + C to stop recording
+      # ''SUPER, r, exec, ${lib.getExe pkgs.wf-recorder} -g "$(${lib.getExe pkgs.slurp})"''
+      # "SUPER SHIFT, r, exec, ${lib.getExe pkgs.wf-recorder}"
 
       # "SUPER SHIFT,V,exec,~/.config/eww/fool_moon/bar/scripts/widgets toggle-clip"
       # "SUPER SHIFT,C,exec,~/.config/hypr/scripts/wallpaper_picker"
