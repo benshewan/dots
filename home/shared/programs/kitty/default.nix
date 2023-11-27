@@ -7,5 +7,5 @@
       confirm_os_window_close = 0;
     };
   };
-  home.shellAliases.ssh = "kitty +kitten ssh";
+  home.shellAliases.ssh = toString ./ssh.sh;
 }
