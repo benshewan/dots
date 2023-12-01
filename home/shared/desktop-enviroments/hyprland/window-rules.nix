@@ -25,15 +25,23 @@
     "stayfocused,title:^(nm-tray)$"
     "move onscreen cursor 0 5,title:^(nm-tray)$"
 
-    # Firefox
-    "float,title:^(Picture-in-Picture)$"
-    "pin,title:^(Picture-in-Picture)$"
-    # Not really working
-    "float,title:^(Extension: \(Bitwarden - Free Password Manager\).*)$"
-    "stayfocused,title:^(Extension: \(Bitwarden - Free Password Manager\).*)$"
+    # Firefox PIP
+    "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
+    "size 800 450, class:^(firefox)$,title:(Picture-in-Picture)"
+    "pin, class:^(firefox)$,title:^(Picture-in-Picture)$ "
+    "float, class:^(firefox)$,title:^(Firefox)$ "
+    "size 800 450, class:^(firefox)$,title:^(Firefox)$"
+    "pin, class:^(firefox)$,title:^(Firefox)$"
 
     # Vscode
     "fakefullscreen, class:^(code-url-handler)$"
+
+    # Webstorm
+    "stayfocused, class:^(jetbrains-webstorm)$,title:^()$,floating:1"
+    "center(1), class:^(jetbrains-webstorm)$,title:^()$,floating:1"
+
+    # "stayfocused, class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
+    # "center(1), class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
 
     # Polkit Request
     "float,title:^(Authentication Required)(.*)$"

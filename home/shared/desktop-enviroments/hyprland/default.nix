@@ -21,10 +21,11 @@ in {
   ];
 
   home.packages = with pkgs; [
-    wl-clipboard
-    pavucontrol
-    libnotify
-    blueberry
+    wl-clipboard # Clipboard helper
+    pavucontrol # Audio Control
+    libnotify # Send notifications
+    blueberry # Bluetooth menu
+    xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
   ];
 
   wayland.windowManager.hyprland.enable = true;
@@ -37,7 +38,7 @@ in {
   wayland.windowManager.hyprland.settings = {
     exec-once = [
       # System
-      # "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # allow xdg portal to get the varibales it needs
       "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
       "${lib.getExe config.services.swayidle.package}"
       "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
@@ -88,14 +89,18 @@ in {
       apply_sens_to_raw = 1; # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
     };
 
+    master = {
+      mfact = 0.5;
+    };
+
     decoration = {
       rounding = 10;
       shadow_ignore_window = true;
-      drop_shadow = true;
+      drop_shadow = false; # Power hungry effect
       shadow_range = 15;
       shadow_render_power = 2;
       blur = {
-        enabled = true;
+        enabled = false; # Power hungry effect
         size = 6;
         passes = 3;
         new_optimizations = true;

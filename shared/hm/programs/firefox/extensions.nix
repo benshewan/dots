@@ -10,12 +10,12 @@
   };
 in {
   # Force extensions to be defined here
-  # "*" = {
-  #   blocked_install_message = "All extensions must be declared in you home-manager config";
-  #   install_sources = ["https://github.com/benshewan/dots/*"];
-  #   installation_mode = "blocked";
-  #   allowed_types = ["extension"];
-  # };
+  "*" = {
+    blocked_install_message = "All extensions must be declared in you home-manager config";
+    install_sources = ["https://github.com/benshewan/dots/*"];
+    installation_mode = "blocked";
+    allowed_types = ["extension"];
+  };
 
   # Ad Blocking
   # ----------------------------------------------------------------------------------

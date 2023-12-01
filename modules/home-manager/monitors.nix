@@ -29,6 +29,10 @@ in {
           type = types.int;
           default = 60;
         };
+        "10bit" = mkOption {
+          type = types.bool;
+          default = false;
+        };
         scale = mkOption {
           type = types.float;
           default = 1;

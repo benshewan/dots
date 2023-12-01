@@ -15,13 +15,13 @@
     };
 
     # Theming Stuff
-    nix-colors.url = "github:misterio77/nix-colors";
+    # nix-colors.url = "github:misterio77/nix-colors";
     stylix.url = "github:danth/stylix";
 
     # App configuration helpers
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
-    flatpaks.url = "github:GermanBread/declarative-flatpak/fb31283f55f06b489f2baf920201e8eb73c9a0d3";
+    flatpaks.url = "github:GermanBread/declarative-flatpak";
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,7 +41,7 @@
     lib = nixpkgs.lib // home-manager.lib;
     username = "ben";
     userDescription = "Ben Shewan";
-    flake-path = "/home/${username}/.nix";
+    flake-path = ./.;
     systems = ["x86_64-linux" "aarch64-linux"];
     forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
     pkgsFor = nixpkgs.legacyPackages;

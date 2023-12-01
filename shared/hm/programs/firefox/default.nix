@@ -106,18 +106,20 @@ in {
         id = 0;
         isDefault = true;
         extraConfig =
-          builtins.readFile
-          (builtins.fetchurl
-            {
-              url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
-              sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
-            })
-          + ''
-            //SmoothFox
-            user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
-            user_pref("general.smoothScroll", false); // DEFAULT
-            user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
-            user_pref("general.smoothScroll.msdPhysics.enabled", true);
+          # builtins.readFile
+          # (builtins.fetchurl
+          #   {
+          #     url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
+          #     sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
+          #   })
+          # +
+          # //SmoothFox
+          #   user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
+          #   user_pref("general.smoothScroll", false); // DEFAULT
+          #   user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
+          #   user_pref("general.smoothScroll.msdPhysics.enabled", true);
+          ''
+
 
             // Overrides
             user_pref("browser.startup.page", 3); // browser should restore previous session

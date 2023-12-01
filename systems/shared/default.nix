@@ -5,24 +5,14 @@
   inputs,
   config,
   ...
-}: let
-  nixos-boot-src = pkgs.fetchFromGitHub {
-    owner = "Melkor333";
-    repo = "nixos-boot";
-    rev = "main";
-    sha256 = "sha256-kcYd39n58MVI2mFn/PSh5O/Wzr15kEYWgszMRtSQ+1w=";
-  };
-
-  nixos-boot = pkgs.callPackage nixos-boot-src {
-    bgColor = "0.067, 0.067, 0.145"; # Weird 0-1 range RGB.
-    theme = "load_unload";
-  };
-in {
+}: {
   imports = [
+    inputs.nix-index-database.nixosModules.nix-index
+
     ./packages.nix
     ./services.nix
     ./hardware.nix
-    inputs.nix-index-database.nixosModules.nix-index
+    ../../shared/nixos
   ];
   # Note, must have something to evaluate
   # ++ (builtins.attrValues outputs.nixosModules);
@@ -106,7 +96,7 @@ in {
     settings.auto-optimise-store = true;
     gc = {
       automatic = true;
-      # dates = "weekly";
+      dates = "weekly";
       options = "--delete-older-than 7d";
     };
     # This will add each flake input as a registry

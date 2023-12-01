@@ -14,10 +14,10 @@
   # battery - ENV{POWER_SUPPLY_ONLINE}=="0"
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
   services.udev.extraRules = ''
-    SUBSYSTEM=="power_supply",ATTR{online}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance"
-    SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Normal",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
-    SUBSYSTEM=="power_supply",ATTR{status}=="Discharging", ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
+    SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance"
+    SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
   '';
+  #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
 
   services.auto-cpufreq.enable = true;
   services.auto-cpufreq.settings = {

@@ -7,7 +7,7 @@
 }: let
   extensions = inputs.nix-vscode-extensions.extensions.x86_64-linux;
 in {
-  home.sessionVariables = {EDITOR = "codium";};
+  home.sessionVariables = {EDITOR = "code";};
 
   programs.vscode = {
     enable = true;
@@ -30,6 +30,7 @@ in {
       editor.formatOnSave = true;
       explorer.confirmDelete = false;
       extensions.autoCheckUpdates = false;
+      explorer.confirmDragAndDrop = false;
       update.mode = "none";
 
       # Theme Config

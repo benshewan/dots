@@ -21,7 +21,8 @@
       x = 0;
       y = 0;
     }
-    # Work Monitors - x/y postion not working right with the internal monitor
+
+    # Work Monitors
     {
       name = "desc:Dell Inc. DELL P2417H KH0NG94M1NNB";
       width = 1920;
@@ -29,8 +30,8 @@
       refreshRate = 60;
       workspace = "2";
       scale = 1.0;
-      x = 903;
-      y = -1203;
+      x = -1017;
+      y = -1080;
     }
     {
       name = "desc:Dell Inc. DELL P2417H KH0NG95F09UI";
@@ -39,8 +40,8 @@
       refreshRate = 60;
       workspace = "3";
       scale = 1.0;
-      x = 2823;
-      y = -1203;
+      x = 903;
+      y = -1080;
     }
 
     # Home Monitors
@@ -54,6 +55,29 @@
       x = 0;
       y = -1080;
     }
+    {
+      name = "desc:Dell Inc. AW3423DWF 58082S3";
+      width = 3440;
+      height = 1440;
+      refreshRate = 165;
+      workspace = "4";
+      scale = 1.0;
+      x = 0;
+      y = -1440;
+    }
+  ];
+
+  home.packages = with pkgs; [
+    prismlauncher
+    distrobox
+  ];
+
+  services.flatpak.packages = [
+    # "flathub:org.yuzu_emu.yuzu//stable"
+    # "flathub:io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work, steam will freak out
+    "flathub:app/com.parsecgaming.parsec//stable"
+    "flathub:app/com.mongodb.Compass//stable"
+    # "flathub:app/com.github.tchx84.Flatseal//stable"
   ];
 
   programs.obs-studio = {
