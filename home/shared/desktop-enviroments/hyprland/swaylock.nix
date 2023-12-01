@@ -7,7 +7,7 @@
 in {
   programs.swaylock = {
     enable = true;
-    package = pkgs.swaylock-effects;
+    package = pkgs.swaylock;
     settings = {
       screenshots = true;
       clock = true;
