@@ -147,9 +147,10 @@ in {
           resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
           position = "${toString m.x}x${toString m.y}";
           scale = toString m.scale;
+          rotate = "transform," + toString m.rotate;
         in "${m.name},${
           if m.enabled
-          then "${resolution},${position},${scale}"
+          then "${resolution},${position},${scale},${rotate}"
           else "disable"
         }"
       ) (config.monitors))

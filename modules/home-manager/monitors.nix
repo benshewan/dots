@@ -29,13 +29,23 @@ in {
           type = types.int;
           default = 60;
         };
-        "10bit" = mkOption {
-          type = types.bool;
-          default = false;
+        rotate = mkOption {
+          type = types.int;
+          default = 0;
+          example = ''
+            normal (no transforms) -> 0
+            90 degrees -> 1
+            180 degrees -> 2
+            270 degrees -> 3
+            flipped -> 4
+            flipped + 90 degrees -> 5
+            flipped + 180 degrees -> 6
+            flipped + 270 degrees -> 7
+          '';
         };
         scale = mkOption {
           type = types.float;
-          default = 1;
+          default = 1.0;
         };
         x = mkOption {
           type = types.int;

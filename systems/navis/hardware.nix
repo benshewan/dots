@@ -36,7 +36,7 @@
 
   boot.kernelParams = [
     # Potential fix for video stuttering
-    # "amd_iommu=off"
+    "amd_iommu=off"
     # reported to help with flashing display issues
     "amdgpu.sg_display=0"
   ];

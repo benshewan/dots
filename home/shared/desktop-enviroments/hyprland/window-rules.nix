@@ -25,13 +25,19 @@
     "stayfocused,title:^(nm-tray)$"
     "move onscreen cursor 0 5,title:^(nm-tray)$"
 
-    # Firefox PIP
+    # Firefox
+    # PIP
     "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
     "size 800 450, class:^(firefox)$,title:(Picture-in-Picture)"
     "pin, class:^(firefox)$,title:^(Picture-in-Picture)$ "
     "float, class:^(firefox)$,title:^(Firefox)$ "
     "size 800 450, class:^(firefox)$,title:^(Firefox)$"
     "pin, class:^(firefox)$,title:^(Firefox)$"
+    # Dialogs
+    "float,title:^(File Upload)$"
+    "center(1),title:^(File Upload)$"
+    "stayfocused,title:^(File Upload)$"
+    "dimaround,title:^(File Upload)$"
 
     # Vscode
     "fakefullscreen, class:^(code-url-handler)$"

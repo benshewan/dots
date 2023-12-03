@@ -17,7 +17,7 @@
       refreshRate = 60;
       workspace = "1";
       primary = true;
-      scale = 1.25;
+      # scale = 1.25;
       x = 0;
       y = 0;
     }
@@ -50,9 +50,10 @@
       width = 1920;
       height = 1080;
       refreshRate = 60;
-      workspace = "4";
+      workspace = "3";
+      # rotate = 1;
       scale = 1.0;
-      x = 0;
+      x = -1920;
       y = -1080;
     }
     {
@@ -60,7 +61,7 @@
       width = 3440;
       height = 1440;
       refreshRate = 165;
-      workspace = "4";
+      workspace = "2";
       scale = 1.0;
       x = 0;
       y = -1440;

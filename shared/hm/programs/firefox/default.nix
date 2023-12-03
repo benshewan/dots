@@ -1,9 +1,10 @@
 {
   pkgs,
-  lib,
   config,
   ...
 }: let
+  # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
+  profile = "dev-edition-default";
   # userChrome.js loader
   userchromejs-scripts = pkgs.fetchFromGitHub {
     owner = "xiaoxiaoflood";
@@ -24,36 +25,36 @@
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
-      rev = "cd408d8e4de8bd514387366dda4fe0def6e43c16";
-      hash = "sha256-1NjteDq4fhEWFtlKd3DPYWHdU53qEQEqZB2DCxKpayE=";
+      rev = "4c039a5c7a7b657d4e5146a6ca6d81942ae1bd0b";
+      hash = "sha256-HMMM4aKfDPx8m5IoTc4dCh01ZaBf0upEXPEjIcFsa4s=";
     });
 in {
   # Custom userChrome.js scripts
-  home.file.".mozilla/firefox/dev-edition-default/chrome/utils" = {
+  home.file.".mozilla/firefox/${profile}/chrome/utils" = {
     source = userchromejs-utils;
     recursive = true;
   };
   # userChrome.js manager
-  home.file.".mozilla/firefox/dev-edition-default/chrome/rebuild_userChrome.uc.js".source = "${userchromejs-scripts}/chrome/rebuild_userChrome.uc.js";
+  home.file.".mozilla/firefox/${profile}/chrome/rebuild_userChrome.uc.js".source = "${userchromejs-scripts}/chrome/rebuild_userChrome.uc.js";
   # Private Tab
-  home.file.".mozilla/firefox/dev-edition-default/chrome/privateTab.uc.js".source = "${userchromejs-scripts}/chrome/privateTab.uc.js";
+  home.file.".mozilla/firefox/${profile}/chrome/privateTab.uc.js".source = ./privateTab.uc.js;
   # Mouse gestures
-  home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures" = {
+  home.file.".mozilla/firefox/${profile}/chrome/mouseGestures" = {
     source = "${userchromejs-scripts}/chrome/mouseGestures";
     recursive = true;
   };
-  home.file.".mozilla/firefox/dev-edition-default/chrome/mouseGestures.uc.js".source = ./mouseGestures.uc.js;
+  home.file.".mozilla/firefox/${profile}/chrome/mouseGestures.uc.js".source = ./mouseGestures.uc.js;
 
   # Custom theme
-  home.file.".mozilla/firefox/dev-edition-default/chrome/userChrome.css".source = "${firefox-gnome-theme}/userChrome.css";
-  home.file.".mozilla/firefox/dev-edition-default/chrome/userContent.css".source = "${firefox-gnome-theme}/userContent.css";
-  home.file.".mozilla/firefox/dev-edition-default/chrome/theme" = {
+  home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".source = "${firefox-gnome-theme}/userChrome.css";
+  home.file.".mozilla/firefox/${profile}/chrome/userContent.css".source = "${firefox-gnome-theme}/userContent.css";
+  home.file.".mozilla/firefox/${profile}/chrome/theme" = {
     recursive = true;
     source = "${firefox-gnome-theme}/theme";
   };
-  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors".enable = false;
-  home.file.".mozilla/firefox/dev-edition-default/chrome/customChrome.css".source = ./customChrome.css;
-  home.file.".mozilla/firefox/dev-edition-default/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
+  home.file.".mozilla/firefox/${profile}/chrome/theme/colors".enable = false;
+  home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
+  home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
   programs.firefox = {
     enable = true;
@@ -102,24 +103,22 @@ in {
       ExtensionSettings = import ./extensions.nix {inherit pkgs;};
     };
     profiles = {
-      dev-edition-default = {
+      "${profile}" = {
         id = 0;
         isDefault = true;
         extraConfig =
-          # builtins.readFile
-          # (builtins.fetchurl
-          #   {
-          #     url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
-          #     sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
-          #   })
-          # +
-          # //SmoothFox
-          #   user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
-          #   user_pref("general.smoothScroll", false); // DEFAULT
-          #   user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
-          #   user_pref("general.smoothScroll.msdPhysics.enabled", true);
-          ''
-
+          builtins.readFile
+          (builtins.fetchurl
+            {
+              url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
+              sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
+            })
+          + ''
+            //SmoothFox
+            user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
+            user_pref("general.smoothScroll", false); // DEFAULT
+            user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
+            user_pref("general.smoothScroll.msdPhysics.enabled", true);
 
             // Overrides
             user_pref("browser.startup.page", 3); // browser should restore previous session

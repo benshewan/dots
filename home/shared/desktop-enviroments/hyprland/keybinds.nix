@@ -8,6 +8,7 @@
     bind = [
       # Binds
       "SUPER,Q,killactive,"
+      "SUPER SHIFT,Q,closewindow,"
       "SUPER,M,exit,"
       "SUPER SHIFT, f, togglefloating,"
       "SUPER,g,togglegroup"
