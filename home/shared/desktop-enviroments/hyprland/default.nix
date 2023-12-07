@@ -2,11 +2,8 @@
   config,
   lib,
   pkgs,
-  outputs,
   ...
-}: let
-  colors = config.colorScheme.colors;
-in {
+}: {
   imports = [
     # Hyprland config
     ./keybinds.nix

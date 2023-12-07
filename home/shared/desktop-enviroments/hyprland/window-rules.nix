@@ -8,12 +8,17 @@
     "float,class:^(notification)$"
     "float,class:^(error)$"
     "float,class:^(confirmreset)$"
-    "float,title:^(Open File)$"
-    "float,title:^(Save As)$"
     "float,title:^(branchdialog)$"
     "float,title:^(Confirm to replace files)$"
     "float,title:^(File Operation Progress)$"
     "float,title:^(About Mozilla Thunderbird)$"
+
+    # XDG Portal
+    "float,class:^(Xdg-desktop-portal-gtk)$,title:^(.*)(File)(.*)$"
+    "size 800 450,class:^(Xdg-desktop-portal-gtk)$,title:^(.*)(File)(.*)$"
+    "stayfocused,class:^(Xdg-desktop-portal-gtk)$,title:^(.*)(File)(.*)$"
+    "dimaround,class:^(Xdg-desktop-portal-gtk)$,title:^(.*)(File)(.*)$"
+    "center(1),class:^(Xdg-desktop-portal-gtk)$,title:^(.*)(File)(.*)$"
 
     # Unlock Keyring
     "float,title:^(Unlock Login Keyring)$"
@@ -29,15 +34,26 @@
     # PIP
     "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
     "size 800 450, class:^(firefox)$,title:(Picture-in-Picture)"
-    "pin, class:^(firefox)$,title:^(Picture-in-Picture)$ "
+    "pin, class:^(firefox)$,title:^(Picture-in-Picture)$"
+    "nomaximizerequest, class:^(firefox)$,title:^(Picture-in-Picture)$"
+    "nofullscreenrequest, class:^(firefox)$,title:^(Picture-in-Picture)$"
     "float, class:^(firefox)$,title:^(Firefox)$ "
     "size 800 450, class:^(firefox)$,title:^(Firefox)$"
     "pin, class:^(firefox)$,title:^(Firefox)$"
+    "nomaximizerequest, class:^(firefox)$,title:^(Firefox)$"
+    "nofullscreenrequest, class:^(firefox)$,title:^(Firefox)$"
+
     # Dialogs
     "float,title:^(File Upload)$"
     "center(1),title:^(File Upload)$"
     "stayfocused,title:^(File Upload)$"
     "dimaround,title:^(File Upload)$"
+
+    "float,title:^(Save As)$"
+    "size 800 450,title:^(Save As)$"
+    "stayfocused,title:^(Save As)$"
+    "dimaround,title:^(Save As)$"
+    "center(1),title:^(Save As)$"
 
     # Vscode
     "fakefullscreen, class:^(code-url-handler)$"
@@ -45,6 +61,12 @@
     # Webstorm
     "stayfocused, class:^(jetbrains-webstorm)$,title:^()$,floating:1"
     "center(1), class:^(jetbrains-webstorm)$,title:^()$,floating:1"
+    "nofocus,class:^(jetbrains-webstorm)$,title:^(win)(.*)$"
+    "center(1), class:^(jetbrains-webstorm)$,title:^(splash)$"
+    "nofocus,class:^(jetbrains-webstorm)$,title:^(splash)$"
+    "dimaround, class:^(jetbrains-webstorm)$,title:^(Settings)$"
+    # "nofocus,class:^(jetbrains-webstorm)$,title:^(win45)$"
+    # "nofocus,class:^(jetbrains-webstorm)$,title:^(win29)$"
 
     # "stayfocused, class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
     # "center(1), class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"

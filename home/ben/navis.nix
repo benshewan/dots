@@ -1,8 +1,4 @@
-{
-  lib,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./global
     ../shared/desktop-enviroments/hyprland
@@ -14,12 +10,9 @@
       name = "eDP-1";
       width = 2256;
       height = 1504;
-      refreshRate = 60;
       workspace = "1";
       primary = true;
-      # scale = 1.25;
-      x = 0;
-      y = 0;
+      scale = 1.5;
     }
 
     # Work Monitors
@@ -27,9 +20,7 @@
       name = "desc:Dell Inc. DELL P2417H KH0NG94M1NNB";
       width = 1920;
       height = 1080;
-      refreshRate = 60;
       workspace = "2";
-      scale = 1.0;
       x = -1017;
       y = -1080;
     }
@@ -37,9 +28,7 @@
       name = "desc:Dell Inc. DELL P2417H KH0NG95F09UI";
       width = 1920;
       height = 1080;
-      refreshRate = 60;
       workspace = "3";
-      scale = 1.0;
       x = 903;
       y = -1080;
     }
@@ -49,10 +38,8 @@
       name = "desc:Samsung Electric Company C27F390 HTQK900407";
       width = 1920;
       height = 1080;
-      refreshRate = 60;
       workspace = "3";
       # rotate = 1;
-      scale = 1.0;
       x = -1920;
       y = -1080;
     }
@@ -62,7 +49,7 @@
       height = 1440;
       refreshRate = 165;
       workspace = "2";
-      scale = 1.0;
+      scale = 1.25;
       x = 0;
       y = -1440;
     }
@@ -71,6 +58,11 @@
   home.packages = with pkgs; [
     prismlauncher
     distrobox
+    teamviewer
+    (vivaldi.override {
+      enableWidevine = true;
+      proprietaryCodecs = true;
+    })
   ];
 
   services.flatpak.packages = [
