@@ -1,2 +1,3 @@
 {...}: {
+  sunshine = import ./sunshine.nix;
 }

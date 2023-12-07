@@ -6,16 +6,16 @@
   config,
   ...
 }: {
-  imports = [
-    inputs.nix-index-database.nixosModules.nix-index
+  imports =
+    [
+      inputs.nix-index-database.nixosModules.nix-index
 
-    ./packages.nix
-    ./services.nix
-    ./hardware.nix
-    ../../shared/nixos
-  ];
-  # Note, must have something to evaluate
-  # ++ (builtins.attrValues outputs.nixosModules);
+      ./packages.nix
+      ./services.nix
+      ./hardware.nix
+      ../../shared/nixos
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   # Boot Configuration
   boot = {
