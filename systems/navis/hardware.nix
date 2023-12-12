@@ -11,6 +11,7 @@
   powerManagement.powertop.enable = true;
 
   # Change hiberate settings for better battery
+  boot.resumeDevice = "/dev/nvme0n1p3";
   systemd.sleep.extraConfig = "HibernateDelaySec=2h";
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
@@ -31,7 +32,9 @@
       SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
     ''
     # temp fix for bad lid behaviour, i.e. if system is suspended and the lid is closed it will wake back up
-    + ''ACTION=="add", SUBSYSTEM=="serio", DRIVERS=="atkbd", ATTR{power/wakeup}="disabled"'';
+    + ''ACTION=="add", SUBSYSTEM=="serio", DRIVERS=="atkbd", ATTR{power/wakeup}="disabled"''
+    # Allow waking from USB keyboards
+    + ''ACTION=="add", SUBSYSTEM=="usb", DRIVER=="usb", ATTR{power/wakeup}="enabled"'';
   #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
 
   services.auto-cpufreq.enable = true;
