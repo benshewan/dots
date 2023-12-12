@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-upower -i /org/freedesktop/UPower/devices/headset_dev_38_18_4C_95_4F_0D | awk '$1=="percentage:" {print $2} | grep -oe "\([0-9.]*\)"'

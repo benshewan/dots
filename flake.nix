@@ -1,34 +1,4 @@
 {
-  inputs = {
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master"; # Easy hardware configuration for new machines
-    nur.url = "github:nix-community/NUR"; # Community app support
-    nix-index-database = {
-      url = "github:Mic92/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # Home Manager modules
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Theming Stuff
-    # nix-colors.url = "github:misterio77/nix-colors";
-    stylix.url = "github:danth/stylix";
-
-    # App configuration helpers
-    spicetify-nix.url = "github:the-argus/spicetify-nix";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
-    flatpaks.url = "github:GermanBread/declarative-flatpak";
-    plasma-manager = {
-      url = "github:pjones/plasma-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
-    };
-  };
-
   # Heavily inspired by the absoluely wonderful sourcehut:~misterio/nix-config
   outputs = {
     self,
@@ -83,7 +53,7 @@
       "ben@generic" = lib.homeManagerConfiguration {
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
-        modules = [./home/ben/global];
+        modules = [./home/ben/generic.nix];
       };
       "ben@sirius" = lib.homeManagerConfiguration {
         modules = [./home/ben/sirius.nix];
@@ -105,6 +75,43 @@
         pkgs = pkgsFor.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
       };
+    };
+  };
+
+  inputs = {
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master"; # Easy hardware configuration for new machines
+    nur.url = "github:nix-community/NUR"; # Community app support
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Home Manager modules
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Hyprland
+    hyprland.url = "github:hyprwm/Hyprland";
+    split-monitor-workspaces = {
+      url = "github:Duckonaut/split-monitor-workspaces";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    # Theming Stuff
+    # nix-colors.url = "github:misterio77/nix-colors";
+    stylix.url = "github:danth/stylix";
+
+    # App configuration helpers
+    spicetify-nix.url = "github:the-argus/spicetify-nix";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
+    flatpaks.url = "github:GermanBread/declarative-flatpak";
+    plasma-manager = {
+      url = "github:pjones/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 }

@@ -1,12 +1,23 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  outputs,
+  ...
+}: {
+  # Import Basic Configuration
   imports = [
-    ./filebot
-  ];
+    "${outputs.flake-path}/shared/hm"
+  ] ++ map (x: "${outputs.flake-path}/shared/hm/programs/" + x) [
+      "firefox"
+      "kitty"
+      "fish"
+      "vscode"
+      "spotify"
+      # "virt-manager"
+    ];
 
   # Programs
   home.packages = with pkgs; [
     # Development Tools
-    # stable.mongodb-compass
     insomnia
     jetbrains.webstorm
 

@@ -1,13 +1,14 @@
 {
   pkgs,
   lib,
+  outputs,
   ...
 }: {
   imports = [
+    "${outputs.flake-path}/shared/nixos/desktops/hyprland"
     ./hardware-configuration.nix
     ./hardware.nix
     ../shared
-    ../shared/desktop-enviroments/hyprland.nix
   ];
 
   # System
@@ -34,11 +35,12 @@
     enable = true;
     package = pkgs.stable.mongodb;
   };
-
-  systemd.sleep.extraConfig = ''
-     HibernateDelaySec=30s # very low value to test suspend-then-hibernate
-    # SuspendState=mem # suspend2idle is buggy :(
-  '';
+  services.teamviewer.enable = true;
+  # networking.firewall.enable = false;
+  # systemd.sleep.extraConfig = ''
+  #    HibernateDelaySec=30s # very low value to test suspend-then-hibernate
+  #   # SuspendState=mem # suspend2idle is buggy :(
+  # '';
   # FreeCore testing
   networking.firewall.allowedTCPPorts = [7100 7200 443 80];
 }

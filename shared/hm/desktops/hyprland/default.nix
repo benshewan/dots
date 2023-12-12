@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
@@ -10,7 +11,7 @@
     ./window-rules.nix
 
     # Helper apps
-    ./waybar.nix
+    ./waybar
     ./dunst
     ./swaylock.nix
     ./swayidle.nix
@@ -25,11 +26,18 @@
     xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
   ];
 
-  wayland.windowManager.hyprland.enable = true;
+  wayland.windowManager.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
 
   home.sessionVariables = {
     GRIMBLAST_EDITOR = lib.getExe pkgs.swappy;
   };
+
+  wayland.windowManager.hyprland.plugins = [
+    # inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+  ];
 
   # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
   wayland.windowManager.hyprland.settings = {
@@ -54,6 +62,10 @@
       "hyprctl setcursor ${config.stylix.cursor.name} ${toString config.stylix.cursor.size}"
       # "swaync"
     ];
+
+    plugin = {
+      split-monitor-workspaces.count = 5;
+    };
 
     xwayland = {
       force_zero_scaling = true;

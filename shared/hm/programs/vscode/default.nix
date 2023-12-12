@@ -17,12 +17,18 @@ in {
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     extensions = with pkgs.vscode-extensions; [
+      # Language support
       jnoortheen.nix-ide
+      extensions.vscode-marketplace.eww-yuck.yuck
+      shd101wyy.markdown-preview-enhanced
+
+      # Visual
       pkief.material-product-icons
+
+      # Utilites
       ms-vsliveshare.vsliveshare
       streetsidesoftware.code-spell-checker
       mkhl.direnv
-      # extensions.vscode-marketplace.golf1052.base16-generator
     ];
     userSettings = {
       # General Config

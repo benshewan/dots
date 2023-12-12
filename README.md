@@ -1,2 +1,5 @@
 # dots
-my personal configuration files
+
+Ben's somewhat fancy Nix config
+
+

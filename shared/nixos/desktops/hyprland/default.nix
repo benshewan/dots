@@ -1,11 +1,21 @@
 {
   pkgs,
-  config,
   lib,
   outputs,
+  inputs,
+  config,
   ...
 }: {
-  programs.hyprland.enable = true;
+  # Binary cache for hyprland nightly
+  nix.settings = {
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
+
+  programs.hyprland = {
+    enable = true;
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  };
 
   # Auto Login
   services.greetd = {
@@ -38,7 +48,7 @@
     enable = true;
     cageArgs = ["-m last"];
     settings = {
-      background.path = ../../../wallpapers/nix-black-4k.png;
+      background.path = config.stylix.image;
     };
   };
 
@@ -49,6 +59,7 @@
     '';
   };
 
+  # Change how the power button works
   services.logind.extraConfig = ''
     # don't shutdown when power button is short-pressed
     HandlePowerKey=suspend
@@ -56,12 +67,14 @@
     # HandleLidSwitch=lock
   '';
 
+  # Required Services
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
   programs.seahorse.enable = true; # Manage Keys with a GUI
 
   services.udisks2.enable = true; # Auto mount removable drives on connect
   hardware.brillo.enable = true; # Add support for controlling brightness
 
+  # Basic programs
   environment.systemPackages =
     (with pkgs; [
       gparted

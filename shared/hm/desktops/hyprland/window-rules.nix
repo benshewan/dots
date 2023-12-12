@@ -44,16 +44,32 @@
     "nofullscreenrequest, class:^(firefox)$,title:^(Firefox)$"
 
     # Dialogs
-    "float,title:^(File Upload)$"
-    "center(1),title:^(File Upload)$"
-    "stayfocused,title:^(File Upload)$"
-    "dimaround,title:^(File Upload)$"
+    "float,class:^(firefox)$,title:^(File Upload)$"
+    "center(1),class:^(firefox)$,title:^(File Upload)$"
+    "stayfocused,class:^(firefox)$,title:^(File Upload)$"
+    "dimaround,class:^(firefox)$,title:^(File Upload)$"
+    "size 800 450,class:^(firefox)$,title:^(File Upload)$"
+
+    "center(1),class:^(firefox)$,title:^(Opening)(.*)$"
+    "stayfocused,class:^(firefox)$,title:^(Opening)(.*)$"
+    "dimaround,class:^(firefox)$,title:^(Opening)(.*)$"
+    "size 800 450,class:^(firefox)$,title:^(Opening)(.*)$"
+
+    "nomaximizerequest, class:^(firefox)$,title:^()$"
+    "nofullscreenrequest, class:^(firefox)$,title:^()$"
+    "float, class:^(firefox)$,title:^()$"
 
     "float,title:^(Save As)$"
     "size 800 450,title:^(Save As)$"
     "stayfocused,title:^(Save As)$"
     "dimaround,title:^(Save As)$"
     "center(1),title:^(Save As)$"
+
+    # KDEConnect
+    "float, class:^(firefox)$,title:^(Mozilla Firefox)$"
+    "move onscreen cursor, class:^(firefox)$,title:^(Mozilla Firefox)$"
+    "float, class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
+    "center(1), class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
 
     # Vscode
     "fakefullscreen, class:^(code-url-handler)$"
@@ -77,7 +93,6 @@
     "stayfocused,title:^(Authentication Required)(.*)$"
 
     "float,title:^(mpv)$"
-    "opacity 1.0 1.0,class:^(wofi)$"
     "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
     "noanim,class:^(xwaylandvideobridge)$"
     "nofocus,class:^(xwaylandvideobridge)$"
