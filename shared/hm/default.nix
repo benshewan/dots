@@ -8,11 +8,14 @@
     [
       inputs.stylix.homeManagerModules.stylix
 
-      ./theme/qt
       ./services/flatpak
       ../both
     ]
-    ++ (builtins.attrValues outputs.homeManagerModules);
+    ++ (builtins.attrValues outputs.homeManagerModules)
+    ++ [./theme/kvantum];
+
+  # default theme
+  stylix.targets.kvantum.enable = true;
 
   # add in any overlays
   nixpkgs.overlays = builtins.attrValues outputs.overlays ++ [inputs.nur.overlay];
