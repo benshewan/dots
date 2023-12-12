@@ -1,22 +1,32 @@
 {
   pkgs,
   config,
+  outputs,
+  lib,
   ...
 }: let
   # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
   profile = "dev-edition-default";
-  # userChrome.js loader
+  # userChrome.js loader & scripts
   userchromejs-scripts = pkgs.fetchFromGitHub {
-    owner = "xiaoxiaoflood";
-    repo = "firefox-scripts";
-    rev = "b013243f1916576166a02d816651c2cc6416f63e";
-    sha256 = "sha256-Zp1pRMqgAM3Xh3JCkAC0hWp2Gl2phkyAwJ8KB2tA9jE=";
+    owner = "aminomancer";
+    repo = "uc.css.js";
+    rev = "2b39f40d2f1489fa26f1da0ca6e4887f8987d9f8";
+    sha256 = "sha256-7JyjsD73DFSO9CGAZeRt9938WYCVjqB5BVq93VDu8MU=";
   };
-  # Patched userChrome.js loader files for firefox 117+
-  userchromejs-utils = pkgs.fetchzip {
-    url = "https://github.com/xiaoxiaoflood/firefox-scripts/files/12099137/utils.zip";
-    sha256 = "sha256-MBdyxByEA85JhLCa9mXLHuB9RI4F9qCZvG3446eO7lQ=";
-  };
+  userchromejs-loader =
+    lib.sources.sourceFilesBySuffices
+    (pkgs.fetchFromGitHub {
+      owner = "MrOtherGuy";
+      repo = "fx-autoconfig";
+      rev = "d9133f188d4a037d9bf71aa208d1452d78adb25c";
+      sha256 = "sha256-wJHcthpwoBi+T6NXkxwG+ePTHnIvut7Tr0UJDEOGL2U=";
+      sparseCheckout = [
+        "profile/chome/utils"
+        "profile/chrome/JS"
+      ];
+    })
+    [".js" ".mjs"];
 
   # Custom CSS styles
   firefox-gnome-dark = (import ./gnome-theme.nix {inherit pkgs config;}).dark;
@@ -30,20 +40,22 @@
     });
 in {
   # Custom userChrome.js scripts
-  home.file.".mozilla/firefox/${profile}/chrome/utils" = {
-    source = userchromejs-utils;
+  home.file.".mozilla/firefox/${profile}/chrome" = {
+    source = "${userchromejs-loader}/profile/chrome";
     recursive = true;
   };
-  # userChrome.js manager
-  home.file.".mozilla/firefox/${profile}/chrome/rebuild_userChrome.uc.js".source = "${userchromejs-scripts}/chrome/rebuild_userChrome.uc.js";
+
+  home.file.".mozilla/firefox/${profile}/chrome/utils/chrome.manifest".text = let
+    root = "/home/${outputs.username}/.mozilla/firefox/${profile}/chrome";
+  in ''
+    content userchromejs ${root}/utils/
+    content userscripts ${root}/JS/
+    skin userstyles classic/1.0 ${root}/CSS/
+    content userchrome ${root}/resources/
+  '';
+
   # Private Tab
-  home.file.".mozilla/firefox/${profile}/chrome/privateTab.uc.js".source = ./privateTab.uc.js;
-  # Mouse gestures
-  home.file.".mozilla/firefox/${profile}/chrome/mouseGestures" = {
-    source = "${userchromejs-scripts}/chrome/mouseGestures";
-    recursive = true;
-  };
-  home.file.".mozilla/firefox/${profile}/chrome/mouseGestures.uc.js".source = ./mouseGestures.uc.js;
+  home.file.".mozilla/firefox/${profile}/chrome/JS/privateTabs.uc.js".source = "${userchromejs-scripts}/JS/privateTabs.uc.js";
 
   # Custom theme
   home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".source = "${firefox-gnome-theme}/userChrome.css";
@@ -60,10 +72,10 @@ in {
     enable = true;
     package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {
       # Enable Native Messaging Hosts
-      # nativeMessagingHosts = [
-      # pkgs.plasma-browser-integration
-      # pkgs.gnomeExtensions.gsconnect
-      # ];
+      nativeMessagingHosts = with pkgs; [
+        plasma-browser-integration
+        # pkgs.gnomeExtensions.gsconnect
+      ];
       # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
       # extraNativeMessagingHosts = [ ]
       #   ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
@@ -113,55 +125,8 @@ in {
               url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
               sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
             })
-          + ''
-            //SmoothFox
-            user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
-            user_pref("general.smoothScroll", false); // DEFAULT
-            user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
-            user_pref("general.smoothScroll.msdPhysics.enabled", true);
-
-            // Overrides
-            user_pref("browser.startup.page", 3); // browser should restore previous session
-            //fix for hover on drag (fixes sideberry tab drag, does not work on hyprland) https://bugzilla.mozilla.org/show_bug.cgi?id=1818517
-            user_pref("widget.gtk.ignore-bogus-leave-notify", 1);
-            user_pref("widget.use-xdg-desktop-portal", true); // tell firefox to use my XDG Portal
-            user_pref("browser.tabs.firefox-view-next", false); // disable firefox view
-            user_pref("browser.download.useDownloadDir", true); // one-click downloads
-            user_pref("accessibility.force_disabled", 1); // disable Accessibility features
-            user_pref("browser.toolbars.bookmarks.visibility", "never"); // always hide bookmark bar
-            user_pref("browser.urlbar.trimHttps", true); // hide https in URL bar [FF119]
-            user_pref("media.videocontrols.picture-in-picture.display-text-tracks.size", "small"); // PiP
-            user_pref("media.videocontrols.picture-in-picture.urlbar-button.enabled", false); // PiP in address bar
-            user_pref("network.trr.confirmationNS", "skip"); // skip TRR confirmation request
-            user_pref("extensions.webextensions.restrictedDomains", ""); // remove Mozilla domains so adblocker works on pages
-            user_pref("browser.sessionstore.restore_pinned_tabs_on_demand", true);
-            user_pref("browser.sessionhistory.max_total_viewers", 4); // only remember # of pages in Back-Forward cache
-            user_pref("media.eme.enabled", true); // enable DRM protected content
-            user_pref("browser.eme.ui.enabled", false); // hide DRM ui
-            user_pref("identity.fxaccounts.enabled", true); // enable firefox sync
-            user_pref("browser.tabs.firefox-view", false); // disable firefox view
-            user_pref("general.autoScroll", false); // disable middle click to scroll
-
-            /** for 12 GB+ RAM ***/
-            user_pref("browser.cache.disk.enable", false);
-            user_pref("browser.cache.memory.capacity", 256000); // default= -1 (32768)
-            user_pref("browser.cache.memory.max_entry_size", 10240); // default=5120 (5 MB)
-            user_pref("media.memory_cache_max_size", 131072); // default=8192; AF=65536
-            user_pref("media.memory_caches_combined_limit_kb", 1048576); // default=524288
-            user_pref("media.memory_caches_combined_limit_pc_sysmem", 10); // default=5
-
-            /** speculative load test ***/
-            user_pref("network.dns.disablePrefetchFromHTTPS", false);
-            //user_pref("network.prefetch-next", true);
-            user_pref("network.predictor.enabled", true);
-            user_pref("network.predictor.enable-prefetch", true);
-            user_pref("network.predictor.enable-hover-on-ssl", true);
-
-            // Firefox Gnome Theme Tweaks
-            user_pref("gnomeTheme.extensions.tabCenterReborn", true);
-            user_pref("svg.context-properties.content.enabled", true);
-            user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
-          '';
+          # Overrides
+          + builtins.readFile ./user.js;
       };
     };
   };

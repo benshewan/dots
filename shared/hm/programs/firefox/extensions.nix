@@ -154,12 +154,6 @@ in {
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
   };
 
-  # Google Translate - TODO: Firefox is slowly replacing this with its own builtin translator, but doesn't yet support languages like russian or japanese
-  "{036a55b4-5e72-4d05-a06c-cba2dfcc134a}" = {
-    installation_mode = "force_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/traduzir-paginas-web/latest.xpi";
-  };
-
   # Legacy Extensions
   # ----------------------------------------------------------------------------------
 
