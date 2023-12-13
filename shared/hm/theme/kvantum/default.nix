@@ -55,7 +55,7 @@
         style=kvantum
       ''
       + (lib.optionalString cfg.enableDefaultIcons ''
-        icon_theme=ePapirus-Dark
+        icon_theme=Papirus-Dark
       '');
 
     xdg.configFile."qt6ct/qt6ct.conf".text =
@@ -64,7 +64,7 @@
         style=kvantum
       ''
       + (lib.optionalString cfg.enableDefaultIcons ''
-        icon_theme=ePapirus-Dark
+        icon_theme=Papirus-Dark
       '');
   });
 }
