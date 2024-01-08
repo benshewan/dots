@@ -2,13 +2,17 @@
   pkgs,
   config,
   inputs,
+  lib,
   ...
 }: {
   imports = [inputs.nixos-hardware.nixosModules.framework-13-7040-amd];
 
+  # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
+
   # Additional power savings
   # Note: doesn't whtelist inputs devices, can be funky
-  powerManagement.powertop.enable = true;
+  # powerManagement.powertop.enable = true;
+  # config.systemd.services.powertop.serviceConfig.ExecStartPost = ''${pkgs.bash} -c ${pkgs.coreutils}/bin/echo on > $(grep -Rl "USB Receiver" /sys/bus/usb/devices/*/product | sed "s/product/power\\/control/") || true'';
 
   # Change hiberate settings for better battery
   boot.resumeDevice = "/dev/nvme0n1p3";
@@ -49,14 +53,24 @@
     };
   };
 
+  # Set timeout for bluetooth to save power
+  hardware.bluetooth.input = {
+    General = {
+      IdleTimeout = 30;
+    };
+  };
+
   # AMD OpenGL/Vulkan stuff
-  # hardware.opengl.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
+  hardware.opengl.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
 
   boot.kernelParams = [
     # Potential fix for video stuttering
     "amd_iommu=off"
     # reported to help with flashing display issues
     "amdgpu.sg_display=0"
+
+    # Adaptive Backlight Management (1-4)
+    "amdgpu.abmlevel=3"
   ];
 
   # Add support for temp, voltage, current, and power reading
@@ -82,4 +96,43 @@
   boot.extraModprobeConfig = ''
     options cfg80211 ieee80211_regdom="CA"
   '';
+
+  # Patched PPD https://community.frame.work/t/tracking-ppd-v-tlp-for-amd-ryzen-7040/39423/137
+  nixpkgs.overlays = [
+    (
+      final: prev: {
+        power-profiles-daemon = prev.power-profiles-daemon.overrideAttrs (
+          old: {
+            version = "0.13-1";
+
+            patches =
+              (old.patches or [])
+              ++ [
+                (prev.fetchpatch {
+                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/127.patch";
+                  sha256 = "sha256-jnq5yJvWQHOlZ78SE/4/HqiQfF25YHQH/T4wwDVRHR0=";
+                })
+                (prev.fetchpatch {
+                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/128.patch";
+                  sha256 = "sha256-YD9wn9IQlCp02r4lmwRnx9Eur2VVP1JfC/Bm8hlzF3Q=";
+                })
+                (prev.fetchpatch {
+                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/129.patch";
+                  sha256 = "sha256-9T+I3BAUW3u4LldF85ctE0/PLu9u+KBN4maoL653WJU=";
+                })
+              ];
+
+            # explicitly fetching the source to make sure we're patching over 0.13 (this isn't strictly needed):
+            src = prev.fetchFromGitLab {
+              domain = "gitlab.freedesktop.org";
+              owner = "hadess";
+              repo = "power-profiles-daemon";
+              rev = "0.13";
+              sha256 = "sha256-ErHy+shxZQ/aCryGhovmJ6KmAMt9OZeQGDbHIkC0vUE=";
+            };
+          }
+        );
+      }
+    )
+  ];
 }

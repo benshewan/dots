@@ -15,7 +15,7 @@
       width = 2256;
       height = 1504;
       primary = true;
-      scale = 1.5;
+      scale = 1.566667;
     }
 
     # Work Monitors

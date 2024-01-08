@@ -17,8 +17,6 @@
   # Remote management of Navis
   services.tailscale.enable = true;
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
-
   environment.systemPackages = with pkgs; [
     # Audio Configuration https://github.com/ceiphr/ee-framework-presets
     easyeffects
@@ -27,7 +25,7 @@
     masterpdfeditor
     stable.nodejs
     mongodb-tools
-    moonlight-qt
+    stable.moonlight-qt
     inkscape
   ];
 
