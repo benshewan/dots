@@ -4,14 +4,19 @@
   ...
 }: {
   # Import Basic Configuration
-  imports = [
-    "${outputs.flake-path}/shared/hm"
-  ] ++ map (x: "${outputs.flake-path}/shared/hm/programs/" + x) [
+  imports =
+    [
+      "${outputs.flake-path}/shared/hm"
+    ]
+    ++ map (x: "${outputs.flake-path}/shared/hm/programs/" + x) [
       "firefox"
       "kitty"
       "fish"
       "vscode"
       "spotify"
+      "kdeconnect"
+      "webstorm"
+      "nvim"
       # "virt-manager"
     ];
 
@@ -19,7 +24,7 @@
   home.packages = with pkgs; [
     # Development Tools
     insomnia
-    jetbrains.webstorm
+    # jetbrains.webstorm
 
     # Chromium browser of choice
     # Note: Should replace with thorium when that becomes available
@@ -35,7 +40,9 @@
     remmina # Remote desktop client
     libreoffice-fresh
     bitwarden
+
     bottles
+    wine
     # via # Keyboard Configurator
   ];
 
