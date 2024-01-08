@@ -1,7 +1,5 @@
 {
   pkgs,
-  lib,
-  outputs,
   inputs,
   config,
   ...
@@ -17,40 +15,28 @@
     package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
-  # Auto Login
-  services.greetd = {
+  services.xserver.displayManager.sddm = {
     enable = true;
-    settings = rec {
-      initial_session = {
-        command = lib.getExe pkgs.hyprland;
-        user = outputs.username;
-      };
-      default_session = initial_session;
-    };
+    wayland.enable = true;
+    enableHidpi = true;
+    theme = "chili";
   };
 
-  # Tryed to use hyprland for greetd - didn't really work
-  # services.greetd = {
+  # programs.regreet = {
   #   enable = true;
-  #   settings = rec {
-  #     initial_session = {
-  #       command = let
-  #         greetdHyprlandConfig = pkgs.writeText "hyprland.conf" ''
-  #           exec-once = regreet; hyprctl dispatch exit
-  #         '';
-  #       in "${lib.getExe pkgs.hyprland} --config ${greetdHyprlandConfig}";
-  #     };
-  #     default_session = initial_session;
+  #   cageArgs = ["-s" "-m" "last"];
+  #   settings = {
+  #     background.path = config.stylix.image;
+  #     background.fit = "Fill";
+  #     GTK.cursor_theme_name = config.stylix.cursor.name;
+  #     GTK.theme_name = "Catppuccin-Mocha-Compact-Blue-Dark";
+  #     GTK.font_name = "${config.stylix.fonts.sansSerif.name} ${toString config.stylix.fonts.sizes.desktop}";
+  #     GTK.application_prefer_dark_theme =
+  #       if config.stylix.polarity == "dark"
+  #       then true
+  #       else false;
   #   };
   # };
-  # Greetd seems to be broken right now
-  programs.regreet = {
-    enable = true;
-    cageArgs = ["-m last"];
-    settings = {
-      background.path = config.stylix.image;
-    };
-  };
 
   # Add support for swaylock
   security.pam.services.swaylock = {
@@ -74,10 +60,21 @@
   services.udisks2.enable = true; # Auto mount removable drives on connect
   hardware.brillo.enable = true; # Add support for controlling brightness
 
+  # Additional Services
+  programs.partition-manager.enable = true;
+
   # Basic programs
   environment.systemPackages =
     (with pkgs; [
-      gparted
+      (sddm-chili-theme.override {
+        themeConfig = {
+          # General = {
+          background = config.stylix.image;
+          PasswordFieldOutlined = true;
+          # };
+        };
+      })
+      gnome.adwaita-icon-theme
       # Dolphin and assorted dependencies for it
       taglib
       ffmpegthumbnailer

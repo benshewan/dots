@@ -11,7 +11,7 @@
     dig
     htop
     btop
-    toybox
+    # coreutils-full
     neofetch
     bat
     clipboard-jh
