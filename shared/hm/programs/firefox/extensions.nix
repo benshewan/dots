@@ -111,6 +111,12 @@ in {
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/hide-youtube-shorts/latest.xpi";
   };
 
+  # Youtube customization
+  "enhancerforyoutube@maximerf.addons.mozilla.org" = {
+    installation_mode = "force_installed";
+    install_url = "file://${./enhancer_for_youtube-2.0.121.xpi}";
+  };
+
   # View Xpi Id's in Firefox Extension Store
   "queryamoid@kaply.com" = {
     installation_mode = "force_installed";
@@ -123,6 +129,11 @@ in {
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/reddit-enhancement-suite/latest.xpi";
   };
 
+  # Twitch
+  "twitch5@coolcmd" = {
+    installation_mode = "force_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/twitch_5/latest.xpi";
+  };
   # Development
   # ----------------------------------------------------------------------------------
 
