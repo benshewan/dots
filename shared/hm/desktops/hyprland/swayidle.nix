@@ -9,13 +9,17 @@
 in {
   services.swayidle = {
     enable = true;
-    systemdTarget = "graphical-session.target";
+    systemdTarget = "hyprland-session.target";
     timeouts = [
       {
-        timeout = 10;
+        timeout = 30;
         command = "if ${lib.getExe' pkgs.toybox "pgrep"} -x swaylock; then ${hyprctl} dispatch dpms off; fi";
         resumeCommand = "${hyprctl} dispatch dpms on";
       }
+      # {
+      #   timeout = 630;
+      #   command = "if ${lib.getExe' pkgs.toybox "pgrep"} -x swaylock; then systemctl suspend-then-hibernate; fi";
+      # }
       {
         timeout = 1800;
         command = swaylock;
@@ -25,6 +29,10 @@ in {
         command = "${hyprctl} dispatch dpms off";
         resumeCommand = "${hyprctl} dispatch dpms on";
       }
+      # {
+      #   timeout = 2430;
+      #   command = "systemctl suspend-then-hibernate";
+      # }
     ];
     events = [
       {

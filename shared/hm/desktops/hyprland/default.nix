@@ -20,6 +20,7 @@
 
   home.packages = with pkgs; [
     wl-clipboard # Clipboard helper
+    cliphist
     pavucontrol # Audio Control
     libnotify # Send notifications
     blueberry # Bluetooth menu
@@ -64,7 +65,8 @@
     ];
 
     plugin = {
-      split-monitor-workspaces.count = 5;
+      split-monitor-workspaces.count = 10;
+      split-monitor-workspaces.keep_focused = true;
     };
 
     xwayland = {
@@ -91,8 +93,8 @@
     };
 
     general = {
-      gaps_in = 4;
-      gaps_out = 8;
+      gaps_in = 2;
+      gaps_out = 4;
       border_size = 1;
       layout = "master";
       apply_sens_to_raw = 1; # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
@@ -103,7 +105,7 @@
     };
 
     decoration = {
-      rounding = 10;
+      rounding = 8;
       shadow_ignore_window = true;
       drop_shadow = false; # Power hungry effect
       shadow_range = 15;
@@ -142,7 +144,7 @@
 
     misc = {
       vfr = true; # misc:no_vfr -> misc:vfr. bool, heavily recommended to leave at default on. Saves on CPU usage.
-      vrr = false; # misc:vrr -> Adaptive sync of your monitor. 0 (off), 1 (on), 2 (fullscreen only). Default 0 to avoid white flashes on select hardware.
+      vrr = 0; # misc:vrr -> Adaptive sync of your monitor. 0 (off), 1 (on), 2 (fullscreen only). Default 0 to avoid white flashes on select hardware.
 
       # Stops hypr-chan from appearing when resizing firefox
       disable_hyprland_logo = true;

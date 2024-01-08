@@ -42,11 +42,11 @@
       # Workspaces
       "hyprland/workspaces" = {
         active-only = false;
-        all-outputs = true;
+        all-outputs = false;
         disable-scroll = true;
-        persistent-workspaces = {
-          "*" = 8;
-        };
+        # persistent-workspaces = {
+        #   "*" = 8;
+        # };
         format = "";
         on-click = "activate";
         format-icons = {
