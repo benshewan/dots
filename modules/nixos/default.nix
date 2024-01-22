@@ -1,2 +1,3 @@
-{...}: {
+{
+  keylightd = import ./keylightd.nix;
 }

@@ -4,4 +4,5 @@
   firefox-devedition-customjs = pkgs.callPackage ./firefox-devedition-customjs {};
   thorium = pkgs.callPackage ./thorium {};
   mercury = pkgs.callPackage ./mercury {};
+  keylightd = pkgs.callPackage ./keylightd {};
 }

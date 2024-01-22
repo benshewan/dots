@@ -6,13 +6,15 @@
   lib,
   ...
 }: {
-  imports = [
-    # Load inputs
-    inputs.stylix.nixosModules.stylix
-    inputs.nix-index-database.nixosModules.nix-index
+  imports =
+    [
+      # Load inputs
+      inputs.stylix.nixosModules.stylix
+      inputs.nix-index-database.nixosModules.nix-index
 
-    ../both
-  ];
+      ../both
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   # ---------- TESTING CHANGES ----------
   # Fixing theme
@@ -85,6 +87,9 @@
 
   # NixOS Stuff
   nixpkgs.config.allowUnfree = true;
+
+  programs.nix-ld.enable = true;
+
   nix = {
     settings.experimental-features = ["nix-command" "flakes"];
     settings.auto-optimise-store = true;
