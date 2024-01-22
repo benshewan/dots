@@ -1,11 +1,10 @@
 {
-  inputs,
   outputs,
   pkgs,
   config,
   ...
 }: {
-  stylix.image = "${outputs.wallpapers}/catppuccin-floral.png";
+  stylix.image = "${outputs.wallpapers}/catppuccin/catppuccin-floral.png";
   stylix.polarity = "dark";
   stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
   stylix.cursor = {

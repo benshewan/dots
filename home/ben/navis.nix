@@ -6,6 +6,7 @@
   imports = [
     ./generic.nix
     "${outputs.flake-path}/shared/hm/desktops/hyprland"
+    "${outputs.flake-path}/themes/gruvbox/hm"
   ];
 
   monitors = [
@@ -56,11 +57,15 @@
   home.packages = with pkgs; [
     prismlauncher
     distrobox
+
+    # Work stuff
     teamviewer
-    (vivaldi.override {
-      enableWidevine = true;
-      proprietaryCodecs = true;
-    })
+    masterpdfeditor
+    stable.moonlight-qt
+    inkscape
+
+    # Messing around
+    goldwarden # a lightweight daemon to add functionallity missing from the native bitwarden client
   ];
 
   services.flatpak.packages = [

@@ -25,6 +25,9 @@
     libnotify # Send notifications
     blueberry # Bluetooth menu
     xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
+
+    nwg-displays # GUI to configure screens
+    wlr-randr # dependency of nwg-displays
   ];
 
   wayland.windowManager.hyprland = {
@@ -59,8 +62,7 @@
       "${lib.getExe pkgs.dunst}"
       "${lib.getExe pkgs.waybar}"
       "${lib.getExe pkgs.swaybg} -i ${config.stylix.image} --mode fill"
-      # doesn't seem to quite work
-      "hyprctl setcursor ${config.stylix.cursor.name} ${toString config.stylix.cursor.size}"
+      ''hyprctl setcursor "${config.stylix.cursor.name}" ${toString config.stylix.cursor.size}''
       # "swaync"
     ];
 

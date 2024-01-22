@@ -7,9 +7,7 @@
   imports =
     [
       inputs.stylix.homeManagerModules.stylix
-
       ./services/flatpak
-      ../both
     ]
     ++ (builtins.attrValues outputs.homeManagerModules)
     ++ [./theme/kvantum];
