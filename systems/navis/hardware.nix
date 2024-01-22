@@ -8,7 +8,9 @@
   imports = [inputs.nixos-hardware.nixosModules.framework-13-7040-amd];
 
   # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
+  hardware.framework.amd-7040.preventWakeOnAC = true;
 
+  services.keylightd.enable = false;
   # Additional power savings
   # Note: doesn't whtelist inputs devices, can be funky
   # powerManagement.powertop.enable = true;
@@ -97,42 +99,51 @@
     options cfg80211 ieee80211_regdom="CA"
   '';
 
-  # Patched PPD https://community.frame.work/t/tracking-ppd-v-tlp-for-amd-ryzen-7040/39423/137
-  nixpkgs.overlays = [
+  # Fingerprint
+  services.fprintd.enable = true;
+  security.pam.services.login.fprintAuth = false;
+  # similarly to how other distributions handle the fingerprinting login
+  # security.pam.services.gdm-fingerprint = lib.mkIf (config.services.fprintd.enable) {
+  #   text = ''
+  #     auth       required                    pam_shells.so
+  #     auth       requisite                   pam_nologin.so
+  #     auth       requisite                   pam_faillock.so      preauth
+  #     auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
+  #     auth       optional                    pam_permit.so
+  #     auth       required                    pam_env.so
+  #     auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
+  #     auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+
+  #     account    include                     login
+
+  #     password   required                    pam_deny.so
+
+  #     session    include                     login
+  #     session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
+  #   '';
+  # };
+
+  # beta firmware blob to fix VAAPi VP9 decoding glitches
+  # (see https://gitlab.freedesktop.org/mesa/mesa/-/issues/8044#note_2195102 and
+  # https://community.frame.work/t/active-upstream-amdgpu-issues-affecting-ryzen-7840u-igpu-780m/41053/8)
+  hardware.firmware = [
     (
-      final: prev: {
-        power-profiles-daemon = prev.power-profiles-daemon.overrideAttrs (
-          old: {
-            version = "0.13-1";
-
-            patches =
-              (old.patches or [])
-              ++ [
-                (prev.fetchpatch {
-                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/127.patch";
-                  sha256 = "sha256-jnq5yJvWQHOlZ78SE/4/HqiQfF25YHQH/T4wwDVRHR0=";
-                })
-                (prev.fetchpatch {
-                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/128.patch";
-                  sha256 = "sha256-YD9wn9IQlCp02r4lmwRnx9Eur2VVP1JfC/Bm8hlzF3Q=";
-                })
-                (prev.fetchpatch {
-                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/129.patch";
-                  sha256 = "sha256-9T+I3BAUW3u4LldF85ctE0/PLu9u+KBN4maoL653WJU=";
-                })
-              ];
-
-            # explicitly fetching the source to make sure we're patching over 0.13 (this isn't strictly needed):
-            src = prev.fetchFromGitLab {
-              domain = "gitlab.freedesktop.org";
-              owner = "hadess";
-              repo = "power-profiles-daemon";
-              rev = "0.13";
-              sha256 = "sha256-ErHy+shxZQ/aCryGhovmJ6KmAMt9OZeQGDbHIkC0vUE=";
-            };
-          }
-        );
-      }
+      let
+        betaVCNblob = builtins.fetchurl {
+          url = "https://gitlab.freedesktop.org/mesa/mesa/uploads/f51d221a24d4ac354e2d1d901613b594/vcn_4_0_2.bin";
+          sha256 = "sha256:0rg4sm6sivn6s356cnxgfqq5d7gg2f3ghwi3psc0w6i7pks3i3z8";
+        };
+      in
+        pkgs.runCommandNoCC "betaVCNblob" {} ''
+          mkdir -p $out/lib/firmware/amdgpu
+          cp ${betaVCNblob} $out/lib/firmware/amdgpu/vcn_4_0_2.bin
+        ''
     )
   ];
+
+  # Patched PPD https://community.frame.work/t/tracking-ppd-v-tlp-for-amd-ryzen-7040/39423/137
+  services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
+    src = inputs.power-profiles-daemon;
+    version = inputs.power-profiles-daemon.rev;
+  };
 }

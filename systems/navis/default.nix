@@ -20,6 +20,9 @@
   environment.systemPackages = with pkgs; [
     # Audio Configuration https://github.com/ceiphr/ee-framework-presets
     easyeffects
+    goldwarden # a lightweight daemon to add functionallity missing from the native bitwarden client
+    pinentry
+
     powertop
     nm-tray
     masterpdfeditor
@@ -40,5 +43,13 @@
   #   # SuspendState=mem # suspend2idle is buggy :(
   # '';
   # FreeCore testing
-  networking.firewall.allowedTCPPorts = [7100 7200 443 80];
+  networking.firewall.allowedTCPPorts =
+    [7100 7200 443 80]
+    /*
+    ++ [27017]
+    */
+    ;
+  # services.mongodb.bind_ip = "127.0.0.1,192.168.0.69";
+  # services.mongodb.enableAuth = false;
+  # services.mongodb.initialRootPassword = "Coldsteel@22";
 }

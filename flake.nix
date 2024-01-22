@@ -87,6 +87,11 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Temp
+    power-profiles-daemon.flake = false;
+    power-profiles-daemon.url = "gitlab:upower/power-profiles-daemon?host=gitlab.freedesktop.org";
+
     # Home Manager
     home-manager = {
       url = "github:nix-community/home-manager";
