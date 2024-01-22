@@ -25,6 +25,8 @@ in {
       redhat.vscode-yaml # YAML Support
       formulahendry.auto-rename-tag # HTML rename support
       mikestead.dotenv
+      svelte.svelte-vscode
+      bradlc.vscode-tailwindcss
 
       # Intellisense
       christian-kohler.path-intellisense # Auto-complete paths
@@ -115,6 +117,9 @@ in {
       gitlens.telemetry.enabled = false;
       telemetry.telemetryLevel = "off";
       redhat.telemetry.enabled = false;
+
+      # Svelte Config
+      svelte.enable-ts-plugin = true;
 
       # Nix LSP Config
       nix.enableLanguageServer = true;
