@@ -16,10 +16,10 @@
     enableAutoSave = true;
   };
 
-  programs.nixvim.plugins.airline = {
-    enable = true;
-    powerline = true;
-  };
+  # programs.nixvim.plugins.airline = {
+  #   enable = true;
+  #   powerline = true;
+  # };
 
   programs.nixvim.plugins.lsp = {
     enable = true;
