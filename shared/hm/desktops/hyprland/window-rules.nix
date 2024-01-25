@@ -75,24 +75,37 @@
     "fakefullscreen, class:^(code-url-handler)$"
 
     # Webstorm
-    "stayfocused, class:^(jetbrains-webstorm)$,title:^()$,floating:1"
-    "center(1), class:^(jetbrains-webstorm)$,title:^()$,floating:1"
+    # ----------
+    # UI elements
     "nofocus,class:^(jetbrains-webstorm)$,title:^(win)(.*)$"
+
+    # search
+    "stayfocused, class:^(jetbrains-webstorm)$,title:^()$"
+    "center(1), class:^(jetbrains-webstorm)$,title:^()$"
+    "center(1), class:^(jetbrains-webstorm)$,title:^(win3)$"
+    "stayfocused, class:^(jetbrains-webstorm)$,title:^(win3)$"
+
+    # splash
     "center(1), class:^(jetbrains-webstorm)$,title:^(splash)$"
     "nofocus,class:^(jetbrains-webstorm)$,title:^(splash)$"
-    "dimaround, class:^(jetbrains-webstorm)$,title:^(Settings)$"
-    # "nofocus,class:^(jetbrains-webstorm)$,title:^(win45)$"
-    # "nofocus,class:^(jetbrains-webstorm)$,title:^(win29)$"
 
-    # "stayfocused, class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
-    # "center(1), class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
+    # Settings
+    "dimaround, class:^(jetbrains-webstorm)$,title:^(Settings)$"
+    "stayfocused, class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
+    "center(1), class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
+
+    # Open Project
+    "dimaround, class:^(jetbrains-webstorm)$,title:^(Open Project)$"
+    "stayfocused, class:^(jetbrains-webstorm)$,title:^(Open Project)$,floating:1"
+    "center(1), class:^(jetbrains-webstorm)$,title:^(Open Project)$,floating:1"
+    # ----------
 
     # Polkit Request
-    "float,title:^(Authentication Required)(.*)$"
-    "dimaround,title:^(Authentication Required)(.*)$"
-    "stayfocused,title:^(Authentication Required)(.*)$"
+    "float,class:^(polkit-gnome)(.*)$"
+    "dimaround,class:^(polkit-gnome)(.*)$"
+    "stayfocused,class:^(polkit-gnome)(.*)$"
 
-    "float,title:^(mpv)$"
+    # XWayland stuff
     "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
     "noanim,class:^(xwaylandvideobridge)$"
     "nofocus,class:^(xwaylandvideobridge)$"

@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   stylix.targets.swaylock.enable = true;
   stylix.targets.swaylock.useImage = true;
   programs.swaylock = {

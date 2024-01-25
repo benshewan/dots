@@ -5,7 +5,7 @@
   ...
 }: let
   hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
-  swaylock = "${lib.getExe config.programs.swaylock.package} -f";
+  swaylock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x swaylock; then ${lib.getExe config.programs.swaylock.package} -f; fi";
 in {
   services.swayidle = {
     enable = true;

@@ -7,5 +7,6 @@
       confirm_os_window_close = 0;
     };
   };
-  home.shellAliases.ssh = toString ./ssh.sh;
+  # home.shellAliases.ssh = toString ./ssh.sh;
+  # home.sessionVariables.TERM = "xterm";
 }

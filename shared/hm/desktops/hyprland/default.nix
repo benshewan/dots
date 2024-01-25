@@ -48,7 +48,7 @@
     exec-once = [
       # System
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # allow xdg portal to get the varibales it needs
-      "${pkgs.libsForQt5.polkit-kde-agent}/libexec/polkit-kde-authentication-agent-1"
+      "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       "${lib.getExe config.services.swayidle.package}"
       "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
       # "${pkgs.nm-tray}/bin/nm-tray" # Not working
