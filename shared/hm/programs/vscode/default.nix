@@ -128,7 +128,7 @@ in {
         nil = {
           formatting.command = [(lib.getExe pkgs.alejandra)];
           nix.binary = "nix";
-          nix.maxMemoryMB = 2560;
+          nix.maxMemoryMB = 3072;
           nix.flake.autoArchive = true;
           nix.flake.autoEvalInputs = true;
           nix.flake.nixpkgsInputName = "nixpkgs";
