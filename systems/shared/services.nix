@@ -7,8 +7,8 @@
   services = {
     xserver = {
       enable = true;
-      layout = "us";
-      xkbVariant = "";
+      xkb.layout = "us";
+      xkb.variant = "";
       excludePackages = [pkgs.xterm];
     };
 
