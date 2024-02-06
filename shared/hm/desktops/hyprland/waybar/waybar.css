@@ -49,7 +49,6 @@
 }
 
 #tray,
-#pulseaudio,
 #network,
 #battery,
 #bluetooth,
@@ -62,7 +61,6 @@
 }
 
 #tray,
-#pulseaudio,
 #network,
 #bluetooth,
 #battery {
@@ -72,7 +70,7 @@
     margin-left: 7px;
 }
 
-#clock {
+#pulseaudio {
     color: @base05;
     background: @base02;
     border-radius: 0px 0px 0px 40px;
@@ -82,7 +80,7 @@
     font-size: 16px;
 }
 
-#custom-playerlabel {
+#clock {
     background: @base02;
     color: @base05;
     padding: 0 20px;

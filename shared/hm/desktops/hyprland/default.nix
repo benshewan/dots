@@ -21,9 +21,10 @@
   home.packages = with pkgs; [
     wl-clipboard # Clipboard helper
     cliphist
-    pavucontrol # Audio Control
+    stable.pavucontrol # Audio Control
+    loupe
+    foliate
     libnotify # Send notifications
-    blueberry # Bluetooth menu
     xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
 
     nwg-displays # GUI to configure screens
@@ -51,6 +52,7 @@
       "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
       "${lib.getExe config.services.swayidle.package}"
       "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
+      "${lib.getExe' pkgs.nm-tray "nm-tray"}"
       # "${pkgs.nm-tray}/bin/nm-tray" # Not working
 
       # Clipboard
@@ -150,7 +152,7 @@
 
       # Stops hypr-chan from appearing when resizing firefox
       disable_hyprland_logo = true;
-      force_hypr_chan = false;
+      # force_hypr_chan = false;
     };
 
     # Dynamic settings

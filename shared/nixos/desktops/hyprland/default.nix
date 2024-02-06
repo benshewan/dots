@@ -56,6 +56,7 @@
   # Required Services
   services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
   programs.seahorse.enable = true; # Manage Keys with a GUI
+  services.blueman.enable = true; # GTK Bluetooth manager
 
   services.udisks2.enable = true; # Auto mount removable drives on connect
   hardware.brillo.enable = true; # Add support for controlling brightness
@@ -64,31 +65,15 @@
   programs.partition-manager.enable = true;
 
   # Basic programs
-  environment.systemPackages =
-    (with pkgs; [
-      (sddm-chili-theme.override {
-        themeConfig = {
-          # General = {
-          background = config.stylix.image;
-          PasswordFieldOutlined = true;
-          # };
-        };
-      })
-      gnome.adwaita-icon-theme
-      # Dolphin and assorted dependencies for it
-      taglib
-      ffmpegthumbnailer
-    ])
-    ++ (with pkgs.libsForQt5; [
-      dolphin
-      ark
-      baloo
-      dolphin-plugins
-      kdegraphics-thumbnailers
-      kio
-      kio-extras
-      breeze-icons
-    ]);
+  environment.systemPackages = with pkgs; [
+    (sddm-chili-theme.override {
+      themeConfig = {
+        background = config.stylix.image;
+        PasswordFieldOutlined = true;
+      };
+    })
+    gnome.adwaita-icon-theme
+  ];
 
   xdg.portal = {
     enable = true;

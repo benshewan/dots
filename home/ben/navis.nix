@@ -38,10 +38,11 @@
     # Home Monitors
     {
       name = "desc:Samsung Electric Company C27F390 HTQK900407";
+      rotate = 1;
       width = 1920;
       height = 1080;
-      x = -1920;
-      y = -1080;
+      x = -1080;
+      y = -1920;
     }
     {
       name = "desc:Dell Inc. AW3423DWF 58082S3";

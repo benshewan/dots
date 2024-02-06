@@ -7,7 +7,7 @@
 }: {
   imports = [inputs.nixos-hardware.nixosModules.framework-13-7040-amd];
 
-  # boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   hardware.framework.amd-7040.preventWakeOnAC = true;
 
   services.keylightd.enable = false;
@@ -24,7 +24,7 @@
     extraConfig = ''
       HandlePowerKey=suspend-then-hibernate
       IdleAction=suspend-then-hibernate
-      IdleActionSec=2m
+      IdleActionSec=30m
     '';
   };
 
@@ -34,7 +34,7 @@
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
   services.udev.extraRules =
     ''
-      SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance"
+      SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"
       SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
     ''
     # temp fix for bad lid behaviour, i.e. if system is suspended and the lid is closed it will wake back up
@@ -67,23 +67,113 @@
 
   boot.kernelParams = [
     # Potential fix for video stuttering
-    "amd_iommu=off"
+    # "amd_iommu=off"
     # reported to help with flashing display issues
     "amdgpu.sg_display=0"
 
     # Adaptive Backlight Management (1-4)
-    "amdgpu.abmlevel=3"
+    # "amdgpu.abmlevel=3"
   ];
 
   # Add support for temp, voltage, current, and power reading
   # boot.extraModulePackages = with config.boot.kernelPackages; [zenpower];
 
-  # Auto Brightness
+  # Auto Brightness - taken from https://github.com/FedeDP/Clight/issues/253#issue-1358215844
   location.provider = "geoclue2";
   services.clight = {
-    enable = false;
+    enable = true;
+
+    ## Gamma temperature during day and night
+    ## this nix option overrides gamma.temp
+    temperature.day = 5500;
+    temperature.night = 3700;
+
     settings = {
-      # dimmer.disabled = false;
+      verbose = false;
+      resumedelay = 0;
+
+      inhibit = {
+        disabled = false;
+        inhibit_docked = true;
+        inhibit_pm = true;
+        inhibit_bl = true;
+      };
+
+      backlight = {
+        disabled = false;
+        restore_on_exit = true;
+        no_smooth_transition = false;
+        trans_step = 0.05;
+        trans_timeout = 30;
+        trans_fixed = 0;
+        ac_timeouts = [600 2700 300];
+        batt_timeouts = [1200 5400 600];
+        shutter_threshold = 0.00; # 0.10
+        no_auto_calibration = false;
+        pause_on_lid_closed = true;
+        capture_on_lid_opened = true;
+      };
+
+      sensor = {
+        ac_regression_points = [0.0 0.15 0.29 0.45 0.61 0.74 0.81 0.88 0.93 0.97 1.0];
+        batt_regression_points = [0.0 0.15 0.23 0.36 0.52 0.59 0.65 0.71 0.75 0.78 0.80];
+        devname = "";
+        settings = "";
+        captures = [5 5];
+      };
+
+      keyboard = {
+        disabled = true;
+        timeouts = [15 7];
+        ac_regression_points = [1.0 0.97 0.93 0.88 0.81 0.74 0.61 0.45 0.29 0.15 0.0];
+        batt_regression_points = [0.80 0.78 0.75 0.71 0.65 0.59 0.52 0.36 0.23 0.15 0.0];
+      };
+
+      gamma = {
+        disabled = true;
+        restore_on_exit = true;
+        no_smooth_transition = false;
+        trans_step = 50;
+        trans_timeout = 300;
+        long_transition = true;
+        ambient_gamma = false;
+      };
+
+      # daytime = {
+      #   sunrise = "6:30";
+      #   sunset = "20:30";
+      #   event_duration = 1800;
+      #   sunrise_offset = 0;
+      #   sunset_offset = 0;
+      # };
+
+      dimmer = rec {
+        disabled = false;
+        no_smooth_transition = [false false];
+        trans_steps = [0.01 0.08];
+        trans_timeouts = let
+          # calculates a duration for each step between
+          # full brightness and the dimmed percentage
+          formula = duration: target: step: builtins.floor (duration / ((1 - target) / step));
+        in [
+          (formula 2000 dimmed_pct (builtins.elemAt trans_steps 0))
+          (formula 250 dimmed_pct (builtins.elemAt trans_steps 1))
+        ];
+        trans_fixed = [0 0];
+        timeouts = [30 15];
+        dimmed_pct = 0.2;
+      };
+
+      dpms = {
+        disabled = true;
+        timeouts = [900 300];
+      };
+
+      screen = {
+        disabled = true;
+        contrib = 0.2;
+        timeouts = [5 0];
+      };
     };
   };
 

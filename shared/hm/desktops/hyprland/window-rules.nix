@@ -31,6 +31,8 @@
     "move onscreen cursor 0 5,title:^(nm-tray)$"
 
     # Firefox
+    # ----------
+    "idleinhibit fullscreen, class:^(firefox)$"
     # PIP
     "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
     "size 800 450, class:^(firefox)$,title:(Picture-in-Picture)"
@@ -50,6 +52,9 @@
     "dimaround,class:^(firefox)$,title:^(File Upload)$"
     "size 800 450,class:^(firefox)$,title:^(File Upload)$"
 
+    "float,class:^(firefox)$,title:^(Opening)(.*)$"
+    "nofullscreenrequest,class:^(firefox)$,title:^(Opening)(.*)$"
+    "fakefullscreen,class:^(firefox)$,title:^(Opening)(.*)$"
     "center(1),class:^(firefox)$,title:^(Opening)(.*)$"
     "stayfocused,class:^(firefox)$,title:^(Opening)(.*)$"
     "dimaround,class:^(firefox)$,title:^(Opening)(.*)$"
@@ -65,11 +70,24 @@
     "dimaround,title:^(Save As)$"
     "center(1),title:^(Save As)$"
 
+    # ----------
+
     # KDEConnect
     "float, class:^(firefox)$,title:^(Mozilla Firefox)$"
     "move onscreen cursor, class:^(firefox)$,title:^(Mozilla Firefox)$"
     "float, class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
     "center(1), class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
+
+    # Dolphin
+    # "float,title:^(New Folder — Dolphin)$"
+    # "size 800 450,title:^(New Folder — Dolphin)$"
+    "stayfocused,title:^(New Folder — Dolphin)$"
+    "dimaround,title:^(New Folder — Dolphin)$"
+    "center(1),title:^(New Folder — Dolphin)$"
+
+    "stayfocused,class:^(kiod5)$,title:^(Authentication Dialog)$"
+    "dimaround,class:^(kiod5)$,title:^(Authentication Dialog)$"
+    "center(1),class:^(kiod5)$,title:^(Authentication Dialog)$"
 
     # Vscode
     "fakefullscreen, class:^(code-url-handler)$"

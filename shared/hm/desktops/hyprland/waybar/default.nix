@@ -21,20 +21,19 @@
         "hyprland/workspaces"
       ];
       modules-center = [
-        "custom/playerlabel"
+        "clock"
       ];
       modules-right = [
         "tray"
         "bluetooth"
         "battery"
         "pulseaudio"
-        "clock"
       ];
 
       # Clock
       clock = {
-        format = " {:%a, %d %b, %I:%M %p}";
-        tooltip = "true";
+        format = "{:%I:%M %p} ";
+        tooltip = true;
         tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         format-alt = " {:%d/%m}";
       };
@@ -99,7 +98,7 @@
       # Audio
       pulseaudio = {
         format = "{icon} {volume}%";
-        format-muted = "󰝟";
+        format-muted = " 󰝟 ";
         format-icons = {
           default = ["󰕿" "󰖀" "󰕾"];
         };

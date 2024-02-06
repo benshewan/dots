@@ -1,10 +1,13 @@
 {
   pkgs,
   outputs,
+  lib,
   ...
 }: {
   imports = [
     "${outputs.flake-path}/shared/nixos/desktops/hyprland"
+    "${outputs.flake-path}/shared/nixos/programs/thunar"
+    "${outputs.flake-path}/shared/nixos/programs/dolphin"
     "${outputs.flake-path}/themes/gruvbox/nixos"
     ./hardware-configuration.nix
     ./hardware.nix
@@ -50,4 +53,20 @@
   # services.mongodb.bind_ip = "127.0.0.1,192.168.0.69";
   # services.mongodb.enableAuth = false;
   # services.mongodb.initialRootPassword = "Coldsteel@22";
+
+  # Networking stuff
+  networking.extraHosts = lib.concatMapStrings (x: "100.68.3.84 " + x + ".benshewan.dev\n") [
+    "plex"
+    "sonarr"
+    "radarr"
+    "prowlarr"
+    "overseerr"
+    "downloads"
+    "auth"
+    "tautulli"
+    "invite"
+    "portainer"
+    "files"
+    "admin"
+  ];
 }
