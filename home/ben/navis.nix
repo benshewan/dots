@@ -62,6 +62,7 @@
     # Work stuff
     teamviewer
     masterpdfeditor
+    wisenet-viewer
     stable.moonlight-qt
     inkscape
 

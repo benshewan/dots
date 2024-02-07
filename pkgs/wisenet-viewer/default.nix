@@ -6,21 +6,22 @@
   buildFHSUserEnv,
   ...
 }: let
-  version = "1.04.00";
+  version = "1.05.00";
 
   src = fetchurl {
     url = "https://hanwhavisionamerica.com/download/48379";
-    sha256 = "sha256-WTets2nGNFm7baNiBQq/2FW9N0s5jKRTFYTFet8LGKI=";
+    sha256 = "sha256-LYcniRFPI1867ronEk2iuEnIpgBw6O/qiFvNsjpMkdw=";
   };
   wisenet-viewer-environment = stdenv.mkDerivation {
-    pname = "wisenet-viesenet-viewer-environwer";
+    pname = "wisenet-viewer-environment";
     inherit src version;
 
     nativeBuildInputs = [dpkg unzip];
 
     unpackPhase = ''
       unzip $src
-      dpkg-deb -x ./WisenetViewer_1.04.00_20230511.deb .
+      ls -la
+      dpkg-deb -x ./*.deb .
     '';
 
     installPhase = ''
