@@ -18,22 +18,18 @@
     padding: 0px 5px;
     margin: 0px 3px;
     border-radius: 16px;
-    color: transparent;
+    color: @base06;
     background: @base01;
-    /* background: alpha(@base01, $ {
-            toString config.stylix.opacity.desktop
-        }); */
     transition: all 0.1s ease-in-out;
 }
 
 #workspaces button.active {
     background-color: @base0D;
-    /* padding: 0px 5px; */
-    /* margin: 0px 3px; */
+    padding: 0px 5px;
+    margin: 0px 3px;
     border-radius: 16px;
-    /* color: transparent; */
-    /* border-width: 0; */
-    /* color: @base00; */
+    border-bottom:unset;
+    color: @base00;
     /* border-radius: 16px; */
     /* min-width: 50px; */
     /* background-size: 400% 400%; */

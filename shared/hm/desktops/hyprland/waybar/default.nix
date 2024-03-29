@@ -46,7 +46,7 @@
         # persistent-workspaces = {
         #   "*" = 8;
         # };
-        format = "";
+        format = "{}";
         on-click = "activate";
         format-icons = {
           urgent = "";

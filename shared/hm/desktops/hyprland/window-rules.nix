@@ -37,13 +37,13 @@
     "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
     "size 800 450, class:^(firefox)$,title:(Picture-in-Picture)"
     "pin, class:^(firefox)$,title:^(Picture-in-Picture)$"
-    "nomaximizerequest, class:^(firefox)$,title:^(Picture-in-Picture)$"
-    "nofullscreenrequest, class:^(firefox)$,title:^(Picture-in-Picture)$"
+    "suppressevent maximize, class:^(firefox)$,title:^(Picture-in-Picture)$"
+    "suppressevent fullscreen, class:^(firefox)$,title:^(Picture-in-Picture)$"
     "float, class:^(firefox)$,title:^(Firefox)$ "
     "size 800 450, class:^(firefox)$,title:^(Firefox)$"
     "pin, class:^(firefox)$,title:^(Firefox)$"
-    "nomaximizerequest, class:^(firefox)$,title:^(Firefox)$"
-    "nofullscreenrequest, class:^(firefox)$,title:^(Firefox)$"
+    "suppressevent maximize, class:^(firefox)$,title:^(Firefox)$"
+    "suppressevent fullscreen, class:^(firefox)$,title:^(Firefox)$"
 
     # Dialogs
     "float,class:^(firefox)$,title:^(File Upload)$"
@@ -53,15 +53,15 @@
     "size 800 450,class:^(firefox)$,title:^(File Upload)$"
 
     "float,class:^(firefox)$,title:^(Opening)(.*)$"
-    "nofullscreenrequest,class:^(firefox)$,title:^(Opening)(.*)$"
+    "suppressevent fullscreen,class:^(firefox)$,title:^(Opening)(.*)$"
     "fakefullscreen,class:^(firefox)$,title:^(Opening)(.*)$"
     "center(1),class:^(firefox)$,title:^(Opening)(.*)$"
     "stayfocused,class:^(firefox)$,title:^(Opening)(.*)$"
     "dimaround,class:^(firefox)$,title:^(Opening)(.*)$"
     "size 800 450,class:^(firefox)$,title:^(Opening)(.*)$"
 
-    "nomaximizerequest, class:^(firefox)$,title:^()$"
-    "nofullscreenrequest, class:^(firefox)$,title:^()$"
+    "suppressevent maximize, class:^(firefox)$,title:^()$"
+    "suppressevent fullscreen, class:^(firefox)$,title:^()$"
     "float, class:^(firefox)$,title:^()$"
 
     "float,title:^(Save As)$"
@@ -73,10 +73,10 @@
     # ----------
 
     # KDEConnect
-    "float, class:^(firefox)$,title:^(Mozilla Firefox)$"
-    "move onscreen cursor, class:^(firefox)$,title:^(Mozilla Firefox)$"
-    "float, class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
-    "center(1), class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
+    # "float, class:^(firefox)$,title:^(Mozilla Firefox)$"
+    # "move onscreen cursor, class:^(firefox)$,title:^(Mozilla Firefox)$"
+    # "float, class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
+    # "center(1), class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
 
     # Dolphin
     # "float,title:^(New Folder — Dolphin)$"

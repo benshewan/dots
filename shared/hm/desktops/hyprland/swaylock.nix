@@ -3,16 +3,19 @@
   stylix.targets.swaylock.useImage = true;
   programs.swaylock = {
     enable = true;
-    package = pkgs.swaylock-effects;
+    package = pkgs.swaylock;
     settings = {
+      # Only for base sway-idle
+      indicator-idle-visible = true;
+
       # Only for the Effects fork, but effects seems prone to crashing
       # screenshots = true;
-      clock = true;
-      indicator = true;
+      # clock = true;
+      # indicator = true;
 
       # Grace
-      grace = 2;
-      grace-no-mouse = true;
+      # grace = 2;
+      # grace-no-mouse = true;
 
       # Effects
       # fade-in = 0.2;
