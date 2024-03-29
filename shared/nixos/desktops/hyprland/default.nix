@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   config,
+  outputs,
   ...
 }: {
   # Binary cache for hyprland nightly
@@ -21,22 +22,6 @@
     enableHidpi = true;
     theme = "chili";
   };
-
-  # programs.regreet = {
-  #   enable = true;
-  #   cageArgs = ["-s" "-m" "last"];
-  #   settings = {
-  #     background.path = config.stylix.image;
-  #     background.fit = "Fill";
-  #     GTK.cursor_theme_name = config.stylix.cursor.name;
-  #     GTK.theme_name = "Catppuccin-Mocha-Compact-Blue-Dark";
-  #     GTK.font_name = "${config.stylix.fonts.sansSerif.name} ${toString config.stylix.fonts.sizes.desktop}";
-  #     GTK.application_prefer_dark_theme =
-  #       if config.stylix.polarity == "dark"
-  #       then true
-  #       else false;
-  #   };
-  # };
 
   # Add support for swaylock
   security.pam.services.swaylock = {
