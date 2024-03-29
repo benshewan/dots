@@ -8,6 +8,7 @@
     "${outputs.flake-path}/shared/nixos/desktops/hyprland"
     "${outputs.flake-path}/shared/nixos/programs/thunar"
     "${outputs.flake-path}/shared/nixos/programs/dolphin"
+    "${outputs.flake-path}/shared/nixos/programs/chromium"
     "${outputs.flake-path}/themes/gruvbox/nixos"
     ./hardware-configuration.nix
     ./hardware.nix
@@ -26,6 +27,8 @@
       easyeffects
       powertop
       nm-tray
+      goldwarden
+      pinentry
     ]
     # Development stuff
     ++ (with pkgs; [
@@ -39,14 +42,15 @@
   };
 
   services.teamviewer.enable = true;
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
   # systemd.sleep.extraConfig = ''
   #    HibernateDelaySec=30s # very low value to test suspend-then-hibernate
   #   # SuspendState=mem # suspend2idle is buggy :(
   # '';
+  # networking.interfaces.eth0.wakeOnLan.enable = true;
 
   # FreeCore testing
-  networking.firewall.allowedTCPPorts = [7100 7200 443 80];
+  networking.firewall.allowedTCPPorts = [7100 7200 443 80] ++ [47989 47984];
 
   # MongoDB Extenal access
   # MongoDB port [27017]
@@ -54,19 +58,26 @@
   # services.mongodb.enableAuth = false;
   # services.mongodb.initialRootPassword = "Coldsteel@22";
 
+  programs.gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
+
   # Networking stuff
-  networking.extraHosts = lib.concatMapStrings (x: "100.68.3.84 " + x + ".benshewan.dev\n") [
-    "plex"
-    "sonarr"
-    "radarr"
-    "prowlarr"
-    "overseerr"
-    "downloads"
-    "auth"
-    "tautulli"
-    "invite"
-    "portainer"
-    "files"
-    "admin"
-  ];
+  networking.extraHosts =
+    (lib.concatMapStrings (x: "100.68.3.84 " + x + ".benshewan.dev\n") [
+      "plex"
+      "sonarr"
+      "radarr"
+      "prowlarr"
+      "overseerr"
+      "downloads"
+      "auth"
+      "tautulli"
+      "invite"
+      "portainer"
+      "files"
+      "admin"
+      "stats"
+      "nzb"
+      "jellyfin"
+    ])
+    + '''';
 }

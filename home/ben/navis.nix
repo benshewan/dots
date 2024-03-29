@@ -37,12 +37,13 @@
 
     # Home Monitors
     {
-      name = "desc:Samsung Electric Company C27F390 HTQK900407";
+      name = "desc:Lenovo Group Limited P24q-10 U4P00001";
       rotate = 1;
-      width = 1920;
-      height = 1080;
-      x = -1080;
-      y = -1920;
+      width = 2560;
+      height = 1440;
+      scale = 1.25;
+      x = -1152;
+      y = -2048;
     }
     {
       name = "desc:Dell Inc. AW3423DWF 58082S3";
@@ -58,23 +59,44 @@
   home.packages = with pkgs; [
     prismlauncher
     distrobox
+    plex-media-player
+    jetbrains.pycharm-professional
 
     # Work stuff
     teamviewer
     masterpdfeditor
     wisenet-viewer
-    stable.moonlight-qt
+    moonlight-qt
     inkscape
 
     # Messing around
-    goldwarden # a lightweight daemon to add functionallity missing from the native bitwarden client
+    # goldwarden # a lightweight daemon to add functionallity missing from the native bitwarden client
+    parsec-bin
   ];
 
   services.flatpak.packages = [
     # "flathub:app/io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work, steam will freak out
-    "flathub:app/com.parsecgaming.parsec//stable"
-    "flathub:app/com.mongodb.Compass//stable"
-    # "flathub:app/com.github.tchx84.Flatseal//stable"
+    # "flathub:app/com.parsecgaming.parsec//stable"
+    {
+      appId = "com.mongodb.Compass";
+      origin = "flathub";
+    }
+    {
+      appId = "com.getpostman.Postman";
+      origin = "flathub";
+    }
+    {
+      appId = "com.github.tchx84.Flatseal";
+      origin = "flathub";
+    }
+    {
+      appId = "cafe.avery.Delfin";
+      origin = "flathub";
+    }
+    {
+      appId = "xyz.xclicker.xclicker";
+      origin = "flathub";
+    }
   ];
 
   programs.obs-studio = {

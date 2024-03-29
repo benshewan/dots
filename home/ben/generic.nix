@@ -17,6 +17,7 @@
       "kdeconnect"
       "webstorm"
       "nvim"
+      "chromium"
       # "virt-manager"
     ];
 
@@ -28,7 +29,7 @@
 
     # Chromium browser of choice
     # Note: Should replace with thorium when that becomes available
-    thorium
+    # thorium
     # mercury
     # (vivaldi.override {
     #   proprietaryCodecs = true;
