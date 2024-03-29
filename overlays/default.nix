@@ -10,7 +10,7 @@
     # example = prev.example.overrideAttrs (oldAttrs: rec {
     # ...
     # });
-    firefox-devedition-unwrapped = prev.firefox-devedition-unwrapped.overrideAttrs (old: {
+    firefox-unwrapped = prev.firefox-unwrapped.overrideAttrs (old: {
       postInstall = let
         userchromejs-loader = prev.fetchFromGitHub {
           owner = "MrOtherGuy";

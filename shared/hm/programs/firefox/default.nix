@@ -6,7 +6,7 @@
   ...
 }: let
   # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
-  profile = "dev-edition-default";
+  profile = "default";
   # userChrome.js loader & scripts
   userchromejs-scripts = pkgs.fetchFromGitHub {
     owner = "aminomancer";
@@ -35,8 +35,8 @@
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
-      rev = "4c039a5c7a7b657d4e5146a6ca6d81942ae1bd0b";
-      hash = "sha256-HMMM4aKfDPx8m5IoTc4dCh01ZaBf0upEXPEjIcFsa4s=";
+      rev = "4e966509c180f93ba8665cd73cad8456bf44baab";
+      hash = "sha256-gIBZCPB0sA8Gagrxd8w4+y9uUkWBnXJBmq9Ur5BYTQU=";
     });
 in {
   # Custom userChrome.js scripts
@@ -65,15 +65,20 @@ in {
     source = "${firefox-gnome-theme}/theme";
   };
   home.file.".mozilla/firefox/${profile}/chrome/theme/colors".enable = false;
-  home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
   home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
+  # Add aditional css changes
+  home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".text =
+    ''
+      @import ${./multi_column_addons.css}
+    ''
+    + builtins.readFile ./customChrome.css;
 
   # Stylix support
   stylix.targets.firefox.profileNames = [profile];
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
       # Enable Native Messaging Hosts
       nativeMessagingHosts =
         []

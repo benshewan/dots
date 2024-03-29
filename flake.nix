@@ -83,14 +83,11 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master"; # Easy hardware configuration for new machines
     nur.url = "github:nix-community/NUR"; # Community app support
+    sops-nix.url = "github:Mic92/sops-nix"; # encrypt secrets
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Temp
-    power-profiles-daemon.flake = false;
-    power-profiles-daemon.url = "gitlab:upower/power-profiles-daemon?host=gitlab.freedesktop.org";
 
     # Home Manager
     home-manager = {
@@ -116,7 +113,8 @@
     };
     spicetify-nix.url = "github:the-argus/spicetify-nix";
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
-    flatpaks.url = "github:GermanBread/declarative-flatpak";
+    # flatpaks.url = "github:GermanBread/declarative-flatpak";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
