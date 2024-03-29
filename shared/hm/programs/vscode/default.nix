@@ -16,37 +16,42 @@ in {
     };
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
-    extensions = with extensions.vscode-marketplace; [
-      # Language support
-      jnoortheen.nix-ide # Nix LSP Support
-      extensions.vscode-marketplace.eww-yuck.yuck # EWW Widgets support
-      shd101wyy.markdown-preview-enhanced # Markdown support
-      yoavbls.pretty-ts-errors # Readable typescipt errors
-      redhat.vscode-yaml # YAML Support
-      formulahendry.auto-rename-tag # HTML rename support
-      mikestead.dotenv
-      svelte.svelte-vscode
-      bradlc.vscode-tailwindcss
+    extensions =
+      (with extensions.vscode-marketplace; [
+        # Language support
+        jnoortheen.nix-ide # Nix LSP Support
+        extensions.vscode-marketplace.eww-yuck.yuck # EWW Widgets support
+        shd101wyy.markdown-preview-enhanced # Markdown support
+        yoavbls.pretty-ts-errors # Readable typescipt errors
+        redhat.vscode-yaml # YAML Support
+        formulahendry.auto-rename-tag # HTML rename support
+        mikestead.dotenv
+        svelte.svelte-vscode
+        bradlc.vscode-tailwindcss
 
-      # Intellisense
-      christian-kohler.path-intellisense # Auto-complete paths
-      christian-kohler.npm-intellisense # Auto-complete npm package names
-      zignd.html-css-class-completion # Auto-complete CSS class names
+        # Intellisense
+        christian-kohler.path-intellisense # Auto-complete paths
+        christian-kohler.npm-intellisense # Auto-complete npm package names
+        zignd.html-css-class-completion # Auto-complete CSS class names
 
-      # Visual
-      pkief.material-product-icons # Better Icons
-      aaron-bond.better-comments # Support coloring TODO's
-      esbenp.prettier-vscode # Code formatting
-      mechatroner.rainbow-csv # Readable CSV's
+        # Visual
+        pkief.material-product-icons # Better Icons
+        aaron-bond.better-comments # Support coloring TODO's
+        esbenp.prettier-vscode # Code formatting
+        mechatroner.rainbow-csv # Readable CSV's
 
-      # Utilites
-      ms-vsliveshare.vsliveshare # Share Session
-      # tailscale.vscode-tailscale # Support for tailscale hosts
-      ms-vscode-remote.remote-ssh # Remote SSH development
-      eamodio.gitlens # Better git tooling
-      streetsidesoftware.code-spell-checker # Spell checker
-      mkhl.direnv # Support direnv for project-specifc configuration
-    ];
+        # Utilites
+        ms-vsliveshare.vsliveshare # Share Session
+        ritwickdey.liveserver # Spin up a basic server
+        # tailscale.vscode-tailscale # Support for tailscale hosts
+        ms-vscode-remote.remote-ssh # Remote SSH development
+        eamodio.gitlens # Better git tooling
+        streetsidesoftware.code-spell-checker # Spell checker
+        mkhl.direnv # Support direnv for project-specifc configuration
+      ])
+      ++ (with extensions.open-vsx; [
+        # svelte.svelte-vscode
+      ]);
     userSettings = {
       # General Config
       files.autoSave = "onFocusChange";
@@ -81,16 +86,6 @@ in {
         propertyDeclarationTypes.enabled = true;
         parameterTypes.enabled = true;
         functionLikeReturnTypes.enabled = true;
-      };
-
-      # Testing fixing them with catppuccin
-      workbench.colorCustomizations = {
-        "[Stylix]" = {
-          "statusBar.background" = "#${config.lib.stylix.colors.base01}";
-          "scrollbarSlider.activeBackground" = "#${config.lib.stylix.colors.base04}aa";
-          "scrollbarSlider.background" = "#${config.lib.stylix.colors.base02}88";
-          "scrollbarSlider.hoverBackground" = "#${config.lib.stylix.colors.base03}88";
-        };
       };
 
       # Spell Checker Config
