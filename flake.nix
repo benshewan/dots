@@ -12,8 +12,14 @@
     username = "ben";
     userDescription = "Ben Shewan";
     flake-path = ./.;
-    systems = ["x86_64-linux" "aarch64-linux"];
-    forEachSystem = f: lib.genAttrs systems (sys: f pkgsFor.${sys});
+    systems = [
+      "aarch64-linux"
+      "i686-linux"
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
+    forAllSystems = nixpkgs.lib.genAttrs systems;
     pkgsFor = nixpkgs.legacyPackages;
   in {
     inherit lib username userDescription flake-path;
@@ -21,8 +27,9 @@
     nixosModules = import ./modules/nixos;
     homeManagerModules = import ./modules/home-manager;
 
-    packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
+    packages = forAllSystems (pkgs: import ./pkgs {inherit pkgs;});
     overlays = import ./overlays {inherit inputs;};
+    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
     wallpapers = ./wallpapers;
 

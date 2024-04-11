@@ -11,7 +11,7 @@
 in {
   imports =
     [
-      # "${outputs.flake-path}/themes/gruvbox/nixos"
+      "${outputs.flake-path}/themes/gruvbox/nixos"
       ./hardware-configuration.nix
       ./hardware.nix
     ]

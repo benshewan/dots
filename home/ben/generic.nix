@@ -25,6 +25,7 @@
   home.packages = with pkgs; [
     # Development Tools
     insomnia
+    kate
     # jetbrains.webstorm
 
     # Chromium browser of choice
@@ -40,7 +41,7 @@
     # plex-media-player # Plex Player (shitty TV version)
     remmina # Remote desktop client
     libreoffice-fresh
-    bitwarden
+    stable.bitwarden
 
     bottles
     wine
