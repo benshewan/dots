@@ -1,6 +1,7 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   imports = [
@@ -17,7 +18,7 @@
     };
   };
   programs.plasma.enable = true;
-  programs.plasma.configFile.kdeglobals.General.TerminalApplication = toString pkgs.kitty;
+  programs.plasma.configFile.kdeglobals.General.TerminalApplication.value = toString (lib.getExe pkgs.kitty);
 
   # home.file.".local/share/terminfo" = {
   #   source = "${pkgs.kitty}/lib/kitty/terminfo";

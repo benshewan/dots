@@ -59,7 +59,8 @@
   home.packages = with pkgs; [
     prismlauncher
     distrobox
-    plex-media-player
+    # plex-media-player
+    jellyfin-media-player
     jetbrains.pycharm-professional
 
     # Work stuff
@@ -70,8 +71,8 @@
     inkscape
 
     # Messing around
-    # goldwarden # a lightweight daemon to add functionallity missing from the native bitwarden client
     parsec-bin
+    filebot
   ];
 
   services.flatpak.packages = [
@@ -89,14 +90,10 @@
       appId = "com.github.tchx84.Flatseal";
       origin = "flathub";
     }
-    {
-      appId = "cafe.avery.Delfin";
-      origin = "flathub";
-    }
-    {
-      appId = "xyz.xclicker.xclicker";
-      origin = "flathub";
-    }
+    # {
+    #   appId = "cafe.avery.Delfin";
+    #   origin = "flathub";
+    # }
   ];
 
   programs.obs-studio = {

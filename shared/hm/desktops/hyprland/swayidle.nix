@@ -5,7 +5,7 @@
   ...
 }: let
   hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
-  swaylock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x swaylock; then ${lib.getExe config.programs.swaylock.package} -f; fi";
+  hyprlock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${lib.getExe config.programs.hyprlock.package} -f; fi";
 in {
   services.swayidle = {
     enable = true;
@@ -13,7 +13,7 @@ in {
     timeouts = [
       {
         timeout = 30;
-        command = "if ${lib.getExe' pkgs.toybox "pgrep"} -x swaylock; then ${hyprctl} dispatch dpms off; fi";
+        command = "if ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${hyprctl} dispatch dpms off; fi";
         resumeCommand = "${hyprctl} dispatch dpms on";
       }
       # {
@@ -22,7 +22,7 @@ in {
       # }
       {
         timeout = 1800;
-        command = swaylock;
+        command = hyprlock;
       }
       {
         timeout = 1830;
@@ -37,11 +37,11 @@ in {
     events = [
       {
         event = "before-sleep";
-        command = swaylock;
+        command = hyprlock;
       }
       {
         event = "lock";
-        command = swaylock;
+        command = hyprlock;
       }
       {
         event = "after-resume";

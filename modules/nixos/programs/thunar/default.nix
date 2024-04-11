@@ -5,4 +5,8 @@
     thunar-archive-plugin
     thunar-volman
   ];
+
+  environment.systemPackages = with pkgs; [
+    gnome.file-roller
+  ];
 }

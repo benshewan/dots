@@ -1,34 +1,4 @@
-{
-  pkgs,
-  lib,
-  outputs,
-  ...
-}: {
-  services = {
-    xserver = {
-      enable = true;
-      xkb.layout = "us";
-      xkb.variant = "";
-      excludePackages = [pkgs.xterm];
-    };
-
-    flatpak.enable = true;
-    openssh.enable = true;
-    upower = {
-      enable = true;
-      percentageCritical = 15;
-      criticalPowerAction = "Hibernate";
-    };
-
-    printing.enable = true;
-    printing.drivers = [pkgs.foomatic-db-ppds-withNonfreeDb];
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      openFirewall = true;
-    };
-  };
-
+{outputs, ...}: {
   # Virtualization
   virtualisation.libvirtd = {
     enable = true;

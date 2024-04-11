@@ -13,7 +13,8 @@
     # Helper apps
     ./waybar
     ./dunst
-    ./swaylock.nix
+    # ./swaylock.nix
+    ./hyprlock
     ./swayidle.nix
     ./rofi
   ];
@@ -111,11 +112,11 @@
     decoration = {
       rounding = 8;
       shadow_ignore_window = true;
-      drop_shadow = false; # Power hungry effect
+      drop_shadow = true; # Power hungry effect
       shadow_range = 15;
       shadow_render_power = 2;
       blur = {
-        enabled = false; # Power hungry effect
+        enabled = true; # Power hungry effect
         size = 6;
         passes = 3;
         new_optimizations = true;

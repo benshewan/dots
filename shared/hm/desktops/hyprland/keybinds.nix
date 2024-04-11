@@ -112,7 +112,7 @@
     ];
 
     # Repeat if held
-    binde = [
+    bindel = [
       # Tell wireplumber to raise/lower volume with volume keys
       ", XF86AudioLowerVolume, exec, ${dunst/volume_brightness.sh} volume_down"
       ", XF86AudioRaiseVolume, exec, ${dunst/volume_brightness.sh} volume_up"
@@ -132,7 +132,7 @@
         ", XF86AudioPrev, exec, ${dunst/volume_brightness.sh} prev_track"
 
         # Lock screen
-        "SUPER,l,exec,${lib.getExe config.programs.swaylock.package} -f"
+        "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --immediate"
       ]
       ++ lib.flatten (map (
           m: let

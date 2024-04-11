@@ -3,7 +3,7 @@
     (vivaldi.override {
       proprietaryCodecs = true; # causes some crashes with certain video sites
       enableWidevine = true;
-      commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode --ozone-platform-hint=auto --gtk-version=4";
+      commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode --ozone-platform-hint=auto --gtk-version=4 --enable-features=PlatformHEVCDecoderSupport";
     })
   ];
 

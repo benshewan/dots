@@ -7,10 +7,7 @@
 }: {
   imports = [inputs.nixos-hardware.nixosModules.framework-13-7040-amd];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   hardware.framework.amd-7040.preventWakeOnAC = true;
-
-  services.keylightd.enable = false;
 
   services.hardware.bolt.enable = true;
   # Additional power savings
@@ -58,13 +55,6 @@
     };
   };
 
-  # Set timeout for bluetooth to save power
-  hardware.bluetooth.input = {
-    General = {
-      IdleTimeout = 30;
-    };
-  };
-
   # AMD OpenGL/Vulkan stuff
   hardware.opengl.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
 
@@ -86,12 +76,6 @@
     enable = true;
     extraRemotes = ["lvfs-testing"]; # Enable beta bios
   };
-
-  # Need to set regulatory domain for AMD RZ616 wifi card
-  hardware.wirelessRegulatoryDatabase = true;
-  boot.extraModprobeConfig = ''
-    options cfg80211 ieee80211_regdom="CA"
-  '';
 
   # Fingerprint
   services.fprintd.enable = false;

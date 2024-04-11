@@ -1,9 +1,3 @@
-//SmoothFox
-// user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
-// user_pref("general.smoothScroll", false); // DEFAULT
-// user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
-// user_pref("general.smoothScroll.msdPhysics.enabled", true);
-
 // Overrides
 user_pref("browser.startup.page", 3); // browser should restore previous session
 //fix for hover on drag (fixes sideberry tab drag, does not work on hyprland) https://bugzilla.mozilla.org/show_bug.cgi?id=1818517
@@ -45,3 +39,23 @@ user_pref("general.autoScroll", false); // disable middle click to scroll
 user_pref("gnomeTheme.extensions.tabCenterReborn", true);
 user_pref("svg.context-properties.content.enabled", true);
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+
+
+/****************************************************************************************
+ * OPTION: NATURAL SMOOTH SCROLLING V3 [MODIFIED]                                      *
+****************************************************************************************/
+// credit: https://github.com/AveYo/fox/blob/cf56d1194f4e5958169f9cf335cd175daa48d349/Natural%20Smooth%20Scrolling%20for%20user.js
+// recommended for 120hz+ displays
+// largely matches Chrome flags: Windows Scrolling Personality and Smooth Scrolling
+user_pref("apz.overscroll.enabled", true); // DEFAULT NON-LINUX
+user_pref("general.smoothScroll", true); // DEFAULT
+user_pref("general.smoothScroll.msdPhysics.continuousMotionMaxDeltaMS", 12);
+user_pref("general.smoothScroll.msdPhysics.enabled", true);
+user_pref("general.smoothScroll.msdPhysics.motionBeginSpringConstant", 600);
+user_pref("general.smoothScroll.msdPhysics.regularSpringConstant", 650);
+user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaMS", 25);
+user_pref("general.smoothScroll.msdPhysics.slowdownMinDeltaRatio", 2.0);
+user_pref("general.smoothScroll.msdPhysics.slowdownSpringConstant", 250);
+user_pref("general.smoothScroll.currentVelocityWeighting", 1.0);
+user_pref("general.smoothScroll.stopDecelerationWeighting", 1.0);
+user_pref("mousewheel.default.delta_multiplier_y", 200); // 250-400; adjust this number to your liking

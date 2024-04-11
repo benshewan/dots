@@ -66,10 +66,12 @@ in {
   };
   home.file.".mozilla/firefox/${profile}/chrome/theme/colors".enable = false;
   home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
+
   # Add aditional css changes
+  home.file.".mozilla/firefox/${profile}/chrome/multi_column_addons.css".source = ./multi_column_addons.css;
   home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".text =
     ''
-      @import ${./multi_column_addons.css}
+      @import "multi_column_addons.css";
     ''
     + builtins.readFile ./customChrome.css;
 
@@ -78,20 +80,10 @@ in {
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-      # Enable Native Messaging Hosts
-      nativeMessagingHosts =
-        []
-        ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
-
-      # with pkgs; [
-      #   plasma-browser-integration
-      #   # pkgs.gnomeExtensions.gsconnect
-      # ];
-      # cfg.enableGnomeExtensions = if (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) then true else false;
-      # extraNativeMessagingHosts = [ ]
-      #   ++ lib.optional (lib.elem pkgs.gnomeExtensions.gsconnect config.home.packages) pkgs.gnomeExtensions.gsconnect;
-    };
+    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {};
+    nativeMessagingHosts =
+      [pkgs.goldwarden]
+      ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
     policies = {
       CaptivePortal = false;
       DisableFirefoxStudies = true;
