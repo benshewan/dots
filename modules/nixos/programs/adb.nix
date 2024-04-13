@@ -1,4 +1,4 @@
 {outputs, ...}: {
-  progrmas.adb.enable = true;
+  programs.adb.enable = true;
   users.users.${outputs.username}.extraGroups = ["adbusers"];
 }

@@ -29,7 +29,7 @@
 
     packages = forAllSystems (pkgs: import ./pkgs {inherit pkgs;});
     overlays = import ./overlays {inherit inputs;};
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    formatter = forAllSystems (system: pkgsFor.${system}.alejandra);
 
     wallpapers = ./wallpapers;
 

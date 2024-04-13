@@ -26,6 +26,7 @@
     # Development Tools
     insomnia
     kate
+    mpv
     # jetbrains.webstorm
 
     # Chromium browser of choice

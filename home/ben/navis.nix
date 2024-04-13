@@ -73,6 +73,7 @@
     # Messing around
     parsec-bin
     filebot
+    syncthingtray
   ];
 
   services.flatpak.packages = [
