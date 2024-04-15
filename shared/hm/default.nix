@@ -45,8 +45,8 @@
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "${outputs.username}";
-  home.homeDirectory = "/home/${outputs.username}";
+  home.username = "${config.night-sky.user.name}";
+  home.homeDirectory = "/home/${config.night-sky.user.name}";
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

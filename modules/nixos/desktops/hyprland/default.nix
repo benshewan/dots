@@ -2,13 +2,12 @@
   pkgs,
   inputs,
   config,
-  outputs,
   lib,
   ...
 }: let
-  cfg = config.desktops.hyprland;
+  cfg = config.night-sky.desktops.hyprland;
 in {
-  options.desktops.hyprland = {
+  options.night-sky.desktops.hyprland = {
     enable = lib.mkEnableOption "hyprland";
   };
 

@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  outputs,
   lib,
   ...
 }: let
@@ -46,7 +45,7 @@ in {
   };
 
   home.file.".mozilla/firefox/${profile}/chrome/utils/chrome.manifest".text = let
-    root = "/home/${outputs.username}/.mozilla/firefox/${profile}/chrome";
+    root = "/home/${config.night-sky.user.name}/.mozilla/firefox/${profile}/chrome";
   in ''
     content userchromejs ${root}/utils/
     content userscripts ${root}/JS/

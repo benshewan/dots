@@ -4,9 +4,9 @@
   lib,
   ...
 }: let
-  cfg = config.desktops.kde;
+  cfg = config.night-sky.desktops.kde;
 in {
-  options.desktops.kde = {
+  options.night-sky.desktops.kde = {
     enable = lib.mkEnableOption "kde";
   };
 
