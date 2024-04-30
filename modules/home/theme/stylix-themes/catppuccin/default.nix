@@ -1,15 +1,14 @@
 {
-  outputs,
   pkgs,
   config,
   lib,
   ...
 }: let
-  cfg = config.night-sky.themes;
+  cfg = config.night-sky.theme;
 in
-  lib.mkIf cfg
-  == "catppuccin" {
-    stylix.image = "${outputs.wallpapers}/catppuccin/catppuccin-floral.png";
+  lib.mkIf (cfg
+    == "catppuccin") {
+    stylix.image = ./wallpapers/catppuccin-floral.png;
     stylix.polarity = "dark";
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
     stylix.cursor = {

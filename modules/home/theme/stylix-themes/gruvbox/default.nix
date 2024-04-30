@@ -1,15 +1,14 @@
 {
-  outputs,
   pkgs,
   config,
   lib,
   ...
 }: let
-  cfg = config.night-sky.themes;
+  cfg = config.night-sky.theme;
 in
-  lib.mkIf cfg
-  == "gruvbox" {
-    stylix.image = "${outputs.wallpapers}/gruvbox/gruvbox-dark-blue.png";
+  lib.mkIf (cfg
+    == "gruvbox") {
+    stylix.image = ./wallpapers/gruvbox-dark-blue.png;
     stylix.polarity = "dark";
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
     stylix.cursor = {

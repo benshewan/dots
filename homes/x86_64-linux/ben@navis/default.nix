@@ -66,7 +66,7 @@
     # Work stuff
     teamviewer
     masterpdfeditor
-    wisenet-viewer
+    night-sky.wisenet-viewer
     moonlight-qt
     inkscape
 

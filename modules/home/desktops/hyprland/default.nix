@@ -17,12 +17,11 @@ in {
     ./window-rules.nix
 
     # Helper apps
-    ./waybar
-    ./dunst
+    # ./waybar
+    # ./dunst
     # ./swaylock.nix
-    ./hyprlock
     ./swayidle.nix
-    ./rofi
+    # ./rofi
   ];
 
   config = lib.mkIf cfg.enable {

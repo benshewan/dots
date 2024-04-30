@@ -1,6 +1,6 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
-    eww
-  ];
+  # home.packages = with pkgs; [
+  #   eww
+  # ];
   # programs.eww.configDir = ./.;
 }

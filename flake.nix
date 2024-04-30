@@ -1,10 +1,9 @@
 {
   outputs = {self, ...} @ inputs:
     inputs.snowfall-lib.mkFlake {
-      inherit self inputs;
+      inherit inputs;
       src = ./.;
 
-      wallpapers = ./wallpapers;
       channels-config.allowUnfree = true;
       outputs-builder = channels: {
         formatter = channels.nixpkgs.alejandra;
@@ -21,9 +20,6 @@
       systems.modules.nixos = with inputs; [
         home-manager.nixosModules.home-manager
       ];
-      systems.specialArgs.nixos = {
-        inherit (self) outputs;
-      };
     };
 
   inputs = {

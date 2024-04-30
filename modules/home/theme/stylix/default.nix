@@ -10,6 +10,6 @@
 
   themes = ["gruvbox" "catppuccin"];
 in {
-  imports = [inputs.stylix.homeManagerModules.stylix];
+  # imports = [inputs.stylix.homeManagerModules.stylix];
   options.night-sky.theme = mkOpt (types.enum themes) "gruvbox" "Select one of these pre-configured themes to use.";
 }
