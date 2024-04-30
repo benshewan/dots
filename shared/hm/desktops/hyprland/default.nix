@@ -13,8 +13,8 @@
     # Helper apps
     ./waybar
     ./dunst
-    # ./swaylock.nix
-    ./hyprlock
+    ./swaylock.nix
+    # ./hyprlock
     ./swayidle.nix
     ./rofi
   ];

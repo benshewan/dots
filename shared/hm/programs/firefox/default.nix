@@ -6,7 +6,7 @@
   ...
 }: let
   # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
-  profile = "default";
+  profile = "dev-edition-default";
   # userChrome.js loader & scripts
   userchromejs-scripts = pkgs.fetchFromGitHub {
     owner = "aminomancer";
@@ -35,8 +35,8 @@
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
-      rev = "4e966509c180f93ba8665cd73cad8456bf44baab";
-      hash = "sha256-gIBZCPB0sA8Gagrxd8w4+y9uUkWBnXJBmq9Ur5BYTQU=";
+      rev = "5501717d3e98fcc418a2ca40de1c5ad1b66939bb";
+      hash = "sha256-6K95wxghPBS1sJMnuKJ4JD3jLd/5bAEmx7rnffqf29I=";
     });
 in {
   # Custom userChrome.js scripts
@@ -56,9 +56,17 @@ in {
 
   # Private Tab
   home.file.".mozilla/firefox/${profile}/chrome/JS/privateTabs.uc.js".source = "${userchromejs-scripts}/JS/privateTabs.uc.js";
+  home.file.".mozilla/firefox/${profile}/chrome/JS/privateWindowHomepage.uc.js".source = "${userchromejs-scripts}/JS/privateWindowHomepage.uc.js";
+
+  home.file.".mozilla/firefox/${profile}/chrome/JS/findbarMods.uc.js".source = "${userchromejs-scripts}/JS/findbarMods.uc.js";
+  home.file.".mozilla/firefox/${profile}/chrome/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js".source = "${userchromejs-scripts}/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js";
 
   # Custom theme
-  home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".source = "${firefox-gnome-theme}/userChrome.css";
+  home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".text =
+    (builtins.readFile "${firefox-gnome-theme}/userChrome.css")
+    + ''
+      @import "${./multi_column_addons.css}";
+    '';
   home.file.".mozilla/firefox/${profile}/chrome/userContent.css".source = "${firefox-gnome-theme}/userContent.css";
   home.file.".mozilla/firefox/${profile}/chrome/theme" = {
     recursive = true;
@@ -68,19 +76,14 @@ in {
   home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
   # Add aditional css changes
-  home.file.".mozilla/firefox/${profile}/chrome/multi_column_addons.css".source = ./multi_column_addons.css;
-  home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".text =
-    ''
-      @import "multi_column_addons.css";
-    ''
-    + builtins.readFile ./customChrome.css;
+  home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
 
   # Stylix support
   stylix.targets.firefox.profileNames = [profile];
 
   programs.firefox = {
     enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-unwrapped {};
+    package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {};
     nativeMessagingHosts =
       [pkgs.goldwarden]
       ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
@@ -114,6 +117,45 @@ in {
         SkipOnboarding = true;
       };
       SearchEngines.Default = "Google";
+      Permissions.Notifications = {
+        # Allow: ["https://example.org"],;
+        # "Block": ["https://example.edu"],;
+        BlockNewRequests = true;
+        Locked = true;
+      };
+      "3rdparty".Extensions."uBlock0@raymondhill.net" = {
+        adminSettings = {
+          userSettings = {
+            contextMenuEnabled = false;
+            showIconBadge = false;
+            externalLists = "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt\nhttps://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt\nhttps://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt";
+            importedLists = [
+              "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt"
+              "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt"
+              "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt"
+            ];
+          };
+          selectedFilterLists = [
+            "user-filters"
+            "assets.json"
+            "public_suffix_list.dat"
+            "ublock-badlists"
+            "ublock-filters"
+            "ublock-badware"
+            "ublock-privacy"
+            "ublock-unbreak"
+            "ublock-quick-fixes"
+            "easylist"
+            "easyprivacy"
+            "urlhaus-1"
+            "plowe-0"
+            "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt"
+            "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt"
+            "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt"
+          ];
+          userFilters = "||smartlock.google.com";
+        };
+      };
 
       # Firefox extensions
       ExtensionSettings = import ./extensions.nix {inherit pkgs;};

@@ -16,7 +16,7 @@
       "spotify"
       "kdeconnect"
       "webstorm"
-      "nvim"
+      # "nvim"
       "chromium"
       # "virt-manager"
     ];

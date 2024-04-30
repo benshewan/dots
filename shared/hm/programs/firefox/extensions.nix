@@ -10,12 +10,12 @@
   };
 in {
   # Force extensions to be defined here
-  "*" = {
-    blocked_install_message = "All extensions must be declared in you home-manager config";
-    install_sources = ["https://github.com/benshewan/dots/*"];
-    installation_mode = "blocked";
-    allowed_types = ["extension"];
-  };
+  # "*" = {
+  #   blocked_install_message = "All extensions must be declared in you home-manager config";
+  #   install_sources = ["https://github.com/benshewan/dots/*"];
+  #   installation_mode = "blocked";
+  #   allowed_types = ["extension"];
+  # };
 
   # Ad Blocking
   # ----------------------------------------------------------------------------------
@@ -100,21 +100,9 @@ in {
   # ----------------------------------------------------------------------------------
 
   # Youtube customization
-  # "enhancerforyoutube@maximerf.addons.mozilla.org" = {
-  #   installation_mode = "normal_installed";
-  #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/enhancer-for-youtube/latest.xpi";
-  # };
-
-  # Remove YouTube Shorts
-  "{88ebde3a-4581-4c6b-8019-2a05a9e3e938}" = {
-    installation_mode = "normal_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/hide-youtube-shorts/latest.xpi";
-  };
-
-  # Youtube customization
   "enhancerforyoutube@maximerf.addons.mozilla.org" = {
     installation_mode = "normal_installed";
-    install_url = "file://${./enhancer_for_youtube-2.0.121.xpi}";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/enhancer-for-youtube/latest.xpi";
   };
 
   # View Xpi Id's in Firefox Extension Store
@@ -167,18 +155,17 @@ in {
 
   # Legacy Extensions
   # ----------------------------------------------------------------------------------
-
   # Allow you to hold ctrl to click substring of url
   "advancedlocationbar@veg.by" = {
     installation_mode = "normal_installed";
-    install_url = "file://${./AdvancedLocationbar2_1.2.1.7.xpi}";
+    install_url = "file://${./AdvancedLocationbar.xpi}";
   };
 
   # New tabs inhert the history of their parent tabs
-  "backtrack@byalexv.co.uk" = {
-    installation_mode = "normal_installed";
-    install_url = "file://${legacy-extensions}/extensions/backtrack/BackTrack.xpi";
-  };
+  # "backtrack@byalexv.co.uk" = {
+  #   installation_mode = "normal_installed";
+  #   install_url = "file://${legacy-extensions}/extensions/backtrack/BackTrack.xpi";
+  # };
   # Tab Mix Plus
   # "{dc572301-7619-498c-a57d-39143191b318}"
 }

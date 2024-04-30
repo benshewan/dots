@@ -74,6 +74,7 @@
     parsec-bin
     filebot
     syncthingtray
+    helvum
   ];
 
   services.flatpak.packages = [

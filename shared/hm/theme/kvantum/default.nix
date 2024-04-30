@@ -42,7 +42,7 @@
 
     qt = {
       enable = true;
-      platformTheme = "qtct";
+      platformTheme.name = "qtct";
     };
 
     xdg.configFile."Kvantum/kvantum.kvconfig".source = (pkgs.formats.ini {}).generate "kvantum.kvconfig" {
