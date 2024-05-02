@@ -18,6 +18,7 @@
       "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
       "gbmdgpbipfallnflgajpaliibnhdgobh" # JSON Viewer
       "dnnckbejblnejeabhcmhklcaljjpdjeh" # KDE Connect
+      "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
       "lkbebcjgcmobigpeffafkodonchffocl;https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean/-/raw/master/updates.xml"
     ];
     extraOpts = {

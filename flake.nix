@@ -17,9 +17,9 @@
         };
       };
 
-      systems.modules.nixos = with inputs; [
-        home-manager.nixosModules.home-manager
-      ];
+      # systems.modules.nixos = with inputs; [
+      #   home-manager.nixosModules.home-manager
+      # ];
     };
 
   inputs = {

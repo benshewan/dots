@@ -26,7 +26,7 @@ in {
 
       backgrounds = [
         {
-          path = config.stylix.image;
+          path = toString config.stylix.image;
           blur_size = 5;
           blur_passes = 4;
         }

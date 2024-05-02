@@ -1,65 +1,7 @@
 {
   pkgs,
-  outputs,
   ...
 }: {
-  # Import Basic Configuration
-  imports =
-    [
-      "${outputs.src}/shared/hm"
-    ]
-    ++ map (x: "${outputs.src}/shared/hm/programs/" + x) [
-      "firefox"
-      "kitty"
-      "fish"
-      "vscode"
-      "spotify"
-      "kdeconnect"
-      "webstorm"
-      "nvim"
-      "chromium"
-      # "virt-manager"
-    ];
 
-  # Programs
-  home.packages = with pkgs; [
-    # Development Tools
-    insomnia
-    kate
-    mpv
-    # jetbrains.webstorm
-
-    # Chromium browser of choice
-    # Note: Should replace with thorium when that becomes available
-    # thorium
-    # mercury
-    # (vivaldi.override {
-    #   proprietaryCodecs = true;
-    #   enableWidevine = true;
-    #   commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode";
-    # })
-
-    # plex-media-player # Plex Player (shitty TV version)
-    remmina # Remote desktop client
-    libreoffice-fresh
-    stable.bitwarden
-
-    bottles
-    wine
-    # via # Keyboard Configurator
-  ];
-
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk17;
-  };
-
-  programs.git = {
-    enable = true;
-    userName = "Ben Shewan";
-    userEmail = "benbshewan@gmail.com";
-    extraConfig = {
-      pull.rebase = false;
-    };
-  };
+ 
 }

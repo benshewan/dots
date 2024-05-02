@@ -1,13 +1,5 @@
-{
-  pkgs,
-  outputs,
-  ...
-}: {
-  imports = [
-    # (../. + "/ben@generic")
-    # "${outputs.src}/shared/hm/desktops/hyprland"
-    # "${outputs.src}/themes/gruvbox/hm"
-  ];
+{pkgs, ...}: {
+  night-sky.desktops.hyprland.enable = true;
 
   monitors = [
     # Internal Monitor
@@ -59,6 +51,12 @@
   home.packages = with pkgs; [
     prismlauncher
     distrobox
+    kate
+    mpv
+    libreoffice-fresh
+    stable.bitwarden
+    bottles
+    wine
     # plex-media-player
     jellyfin-media-player
     jetbrains.pycharm-professional
@@ -75,6 +73,11 @@
     filebot
     syncthingtray
   ];
+
+  programs.java = {
+    enable = true;
+    package = pkgs.jdk17;
+  };
 
   services.flatpak.packages = [
     # "flathub:app/io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work, steam will freak out
