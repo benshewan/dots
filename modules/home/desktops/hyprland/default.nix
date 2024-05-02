@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }: let
   cfg = config.night-sky.desktops.hyprland;
@@ -20,7 +19,7 @@ in {
     # ./waybar
     # ./dunst
     # ./swaylock.nix
-    ./swayidle.nix
+    # ./swayidle.nix
     # ./rofi
   ];
 

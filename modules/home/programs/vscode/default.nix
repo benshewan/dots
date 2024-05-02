@@ -65,10 +65,11 @@ in {
       "update.mode" = "none";
 
       # Theme Config
-      #      workbench.colorTheme
       window.titleBarStyle = "custom";
       workbench.layoutControl.enabled = false;
       editor.fontLigatures = true;
+      editor.fontFamily = config.stylix.fonts.monospace.name;
+      terminal.integrated.fontFamily = config.stylix.fonts.monospace.name;
       editor.guides.bracketPairs = "active";
 
       # Inlays
