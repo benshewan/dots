@@ -63,6 +63,7 @@
 
     # Work stuff
     teamviewer
+    gnome-network-displays
     masterpdfeditor
     night-sky.wisenet-viewer
     moonlight-qt

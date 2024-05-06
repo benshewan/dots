@@ -56,10 +56,9 @@ in {
         # System
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # allow xdg portal to get the varibales it needs
         "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
-        "${lib.getExe config.services.swayidle.package}"
+
         "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
-        "${lib.getExe' pkgs.nm-tray "nm-tray"}"
-        # "${pkgs.nm-tray}/bin/nm-tray" # Not working
+        # "${lib.getExe' pkgs.nm-tray "nm-tray"}" # Not working
 
         # Clipboard
         "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
