@@ -17,6 +17,9 @@
         };
       };
 
+      overlays = with inputs; [
+        snowfall-flake.overlays.default
+      ];
       # systems.modules.nixos = with inputs; [
       #   home-manager.nixosModules.home-manager
       # ];
@@ -26,7 +29,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master"; # Easy hardware configuration for new machines
-    nur.url = "github:nix-community/NUR"; # Community app support
+    # nur.url = "github:nix-community/NUR"; # Community app support
     sops-nix.url = "github:Mic92/sops-nix"; # encrypt secrets
     nix-index-database = {
       url = "github:Mic92/nix-index-database";
@@ -38,6 +41,7 @@
       url = "github:snowfallorg/lib/dev";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    snowfall-flake.url = "github:snowfallorg/flake";
 
     # Home Manager
     home-manager = {
@@ -47,7 +51,6 @@
 
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-    hyprlock.url = "github:hyprwm/hyprlock";
     split-monitor-workspaces = {
       url = "github:Duckonaut/split-monitor-workspaces";
       inputs.hyprland.follows = "hyprland";

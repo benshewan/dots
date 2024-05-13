@@ -21,9 +21,9 @@
       # "SUPER,j,movefocus,d"
 
       "SUPER,left,movefocus,l"
-      "SUPER,down,movefocus,r"
+      "SUPER,down,movefocus,d"
       "SUPER,up,movefocus,u"
-      "SUPER,right,movefocus,d"
+      "SUPER,right,movefocus,r"
 
       "SUPER,1,focusworkspaceoncurrentmonitor,1"
       "SUPER,2,focusworkspaceoncurrentmonitor,2"

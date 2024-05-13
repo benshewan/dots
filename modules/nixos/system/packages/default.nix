@@ -16,6 +16,7 @@
     playerctl
 
     # nix stuff
+    snowfallorg.flake
     nix-prefetch-github
     nix-prefetch-git
     prefetch-npm-deps

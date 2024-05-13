@@ -20,7 +20,7 @@ in {
       (with extensions.vscode-marketplace; [
         # Language support
         jnoortheen.nix-ide # Nix LSP Support
-        extensions.vscode-marketplace.eww-yuck.yuck # EWW Widgets support
+        eww-yuck.yuck # EWW Widgets support
         shd101wyy.markdown-preview-enhanced # Markdown support
         yoavbls.pretty-ts-errors # Readable typescipt errors
         redhat.vscode-yaml # YAML Support
@@ -59,6 +59,7 @@ in {
       explorer.confirmDelete = false;
       explorer.confirmDragAndDrop = false;
       security.workspace.trust.untrustedFiles = "open";
+      editor.stickyScroll.enabled = false;
 
       "extensions.autoUpdate" = false;
       "extensions.autoCheckUpdates" = false;

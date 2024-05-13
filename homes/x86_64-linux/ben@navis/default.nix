@@ -57,12 +57,14 @@
     stable.bitwarden
     bottles
     wine
+    stable.kicad
     # plex-media-player
     jellyfin-media-player
     jetbrains.pycharm-professional
 
     # Work stuff
     teamviewer
+    mongodb-compass
     gnome-network-displays
     masterpdfeditor
     night-sky.wisenet-viewer
@@ -83,10 +85,10 @@
   services.flatpak.packages = [
     # "flathub:app/io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work, steam will freak out
     # "flathub:app/com.parsecgaming.parsec//stable"
-    {
-      appId = "com.mongodb.Compass";
-      origin = "flathub";
-    }
+    # {
+    #   appId = "com.mongodb.Compass";
+    #   origin = "flathub";
+    # }
     {
       appId = "com.getpostman.Postman";
       origin = "flathub";

@@ -31,13 +31,6 @@ in {
     #   theme = "chili";
     # };
 
-    # Add support for swaylock
-    security.pam.services.swaylock = {
-      text = ''
-        auth include login
-      '';
-    };
-
     # Change how the power button works
     services.logind.extraConfig = ''
       # don't shutdown when power button is short-pressed
@@ -59,12 +52,12 @@ in {
 
     # Basic programs
     environment.systemPackages = with pkgs; [
-      (sddm-chili-theme.override {
-        themeConfig = {
-          background = config.stylix.image;
-          PasswordFieldOutlined = true;
-        };
-      })
+      # (sddm-chili-theme.override {
+      #   themeConfig = {
+      #     background = config.stylix.image;
+      #     PasswordFieldOutlined = true;
+      #   };
+      # })
       gnome.adwaita-icon-theme
     ];
 
