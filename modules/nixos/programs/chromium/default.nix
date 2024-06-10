@@ -1,32 +1,37 @@
-{pkgs, ...}: {
-  environment.systemPackages = with pkgs; [
-    (vivaldi.override {
-      proprietaryCodecs = true; # causes some crashes with certain video sites
-      enableWidevine = true;
-      commandLineArgs = "--enable-features=WebUIDarkMode --force-dark-mode --ozone-platform-hint=auto --gtk-version=4 --enable-features=PlatformHEVCDecoderSupport";
-    })
-  ];
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: let
+  cfg = config.night-sky.programs.chromium;
+in {
+  options.night-sky.programs.chromium = {
+    enable = lib.mkEnableOption "chromium";
+  };
 
-  programs.chromium = {
-    enable = true;
-    enablePlasmaBrowserIntegration = true;
-    extensions = [
-      "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
-      "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
-      "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
-      "pnidmkljnhbjfffciajlcpeldoljnidn" # Linkwarden
-      "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
-      "gbmdgpbipfallnflgajpaliibnhdgobh" # JSON Viewer
-      "dnnckbejblnejeabhcmhklcaljjpdjeh" # KDE Connect
-      "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
-      "lkbebcjgcmobigpeffafkodonchffocl;https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean/-/raw/master/updates.xml"
-    ];
-    extraOpts = {
-      BrowserSignin = 1;
-      SyncDisabled = false;
-      PasswordManagerEnabled = false;
-      SpellcheckEnabled = true;
-      EnableMediaRouter = false;
+  config = lib.mkIf cfg.enable {
+    programs.chromium = {
+      enable = true;
+      enablePlasmaBrowserIntegration = true;
+      extensions = [
+        "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
+        "eimadpbcbfnmbkopoojfekhnkhdbieeh" # Dark Reader
+        "nngceckbapebfimnlniiiahkandclblb" # Bitwarden
+        "pnidmkljnhbjfffciajlcpeldoljnidn" # Linkwarden
+        "mnjggcdmjocbbbhaepdhchncahnbgone" # SponsorBlock
+        "gbmdgpbipfallnflgajpaliibnhdgobh" # JSON Viewer
+        "dnnckbejblnejeabhcmhklcaljjpdjeh" # KDE Connect
+        "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+        "lkbebcjgcmobigpeffafkodonchffocl;https://gitlab.com/magnolia1234/bypass-paywalls-chrome-clean/-/raw/master/updates.xml"
+      ];
+      extraOpts = {
+        BrowserSignin = 1;
+        SyncDisabled = false;
+        PasswordManagerEnabled = false;
+        SpellcheckEnabled = true;
+        EnableMediaRouter = false;
+      };
     };
   };
 }

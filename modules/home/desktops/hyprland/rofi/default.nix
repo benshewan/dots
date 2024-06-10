@@ -13,25 +13,27 @@
   };
   rofi-themes-test = builtins.readDir rofi-themes;
 in {
-  home.packages = with pkgs; [
-    rofi-bluetooth
-  ];
-
-  # Install rofi themes
-  home.file.".config/rofi" = {
-    recursive = true;
-    source = "${rofi-themes}/files";
-  };
-
-  programs.rofi = {
-    enable = true;
-    package = pkgs.rofi-wayland;
-    location = "center";
-    terminal = lib.getExe pkgs.kitty;
-
-    plugins = with pkgs; [
-      rofi-calc
-      rofi-power-menu
+  config = lib.mkIf config.night-sky.desktops.hyprland.enable {
+    home.packages = with pkgs; [
+      rofi-bluetooth
     ];
+
+    # Install rofi themes
+    home.file.".config/rofi" = {
+      recursive = true;
+      source = "${rofi-themes}/files";
+    };
+
+    programs.rofi = {
+      enable = true;
+      package = pkgs.rofi-wayland;
+      location = "center";
+      terminal = lib.getExe pkgs.kitty;
+
+      plugins = with pkgs; [
+        rofi-calc
+        rofi-power-menu
+      ];
+    };
   };
 }

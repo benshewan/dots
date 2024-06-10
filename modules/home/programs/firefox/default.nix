@@ -4,6 +4,8 @@
   lib,
   ...
 }: let
+  cfg = config.night-sky.programs.firefox;
+
   # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
   profile = "dev-edition-default";
   # userChrome.js loader & scripts
@@ -38,140 +40,146 @@
       hash = "sha256-yIOEhGHlarbjqWH1+F9eGbq4NTnZa6++H2UQ6ZuBqYc=";
     });
 in {
-  # Custom userChrome.js scripts
-  home.file.".mozilla/firefox/${profile}/chrome" = {
-    source = "${userchromejs-loader}/profile/chrome";
-    recursive = true;
+  options.night-sky.programs.firefox = {
+    enable = lib.mkEnableOption "firefox";
   };
 
-  home.file.".mozilla/firefox/${profile}/chrome/utils/chrome.manifest".text = let
-    root = "${config.night-sky.user.home}/.mozilla/firefox/${profile}/chrome";
-  in ''
-    content userchromejs ${root}/utils/
-    content userscripts ${root}/JS/
-    skin userstyles classic/1.0 ${root}/CSS/
-    content userchrome ${root}/resources/
-  '';
+  config = lib.mkIf cfg.enable {
+    # Custom userChrome.js scripts
+    home.file.".mozilla/firefox/${profile}/chrome" = {
+      source = "${userchromejs-loader}/profile/chrome";
+      recursive = true;
+    };
 
-  # Private Tab
-  home.file.".mozilla/firefox/${profile}/chrome/JS/privateTabs.uc.js".source = "${userchromejs-scripts}/JS/privateTabs.uc.js";
-  home.file.".mozilla/firefox/${profile}/chrome/JS/privateWindowHomepage.uc.js".source = "${userchromejs-scripts}/JS/privateWindowHomepage.uc.js";
-
-  home.file.".mozilla/firefox/${profile}/chrome/JS/findbarMods.uc.js".source = "${userchromejs-scripts}/JS/findbarMods.uc.js";
-  home.file.".mozilla/firefox/${profile}/chrome/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js".source = "${userchromejs-scripts}/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js";
-
-  # Custom theme
-  home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".text =
-    (builtins.readFile "${firefox-gnome-theme}/userChrome.css")
-    + ''
-      @import "${./multi_column_addons.css}";
+    home.file.".mozilla/firefox/${profile}/chrome/utils/chrome.manifest".text = let
+      root = "${config.night-sky.user.home}/.mozilla/firefox/${profile}/chrome";
+    in ''
+      content userchromejs ${root}/utils/
+      content userscripts ${root}/JS/
+      skin userstyles classic/1.0 ${root}/CSS/
+      content userchrome ${root}/resources/
     '';
-  home.file.".mozilla/firefox/${profile}/chrome/userContent.css".source = "${firefox-gnome-theme}/userContent.css";
-  home.file.".mozilla/firefox/${profile}/chrome/theme" = {
-    recursive = true;
-    source = "${firefox-gnome-theme}/theme";
-  };
-  home.file.".mozilla/firefox/${profile}/chrome/theme/colors".enable = false;
-  home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
 
-  # Add aditional css changes
-  home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
+    # Private Tab
+    home.file.".mozilla/firefox/${profile}/chrome/JS/privateTabs.uc.js".source = "${userchromejs-scripts}/JS/privateTabs.uc.js";
+    home.file.".mozilla/firefox/${profile}/chrome/JS/privateWindowHomepage.uc.js".source = "${userchromejs-scripts}/JS/privateWindowHomepage.uc.js";
 
-  # Stylix support
-  stylix.targets.firefox.profileNames = [profile];
+    home.file.".mozilla/firefox/${profile}/chrome/JS/findbarMods.uc.js".source = "${userchromejs-scripts}/JS/findbarMods.uc.js";
+    home.file.".mozilla/firefox/${profile}/chrome/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js".source = "${userchromejs-scripts}/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js";
 
-  programs.firefox = {
-    enable = true;
-    package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {};
-    nativeMessagingHosts =
-      [pkgs.goldwarden]
-      ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
-    policies = {
-      CaptivePortal = false;
-      DisableFirefoxStudies = true;
-      DisablePocket = true;
-      DisableTelemetry = true;
-      DisableFirefoxAccounts = false;
-      DisableSetDesktopBackground = true;
-      DisableFeedbackCommands = true;
-      DisableProfileImport = true;
-      DontCheckDefaultBrowser = true;
-      EncryptedMediaExtensions = {
-        Enabled = true;
-        Locked = true;
-      };
-      NoDefaultBookmarks = true;
-      OfferToSaveLogins = false;
-      OfferToSaveLoginsDefault = false;
-      PasswordManagerEnabled = false;
-      FirefoxHome = {
-        Search = true;
-        Pocket = false;
-        Snippets = false;
-        TopSites = false;
-        Highlights = false;
-      };
-      UserMessaging = {
-        ExtensionRecommendations = false;
-        SkipOnboarding = true;
-      };
-      SearchEngines.Default = "Google";
-      Permissions.Notifications = {
-        # Allow: ["https://example.org"],;
-        # "Block": ["https://example.edu"],;
-        BlockNewRequests = true;
-        Locked = true;
-      };
-      "3rdparty".Extensions."uBlock0@raymondhill.net" = {
-        adminSettings = {
-          userSettings = {
-            contextMenuEnabled = false;
-            showIconBadge = false;
-            externalLists = "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt\nhttps://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt\nhttps://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt";
-            importedLists = [
+    # Custom theme
+    home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".text =
+      (builtins.readFile "${firefox-gnome-theme}/userChrome.css")
+      + ''
+        @import "${./multi_column_addons.css}";
+      '';
+    home.file.".mozilla/firefox/${profile}/chrome/userContent.css".source = "${firefox-gnome-theme}/userContent.css";
+    home.file.".mozilla/firefox/${profile}/chrome/theme" = {
+      recursive = true;
+      source = "${firefox-gnome-theme}/theme";
+    };
+    home.file.".mozilla/firefox/${profile}/chrome/theme/colors".enable = false;
+    home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
+
+    # Add aditional css changes
+    home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
+
+    # Stylix support
+    stylix.targets.firefox.profileNames = [profile];
+
+    programs.firefox = {
+      enable = true;
+      package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {};
+      nativeMessagingHosts =
+        [pkgs.goldwarden]
+        ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
+      policies = {
+        CaptivePortal = false;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisableFirefoxAccounts = false;
+        DisableSetDesktopBackground = true;
+        DisableFeedbackCommands = true;
+        DisableProfileImport = true;
+        DontCheckDefaultBrowser = true;
+        EncryptedMediaExtensions = {
+          Enabled = true;
+          Locked = true;
+        };
+        NoDefaultBookmarks = true;
+        OfferToSaveLogins = false;
+        OfferToSaveLoginsDefault = false;
+        PasswordManagerEnabled = false;
+        FirefoxHome = {
+          Search = true;
+          Pocket = false;
+          Snippets = false;
+          TopSites = false;
+          Highlights = false;
+        };
+        UserMessaging = {
+          ExtensionRecommendations = false;
+          SkipOnboarding = true;
+        };
+        SearchEngines.Default = "Google";
+        Permissions.Notifications = {
+          # Allow: ["https://example.org"],;
+          # "Block": ["https://example.edu"],;
+          BlockNewRequests = true;
+          Locked = true;
+        };
+        "3rdparty".Extensions."uBlock0@raymondhill.net" = {
+          adminSettings = {
+            userSettings = {
+              contextMenuEnabled = false;
+              showIconBadge = false;
+              externalLists = "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt\nhttps://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt\nhttps://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt";
+              importedLists = [
+                "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt"
+                "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt"
+                "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt"
+              ];
+            };
+            selectedFilterLists = [
+              "user-filters"
+              "assets.json"
+              "public_suffix_list.dat"
+              "ublock-badlists"
+              "ublock-filters"
+              "ublock-badware"
+              "ublock-privacy"
+              "ublock-unbreak"
+              "ublock-quick-fixes"
+              "easylist"
+              "easyprivacy"
+              "urlhaus-1"
+              "plowe-0"
               "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt"
               "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt"
               "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt"
             ];
+            userFilters = "||smartlock.google.com";
           };
-          selectedFilterLists = [
-            "user-filters"
-            "assets.json"
-            "public_suffix_list.dat"
-            "ublock-badlists"
-            "ublock-filters"
-            "ublock-badware"
-            "ublock-privacy"
-            "ublock-unbreak"
-            "ublock-quick-fixes"
-            "easylist"
-            "easyprivacy"
-            "urlhaus-1"
-            "plowe-0"
-            "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/noshorts.txt"
-            "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/premium.txt"
-            "https://raw.githubusercontent.com/mchangrh/yt-neuter/main/filters/sponsorblock.txt"
-          ];
-          userFilters = "||smartlock.google.com";
         };
-      };
 
-      # Firefox extensions
-      ExtensionSettings = import ./extensions.nix;
-    };
-    profiles = {
-      "${profile}" = {
-        id = 0;
-        isDefault = true;
-        extraConfig =
-          builtins.readFile
-          (builtins.fetchurl
-            {
-              url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
-              sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
-            })
-          # Overrides
-          + builtins.readFile ./user.js;
+        # Firefox extensions
+        ExtensionSettings = import ./extensions.nix;
+      };
+      profiles = {
+        "${profile}" = {
+          id = 0;
+          isDefault = true;
+          extraConfig =
+            builtins.readFile
+            (builtins.fetchurl
+              {
+                url = "https://raw.githubusercontent.com/yokoffing/Betterfox/4b75f957f9c40a564c270614add472db3d3df9fa/user.js";
+                sha256 = "1aix07xv1bzrz2lflr0x56x172l9wphcm32qhmxrm5rwlm3mjzrw";
+              })
+            # Overrides
+            + builtins.readFile ./user.js;
+        };
       };
     };
   };

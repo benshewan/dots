@@ -118,6 +118,9 @@ in {
       # Svelte Config
       svelte.enable-ts-plugin = true;
 
+      # Live Server Config
+      liveServer.settings.donotShowInfoMsg = true;
+
       # Nix LSP Config
       nix.enableLanguageServer = true;
       nix.serverPath = lib.getExe pkgs.nil;

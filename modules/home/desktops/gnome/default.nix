@@ -9,10 +9,10 @@
     map (name: "${name}.desktop:${toString w}") apps;
   hexToRGBString = inputs.nix-colors.lib.conversions.hexToRGBString;
   colors = config.colorScheme.colors;
-  cfg = config.night-sky.desktops.kde;
+  cfg = config.night-sky.desktops.gnome;
 in rec {
   options.night-sky.desktops.gnome = {
-    enable = lib.mkEnableOption "hyprgnomeland";
+    enable = lib.mkEnableOption "gnome";
   };
 
   config = lib.mkIf cfg.enable {

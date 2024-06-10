@@ -8,8 +8,11 @@
   # NixOS Stuff
   programs.nix-ld.enable = true;
 
+  nix.channel.enable = false;
+  nix.settings.use-xdg-base-directories = true;
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nix.settings.auto-optimise-store = true;
+  nix.settings.warn-dirty = false;
   nix.gc = {
     automatic = true;
     dates = "weekly";

@@ -13,7 +13,7 @@
     };
   };
 
-  config = lib.mkIf config.stylix.targets.qt.enable (let
+  config = lib.mkIf (config.stylix.targets.qt.enable && !config.night-sky.desktops.kde.enable) (let
     cfg = config.stylix.targets.qt;
     kvconfig = config.lib.stylix.colors {
       template = ./kvconfig.mustache;

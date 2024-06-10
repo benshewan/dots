@@ -1,9 +1,7 @@
 {
   options,
   config,
-  pkgs,
   lib,
-  inputs,
   ...
 }:
 with lib;
@@ -33,6 +31,7 @@ in {
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
+      backupFileExtension = "backup";
     };
   };
 }

@@ -14,13 +14,6 @@ in {
     # Hyprland config
     ./keybinds.nix
     ./window-rules.nix
-
-    # Helper apps
-    # ./waybar
-    # ./dunst
-    # ./swaylock.nix
-    # ./swayidle.nix
-    # ./rofi
   ];
 
   config = lib.mkIf cfg.enable {

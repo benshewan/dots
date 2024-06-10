@@ -5,7 +5,7 @@
   ...
 }: let
   hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
-  hyprlock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${lib.getExe config.programs.hyprlock.package} -f; fi";
+  hyprlock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${lib.getExe config.programs.hyprlock.package}; fi";
 in {
   config = lib.mkIf config.night-sky.desktops.hyprland.enable {
     services.hypridle = {

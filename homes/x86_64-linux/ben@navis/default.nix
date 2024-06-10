@@ -1,6 +1,9 @@
-{pkgs, ...}: {
-  night-sky.desktops.hyprland.enable = true;
-
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: {
   monitors = [
     # Internal Monitor
     {
@@ -41,7 +44,7 @@
       name = "desc:Dell Inc. AW3423DWF 58082S3";
       width = 3440;
       height = 1440;
-      refreshRate = 165;
+      refreshRate = 144;
       scale = 1.25;
       x = 0;
       y = -1152;
@@ -53,23 +56,24 @@
     distrobox
     kate
     mpv
-    libreoffice-fresh
-    stable.bitwarden
+    bitwarden
     bottles
     wine
     stable.kicad
     # plex-media-player
     jellyfin-media-player
     jetbrains.pycharm-professional
+    moonlight-qt
 
     # Work stuff
-    teamviewer
+    # teamviewer
+    libreoffice-fresh
     mongodb-compass
     gnome-network-displays
-    masterpdfeditor
+    # masterpdfeditor
     night-sky.wisenet-viewer
-    moonlight-qt
     inkscape
+    krita
 
     # Messing around
     parsec-bin
@@ -82,26 +86,16 @@
     package = pkgs.jdk17;
   };
 
-  services.flatpak.packages = [
-    # "flathub:app/io.github.Foldex.AdwSteamGtk//stable" # Doesn't seem to quite work, steam will freak out
-    # "flathub:app/com.parsecgaming.parsec//stable"
-    # {
-    #   appId = "com.mongodb.Compass";
-    #   origin = "flathub";
-    # }
-    {
-      appId = "com.getpostman.Postman";
-      origin = "flathub";
-    }
-    {
-      appId = "com.github.tchx84.Flatseal";
-      origin = "flathub";
-    }
-    # {
-    #   appId = "cafe.avery.Delfin";
-    #   origin = "flathub";
-    # }
-  ];
+  # services.flatpak.packages = [
+  #   {
+  #     appId = "com.getpostman.Postman";
+  #     origin = "flathub";
+  #   }
+  #   {
+  #     appId = "com.github.tchx84.Flatseal";
+  #     origin = "flathub";
+  #   }
+  # ];
 
   programs.obs-studio = {
     enable = true;

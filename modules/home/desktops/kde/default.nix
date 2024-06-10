@@ -12,25 +12,12 @@ in {
   };
 
   imports = [inputs.plasma-manager.homeManagerModules.plasma-manager];
+
   config = lib.mkIf cfg.enable {
     # Enables support for KDE Configuration
     home.packages = with pkgs; [
       # Styles
       lightly-qt
-      (catppuccin-kde.override {
-        flavour = ["mocha"];
-        accents = ["blue"];
-        winDecStyles = ["classic"];
-      })
-      catppuccin-cursors
-      (catppuccin-gtk.override
-        {
-          accents = ["blue"];
-          size = "standard"; # compact
-          tweaks = [];
-          variant = "mocha";
-        })
-
       # Extensions
       # libsForQt5.bismuth
     ];
@@ -45,10 +32,6 @@ in {
       #   key = "Meta+Alt+K";
       #   command = "konsole";
       # };
-
-      # Theme
-      configFile.kcminputrc.Mouse.cursorTheme = "Breeze_Snow";
-      configFile.kdeglobals.KDE.widgetStyle = "Lightly";
 
       # Mouse settings
       configFile.kcminputrc.Mouse.X11LibInputXAccelProfileFlat = true;

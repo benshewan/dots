@@ -23,7 +23,7 @@ in {
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
 
-    services.xserver.displayManager.lightdm.enable = false;
+    services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
     # services.xserver.displayManager.sddm = {
     #   enable = true;
     #   wayland.enable = true;
