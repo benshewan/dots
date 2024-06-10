@@ -13,10 +13,10 @@
   networking.hostName = "navis";
 
   specialisation = {
-    hyprland.configuration = {
-      night-sky.desktops.hyprland.enable = true;
-      night-sky.programs.npm.enable = true;
-      night-sky.home.extraOptions.night-sky = {
+    hyprland.configuration.night-sky = {
+      desktops.hyprland.enable = true;
+      programs.npm.enable = true;
+      home.extraOptions.night-sky = {
         desktops.hyprland.enable = true;
         programs = {
           firefox.enable = true;
@@ -24,10 +24,10 @@
         };
       };
     };
-    kde.configuration = {
-      night-sky.desktops.kde.enable = true;
-      night-sky.programs.npm.enable = true;
-      night-sky.home.extraOptions.night-sky = {
+    kde.configuration.night-sky = {
+      desktops.kde.enable = true;
+      programs.npm.enable = true;
+      home.extraOptions.night-sky = {
         desktops.kde.enable = true;
         programs = {
           firefox.enable = true;
@@ -36,7 +36,6 @@
       };
     };
   };
-  environment.sessionVariables.CARGO_HOME = ''''${XDG_CACHE_HOME}/cargo'';
   # # Remote management of Navis
   services.tailscale.enable = true;
 
@@ -55,7 +54,6 @@
     ]
     # Development stuff
     ++ (with pkgs; [
-      # stable.nodejs
       mongodb-tools
     ]);
 

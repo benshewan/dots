@@ -19,6 +19,19 @@ in {
   };
 
   config = {
+    environment.sessionVariables = {
+      XDG_CACHE_HOME = "$HOME/.cache";
+      XDG_CONFIG_HOME = "$HOME/.config";
+      XDG_DATA_HOME = "$HOME/.local/share";
+      XDG_STATE_HOME = "$HOME/.local/state";
+
+      # Home Directory cleanup
+      _JAVA_OPTIONS = ''-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java''; # Java
+      XCOMPOSEFILE = ''$XDG_CONFIG_HOME/X11/xcompose''; # X11
+      XCOMPOSECACHE = ''$XDG_CACHE_HOME/X11/xcompose''; # x11
+      CARGO_HOME = ''$XDG_CACHE_HOME/cargo''; # Rust
+    };
+
     night-sky.home.extraOptions = {
       home.stateVersion = config.system.stateVersion;
       home.file = mkAliasDefinitions options.night-sky.home.file;
