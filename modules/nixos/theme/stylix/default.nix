@@ -8,7 +8,7 @@
   inherit (lib.night-sky) mkOpt;
   cfg = config.night-sky.theme;
 
-  themes = ["gruvbox" "catppuccin"];
+  themes = ["gruvbox" "catppuccin" "everforest" "tokyo-night"];
 in {
   imports = [inputs.stylix.nixosModules.stylix];
   options.night-sky.theme = mkOpt (types.enum themes) "gruvbox" "Select one of these pre-configured themes to use.";

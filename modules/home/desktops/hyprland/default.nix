@@ -30,18 +30,18 @@ in {
       wlr-randr # dependency of nwg-displays
     ];
 
-    wayland.windowManager.hyprland = {
-      enable = true;
-      # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
-    };
-
-    home.sessionVariables = {
-      GRIMBLAST_EDITOR = lib.getExe pkgs.swappy;
-    };
+    wayland.windowManager.hyprland.enable = true;
 
     wayland.windowManager.hyprland.plugins = [
       # inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
     ];
+    services.hyprpaper = {
+      enable = true;
+      settings = {
+        preload = ["${config.stylix.image}"];
+        wallpaper = [",${config.stylix.image}"];
+      };
+    };
 
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     wayland.windowManager.hyprland.settings = {
@@ -61,7 +61,7 @@ in {
         # Style
         "${lib.getExe pkgs.dunst}"
         "${lib.getExe pkgs.waybar}"
-        "${lib.getExe pkgs.swaybg} -i ${config.stylix.image} --mode fill"
+        # "${lib.getExe pkgs.swaybg} -i ${config.stylix.image} --mode fill"
         ''hyprctl setcursor "${config.stylix.cursor.name}" ${toString config.stylix.cursor.size}''
         # "swaync"
       ];

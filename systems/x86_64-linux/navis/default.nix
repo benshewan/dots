@@ -4,14 +4,13 @@
   ...
 }: {
   imports = [
-    # "${outputs.src}/themes/gruvbox/nixos"
     ./hardware-configuration.nix
     ./hardware.nix
   ];
 
   # System
   networking.hostName = "navis";
-
+  night-sky.theme = "everforest";
   specialisation = {
     hyprland.configuration.night-sky = {
       desktops.hyprland.enable = true;
