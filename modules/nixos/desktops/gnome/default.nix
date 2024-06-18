@@ -4,9 +4,9 @@
   config,
   ...
 }: let
-  cfg = config.desktops.gnome;
+  cfg = config.night-sky.desktops.gnome;
 in {
-  options.desktops.gnome = {
+  options.night-sky.desktops.gnome = {
     enable = lib.mkEnableOption "gnome";
   };
 

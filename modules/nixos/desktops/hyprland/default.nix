@@ -2,13 +2,12 @@
   pkgs,
   inputs,
   config,
-  outputs,
   lib,
   ...
 }: let
-  cfg = config.desktops.hyprland;
+  cfg = config.night-sky.desktops.hyprland;
 in {
-  options.desktops.hyprland = {
+  options.night-sky.desktops.hyprland = {
     enable = lib.mkEnableOption "hyprland";
   };
 
@@ -24,20 +23,13 @@ in {
       package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
 
-    services.xserver.displayManager.lightdm.enable = false;
+    services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
     # services.xserver.displayManager.sddm = {
     #   enable = true;
     #   wayland.enable = true;
     #   enableHidpi = true;
     #   theme = "chili";
     # };
-
-    # Add support for swaylock
-    security.pam.services.swaylock = {
-      text = ''
-        auth include login
-      '';
-    };
 
     # Change how the power button works
     services.logind.extraConfig = ''
@@ -60,12 +52,12 @@ in {
 
     # Basic programs
     environment.systemPackages = with pkgs; [
-      (sddm-chili-theme.override {
-        themeConfig = {
-          background = config.stylix.image;
-          PasswordFieldOutlined = true;
-        };
-      })
+      # (sddm-chili-theme.override {
+      #   themeConfig = {
+      #     background = config.stylix.image;
+      #     PasswordFieldOutlined = true;
+      #   };
+      # })
       gnome.adwaita-icon-theme
     ];
 

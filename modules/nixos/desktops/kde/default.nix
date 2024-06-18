@@ -4,24 +4,27 @@
   lib,
   ...
 }: let
-  cfg = config.desktops.kde;
+  cfg = config.night-sky.desktops.kde;
 in {
-  options.desktops.kde = {
+  options.night-sky.desktops.kde = {
     enable = lib.mkEnableOption "kde";
   };
 
   config = lib.mkIf cfg.enable {
     # Install KDE
-    services.xserver.desktopManager.plasma5.enable = true;
+    services.desktopManager.plasma6.enable = true;
     # Default DE
-    services.xserver.displayManager.defaultSession = "plasmawayland";
+    services.displayManager.defaultSession = "plasma";
     # Login Manager
-    services.xserver.displayManager.gdm = {
+    services.displayManager.sddm = {
       enable = true;
+      wayland.enable = true;
+      wayland.compositor = "kwin";
+      enableHidpi = true;
     };
 
     # Disable certain defaults for KDE
-    environment.plasma5.excludePackages = with pkgs.libsForQt5; [
+    environment.plasma6.excludePackages = with pkgs.libsForQt5; [
       elisa
       gwenview
       okular
@@ -50,6 +53,6 @@ in {
 
     # KDE Connect plus some magic to get chromium browser integration working
     programs.kdeconnect.enable = true;
-    environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+    # environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
   };
 }

@@ -1,4 +1,4 @@
-{outputs, ...}: {
+{config, ...}: {
   # Virtualization
   virtualisation.libvirtd = {
     enable = true;
@@ -10,7 +10,7 @@
   #   cp ${pkgs.libvirt}/var/lib/libvirt/qemu/networks/autostart/default.xml /var/lib/libvirt/qemu/networks/autostart/default.xml
   # '';
 
-  users.users.${outputs.username}.extraGroups = ["podman"];
+  users.users.${config.night-sky.user.name}.extraGroups = ["podman"];
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
