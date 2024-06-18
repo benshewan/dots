@@ -12,7 +12,7 @@ in {
   programs.vscode = {
     enable = true;
     package = pkgs.vscode.override {
-      commandLineArgs = ''--password-store="gnome" --enable-features=UseOzonePlatform --ozone-platform=wayland'';
+      commandLineArgs = ''--password-store=gnome-libsecret --enable-features=UseOzonePlatform --ozone-platform=wayland'';
     };
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
