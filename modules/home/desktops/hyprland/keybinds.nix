@@ -87,7 +87,7 @@
 
         # Rofi keybinds
         "ALT,space,exec,${lib.getExe' config.programs.rofi.package "rofi"} -show drun -theme /home/ben/.config/rofi/launchers/type-1/style-1.rasi"
-        "SUPER,v,exec,${lib.getExe pkgs.cliphist} list | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
+        "SUPER,v,exec,${./rofi/cliphist-rofi-img.sh} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu | ${lib.getExe pkgs.cliphist} decode | wl-copy"
 
         # Screenshot keybinds
         "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | ${lib.getExe pkgs.satty} -f -"

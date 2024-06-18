@@ -54,6 +54,7 @@
     # Development stuff
     ++ (with pkgs; [
       mongodb-tools
+      android-studio
     ]);
 
   programs.goldwarden = {
@@ -88,13 +89,13 @@
     enable = true;
     package = pkgs.stable.mongodb;
   };
+  networking.firewall.enable = false;
 
   # doesn't seem to work anymore on wayland
   # services.teamviewer.enable = true;
 
   # for wayvnc
   # networking.firewall.allowedTCPPorts = [5900];
-  # networking.firewall.enable = false;
   # networking.firewall.allowedUDPPorts = [3389];
 
   # MongoDB Extenal access

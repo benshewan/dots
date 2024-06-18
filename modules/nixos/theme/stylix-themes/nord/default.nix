@@ -7,10 +7,10 @@
   cfg = config.night-sky.theme;
 in
   lib.mkIf (cfg
-    == "tokyo-night") {
+    == "nord") {
     stylix.image = ./wallpapers/thing.png;
     stylix.polarity = "dark";
-    stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-storm.yaml";
+    stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
     stylix.cursor = {
       name = "phinger-cursors-light";
       package = pkgs.phinger-cursors;
@@ -26,6 +26,8 @@ in
       };
 
       monospace = {
+        # package = pkgs.nerdfonts.override {fonts = ["DejaVuSansMono"];};
+        # name = "DejaVuSansMono";
         package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
         name = "JetBrainsMono";
       };

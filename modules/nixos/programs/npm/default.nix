@@ -20,7 +20,7 @@ in {
     programs.npm = {
       enable = true;
       npmrc = ''
-        prefix = $XDG_CACHE_HOME/npm
+        prefix = ''${XDG_CACHE_HOME}/npm
         color = true
         fund = false
       '';
