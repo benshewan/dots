@@ -32,7 +32,7 @@
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
   services.udev.extraRules =
     ''
-      SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"
+      SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced "
       SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
     ''
     # temp fix for bad lid behaviour, i.e. if system is suspended and the lid is closed it will wake back up
@@ -62,8 +62,8 @@
     # reported to help with flashing display issues
     # "amdgpu.sg_display=0"
 
-    # Adaptive Backlight Management (1-4)
-    # "amdgpu.abmlevel=3"
+    # Adaptive Backlight Management (0-4)
+    "amdgpu.abmlevel=0" # Force off because it looks ugly
   ];
 
   # Add support for temp, voltage, current, and power reading
