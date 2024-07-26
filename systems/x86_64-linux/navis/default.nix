@@ -11,31 +11,20 @@
   # System
   networking.hostName = "navis";
   night-sky.theme = "everforest";
-  specialisation = {
-    hyprland.configuration.night-sky = {
+  night-sky = {
+    desktops.hyprland.enable = true;
+    programs.npm.enable = true;
+    programs.vivaldi.enable = true;
+    home.extraOptions.night-sky = {
       desktops.hyprland.enable = true;
-      programs.npm.enable = true;
-      home.extraOptions.night-sky = {
-        desktops.hyprland.enable = true;
-        programs = {
-          firefox.enable = true;
-          chromium.enable = true;
-        };
-      };
-    };
-    kde.configuration.night-sky = {
-      desktops.kde.enable = true;
-      programs.npm.enable = true;
-      home.extraOptions.night-sky = {
-        desktops.kde.enable = true;
-        programs = {
-          firefox.enable = true;
-          chromium.enable = true;
-        };
+      programs = {
+        firefox.enable = true;
+        chromium.enable = true;
       };
     };
   };
-  # # Remote management of Navis
+
+  # Remote management of Navis
   services.tailscale.enable = true;
 
   fonts.packages = with pkgs; [
@@ -50,6 +39,8 @@
       easyeffects
       powertop
       nm-tray
+      solaar
+      lan-mouse
     ]
     # Development stuff
     ++ (with pkgs; [
@@ -59,7 +50,7 @@
 
   programs.goldwarden = {
     enable = true;
-    useSshAgent = true;
+    useSshAgent = false;
   };
 
   # Networking stuff
@@ -83,6 +74,12 @@
     ])
     + ''
     '';
+
+  # for lan-mouse
+  networking.firewall.allowedTCPPorts = [4242];
+  networking.firewall.allowedUDPPorts = [4242];
+
+  hardware.logitech.wireless.enable = true;
 
   # Work
   services.mongodb = {

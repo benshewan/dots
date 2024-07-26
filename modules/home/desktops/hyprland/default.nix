@@ -48,7 +48,6 @@ in {
       exec-once = [
         # System
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # allow xdg portal to get the varibales it needs
-        "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1"
 
         "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
         # "${lib.getExe' pkgs.nm-tray "nm-tray"}" # Not working
@@ -60,7 +59,7 @@ in {
 
         # Style
         "${lib.getExe pkgs.dunst}"
-        "${lib.getExe pkgs.waybar}"
+        # "${lib.getExe pkgs.waybar}"
         # "${lib.getExe pkgs.swaybg} -i ${config.stylix.image} --mode fill"
         ''hyprctl setcursor "${config.stylix.cursor.name}" ${toString config.stylix.cursor.size}''
         # "swaync"

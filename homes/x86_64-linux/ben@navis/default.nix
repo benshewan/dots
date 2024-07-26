@@ -77,9 +77,12 @@
 
     # Messing around
     parsec-bin
+    jetbrains-toolbox
     filebot
     syncthingtray
-    helvum
+
+    # Audio
+    qpwgraph
   ];
 
   programs.java = {
@@ -97,6 +100,10 @@
   #     origin = "flathub";
   #   }
   # ];
+  home.file.".config/JetBrains/WebStorm${lib.versions.majorMinor pkgs.jetbrains.webstorm.version}/prettier" = {
+    source = "${pkgs.nodePackages.prettier}/lib/node_modules/prettier";
+    recursive = true;
+  };
 
   programs.obs-studio = {
     enable = true;

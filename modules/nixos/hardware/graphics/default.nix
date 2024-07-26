@@ -1,7 +1,4 @@
 {...}: {
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
+  # Handled by nixos-hardware now
+  # hardware.opengl.enable = true;
 }

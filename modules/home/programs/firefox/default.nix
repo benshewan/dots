@@ -7,7 +7,7 @@
   cfg = config.night-sky.programs.firefox;
 
   # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
-  profile = "dev-edition-default";
+  profile = "default";
   # userChrome.js loader & scripts
   userchromejs-scripts = pkgs.fetchFromGitHub {
     owner = "aminomancer";
@@ -89,7 +89,7 @@ in {
 
     programs.firefox = {
       enable = true;
-      package = pkgs.wrapFirefox pkgs.firefox-devedition-unwrapped {};
+      package = pkgs.wrapFirefox pkgs.firefox-unwrapped {};
       nativeMessagingHosts =
         [pkgs.goldwarden]
         ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;

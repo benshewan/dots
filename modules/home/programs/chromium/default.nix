@@ -14,7 +14,7 @@ in {
     programs.chromium = {
       enable = true;
       # package = pkgs.thorium;
-      commandLineArgs = ["--ozone-platform-hint=auto"];
+      commandLineArgs = ["--ozone-platform-hint=auto --gtk-version=4"];
     };
   };
 }

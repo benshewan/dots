@@ -42,6 +42,7 @@ in {
 
         # Utilites
         ms-vsliveshare.vsliveshare # Share Session
+        # github.vscode-pull-request-github # Better pull request
         ritwickdey.liveserver # Spin up a basic server
         # tailscale.vscode-tailscale # Support for tailscale hosts
         ms-vscode-remote.remote-ssh # Remote SSH development
@@ -51,6 +52,9 @@ in {
       ])
       ++ (with extensions.open-vsx; [
         # svelte.svelte-vscode
+      ])
+      ++ (with pkgs.vscode-extensions; [
+        github.vscode-pull-request-github
       ]);
     userSettings = {
       # General Config
@@ -109,6 +113,7 @@ in {
         graph.avatars = false;
         graph.minimap.enabled = false;
       };
+      githubPullRequests.createOnPublishBranch = "never";
 
       # Disable all telemetry
       gitlens.telemetry.enabled = false;

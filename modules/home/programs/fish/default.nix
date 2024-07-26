@@ -46,10 +46,6 @@ in {
   # programs.eza.enableAliases = true;
   programs.fish.shellInit = ''
     set fish_greeting
-    # setup goldwarden ssh keys
-    if [ -z "$SSH_AUTH_SOCK" -a -n "$HOME" ];
-      echo "Hello"
-    end
   '';
 
   programs.fish.interactiveShellInit = ''

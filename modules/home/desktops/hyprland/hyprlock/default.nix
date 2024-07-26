@@ -10,6 +10,10 @@ in {
     home.packages = with pkgs; [
       material-symbols
     ];
+
+    # To unstick hyprlock if you get the red screen of death
+    home.shellAliases."hyprlock-unlock" = "pkill -USR1 hyprlock";
+
     programs.hyprlock = {
       enable = true;
 
