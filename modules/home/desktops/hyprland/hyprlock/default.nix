@@ -15,7 +15,7 @@ in {
     home.shellAliases."hyprlock-unlock" = "pkill -USR1 hyprlock";
 
     programs.hyprlock = {
-      enable = true;
+      enable = false;
 
       settings = {
         general = {

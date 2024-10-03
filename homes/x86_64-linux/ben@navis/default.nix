@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  config,
   ...
 }: {
   monitors = [
@@ -77,9 +76,11 @@
 
     # Messing around
     parsec-bin
-    jetbrains-toolbox
     filebot
     syncthingtray
+    varia
+    night-sky.acdcontrol
+    stable.handbrake
 
     # Audio
     qpwgraph
@@ -87,7 +88,7 @@
 
   programs.java = {
     enable = true;
-    package = pkgs.jdk17;
+    package = pkgs.temurin-jre-bin;
   };
 
   # services.flatpak.packages = [

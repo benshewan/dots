@@ -10,10 +10,8 @@
   #   cp ${pkgs.libvirt}/var/lib/libvirt/qemu/networks/autostart/default.xml /var/lib/libvirt/qemu/networks/autostart/default.xml
   # '';
 
-  users.users.${config.night-sky.user.name}.extraGroups = ["podman"];
-  virtualisation.podman = {
+  users.users.${config.night-sky.user.name}.extraGroups = ["docker"];
+  virtualisation.docker = {
     enable = true;
-    dockerCompat = true;
-    dockerSocket.enable = true;
   };
 }

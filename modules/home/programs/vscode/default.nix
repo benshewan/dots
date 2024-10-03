@@ -6,6 +6,7 @@
   ...
 }: let
   extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
+  font = "'${config.stylix.fonts.monospace.name}'";
 in {
   home.sessionVariables = {EDITOR = "code";};
 
@@ -24,12 +25,12 @@ in {
         shd101wyy.markdown-preview-enhanced # Markdown support
         yoavbls.pretty-ts-errors # Readable typescipt errors
         redhat.vscode-yaml # YAML Support
-        formulahendry.auto-rename-tag # HTML rename support
         mikestead.dotenv
         svelte.svelte-vscode
         bradlc.vscode-tailwindcss
 
         # Intellisense
+        # formulahendry.auto-rename-tag # HTML rename support
         christian-kohler.path-intellisense # Auto-complete paths
         christian-kohler.npm-intellisense # Auto-complete npm package names
         zignd.html-css-class-completion # Auto-complete CSS class names
@@ -42,6 +43,7 @@ in {
 
         # Utilites
         ms-vsliveshare.vsliveshare # Share Session
+        ms-vscode-remote.remote-containers # Support for dev containers
         # github.vscode-pull-request-github # Better pull request
         ritwickdey.liveserver # Spin up a basic server
         # tailscale.vscode-tailscale # Support for tailscale hosts
@@ -58,87 +60,85 @@ in {
       ]);
     userSettings = {
       # General Config
-      files.autoSave = "onFocusChange";
-      editor.formatOnSave = true;
-      explorer.confirmDelete = false;
-      explorer.confirmDragAndDrop = false;
-      security.workspace.trust.untrustedFiles = "open";
-      editor.stickyScroll.enabled = false;
+      "files.autoSave" = "onFocusChange";
+      "editor.formatOnSave" = true;
+      "explorer.confirmDelete" = false;
+      "explorer.confirmDragAndDrop" = false;
+      "security.workspace.trust.untrustedFiles" = "open";
+      "editor.stickyScroll.enabled" = false;
+      "editor.linkedEditing" = true;
 
       "extensions.autoUpdate" = false;
       "extensions.autoCheckUpdates" = false;
       "update.mode" = "none";
 
       # Theme Config
-      window.titleBarStyle = "custom";
-      workbench.layoutControl.enabled = false;
-      editor.fontLigatures = true;
-      editor.fontFamily = config.stylix.fonts.monospace.name;
-      terminal.integrated.fontFamily = config.stylix.fonts.monospace.name;
-      editor.guides.bracketPairs = "active";
+      "window.titleBarStyle" = "custom";
+      "workbench.layoutControl.enabled" = false;
+      "editor.fontLigatures" = true;
+      "editor.fontFamily" = font;
+      "terminal.integrated.fontFamily" = font;
+      "editor.guides.bracketPairs" = "active";
 
       # Inlays
-      editor.inlayHints.enabled = "on";
-      javascript.inlayHints = {
-        parameterNames.enabled = "all";
-        variableTypes.enabled = true;
-        parameterTypes.enabled = true;
-        propertyDeclarationTypes.enabled = true;
-        functionLikeReturnTypes.enabled = true;
-      };
-      typescript.inlayHints = {
-        parameterNames.enabled = "all";
-        variableTypes.enabled = true;
-        propertyDeclarationTypes.enabled = true;
-        parameterTypes.enabled = true;
-        functionLikeReturnTypes.enabled = true;
-      };
+      "editor.inlayHints.enabled" = "on";
+
+      "javascript.inlayHints.parameterNames.enabled" = "all";
+      "javascript.inlayHints.variableTypes.enabled" = true;
+      "javascript.inlayHints.parameterTypes.enabled" = true;
+      "javascript.inlayHints.propertyDeclarationTypes.enabled" = true;
+      "javascript.inlayHints.functionLikeReturnTypes.enabled" = true;
+
+      "typescript.inlayHints.parameterNames.enabled" = "all";
+      "typescript.inlayHints.variableTypes.enabled" = true;
+      "typescript.inlayHints.propertyDeclarationTypes.enabled" = true;
+      "typescript.inlayHints.parameterTypes.enabled" = true;
+      "typescript.inlayHints.functionLikeReturnTypes.enabled" = true;
 
       # Spell Checker Config
       # cSpell.enableFiletypes = [ "nix" ];
 
       # Git Config
-      git.confirmSync = false;
-      git.autofetch = true;
-      git.autoStash = true;
-      gitlens = {
-        showWelcomeOnInstall = false;
-        ai.experimental.generateCommitMessage.enabled = false;
-        defaultGravatarsStyle = "identicon";
-        showWhatsNewAfterUpgrades = false;
-        plusFeatures.enabled = false;
-        currentLine.enabled = false;
-        views.commitDetails.avatars = false;
-        cloudPatches.enabled = false;
-        graph.avatars = false;
-        graph.minimap.enabled = false;
-      };
-      githubPullRequests.createOnPublishBranch = "never";
+      "git.confirmSync" = false;
+      "git.autofetch" = true;
+      "git.autoStash" = true;
+
+      "gitlens.showWelcomeOnInstall" = false;
+      "gitlens.ai.experimental.generateCommitMessage.enabled" = false;
+      "gitlens.defaultGravatarsStyle" = "identicon";
+      "gitlens.showWhatsNewAfterUpgrades" = false;
+      "gitlens.plusFeatures.enabled" = false;
+      "gitlens.currentLine.enabled" = false;
+      "gitlens.views.commitDetails.avatars" = false;
+      "gitlens.cloudPatches.enabled" = false;
+      "gitlens.graph.avatars" = false;
+      "gitlens.graph.minimap.enabled" = false;
+
+      "githubPullRequests.createOnPublishBranch" = "never";
 
       # Disable all telemetry
-      gitlens.telemetry.enabled = false;
-      telemetry.telemetryLevel = "off";
-      redhat.telemetry.enabled = false;
+      "gitlens.telemetry.enabled" = false;
+      "telemetry.telemetryLevel" = "off";
+      "redhat.telemetry.enabled" = false;
 
       # Svelte Config
-      svelte.enable-ts-plugin = true;
+      "svelte.enable-ts-plugin" = true;
 
       # Live Server Config
-      liveServer.settings.donotShowInfoMsg = true;
+      "liveServer.settings.donotShowInfoMsg" = true;
+
+      # Prettier Config
+      "editor.defaultFormatter" = "esbenp.prettier-vscode";
 
       # Nix LSP Config
-      nix.enableLanguageServer = true;
-      nix.serverPath = lib.getExe pkgs.nil;
-      nix.serverSettings = {
-        nil = {
-          formatting.command = [(lib.getExe pkgs.alejandra)];
-          nix.binary = "nix";
-          nix.maxMemoryMB = 3072;
-          nix.flake.autoArchive = true;
-          nix.flake.autoEvalInputs = true;
-          nix.flake.nixpkgsInputName = "nixpkgs";
-        };
-      };
+      "nix.enableLanguageServer" = true;
+      "nix.serverPath" = lib.getExe pkgs.nil;
+      "nix.serverSettings.nil.formatting.command" = [(lib.getExe pkgs.alejandra)];
+      "nix.serverSettings.nil.nix.binary" = "nix";
+      "nix.serverSettings.nil.nix.maxMemoryMB" = 3072;
+      "nix.serverSettings.nil.nix.flake.autoArchive" = true;
+      "nix.serverSettings.nil.nix.flake.autoEvalInputs" = true;
+      "nix.serverSettings.nil.nix.flake.nixpkgsInputName" = "nixpkgs";
     };
   };
 }

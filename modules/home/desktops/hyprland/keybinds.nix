@@ -93,6 +93,8 @@
         "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | ${lib.getExe pkgs.satty} -f -"
         "SUPER SHIFT, s, exec, ${lib.getExe pkgs.grimblast} --notify save output - | ${lib.getExe pkgs.satty} -f -"
 
+        ", XF86AudioMedia, exec, ${lib.getExe pkgs.hyprshade} toggle blue-light-filter"
+
         # Screen Recording - Use Ctrl + C to stop recording
         # ''SUPER, r, exec, ${lib.getExe pkgs.wf-recorder} -g "$(${lib.getExe pkgs.slurp})"''
         # "SUPER SHIFT, r, exec, ${lib.getExe pkgs.wf-recorder}"
@@ -123,7 +125,8 @@
           ", XF86AudioPrev, exec, ${dunst/volume_brightness.sh} prev_track"
 
           # Lock screen
-          "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --immediate"
+          # "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --immediate"
+          "SUPER,l,exec,${lib.getExe config.programs.swaylock.package} -f"
         ]
         ++ lib.flatten (map (
             m: let
@@ -136,8 +139,8 @@
                 # ",switch:Lid Switch,exec,${lib.getExe config.programs.swaylock.package} -f" # depricated - now handled by swayidle
                 # Tell laptop screen to turn off if lid is closed
                 # This should only run if more than one monitor is connected
-                ", switch:off:Lid Switch,exec,if wlr-randr | grep Model: | wc -l > 1; then hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'; fi;"
-                ", switch:on:Lid Switch,exec,if wlr-randr | grep Model: | wc -l > 1; then hyprctl keyword monitor '${m.name}, disable'; else systemctl suspend-then-hibernate; fi;"
+                ", switch:off:Lid Switch,exec,if hyprctl monitors | grep model: | wc -l > 1; then hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'; fi;"
+                ", switch:on:Lid Switch,exec,if hyprctl monitors | grep model: | wc -l > 1; then hyprctl keyword monitor '${m.name}, disable'; else systemctl suspend-then-hibernate; fi;"
               ]
               else []
           )

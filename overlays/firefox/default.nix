@@ -5,10 +5,11 @@
     rev = "d9133f188d4a037d9bf71aa208d1452d78adb25c";
     sha256 = "sha256-wJHcthpwoBi+T6NXkxwG+ePTHnIvut7Tr0UJDEOGL2U=";
   };
-  legacyfox-loader = prev.fetchgit {
-    url = "https://git.gir.st/LegacyFox.git";
-    rev = "25664f0b2c3238704c7509cc661d52b6b5763599";
-    sha256 = "sha256-USnJTUone62F8x8jJZCN0l67zTn5YicS3J4thPEwCRY=";
+  legacyfox-loader = prev.fetchFromGitHub {
+    owner = "girst";
+    repo = "LegacyFox-mirror-of-git.gir.st";
+    rev = "312a791ae03bddd725dee063344801f959cfe44d";
+    sha256 = "sha256-3XtqRa07GjA9/LlZw/b2eVZZa7/akaVo3kzRUYBg9xY=";
   };
   merged-configjs =
     (

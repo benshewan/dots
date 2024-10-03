@@ -86,6 +86,12 @@
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
   };
 
+   # Tab Sessions
+  "Tab-Session-Manager@sienori" = {
+    installation_mode = "normal_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/tab-session-manager/latest.xpi";
+  };
+
   # Website Specific Customizations
   # ----------------------------------------------------------------------------------
 

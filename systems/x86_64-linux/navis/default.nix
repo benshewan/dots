@@ -10,16 +10,19 @@
 
   # System
   networking.hostName = "navis";
-  night-sky.theme = "everforest";
+  night-sky.theme = "catppuccin";
   night-sky = {
     desktops.hyprland.enable = true;
     programs.npm.enable = true;
     programs.vivaldi.enable = true;
-    home.extraOptions.night-sky = {
-      desktops.hyprland.enable = true;
-      programs = {
-        firefox.enable = true;
-        chromium.enable = true;
+    home.extraOptions = {
+      stylix.targets.qt.enable = true;
+      night-sky = {
+        desktops.hyprland.enable = true;
+        programs = {
+          firefox.enable = true;
+          chromium.enable = true;
+        };
       };
     };
   };
@@ -36,11 +39,16 @@
   environment.systemPackages = with pkgs;
     [
       # Audio Configuration https://github.com/ceiphr/ee-framework-presets
-      easyeffects
+      # easyeffects
       powertop
       nm-tray
       solaar
-      lan-mouse
+      # lan-mouse
+      bambu-studio
+      orca-slicer
+      btrfs-progs
+      go
+      gnumake
     ]
     # Development stuff
     ++ (with pkgs; [

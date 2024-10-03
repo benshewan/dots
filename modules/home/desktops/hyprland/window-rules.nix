@@ -44,11 +44,8 @@
       "pin, class:^(firefox)$,title:^(Picture-in-Picture)$"
       "suppressevent maximize, class:^(firefox)$,title:^(Picture-in-Picture)$"
       "suppressevent fullscreen, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "float, class:^(firefox)$,title:^(Firefox)$ "
-      "size 800 450, class:^(firefox)$,title:^(Firefox)$"
-      "pin, class:^(firefox)$,title:^(Firefox)$"
-      "suppressevent maximize, class:^(firefox)$,title:^(Firefox)$"
-      "suppressevent fullscreen, class:^(firefox)$,title:^(Firefox)$"
+      "move onscreen 100%-w-15 5%, class:^(firefox)$,title:^(Picture-in-Picture)$"
+      "noanim on, class:^(firefox)$,title:^(Picture-in-Picture)$"
 
       # Dialogs
       "float,class:^(firefox)$,title:^(File Upload)$"
@@ -59,7 +56,7 @@
 
       "float,class:^(firefox)$,title:^(Opening)(.*)$"
       "suppressevent fullscreen,class:^(firefox)$,title:^(Opening)(.*)$"
-      "fakefullscreen,class:^(firefox)$,title:^(Opening)(.*)$"
+      "fullscreenstate 0 2,class:^(firefox)$,title:^(Opening)(.*)$"
       "center(1),class:^(firefox)$,title:^(Opening)(.*)$"
       "stayfocused,class:^(firefox)$,title:^(Opening)(.*)$"
       "dimaround,class:^(firefox)$,title:^(Opening)(.*)$"
@@ -95,33 +92,7 @@
       "center(1),class:^(kiod5)$,title:^(Authentication Dialog)$"
 
       # Vscode
-      "fakefullscreen, class:^(code-url-handler)$"
-
-      # Webstorm
-      # ----------
-      # # UI elements
-      # "nofocus,class:^(jetbrains-webstorm)$,title:^(win)(.*)$"
-
-      # # search
-      # "stayfocused, class:^(jetbrains-webstorm)$,title:^()$"
-      # "center(1), class:^(jetbrains-webstorm)$,title:^()$"
-      # "center(1), class:^(jetbrains-webstorm)$,title:^(win3)$"
-      # "stayfocused, class:^(jetbrains-webstorm)$,title:^(win3)$"
-
-      # # splash
-      # "center(1), class:^(jetbrains-webstorm)$,title:^(splash)$"
-      # "nofocus,class:^(jetbrains-webstorm)$,title:^(splash)$"
-
-      # # Settings
-      # "dimaround, class:^(jetbrains-webstorm)$,title:^(Settings)$"
-      # "stayfocused, class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
-      # "center(1), class:^(jetbrains-webstorm)$,title:^(Settings)$,floating:1"
-
-      # # Open Project
-      # "dimaround, class:^(jetbrains-webstorm)$,title:^(Open Project)$"
-      # "stayfocused, class:^(jetbrains-webstorm)$,title:^(Open Project)$,floating:1"
-      # "center(1), class:^(jetbrains-webstorm)$,title:^(Open Project)$,floating:1"
-      # ----------
+      "fullscreenstate 0 2, class:^(code-url-handler)$"
 
       # Polkit Request
       "float,class:^(polkit-gnome)(.*)$"

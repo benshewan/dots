@@ -83,7 +83,6 @@ in {
         numlock_by_default = 1;
         accel_profile = "flat";
         sensitivity = 0;
-        force_no_accel = 1;
         touchpad = {
           natural_scroll = 1;
         };
@@ -98,7 +97,6 @@ in {
         gaps_out = 4;
         border_size = 1;
         layout = "master";
-        apply_sens_to_raw = 1; # whether to apply the sensitivity to raw input (e.g. used by games where you aim using your mouse)
       };
 
       master = {

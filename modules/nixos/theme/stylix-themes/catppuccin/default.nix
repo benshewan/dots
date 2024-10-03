@@ -12,8 +12,8 @@ in
     stylix.polarity = "dark";
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
     stylix.cursor = {
-      name = "Catppuccin-Mocha-Dark-Cursors";
-      package = pkgs.catppuccin-cursors.mochaDark;
+      name = "catppuccin-mocha-light-cursors";
+      package = pkgs.catppuccin-cursors.mochaLight;
       size = 32;
     };
     # Fonts
