@@ -46,6 +46,7 @@
       "suppressevent fullscreen, class:^(firefox)$,title:^(Picture-in-Picture)$"
       "move onscreen 100%-w-15 5%, class:^(firefox)$,title:^(Picture-in-Picture)$"
       "noanim on, class:^(firefox)$,title:^(Picture-in-Picture)$"
+      "noinitialfocus, class:^(firefox)$,title:^(Picture-in-Picture)$"
 
       # Dialogs
       "float,class:^(firefox)$,title:^(File Upload)$"

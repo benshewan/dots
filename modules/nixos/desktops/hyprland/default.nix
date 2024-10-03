@@ -13,14 +13,15 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Binary cache for hyprland nightly
-    nix.settings = {
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-    };
+    # nix.settings = {
+    #   substituters = ["https://hyprland.cachix.org"];
+    #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    # };
 
     programs.hyprland = {
       enable = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      package = pkgs.hyprland;
+      # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
 
     services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
