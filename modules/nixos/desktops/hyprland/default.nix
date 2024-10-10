@@ -46,7 +46,6 @@ in {
     services.blueman.enable = true; # GTK Bluetooth manager
 
     services.udisks2.enable = true; # Auto mount removable drives on connect
-    hardware.brillo.enable = true; # Add support for controlling brightness
     programs.waybar.enable = true;
 
     # Additional Services

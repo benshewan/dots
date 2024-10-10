@@ -21,7 +21,7 @@ function get_mute {
 
 # Uses regex to get brightness
 function get_brightness {
-    brillo -G
+    echo "x=$(brightnessctl g) / 255 * 100;scale=0; x / 1" | bc -l
 }
 
 # Returns a mute icon, a volume-low icon, or a volume-high icon, depending on the volume
@@ -133,13 +133,13 @@ case $1 in
 
     brightness_up)
     # Increases brightness and displays the notification
-    brillo -q -A $brightness_step 
+    brightnessctl -e s +$brightness_step% 
     show_brightness_notif
     ;;
 
     brightness_down)
     # Decreases brightness and displays the notification
-    brillo -q -U $brightness_step
+    brightnessctl -e s $brightness_step%-
     show_brightness_notif
     ;;
 

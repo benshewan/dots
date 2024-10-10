@@ -14,6 +14,7 @@
     clipboard-jh
     wget
     playerctl
+    busybox
 
     # nix stuff
     snowfallorg.flake

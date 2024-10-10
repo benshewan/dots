@@ -10,7 +10,7 @@ in {
   options.services.keylightd = {
     enable = mkEnableOption "keylightd";
 
-    package = mkPackageOption pkgs "keylightd" {};
+    package = mkPackageOption pkgs.night-sky "keylightd" {};
 
     brightness = mkOption {
       type = types.int;

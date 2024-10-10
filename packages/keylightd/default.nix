@@ -4,9 +4,9 @@ pkgs.rustPlatform.buildRustPackage rec {
   version = "1.1.0";
   cargoLock.lockFile = "${src}/Cargo.lock";
   src = pkgs.fetchFromGitHub {
-    owner = "jonas-schievink";
+    owner = "piotr-yuxuan";
     repo = "keylightd";
-    rev = "933a4cf851009d4a8c1b4ce7725556d69d4b82db";
-    sha256 = "sha256-lU5ddVRjiGts7IzkoL3CWJVtjoiBMIHRBxb/C0n+oqQ=";
+    rev = "b7b17e3ac9402cbaac9ca9192c33755f6e8394a6";
+    sha256 = "sha256-QFsbd3npKQkiNuv9xxU0erKClbDACiu8fg7NNecsqz8=";
   };
 }

@@ -21,6 +21,7 @@ in {
       wl-clipboard # Clipboard helper
       cliphist
       stable.pavucontrol # Audio Control
+      brightnessctl
       loupe
       foliate
       libnotify # Send notifications
