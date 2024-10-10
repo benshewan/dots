@@ -67,7 +67,6 @@
     # Work stuff
     # teamviewer
     libreoffice-fresh
-    mongodb-compass
     gnome-network-displays
     # masterpdfeditor
     night-sky.wisenet-viewer
@@ -80,6 +79,7 @@
     syncthingtray
     varia
     night-sky.acdcontrol
+    night-sky.keylightd
     stable.handbrake
 
     # Audio

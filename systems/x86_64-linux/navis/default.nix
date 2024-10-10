@@ -22,10 +22,13 @@
         programs = {
           firefox.enable = true;
           chromium.enable = true;
+          monogodb-compass = true;
         };
       };
     };
   };
+
+  services.keylightd.enable = true;
 
   # Remote management of Navis
   services.tailscale.enable = true;
@@ -52,7 +55,6 @@
     ]
     # Development stuff
     ++ (with pkgs; [
-      mongodb-tools
       android-studio
     ]);
 
@@ -79,6 +81,7 @@
       "stats"
       "nzb"
       "jellyfin"
+      "actual"
     ])
     + ''
     '';
