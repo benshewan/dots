@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  cfg = config.night-sky.programs.thunderbird;
+  cfg = config.night-sky.programs.mongodb-compass;
 in {
   options.night-sky.programs.mongodb-compass = {
     enable = lib.mkEnableOption "mongodb-compass";
@@ -23,11 +23,10 @@ in {
       name = "MongoDB Compass";
       genericName="MongoDB Compass";
       comment = "The MongoDB GUI";
-      mimeType = "x-scheme-handler/mongodb;x-scheme-handler/mongodb+srv;";
+      mimeType = ["x-scheme-handler/mongodb" "x-scheme-handler/mongodb+srv"];
       icon = "mongodb-compass";
-      categories = "GNOME;GTK;Utility;";
+      categories = ["GNOME" "GTK" "Utility"];
       type="Application";
-      settings.NoDisplay = "true";
     };
   };
   };

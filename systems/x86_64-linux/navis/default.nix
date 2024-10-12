@@ -22,7 +22,7 @@
         programs = {
           firefox.enable = true;
           chromium.enable = true;
-          monogodb-compass = true;
+          mongodb-compass.enable = true;
         };
       };
     };
