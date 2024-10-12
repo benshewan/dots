@@ -95,6 +95,9 @@
       # Vscode
       "fullscreenstate 0 2, class:^(code-url-handler)$"
 
+      # Satty
+      "float,class:^(com.gabm.satty)$"
+
       # Polkit Request
       "float,class:^(polkit-gnome)(.*)$"
       "dimaround,class:^(polkit-gnome)(.*)$"
