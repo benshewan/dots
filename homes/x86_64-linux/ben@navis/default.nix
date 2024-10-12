@@ -81,6 +81,7 @@
     night-sky.acdcontrol
     night-sky.keylightd
     stable.handbrake
+    ngrok
 
     # Audio
     qpwgraph
