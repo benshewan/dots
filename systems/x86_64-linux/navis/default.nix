@@ -30,6 +30,21 @@
 
   services.keylightd.enable = true;
 
+   services.flatpak.packages = [
+    {
+      appId = "com.parsecgaming.parsec";
+      origin = "flathub";
+    }
+    # {
+    #   appId = "com.getpostman.Postman";
+    #   origin = "flathub";
+    # }
+    # {
+    #   appId = "com.github.tchx84.Flatseal";
+    #   origin = "flathub";
+    # }
+  ];
+
   # Remote management of Navis
   services.tailscale.enable = true;
 

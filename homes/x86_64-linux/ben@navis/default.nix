@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }: {
   monitors = [
@@ -74,7 +75,6 @@
     krita
 
     # Messing around
-    parsec-bin
     filebot
     syncthingtray
     varia
@@ -82,6 +82,7 @@
     night-sky.keylightd
     stable.handbrake
     ngrok
+    inputs.zen-browser.packages."${system}".specific
 
     # Audio
     qpwgraph
@@ -94,13 +95,17 @@
 
   # services.flatpak.packages = [
   #   {
-  #     appId = "com.getpostman.Postman";
+  #     appId = "com.parsecgaming.parsec";
   #     origin = "flathub";
   #   }
-  #   {
-  #     appId = "com.github.tchx84.Flatseal";
-  #     origin = "flathub";
-  #   }
+  #   # {
+  #   #   appId = "com.getpostman.Postman";
+  #   #   origin = "flathub";
+  #   # }
+  #   # {
+  #   #   appId = "com.github.tchx84.Flatseal";
+  #   #   origin = "flathub";
+  #   # }
   # ];
   home.file.".config/JetBrains/WebStorm${lib.versions.majorMinor pkgs.jetbrains.webstorm.version}/prettier" = {
     source = "${pkgs.nodePackages.prettier}/lib/node_modules/prettier";

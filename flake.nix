@@ -75,5 +75,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    # Temporary patches
+    zen-browser.url = "github:ch4og/zen-browser-flake";
   };
 }
