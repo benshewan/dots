@@ -26,6 +26,7 @@
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
   services.udev.extraRules =
     ''
+      ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"
       SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced "
       SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
     ''
@@ -48,10 +49,9 @@
   };
 
   # AMD OpenGL/Vulkan stuff
-  hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
+  # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
 
   boot.kernelParams = [
-
     # Adaptive Backlight Management (0-4)
     "amdgpu.abmlevel=0" # Force off because it looks ugly
   ];
@@ -67,7 +67,6 @@
 
   # Fingerprint
   services.fprintd.enable = false;
-
 
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;

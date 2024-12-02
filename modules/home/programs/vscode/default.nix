@@ -3,6 +3,7 @@
   lib,
   inputs,
   config,
+  host,
   ...
 }: let
   extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
@@ -113,6 +114,7 @@ in {
       "gitlens.cloudPatches.enabled" = false;
       "gitlens.graph.avatars" = false;
       "gitlens.graph.minimap.enabled" = false;
+      "gitlens.launchpad.indicator.enabled" = false;
 
       "githubPullRequests.createOnPublishBranch" = "never";
 
@@ -132,13 +134,21 @@ in {
 
       # Nix LSP Config
       "nix.enableLanguageServer" = true;
-      "nix.serverPath" = lib.getExe pkgs.nil;
-      "nix.serverSettings.nil.formatting.command" = [(lib.getExe pkgs.alejandra)];
-      "nix.serverSettings.nil.nix.binary" = "nix";
-      "nix.serverSettings.nil.nix.maxMemoryMB" = 3072;
-      "nix.serverSettings.nil.nix.flake.autoArchive" = true;
-      "nix.serverSettings.nil.nix.flake.autoEvalInputs" = true;
-      "nix.serverSettings.nil.nix.flake.nixpkgsInputName" = "nixpkgs";
+      "nix.serverPath" = lib.getExe pkgs.nixd;
+      # "nix.serverSettings.nil.formatting.command" = [(lib.getExe pkgs.alejandra)];
+      "nix.serverSettings.nixd.formatting.command" = [(lib.getExe pkgs.alejandra)];
+
+      # "nix.serverSettings.nil.nix.binary" = "nix";
+      # "nix.serverSettings.nil.nix.maxMemoryMB" = 3072;
+      # "nix.serverSettings.nil.nix.flake.autoArchive" = true;
+      # "nix.serverSettings.nil.nix.flake.autoEvalInputs" = false;
+      # "nix.serverSettings.nil.nix.flake.nixpkgsInputName" = "nixpkgs";
+
+      "nix.serverSettings.nixd.options.home-manager.expr" = "(builtins.getFlake \"${config.night-sky.user.home}/.nix\").homeConfigurations.\"${config.night-sky.user.name}@${host}\".options";
+      "nix.serverSettings.nixd.options.nixos.expr" = "(builtins.getFlake \"${config.night-sky.user.home}/.nix\").nixosConfigurations.${host}.options";
+      "nix.serverSettings.nixd.options.nixpkgs.expr" = "(builtins.getFlake \"${config.night-sky.user.home}/.nix\").nixosConfigurations.${host}.pkgs";
+
+      "[nix]"."editor.defaultFormatter" = "jnoortheen.nix-ide";
     };
   };
 }

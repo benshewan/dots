@@ -30,9 +30,13 @@
 
   services.keylightd.enable = true;
 
-   services.flatpak.packages = [
+  services.flatpak.packages = [
     {
       appId = "com.parsecgaming.parsec";
+      origin = "flathub";
+    }
+    {
+      appId = "org.jdownloader.JDownloader";
       origin = "flathub";
     }
     # {
@@ -44,6 +48,15 @@
     #   origin = "flathub";
     # }
   ];
+  programs.steam.enable = true;
+  programs.steam.extraCompatPackages = with pkgs; [
+    proton-ge-bin
+  ];
+  programs.steam.extraPackages = with pkgs; [
+    gamescope
+  ];
+  programs.steam.gamescopeSession.enable = true;
+  programs.gamemode.enable = true;
 
   # Remote management of Navis
   services.tailscale.enable = true;
@@ -62,11 +75,12 @@
       nm-tray
       solaar
       # lan-mouse
-      bambu-studio
       orca-slicer
       btrfs-progs
       go
       gnumake
+      steam-run
+      adwsteamgtk
     ]
     # Development stuff
     ++ (with pkgs; [
@@ -86,7 +100,7 @@
       "radarr"
       "prowlarr"
       "overseerr"
-      "downloads"
+      # "downloads"
       "auth"
       "tautulli"
       "invite"

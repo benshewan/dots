@@ -36,8 +36,8 @@
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
-      rev = "137b57bc0bfc0c2d775af4cd19644d9aadd66a81";
-      hash = "sha256-yIOEhGHlarbjqWH1+F9eGbq4NTnZa6++H2UQ6ZuBqYc=";
+      rev = "823756d8ddd21cfd3a24a87dad402e490e0eb5ee";
+      hash = "sha256-lf9MQs8+NUvQd8b5t+7c4kLqUQixGO9WwWcLa1XYuiQ=";
     });
 in {
   options.night-sky.programs.firefox = {
@@ -85,7 +85,7 @@ in {
     home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
 
     # Stylix support
-    stylix.targets.firefox.profileNames = [profile];
+    # stylix.targets.firefox.profileNames = [profile];
 
     programs.firefox = {
       enable = true;

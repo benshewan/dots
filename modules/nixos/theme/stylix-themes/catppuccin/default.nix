@@ -11,9 +11,14 @@ in
     stylix.image = ./wallpapers/catppuccin-floral.png;
     stylix.polarity = "dark";
     stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/catppuccin-mocha.yaml";
+    # stylix.cursor = {
+    #   name = "catppuccin-mocha-light-cursors";
+    #   package = pkgs.catppuccin-cursors.mochaLight;
+    #   size = 32;
+    # };
     stylix.cursor = {
-      name = "catppuccin-mocha-light-cursors";
-      package = pkgs.catppuccin-cursors.mochaLight;
+      name = "phinger-cursors-light";
+      package = pkgs.phinger-cursors;
       size = 32;
     };
     # Fonts

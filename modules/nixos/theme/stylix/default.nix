@@ -18,6 +18,8 @@ in {
 
   options.night-sky.theme = mkOpt (types.enum themes) "gruvbox" "Select one of these pre-configured themes to use.";
 
-  config.stylix.enable = lib.mkDefault true;
-  config.night-sky.home.extraOptions.stylix.targets.kde.enable = lib.mkDefault true;
+  config = {
+    stylix.enable = lib.mkDefault true;
+    night-sky.home.extraOptions.stylix.targets.kde.enable = lib.mkDefault true;
+  };
 }

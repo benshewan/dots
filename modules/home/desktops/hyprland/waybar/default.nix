@@ -8,7 +8,7 @@
       enable = true;
       settings.mainBar = {
         position = "top";
-        layer = "top";
+        layer = "bottom";
         height = 35;
         margin-top = 0;
         margin-bottom = 0;

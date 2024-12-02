@@ -7,6 +7,7 @@
   colors = config.lib.stylix.colors;
 in {
   config = lib.mkIf config.wayland.windowManager.hyprland.enable {
+    stylix.targets.hyprlock.enable = false;
     home.packages = with pkgs; [
       material-symbols
     ];
@@ -15,7 +16,7 @@ in {
     home.shellAliases."hyprlock-unlock" = "pkill -USR1 hyprlock";
 
     programs.hyprlock = {
-      enable = false;
+      enable = true;
 
       settings = {
         general = {
@@ -34,16 +35,18 @@ in {
 
         image = [];
 
-        input-field = [
+        input-field = with colors; [
           {
             position = "0, 20";
             size = "350, 50";
             outline_thickness = 2;
             dots_size = 0.1;
             dots_spacing = 0.3;
-            outer_color = "rgba(${colors.base01}55)";
-            inner_color = "rgba(${colors.base00}11)";
-            font_color = "rgba(${colors.base0A}FF)";
+            outer_color = "rgb(${base03})";
+            inner_color = "rgb(${base00})";
+            font_color = "rgb(${base05})";
+            fail_color = "rgb(${base08})";
+            check_color = "rgb(${base0A})";
             fade_on_empty = false;
             placeholder_text = "";
             halign = "center";

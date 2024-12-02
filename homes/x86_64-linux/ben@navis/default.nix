@@ -44,7 +44,7 @@
       name = "desc:Dell Inc. AW3423DWF 58082S3";
       width = 3440;
       height = 1440;
-      refreshRate = 144;
+      refreshRate = 165;
       scale = 1.25;
       x = 0;
       y = -1152;
@@ -81,7 +81,6 @@
     night-sky.acdcontrol
     night-sky.keylightd
     stable.handbrake
-    ngrok
     inputs.zen-browser.packages."${system}".specific
 
     # Audio
@@ -92,6 +91,8 @@
     enable = true;
     package = pkgs.temurin-jre-bin;
   };
+
+  programs.foot.enable = true;
 
   # services.flatpak.packages = [
   #   {

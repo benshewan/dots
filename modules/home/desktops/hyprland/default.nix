@@ -86,6 +86,8 @@ in {
         sensitivity = 0;
         touchpad = {
           natural_scroll = 1;
+          scroll_factor = 0.5;
+          drag_lock = true;
         };
       };
 
@@ -106,10 +108,12 @@ in {
 
       decoration = {
         rounding = 8;
-        shadow_ignore_window = true;
-        drop_shadow = true; # Power hungry effect
-        shadow_range = 15;
-        shadow_render_power = 2;
+        shadow = {
+          enabled = true; # Power hungry effect
+          ignore_window = true;
+          render_power = 2;
+          range = 15;
+        };
         blur = {
           enabled = true; # Power hungry effect
           size = 6;
@@ -161,12 +165,12 @@ in {
             rotate = "transform," + toString m.rotate;
           in "${m.name},${
             if m.enabled
-            then "${resolution},${position},${scale},${rotate}"
+            then "preferred,${position},${scale},${rotate}"
             else "disable"
           }"
         ) (config.monitors))
         # set default for any random monitor
-        ++ [",preferred,auto,1"];
+        ++ [",preferred,auto-right,auto"];
 
       workspace = map (
         m: "${m.name},${m.workspace}"

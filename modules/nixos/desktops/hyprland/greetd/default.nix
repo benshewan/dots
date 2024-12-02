@@ -21,10 +21,14 @@ in {
       };
     };
 
+    # https://discourse.nixos.org/t/login-keyring-did-not-get-unlocked-hyprland/40869/10
+    environment.variables.XDG_RUNTIME_DIR = "/run/user/$UID"; # set the runtime directory
+
     # this is a life saver.
     # literally no documentation about this anywhere.
     # might be good to write about this...
     # https://www.reddit.com/r/NixOS/comments/u0cdpi/tuigreet_with_xmonad_how/
+
     systemd.services.greetd.serviceConfig = {
       Type = "idle";
       StandardInput = "tty";

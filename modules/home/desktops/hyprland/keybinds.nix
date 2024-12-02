@@ -93,8 +93,6 @@
         "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | ${lib.getExe pkgs.satty} -f -"
         "SUPER SHIFT, s, exec, ${lib.getExe pkgs.grimblast} --notify save output - | ${lib.getExe pkgs.satty} -f -"
 
-        ", XF86AudioMedia, exec, ${lib.getExe pkgs.hyprshade} toggle blue-light-filter"
-
         # Screen Recording - Use Ctrl + C to stop recording
         # ''SUPER, r, exec, ${lib.getExe pkgs.wf-recorder} -g "$(${lib.getExe pkgs.slurp})"''
         # "SUPER SHIFT, r, exec, ${lib.getExe pkgs.wf-recorder}"
@@ -118,6 +116,9 @@
       # Run even when screen locked
       bindl =
         [
+          # Toggle blue light filter
+          ", XF86AudioMedia, exec, ${lib.getExe pkgs.hyprshade} toggle blue-light-filter"
+
           # Set Mutli Media Keys
           ", XF86AudioMute, exec, ${dunst/volume_brightness.sh} volume_mute"
           ", XF86AudioPlay, exec, ${dunst/volume_brightness.sh} play_pause"
@@ -125,8 +126,7 @@
           ", XF86AudioPrev, exec, ${dunst/volume_brightness.sh} prev_track"
 
           # Lock screen
-          # "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --immediate"
-          "SUPER,l,exec,${lib.getExe config.programs.swaylock.package} -f"
+          "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --immediate"
         ]
         ++ lib.flatten (map (
             m: let
@@ -136,10 +136,10 @@
             in
               if m.name == "eDP-1"
               then [
-                # ",switch:Lid Switch,exec,${lib.getExe config.programs.swaylock.package} -f" # depricated - now handled by swayidle
+                # ",switch:Lid Switch,exec,${lib.getExe config.programs.hyprlock.package} --immediate" # depricated - now handled by swayidle
                 # Tell laptop screen to turn off if lid is closed
                 # This should only run if more than one monitor is connected
-                ", switch:off:Lid Switch,exec,if (( $(wlr-randr | grep Model: | wc -l) > 1 )); then hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'; fi;"
+                ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'"
                 ", switch:on:Lid Switch,exec,if (( $(wlr-randr | grep Model: | wc -l) > 1 )); then hyprctl keyword monitor '${m.name}, disable'; else systemctl suspend-then-hibernate; fi;"
               ]
               else []

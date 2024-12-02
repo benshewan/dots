@@ -20,15 +20,17 @@ in {
 
     programs.hyprland = {
       enable = true;
-      package = pkgs.hyprland;
-      # package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+      # package = pkgs.hyprland;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
 
     services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
-    # services.xserver.displayManager.sddm = {
+
+    # ------------------------------ Testing ------------------------------
+
+    # services.displayManager.sddm = {
     #   enable = true;
     #   wayland.enable = true;
-    #   enableHidpi = true;
     #   theme = "chili";
     # };
 
@@ -46,6 +48,8 @@ in {
     services.blueman.enable = true; # GTK Bluetooth manager
 
     services.udisks2.enable = true; # Auto mount removable drives on connect
+    services.udisks2.settings = {
+    };
     programs.waybar.enable = true;
 
     # Additional Services
