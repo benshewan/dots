@@ -1,7 +1,8 @@
 {pkgs, ...}: {
   # Installed fonts
   fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["JetBrainsMono" "RobotoMono"];})
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.roboto-mono
     noto-fonts-cjk-sans
     noto-fonts-emoji
   ];

@@ -36,8 +36,8 @@
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
-      rev = "823756d8ddd21cfd3a24a87dad402e490e0eb5ee";
-      hash = "sha256-lf9MQs8+NUvQd8b5t+7c4kLqUQixGO9WwWcLa1XYuiQ=";
+      rev = "aa9b67045fcdec7ae045b36d7a41b36b3463b842";
+      hash = "sha256-Q8W1YlsZmxhUaXLOJhPCeEzKqaqmspT9VKYZxn5Kh40=";
     });
 in {
   options.night-sky.programs.firefox = {

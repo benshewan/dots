@@ -32,13 +32,13 @@
 
     # Home Monitors
     {
-      name = "desc:Lenovo Group Limited P24q-10 U4P00001";
-      rotate = 1;
+      name = "desc:Lenovo Group Limited P24q-10 0x01010101";
+      # rotate = 1;
       width = 2560;
       height = 1440;
       scale = 1.25;
-      x = -1152;
-      y = -2048;
+      y = -1152;
+      x = -2048;
     }
     {
       name = "desc:Dell Inc. AW3423DWF 58082S3";

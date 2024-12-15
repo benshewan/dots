@@ -27,12 +27,12 @@ in
       sansSerif = {
         package = pkgs.dejavu_fonts;
         name = "DejaVu Sans";
-        # package = pkgs.nerdfonts.override {fonts = ["DejaVuSansMono"];};
+        # package = pkgs.nerd-fonts.dejavu-sans-mono;
         # name = "DejaVuSansMono";
       };
 
       monospace = {
-        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono";
       };
 

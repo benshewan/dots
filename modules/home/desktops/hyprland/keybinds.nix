@@ -140,7 +140,7 @@
                 # Tell laptop screen to turn off if lid is closed
                 # This should only run if more than one monitor is connected
                 ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'"
-                ", switch:on:Lid Switch,exec,if (( $(wlr-randr | grep Model: | wc -l) > 1 )); then hyprctl keyword monitor '${m.name}, disable'; else systemctl suspend-then-hibernate; fi;"
+                ", switch:on:Lid Switch,exec,if (( $(${lib.getExe pkgs.wlr-randr} | grep Model: | wc -l) > 1 )); then hyprctl keyword monitor '${m.name}, disable'; else systemctl suspend-then-hibernate; fi;"
               ]
               else []
           )

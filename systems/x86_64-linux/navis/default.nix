@@ -6,6 +6,7 @@
   imports = [
     ./hardware-configuration.nix
     ./hardware.nix
+    ./networking.nix
   ];
 
   # System
@@ -81,10 +82,12 @@
       gnumake
       steam-run
       adwsteamgtk
+      python3
+      pipx
     ]
     # Development stuff
     ++ (with pkgs; [
-      android-studio
+      (android-studio.override {forceWayland = true;})
     ]);
 
   programs.goldwarden = {
@@ -93,27 +96,6 @@
   };
 
   # Networking stuff
-  networking.extraHosts =
-    (lib.concatMapStrings (x: "100.68.3.84 " + x + ".benshewan.dev\n") [
-      "plex"
-      "sonarr"
-      "radarr"
-      "prowlarr"
-      "overseerr"
-      # "downloads"
-      "auth"
-      "tautulli"
-      "invite"
-      "portainer"
-      "files"
-      "admin"
-      "stats"
-      "nzb"
-      "jellyfin"
-      "actual"
-    ])
-    + ''
-    '';
 
   # for lan-mouse
   networking.firewall.allowedTCPPorts = [4242];

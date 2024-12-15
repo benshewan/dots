@@ -26,9 +26,9 @@ in
       };
 
       monospace = {
-        # package = pkgs.nerdfonts.override {fonts = ["DejaVuSansMono"];};
+        # package = pkgs.nerd-fonts.dejavu-sans-mono;
         # name = "DejaVuSansMono";
-        package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
+        package = pkgs.nerd-fonts.jetbrains-mono;
         name = "JetBrainsMono";
       };
 

@@ -8,15 +8,17 @@
   services.hardware.bolt.enable = true;
 
   # Change hiberate settings for better battery
-  boot.resumeDevice = "/dev/nvme0n1p3";
-  systemd.sleep.extraConfig = "HibernateDelaySec=2h";
+  # boot.resumeDevice = "/dev/nvme0n1p3";
+  boot.kernelParams = [
+    "amdgpu.abmlevel=0" # Force off because it looks ugly
+  ];
+  # systemd.sleep.extraConfig = "HibernateDelaySec=2h";
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
     extraConfig = ''
       HandlePowerKey=suspend-then-hibernate
       IdleAction=suspend-then-hibernate
       IdleActionSec=2m
-      HibernateDelaySec=30m
     '';
   };
 
@@ -51,10 +53,10 @@
   # AMD OpenGL/Vulkan stuff
   # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
 
-  boot.kernelParams = [
-    # Adaptive Backlight Management (0-4)
-    "amdgpu.abmlevel=0" # Force off because it looks ugly
-  ];
+  # boot.kernelParams = [
+  #   # Adaptive Backlight Management (0-4)
+  #   "amdgpu.abmlevel=0" # Force off because it looks ugly
+  # ];
 
   # Add support for temp, voltage, current, and power reading
   # boot.extraModulePackages = with config.boot.kernelPackages; [zenpower];

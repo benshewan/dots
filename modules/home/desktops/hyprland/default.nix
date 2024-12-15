@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: let
   cfg = config.night-sky.desktops.hyprland;
@@ -24,11 +25,15 @@ in {
       brightnessctl
       loupe
       foliate
+
+      # Can't really replace hyprshade right now but is cool in that it wont effect screenshots or recordings
+      inputs.hyprsunset.packages.${system}.hyprsunset
+
       libnotify # Send notifications
       xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
 
-      nwg-displays # GUI to configure screens
-      wlr-randr # dependency of nwg-displays
+      # nwg-displays # GUI to configure screens
+      # wlr-randr # dependency of nwg-displays
     ];
 
     wayland.windowManager.hyprland.enable = true;
@@ -60,8 +65,6 @@ in {
 
         # Style
         "${lib.getExe pkgs.dunst}"
-        # "${lib.getExe pkgs.waybar}"
-        # "${lib.getExe pkgs.swaybg} -i ${config.stylix.image} --mode fill"
         ''hyprctl setcursor "${config.stylix.cursor.name}" ${toString config.stylix.cursor.size}''
         # "swaync"
       ];

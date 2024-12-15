@@ -46,6 +46,7 @@ in {
         ms-vsliveshare.vsliveshare # Share Session
         ms-vscode-remote.remote-containers # Support for dev containers
         # github.vscode-pull-request-github # Better pull request
+        arturock.gitstash # Better git stash UI
         ritwickdey.liveserver # Spin up a basic server
         # tailscale.vscode-tailscale # Support for tailscale hosts
         ms-vscode-remote.remote-ssh # Remote SSH development
@@ -77,8 +78,8 @@ in {
       "window.titleBarStyle" = "custom";
       "workbench.layoutControl.enabled" = false;
       "editor.fontLigatures" = true;
-      "editor.fontFamily" = font;
-      "terminal.integrated.fontFamily" = font;
+      # "editor.fontFamily" = font;
+      # "terminal.integrated.fontFamily" = font;
       "editor.guides.bracketPairs" = "active";
 
       # Inlays

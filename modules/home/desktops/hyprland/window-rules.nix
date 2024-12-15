@@ -103,6 +103,9 @@
       "dimaround,class:^(polkit-gnome)(.*)$"
       "stayfocused,class:^(polkit-gnome)(.*)$"
 
+      # Android Studio
+      "float,class:^(Emulator)$"
+
       # XWayland stuff
       "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
       "noanim,class:^(xwaylandvideobridge)$"
