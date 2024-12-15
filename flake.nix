@@ -26,7 +26,7 @@
     };
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master"; # Easy hardware configuration for new machines
     # nur.url = "github:nix-community/NUR"; # Community app support
@@ -85,6 +85,6 @@
     };
 
     # Temporary patches
-    zen-browser.url = "github:ch4og/zen-browser-flake";
+    zen-browser.url = "github:Crazyroostereye1/zen-browser-flake";
   };
 }
