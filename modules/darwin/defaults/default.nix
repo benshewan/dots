@@ -44,7 +44,7 @@
 
     # Control Center
     controlcenter.BatteryShowPercentage = true;
-    controlcenter.Bluetooth = 18; # Show in menubar
+    controlcenter.Bluetooth = true; # Show in menubar
 
     # Keyboard
     hitoolbox.AppleFnUsageType = "Do Nothing";

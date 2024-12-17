@@ -43,8 +43,8 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     # Darwin features
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    darwin.url = "github:LnL7/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
 
     # Use file structure routing to build this flake
     snowfall-lib.url = "github:snowfallorg/lib/dev";
