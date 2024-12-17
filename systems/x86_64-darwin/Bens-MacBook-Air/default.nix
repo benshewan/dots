@@ -1,4 +1,19 @@
 {...}: {
+  night-sky = {
+    home.extraOptions.night-sky = {
+      programs = {
+        firefox.enable = true;
+        # chromium.enable = true;
+        # mongodb-compass.enable = true;
+        # kitty.enable = true;
+        # spotify.enable = true;
+        # webstorm.enable = true;
+        # fish.enable = true;
+        # kdeconnect.enable = true;
+      };
+    };
+  };
+
   homebrew.casks = [
     "scroll-reverser" # fix stupid natural scrolling
     "alfred" # Spotlight replacement

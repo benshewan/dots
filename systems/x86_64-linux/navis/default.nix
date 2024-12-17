@@ -24,6 +24,11 @@
           firefox.enable = true;
           chromium.enable = true;
           mongodb-compass.enable = true;
+          kitty.enable = true;
+          spotify.enable = true;
+          webstorm.enable = true;
+          fish.enable = true;
+          kdeconnect.enable = true;
         };
       };
     };

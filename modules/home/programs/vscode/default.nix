@@ -7,15 +7,17 @@
   ...
 }: let
   extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
-  font = "'${config.stylix.fonts.monospace.name}'";
+  inherit (pkgs.stdenv) isLinux;
 in {
   home.sessionVariables = {EDITOR = "code";};
 
   programs.vscode = {
     enable = true;
-    package = pkgs.vscode.override {
-      commandLineArgs = ''--password-store=gnome-libsecret --enable-features=UseOzonePlatform --ozone-platform=wayland'';
-    };
+    package =
+      lib.mkIf isLinux (pkgs.vscode.override {
+        commandLineArgs = ''--password-store=gnome-libsecret --enable-features=UseOzonePlatform --ozone-platform=wayland'';
+      })
+      // pkgs.vscode;
     enableUpdateCheck = false;
     enableExtensionUpdateCheck = false;
     extensions =
@@ -49,7 +51,7 @@ in {
         arturock.gitstash # Better git stash UI
         ritwickdey.liveserver # Spin up a basic server
         # tailscale.vscode-tailscale # Support for tailscale hosts
-        ms-vscode-remote.remote-ssh # Remote SSH development
+        # ms-vscode-remote.remote-ssh # Remote SSH development
         eamodio.gitlens # Better git tooling
         streetsidesoftware.code-spell-checker # Spell checker
         mkhl.direnv # Support direnv for project-specifc configuration
