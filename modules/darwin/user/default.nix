@@ -32,7 +32,7 @@ in
       uid = mkIf (cfg.uid != null) cfg.uid;
     };
 
-    snowfallorg.user.${config.${namespace}.user.name}.home.config = {
+    snowfallorg.users.${config.${namespace}.user.name}.home.config = {
       home = {
         file = {
           ".profile".text = ''

@@ -32,7 +32,7 @@ in {
       xdg.configFile = mkAliasDefinitions options.${namespace}.home.configFile;
     };
 
-    snowfallorg.user.${config.${namespace}.user.name}.home.config =
+    snowfallorg.users.${config.${namespace}.user.name}.home.config =
       mkAliasDefinitions
       options.${namespace}.home.extraOptions;
 
