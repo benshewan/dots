@@ -85,6 +85,6 @@
     };
 
     # Temporary patches
-    zen-browser.url = "github:Crazyroostereye1/zen-browser-flake";
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 }
