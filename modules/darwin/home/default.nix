@@ -26,7 +26,7 @@ in {
 
   config = {
     ${namespace}.home.extraOptions = {
-      home.stateVersion = mkDefault "22.11";
+      home.stateVersion = mkDefault "23.05";
       home.file = mkAliasDefinitions options.${namespace}.home.file;
       xdg.enable = true;
       xdg.configFile = mkAliasDefinitions options.${namespace}.home.configFile;
