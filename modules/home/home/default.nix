@@ -5,12 +5,12 @@
   osConfig ? {},
   ...
 }: let
-  inherit (pkgs.stdenv) isDarwin;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 in {
   imports = [] ++ lib.optional isDarwin inputs.mac-app-util.homeManagerModules.default;
 
-  home.stateVersion = lib.mkDefault (
-    if (osConfig != {} && osConfig.system.stateVersion)
+  home.stateVersion = lib.mkOverride 1001 (
+    if (isLinux && osConfig.system.stateVersion)
     then osConfig.system.stateVersion
     else "23.11"
   );
