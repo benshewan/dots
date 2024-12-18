@@ -13,13 +13,9 @@ in {
     enable = lib.mkEnableOption "kitty";
   };
 
-  config = lib.mkIf cfg.enable {
-    programs =
-      (lib.mkIf isLinux {
-        plasma.enable = true;
-        plasma.configFile.kdeglobals.General.TerminalApplication.value = toString (lib.getExe pkgs.kitty);
-      })
-      // {
+  config =
+    lib.mkIf cfg.enable {
+      programs = {
         kitty = {
           enable = true;
           package = pkgs.kitty;
@@ -30,5 +26,11 @@ in {
           };
         };
       };
-  };
+    };
+    # // (
+    #   if isLinux then {
+    #     programs.plasma.enable = true;
+    #     programs.plasma.configFile.kdeglobals.General.TerminalApplication.value = toString (lib.getExe pkgs.kitty);
+    #   } else {}
+    # ));
 }
