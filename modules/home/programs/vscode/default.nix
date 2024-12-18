@@ -8,7 +8,14 @@
 }: let
   extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
   inherit (pkgs.stdenv) isLinux;
+  cfg = config.night-sky.programs.vscode;
 in {
+
+  options.night-sky.programs.vscode = {
+    enable = lib.mkEnableOption "vscode";
+  };
+
+ config = lib.mkIf cfg.enable {
   home.sessionVariables = {EDITOR = "code";};
 
   programs.vscode = {
@@ -154,4 +161,5 @@ in {
       "[nix]"."editor.defaultFormatter" = "jnoortheen.nix-ide";
     };
   };
+ };
 }

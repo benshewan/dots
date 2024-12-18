@@ -45,6 +45,7 @@
     # Darwin features
     darwin.url = "github:LnL7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+    mac-app-util.url = "github:hraban/mac-app-util";
 
     # Use file structure routing to build this flake
     snowfall-lib.url = "github:snowfallorg/lib/dev";

@@ -2,11 +2,11 @@
   night-sky = {
     home.extraOptions.night-sky = {
       programs = {
-        firefox.enable = true;
+        vscode.enable = true;
         # chromium.enable = true;
         # mongodb-compass.enable = true;
         # kitty.enable = true;
-        # spotify.enable = true;
+        spotify.enable = true;
         # webstorm.enable = true;
         # fish.enable = true;
         # kdeconnect.enable = true;

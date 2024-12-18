@@ -29,6 +29,7 @@
           webstorm.enable = true;
           fish.enable = true;
           kdeconnect.enable = true;
+          vscode.enable = true;
         };
       };
     };
