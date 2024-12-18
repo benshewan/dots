@@ -20,9 +20,6 @@
       overlays = with inputs; [
         snowfall-flake.overlays.default
       ];
-      # systems.modules.nixos = with inputs; [
-      #   home-manager.nixosModules.home-manager
-      # ];
     };
 
   inputs = {

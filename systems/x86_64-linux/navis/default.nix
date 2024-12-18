@@ -114,8 +114,11 @@
     enable = true;
     package = pkgs.stable.mongodb;
   };
-  networking.firewall.enable = false;
+  # networking.firewall.enable = false;
 
+  # sops.secrets = {
+  #   "orion-smb" = {};
+  # };
   # doesn't seem to work anymore on wayland
   # services.teamviewer.enable = true;
 
