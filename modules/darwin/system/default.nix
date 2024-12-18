@@ -1,4 +1,4 @@
-{pkgs,namespace, ...}:
+{pkgs,namespace, inputs,...}:
 ###################################################################################
 #
 #  macOS's System configuration
@@ -9,8 +9,8 @@
 ###################################################################################
 {
 
-  imports = [mac-app-util.darwinModules.default];
-  ${namespace}.home.extraOptions.imports = [mac-app-util.homeManagerModules.default];
+  imports = [inputs.mac-app-util.darwinModules.default];
+  ${namespace}.home.extraOptions.imports = [inputs.mac-app-util.homeManagerModules.default];
   system = {
     stateVersion = 5;
     # activationScripts are executed every time you boot the system or run `nixos-rebuild` / `darwin-rebuild`.
