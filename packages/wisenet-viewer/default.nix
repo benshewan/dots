@@ -3,7 +3,7 @@
   fetchurl,
   unzip,
   dpkg,
-  buildFHSUserEnv,
+  buildFHSEnv,
   ...
 }: let
   version = "1.05.00";
@@ -38,7 +38,7 @@
         --replace '$(dirname "$(readlink -f "$0")")' "$out/opt/HanwhaVision/WisenetViewer" \
     '';
   };
-in (buildFHSUserEnv {
+in (buildFHSEnv {
   name = "wisenet-viewer";
   targetPkgs = p:
     with p; [
