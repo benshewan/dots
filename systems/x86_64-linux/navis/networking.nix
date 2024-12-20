@@ -20,30 +20,30 @@ in {
   sops.secrets."orion-smb" = {};
 
   fileSystems."/home/${config.night-sky.user.name}/Shares/backup" = {
-    device = "//192.168.2.39/backup";
+    device = "//orion/backup";
     fsType = "cifs";
     options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
   };
   fileSystems."/home/${config.night-sky.user.name}/Shares/media" = {
-    device = "//192.168.2.39/media";
+    device = "//orion/media";
     fsType = "cifs";
     options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
   };
   fileSystems."/home/${config.night-sky.user.name}/Shares/downloads" = {
-    device = "//192.168.2.39/downloads";
+    device = "//orion/downloads";
     fsType = "cifs";
     options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
   };
 
   # Services from Orion
   networking.extraHosts =
-    (lib.concatMapStrings (x: "100.68.3.84 " + x + ".benshewan.dev\n") [
+    (lib.concatMapStrings (x: "orion " + x + ".benshewan.dev\n") [
       "plex"
       "sonarr"
       "radarr"
       "prowlarr"
       "overseerr"
-      # "downloads"
+      "downloads"
       "auth"
       "tautulli"
       "invite"

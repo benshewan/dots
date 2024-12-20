@@ -14,6 +14,7 @@
     };
   };
 
+  services.tailscale.enable = true;
   homebrew.casks = [
     "scroll-reverser" # fix stupid natural scrolling
     "alfred" # Spotlight replacement

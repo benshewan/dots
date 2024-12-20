@@ -75,11 +75,7 @@
     krita
 
     # Messing around
-    filebot
     syncthingtray
-    varia
-    night-sky.acdcontrol
-    night-sky.keylightd
     stable.handbrake
     inputs.zen-browser.packages."${system}".specific
 

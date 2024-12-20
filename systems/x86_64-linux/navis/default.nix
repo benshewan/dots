@@ -22,6 +22,7 @@
         desktops.hyprland.enable = true;
         programs = {
           firefox.enable = true;
+          filebot.enable = true;
           chromium.enable = true;
           mongodb-compass.enable = true;
           kitty.enable = true;
