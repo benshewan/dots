@@ -56,15 +56,6 @@
     #   origin = "flathub";
     # }
   ];
-  programs.steam.enable = true;
-  programs.steam.extraCompatPackages = with pkgs; [
-    proton-ge-bin
-  ];
-  programs.steam.extraPackages = with pkgs; [
-    gamescope
-  ];
-  programs.steam.gamescopeSession.enable = true;
-  programs.gamemode.enable = true;
 
   # Remote management of Navis
   services.tailscale.enable = true;
@@ -84,44 +75,27 @@
       solaar
       # lan-mouse
       orca-slicer
-      btrfs-progs
-      go
-      gnumake
-      steam-run
-      adwsteamgtk
       python3
-      pipx
     ]
     # Development stuff
     ++ (with pkgs; [
       (android-studio.override {forceWayland = true;})
     ]);
 
+  hardware.logitech.wireless.enable = true;
+
   programs.goldwarden = {
     enable = true;
     useSshAgent = false;
   };
-
-  # Networking stuff
-
-  # for lan-mouse
-  networking.firewall.allowedTCPPorts = [4242];
-  networking.firewall.allowedUDPPorts = [4242];
-
-  hardware.logitech.wireless.enable = true;
 
   # Work
   services.mongodb = {
     enable = true;
     package = pkgs.stable.mongodb;
   };
-  # networking.firewall.enable = false;
 
-  # sops.secrets = {
-  #   "orion-smb" = {};
-  # };
-  # doesn't seem to work anymore on wayland
-  # services.teamviewer.enable = true;
+  # networking.firewall.enable = false;
 
   # for wayvnc
   # networking.firewall.allowedTCPPorts = [5900];
