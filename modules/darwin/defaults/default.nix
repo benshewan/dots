@@ -1,16 +1,29 @@
-{lib, ...}: {
+{
+  lib,
+  config,
+  namespace,
+  ...
+}: {
   system.defaults = {
     # Dock Settings
 
     # Dock AutoHide
     dock.autohide = true;
-    dock.autohide-time-modifier = 0.5;
 
     # Whether to automatically rearrange spaces based on most recent use
     dock.mru-spaces = false;
 
-    dock.tilesize = 32; # Default size is 64
+    dock.tilesize = 56; # Default size is 64
     dock.slow-motion-allowed = false;
+
+    # Animations
+    dock.autohide-time-modifier = 0.75;
+    dock.autohide-delay = 0.1;
+    NSGlobalDomain.NSScrollAnimationEnabled = false;
+    dock.expose-animation-duration = 0.5;
+    NSGlobalDomain.NSAutomaticWindowAnimationsEnabled = false;
+    NSGlobalDomain.NSUseAnimatedFocusRing = false; # Textbox focusing animation
+    NSGlobalDomain.NSWindowResizeTime = 1.0;
 
     # Hot Corners
     dock.wvous-bl-corner = 1;
@@ -22,6 +35,8 @@
     dock.persistent-apps = lib.mkDefault [
       "/Applications/Safari.app"
       "/System/Applications/Utilities/Terminal.app"
+      # Temp, don't assume
+      "/Users/${config.${namespace}.user.name}/Application/Home Manager Trampolines/Visual Studio Code.app"
     ];
 
     # Finder Settings

@@ -18,7 +18,6 @@
   };
 
   nix.package = pkgs.nixVersions.latest;
-  programs.nix-index.enable = true;
   services.nix-daemon.enable = true;
   nix.settings.trusted-users = ["root" "@admin"];
 
