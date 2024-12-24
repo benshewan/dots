@@ -30,6 +30,7 @@
 
     # encrypt secrets
     sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     # Nix comma database
     nix-index-database.url = "github:Mic92/nix-index-database";
@@ -57,6 +58,10 @@
 
     # Hyprland
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+
+    hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
+    hyprland-qtutils.inputs.nixpkgs.follows = "nixpkgs";
 
     # Hyprland Plugins
     hyprsunset.url = "github:hyprwm/hyprsunset";
@@ -67,6 +72,8 @@
 
     # Theming Stuff
     stylix.url = "github:danth/stylix";
+    stylix.inputs.nixpkgs.follows = "nixpkgs";
+    stylix.inputs.home-manager.follows = "home-manager";
 
     # App configuration helpers
     nixvim.url = "github:nix-community/nixvim";
@@ -76,6 +83,8 @@
     spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
     # KDE Configuration SUpport
@@ -87,5 +96,6 @@
 
     # Temporary patches
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
 }

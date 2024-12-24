@@ -32,8 +32,7 @@ in {
       libnotify # Send notifications
       xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
 
-      # nwg-displays # GUI to configure screens
-      # wlr-randr # dependency of nwg-displays
+      inputs.hyprland-qtutils.packages.${system}.hyprland-qtutils
     ];
 
     wayland.windowManager.hyprland.enable = true;
@@ -89,7 +88,7 @@ in {
         sensitivity = 0;
         touchpad = {
           natural_scroll = 1;
-          scroll_factor = 0.5;
+          scroll_factor = 0.2;
           drag_lock = true;
         };
       };
