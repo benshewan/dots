@@ -5,6 +5,9 @@
 }: {
   imports = [inputs.nixos-hardware.nixosModules.framework-13-7040-amd];
 
+  # Apply equalizer to speakers
+  hardware.framework.laptop13.audioEnhancement.enable = true;
+
   services.hardware.bolt.enable = true;
 
   # Change hiberate settings for better battery
