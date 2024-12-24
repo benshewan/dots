@@ -30,7 +30,7 @@ in
 
           monospace = {
             package = pkgs.nerd-fonts.jetbrains-mono;
-            name = "JetBrainsMono";
+            name = "JetBrainsMono NF";
           };
 
           emoji = {

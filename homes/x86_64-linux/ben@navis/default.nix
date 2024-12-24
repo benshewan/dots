@@ -88,8 +88,6 @@
     package = pkgs.temurin-jre-bin;
   };
 
-  programs.foot.enable = true;
-
   # services.flatpak.packages = [
   #   {
   #     appId = "com.parsecgaming.parsec";

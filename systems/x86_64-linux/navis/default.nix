@@ -11,7 +11,7 @@
 
   # System
   networking.hostName = "navis";
-  night-sky.theme = "catppuccin";
+  night-sky.theme = "gruvbox";
   night-sky = {
     desktops.hyprland.enable = true;
     programs.npm.enable = true;
@@ -25,7 +25,7 @@
           filebot.enable = true;
           chromium.enable = true;
           mongodb-compass.enable = true;
-          kitty.enable = true;
+          foot.enable = true;
           spotify.enable = true;
           webstorm.enable = true;
           fish.enable = true;
