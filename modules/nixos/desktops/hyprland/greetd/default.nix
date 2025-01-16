@@ -5,17 +5,20 @@
   lib,
   ...
 }: let
-  cfg = config.night-sky.desktops.hyprland;
+  cfg = config.night-sky.desktops.hyprland.greetd;
   tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
   hyprland-session = "${inputs.hyprland.packages.${pkgs.system}.hyprland}/share/wayland-sessions";
+  hyprland-session-uwsm = lib.sources.sourceByRegex hyprland-session ["hyprland\.desktop"];
 in {
+  options.night-sky.desktops.hyprland.greetd = lib.night-sky.mkOpt lib.types.bool false "Use Greetd as Hyprland's display manager.";
+
   # Taken from https://github.com/sjcobb2022/nixos-config/blob/main/hosts/common/optional/greetd.nix
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg {
     services.greetd = {
-      enable = true;
+      enable = false;
       settings = {
         default_session = {
-          command = "${tuigreet} --time --remember --remember-session --asterisks --asterisks-char • --sessions ${hyprland-session}";
+          command = "${tuigreet} --time --remember --remember-session --asterisks --asterisks-char • --sessions ${hyprland-session-uwsm}";
           user = "greeter";
         };
       };

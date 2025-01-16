@@ -77,7 +77,7 @@
     # Messing around
     syncthingtray
     stable.handbrake
-    inputs.zen-browser.packages."${system}".specific
+    inputs.zen-browser.packages."${system}".twilight
 
     # Audio
     qpwgraph

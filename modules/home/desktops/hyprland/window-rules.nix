@@ -35,12 +35,13 @@
       "stayfocused,title:^(nm-tray)$"
       "move onscreen cursor 0 5,title:^(nm-tray)$"
 
-      # Firefox
-      # ----------
+      # Firefox Start
+      # ------------------------------------------------------------------------------------------------------------------------
       "idleinhibit fullscreen, class:^(firefox)$"
+      "suppressevent maximize, class:^(firefox)$"
       # PIP
       "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "size 800 450, class:^(firefox)$,title:(Picture-in-Picture)"
+      "size 600 338, class:^(firefox)$,title:(Picture-in-Picture)"
       "pin, class:^(firefox)$,title:^(Picture-in-Picture)$"
       "suppressevent maximize, class:^(firefox)$,title:^(Picture-in-Picture)$"
       "suppressevent fullscreen, class:^(firefox)$,title:^(Picture-in-Picture)$"
@@ -73,7 +74,8 @@
       "dimaround,title:^(Save As)$"
       "center(1),title:^(Save As)$"
 
-      # ----------
+      # Firefox End
+      # ------------------------------------------------------------------------------------------------------------------------
 
       # KDEConnect
       # "float, class:^(firefox)$,title:^(Mozilla Firefox)$"
@@ -81,7 +83,9 @@
       # "float, class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
       # "center(1), class:^(firefox)$,title:^(Send File - Mozilla Firefox)$"
 
-      # Dolphin
+      # Dolphin Start
+      # ------------------------------------------------------------------------------------------------------------------------
+
       # "float,title:^(New Folder — Dolphin)$"
       # "size 800 450,title:^(New Folder — Dolphin)$"
       "stayfocused,title:^(New Folder — Dolphin)$"
@@ -91,6 +95,9 @@
       "stayfocused,class:^(kiod5)$,title:^(Authentication Dialog)$"
       "dimaround,class:^(kiod5)$,title:^(Authentication Dialog)$"
       "center(1),class:^(kiod5)$,title:^(Authentication Dialog)$"
+
+      # Dolphin End
+      # ------------------------------------------------------------------------------------------------------------------------
 
       # Vscode
       "fullscreenstate 0 2, class:^(code-url-handler)$"
@@ -106,11 +113,21 @@
       # Android Studio
       "float,class:^(Emulator)$"
 
-      # XWayland stuff
-      "opacity 0.0 override 0.0 override,class:^(xwaylandvideobridge)$"
-      "noanim,class:^(xwaylandvideobridge)$"
-      "nofocus,class:^(xwaylandvideobridge)$"
-      "noinitialfocus,class:^(xwaylandvideobridge)$"
+      # Wisenet Viewer
+      "suppressevent fullscreen, title:^(Wisenet Viewer)$"
+      "suppressevent maximize, title:^(Wisenet Viewer)$"
+
+      # XWayland Stuff
+      # ------------------------------------------------------------------------------------------------------------------------
+
+      "opacity 0.0 override, class:^(xwaylandvideobridge)$"
+      "noanim, class:^(xwaylandvideobridge)$"
+      "noinitialfocus, class:^(xwaylandvideobridge)$"
+      "maxsize 1 1, class:^(xwaylandvideobridge)$"
+      "noblur, class:^(xwaylandvideobridge)$"
+      "nofocus, class:^(xwaylandvideobridge)$"
+
+      # ------------------------------------------------------------------------------------------------------------------------
     ];
   };
 }

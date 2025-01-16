@@ -26,6 +26,7 @@
           chromium.enable = true;
           mongodb-compass.enable = true;
           foot.enable = true;
+          kitty.enable = true;
           spotify.enable = true;
           webstorm.enable = true;
           fish.enable = true;
@@ -39,10 +40,10 @@
   services.keylightd.enable = true;
 
   services.flatpak.packages = [
-    {
-      appId = "com.parsecgaming.parsec";
-      origin = "flathub";
-    }
+    # {
+    #   appId = "com.parsecgaming.parsec";
+    #   origin = "flathub";
+    # }
     {
       appId = "org.jdownloader.JDownloader";
       origin = "flathub";
@@ -74,7 +75,8 @@
       nm-tray
       solaar
       # lan-mouse
-      orca-slicer
+      # orca-slicer
+      parsec-bin
       python3
     ]
     # Development stuff

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 if [[ $TERM == "xterm-kitty" ]];
-    then kitty +kitten ssh $@
+    then kitten ssh $@
     else ssh $@ 
 fi 
