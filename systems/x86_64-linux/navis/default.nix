@@ -22,13 +22,14 @@
         desktops.hyprland.enable = true;
         programs = {
           firefox.enable = true;
+          thunderbird.enable = true;
           filebot.enable = true;
           chromium.enable = true;
           mongodb-compass.enable = true;
           foot.enable = true;
           kitty.enable = true;
           spotify.enable = true;
-          webstorm.enable = true;
+          # webstorm.enable = true;
           fish.enable = true;
           kdeconnect.enable = true;
           vscode.enable = true;
@@ -97,7 +98,8 @@
     package = pkgs.stable.mongodb;
   };
 
-  # networking.firewall.enable = false;
+  # For expo
+  networking.firewall.allowedTCPPorts = [8081 7100];
 
   # for wayvnc
   # networking.firewall.allowedTCPPorts = [5900];

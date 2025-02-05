@@ -58,12 +58,13 @@ in {
           ritwickdey.liveserver # Spin up a basic server
           # tailscale.vscode-tailscale # Support for tailscale hosts
           # ms-vscode-remote.remote-ssh # Remote SSH development
-          eamodio.gitlens # Better git tooling
+          # eamodio.gitlens # Better git tooling
           streetsidesoftware.code-spell-checker # Spell checker
           mkhl.direnv # Support direnv for project-specifc configuration
         ])
         ++ (with extensions.open-vsx; [
           # svelte.svelte-vscode
+          kylinideteam.gitlens
         ])
         ++ (with pkgs.vscode-extensions; [
           github.vscode-pull-request-github

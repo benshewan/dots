@@ -37,7 +37,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     # Secure boot
-    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1";
+    lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     # Darwin features

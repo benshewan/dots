@@ -85,7 +85,7 @@
 
   programs.java = {
     enable = true;
-    package = pkgs.temurin-jre-bin;
+    package = pkgs.jdk;
   };
 
   # services.flatpak.packages = [

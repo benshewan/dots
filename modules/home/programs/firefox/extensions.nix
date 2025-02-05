@@ -86,7 +86,7 @@
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
   };
 
-   # Tab Sessions
+  # Tab Sessions
   "Tab-Session-Manager@sienori" = {
     installation_mode = "normal_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/tab-session-manager/latest.xpi";
@@ -147,6 +147,17 @@
   "addon@darkreader.org" = {
     installation_mode = "normal_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+  };
+
+  # Canadian English
+  "en-CA@dictionaries.addons.mozilla.org" = {
+    installation_mode = "normal_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/canadian-english-dictionary/latest.xpi";
+  };
+
+  "langpack-en-CA@firefox.mozilla.org" = {
+    installation_mode = "normal_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/english-ca-language-pack/latest.xpi";
   };
 
   # Legacy Extensions

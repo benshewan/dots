@@ -15,7 +15,7 @@ in {
   # Taken from https://github.com/sjcobb2022/nixos-config/blob/main/hosts/common/optional/greetd.nix
   config = lib.mkIf cfg {
     services.greetd = {
-      enable = false;
+      enable = true;
       settings = {
         default_session = {
           command = "${tuigreet} --time --remember --remember-session --asterisks --asterisks-char • --sessions ${hyprland-session-uwsm}";
