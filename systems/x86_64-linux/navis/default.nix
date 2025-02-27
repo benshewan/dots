@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  config,
   ...
 }: {
   imports = [
@@ -17,11 +18,12 @@
     programs.npm.enable = true;
     programs.vivaldi.enable = true;
     home.extraOptions = {
-      stylix.targets.qt.enable = true;
+      stylix.targets.kvantum.enable = true;
       night-sky = {
         desktops.hyprland.enable = true;
         programs = {
           firefox.enable = true;
+          zen.enable = true;
           thunderbird.enable = true;
           filebot.enable = true;
           chromium.enable = true;
@@ -29,7 +31,7 @@
           foot.enable = true;
           kitty.enable = true;
           spotify.enable = true;
-          # webstorm.enable = true;
+          webstorm.enable = true;
           fish.enable = true;
           kdeconnect.enable = true;
           vscode.enable = true;
@@ -74,10 +76,10 @@
       # easyeffects
       powertop
       nm-tray
-      solaar
       # lan-mouse
       # orca-slicer
       parsec-bin
+      jetbrains-toolbox
       python3
     ]
     # Development stuff
@@ -85,7 +87,13 @@
       (android-studio.override {forceWayland = true;})
     ]);
 
-  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
+
+  # hardware.openrazer.enable = true;
+  # hardware.openrazer.users = [config.night-sky.user.name];
 
   programs.goldwarden = {
     enable = true;

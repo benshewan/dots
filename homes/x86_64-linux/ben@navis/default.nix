@@ -16,14 +16,14 @@
 
     # Work Monitors
     {
-      name = "desc:Dell Inc. DELL P2417H KH0NG94M1NNB";
+      name = "desc:Dell Inc. DELL P2417H KH0NG95K15KL";
       width = 1920;
       height = 1080;
       x = -1017;
       y = -1080;
     }
     {
-      name = "desc:Dell Inc. DELL P2417H KH0NG95F09UI";
+      name = "desc:Dell Inc. DELL P2417H KH0NG95F0AMI";
       width = 1920;
       height = 1080;
       x = 903;
@@ -59,10 +59,10 @@
     bitwarden
     bottles
     wine
-    stable.kicad
+    # stable.kicad
     # plex-media-player
     jellyfin-media-player
-    jetbrains.pycharm-professional
+    # jetbrains.pycharm-professional
     moonlight-qt
 
     # Work stuff
@@ -73,11 +73,11 @@
     night-sky.wisenet-viewer
     inkscape
     krita
+    obsidian
 
     # Messing around
     syncthingtray
     stable.handbrake
-    inputs.zen-browser.packages."${system}".twilight
 
     # Audio
     qpwgraph
