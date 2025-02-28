@@ -74,18 +74,13 @@
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
   };
 
-  # New Tab Home Page
-  "extension@tabliss.io" = {
-    installation_mode = "normal_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
-  };
-
   # Multi-Account Containers
   "@testpilot-containers" = {
     installation_mode = "normal_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
   };
 
+  # Temporary Containers
   "{c607c8df-14a7-4f28-894f-29e8722976af}" = {
     installation_mode = "normal_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/temporary-containers/latest.xpi";
@@ -146,12 +141,6 @@
     installation_mode = "normal_installed";
     default_area = "navbar";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
-  };
-
-  # View the web in dark mode
-  "addon@darkreader.org" = {
-    installation_mode = "normal_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
   };
 
   # Canadian English
