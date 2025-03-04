@@ -92,7 +92,7 @@ in {
       package = pkgs.wrapFirefox pkgs.firefox-unwrapped {};
       nativeMessagingHosts =
         [pkgs.goldwarden]
-        ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
+        ++ lib.optional config.services.kdeconnect.enable pkgs.kdePackages.plasma-browser-integration;
       policies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;

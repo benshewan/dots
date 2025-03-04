@@ -54,7 +54,7 @@
   home.packages = with pkgs; [
     prismlauncher
     distrobox
-    kate
+    kdePackages.kate
     mpv
     bitwarden
     bottles

@@ -30,7 +30,7 @@ in {
       inputs.hyprsunset.packages.${system}.hyprsunset
 
       libnotify # Send notifications
-      xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
+      kdePackages.xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
 
       inputs.hyprland-qtutils.packages.${system}.hyprland-qtutils
     ];

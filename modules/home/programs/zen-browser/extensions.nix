@@ -25,7 +25,7 @@
   # Bypass Website Paywalls
   "magnolia@12.34" = {
     installation_mode = "normal_installed";
-    install_url = "https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi";
+    install_url = "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass_paywalls_clean-latest.xpi&inline=false";
   };
 
   # Piracy
@@ -141,6 +141,17 @@
     installation_mode = "normal_installed";
     default_area = "navbar";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
+  };
+
+  # Violentmonkey user scripts
+  "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" = {
+    installation_mode = "normal_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/violentmonkey/latest.xpi";
+  };
+
+  "addon@hoarder.app" = {
+    installation_mode = "normal_installed";
+    install_url = "https://web.archive.org/web/20241201165104if_/https://addons.mozilla.org/firefox/downloads/file/4357468/hoarder-1.2.3.xpi";
   };
 
   # Canadian English

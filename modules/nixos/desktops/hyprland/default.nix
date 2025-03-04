@@ -75,6 +75,7 @@ in {
 
     # KDE Connect plus some magic to get chromium browser integration working
     programs.kdeconnect.enable = true;
-    environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+    # Handled by programs.chromium.enablePlasmaBrowserIntegration now
+    # environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
   };
 }
