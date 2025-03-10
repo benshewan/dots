@@ -1,15 +1,9 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./hardware.nix
     ./networking.nix
   ];
-
   # System
   networking.hostName = "navis";
   night-sky.theme = "gruvbox";

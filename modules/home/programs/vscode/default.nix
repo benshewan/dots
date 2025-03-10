@@ -6,7 +6,7 @@
   namespace,
   ...
 }: let
-  extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
+  # extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
   inherit (pkgs.stdenv) isLinux;
   cfg = config.night-sky.programs.vscode;
 in {
@@ -26,10 +26,11 @@ in {
         // pkgs.vscode;
 
       profiles.default = {
-        enableUpdateCheck = false;
+        # forces config to be read-only, which makes vscode very upset
+        # enableUpdateCheck = false;
         enableExtensionUpdateCheck = false;
         extensions =
-          (with extensions.vscode-marketplace; [
+          (with pkgs.vscode-marketplace; [
             # Language support
             jnoortheen.nix-ide # Nix LSP Support
             eww-yuck.yuck # EWW Widgets support
@@ -64,7 +65,7 @@ in {
             streetsidesoftware.code-spell-checker # Spell checker
             mkhl.direnv # Support direnv for project-specifc configuration
           ])
-          ++ (with extensions.open-vsx; [
+          ++ (with pkgs.open-vsx; [
             # svelte.svelte-vscode
             kylinideteam.gitlens
           ])
