@@ -20,9 +20,9 @@ in {
     programs.uwsm.enable = true;
     programs.hyprland = {
       enable = true;
-      # package = pkgs.hyprland;
+      package = pkgs.hyprland;
+      # package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Unstable
       withUWSM = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
 
     night-sky.desktops.hyprland.gdm = lib.mkDefault true;

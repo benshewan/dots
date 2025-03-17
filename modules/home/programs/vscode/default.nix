@@ -16,7 +16,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.sessionVariables = {EDITOR = "code";};
-
+    stylix.targets.vscode.profileNames = ["default"];
     programs.vscode = {
       enable = true;
       package =
@@ -133,6 +133,7 @@ in {
           "diffEditor.codeLens" = true;
           "diffEditor.experimental.useTrueInlineView" = true;
           "diffEditor.experimental.showMoves" = true;
+          "git.branchProtectionPrompt" = "alwaysCommit"; # Main's not even protected, please shut up.
 
           "gitlens.showWelcomeOnInstall" = false;
           "gitlens.ai.experimental.generateCommitMessage.enabled" = false;
