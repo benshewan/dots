@@ -35,6 +35,7 @@
   };
 
   services.keylightd.enable = true;
+  programs.steam.enable = true;
 
   services.flatpak.packages = [
     # {
@@ -69,6 +70,7 @@
       # Audio Configuration https://github.com/ceiphr/ee-framework-presets
       # easyeffects
       powertop
+      piper
       nm-tray
       # lan-mouse
       # orca-slicer

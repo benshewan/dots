@@ -37,6 +37,7 @@ in {
             shd101wyy.markdown-preview-enhanced # Markdown support
             yoavbls.pretty-ts-errors # Readable typescipt errors
             redhat.vscode-yaml # YAML Support
+            tamasfe.even-better-toml
             mikestead.dotenv
             svelte.svelte-vscode
             bradlc.vscode-tailwindcss
@@ -161,7 +162,8 @@ in {
           "liveServer.settings.donotShowInfoMsg" = true;
 
           # Prettier Config
-          "editor.defaultFormatter" = "esbenp.prettier-vscode";
+          "editor.defaultFormatter" = null; # "esbenp.prettier-vscode";
+          "[typescript]"."editor.defaultFormatter" = "vscode.typescript-language-features";
 
           # Nix LSP Config
           # ----------------------------------------------------------------------------------------------------

@@ -32,7 +32,7 @@
 
     # Home Monitors
     {
-      name = "desc:Lenovo Group Limited P24q-10 0x01010101";
+      name = "desc:Lenovo Group Limited P24q-10 U4P00001";
       # rotate = 1;
       width = 2560;
       height = 1440;
