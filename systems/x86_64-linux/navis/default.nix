@@ -35,7 +35,6 @@
   };
 
   services.keylightd.enable = true;
-  programs.steam.enable = true;
 
   services.flatpak.packages = [
     # {
@@ -72,6 +71,7 @@
       powertop
       piper
       nm-tray
+      discord
       # lan-mouse
       # orca-slicer
       parsec-bin

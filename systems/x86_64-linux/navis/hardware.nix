@@ -15,6 +15,9 @@
   # boot.resumeDevice = "/dev/nvme0n1p3";
   boot.kernelParams = [
     "amdgpu.abmlevel=0" # Force off because it looks ugly
+    "rcu_nocbs=all"
+    "rcutree.enable_rcu_lazy=1"
+    # "pcie_aspm=force" # maybe?
   ];
   # systemd.sleep.extraConfig = "HibernateDelaySec=2h";
   services.logind = {
@@ -56,11 +59,6 @@
 
   # AMD OpenGL/Vulkan stuff
   # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
-
-  # boot.kernelParams = [
-  #   # Adaptive Backlight Management (0-4)
-  #   "amdgpu.abmlevel=0" # Force off because it looks ugly
-  # ];
 
   # Add support for temp, voltage, current, and power reading
   # boot.extraModulePackages = with config.boot.kernelPackages; [zenpower];
