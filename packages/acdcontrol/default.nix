@@ -1,4 +1,7 @@
-{pkgs ? import <nixpkgs> {}, stdenv}:
+{
+  pkgs ? import <nixpkgs> {},
+  stdenv,
+}:
 stdenv.mkDerivation {
   pname = "acdcontrol";
   version = "1.0.0";

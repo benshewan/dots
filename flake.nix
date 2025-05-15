@@ -19,6 +19,7 @@
 
       overlays = with inputs; [
         snowfall-flake.overlays.default
+        inputs.nix-vscode-extensions.overlays.default
       ];
     };
 
@@ -37,7 +38,7 @@
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
     # Secure boot
-    lanzaboote.url = "github:nix-community/lanzaboote/v0.4.1";
+    lanzaboote.url = "github:nix-community/lanzaboote";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
 
     # Darwin features
@@ -95,7 +96,7 @@
     };
 
     # Temporary patches
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
+    zen-browser.url = "github:youwen5/zen-browser-flake";
     zen-browser.inputs.nixpkgs.follows = "nixpkgs";
   };
 }

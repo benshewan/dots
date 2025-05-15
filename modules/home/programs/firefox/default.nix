@@ -36,8 +36,8 @@
     (pkgs.fetchFromGitHub {
       owner = "rafaelmardojai";
       repo = "firefox-gnome-theme";
-      rev = "aa9b67045fcdec7ae045b36d7a41b36b3463b842";
-      hash = "sha256-Q8W1YlsZmxhUaXLOJhPCeEzKqaqmspT9VKYZxn5Kh40=";
+      rev = "91ca1f82d717b02ceb03a3f423cbe8082ebbb26d";
+      hash = "sha256-S79Hqn2EtSxU4kp99t8tRschSifWD4p/51++0xNWUxw=";
     });
 in {
   options.night-sky.programs.firefox = {
@@ -92,7 +92,7 @@ in {
       package = pkgs.wrapFirefox pkgs.firefox-unwrapped {};
       nativeMessagingHosts =
         [pkgs.goldwarden]
-        ++ lib.optional config.services.kdeconnect.enable pkgs.plasma-browser-integration;
+        ++ lib.optional config.services.kdeconnect.enable pkgs.kdePackages.plasma-browser-integration;
       policies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;

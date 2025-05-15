@@ -20,9 +20,9 @@ in {
     programs.uwsm.enable = true;
     programs.hyprland = {
       enable = true;
-      # package = pkgs.hyprland;
+      package = pkgs.hyprland;
+      # package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Unstable
       withUWSM = true;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland;
     };
 
     night-sky.desktops.hyprland.gdm = lib.mkDefault true;
@@ -75,6 +75,7 @@ in {
 
     # KDE Connect plus some magic to get chromium browser integration working
     programs.kdeconnect.enable = true;
-    environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
+    # Handled by programs.chromium.enablePlasmaBrowserIntegration now
+    # environment.etc."chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json".source = "${pkgs.kdePackages.plasma-browser-integration}/etc/chromium/native-messaging-hosts/org.kde.plasma.browser_integration.json";
   };
 }

@@ -37,17 +37,17 @@
 
       # Firefox Start
       # ------------------------------------------------------------------------------------------------------------------------
-      "idleinhibit fullscreen, class:^(firefox)$"
-      "suppressevent maximize, class:^(firefox)$"
+      "idleinhibit fullscreen, class:^(firefox|zen)$"
+      "suppressevent maximize, class:^(firefox|zen)$"
       # PIP
-      "float, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "size 600 338, class:^(firefox)$,title:(Picture-in-Picture)"
-      "pin, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "suppressevent maximize, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "suppressevent fullscreen, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "move onscreen 100%-w-15 5%, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "noanim on, class:^(firefox)$,title:^(Picture-in-Picture)$"
-      "noinitialfocus, class:^(firefox)$,title:^(Picture-in-Picture)$"
+      "float, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
+      "size 600 338, class:^(firefox|zen)$,title:(Picture-in-Picture)"
+      "pin, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
+      "suppressevent maximize, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
+      "suppressevent fullscreen, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
+      "move onscreen 100%-w-15 5%, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
+      "noanim on, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
+      "noinitialfocus, class:^(firefox|zen)$,title:^(Picture-in-Picture)$"
 
       # Dialogs
       "float,class:^(firefox)$,title:^(File Upload)$"

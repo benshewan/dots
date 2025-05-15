@@ -1,14 +1,9 @@
-{
-  pkgs,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./hardware.nix
     ./networking.nix
   ];
-
   # System
   networking.hostName = "navis";
   night-sky.theme = "gruvbox";
@@ -17,11 +12,13 @@
     programs.npm.enable = true;
     programs.vivaldi.enable = true;
     home.extraOptions = {
-      stylix.targets.qt.enable = true;
+      stylix.targets.kvantum.enable = true;
       night-sky = {
         desktops.hyprland.enable = true;
         programs = {
           firefox.enable = true;
+          zen.enable = true;
+          thunderbird.enable = true;
           filebot.enable = true;
           chromium.enable = true;
           mongodb-compass.enable = true;
@@ -72,11 +69,13 @@
       # Audio Configuration https://github.com/ceiphr/ee-framework-presets
       # easyeffects
       powertop
+      piper
       nm-tray
-      solaar
+      discord
       # lan-mouse
       # orca-slicer
       parsec-bin
+      jetbrains-toolbox
       python3
     ]
     # Development stuff
@@ -84,7 +83,13 @@
       (android-studio.override {forceWayland = true;})
     ]);
 
-  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless = {
+    enable = true;
+    enableGraphical = true;
+  };
+
+  # hardware.openrazer.enable = true;
+  # hardware.openrazer.users = [config.night-sky.user.name];
 
   programs.goldwarden = {
     enable = true;
@@ -97,7 +102,8 @@
     package = pkgs.stable.mongodb;
   };
 
-  # networking.firewall.enable = false;
+  # For expo
+  networking.firewall.allowedTCPPorts = [8081 7100];
 
   # for wayvnc
   # networking.firewall.allowedTCPPorts = [5900];

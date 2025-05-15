@@ -4,8 +4,8 @@
   lib,
   ...
 }: {
-  options.stylix.targets.qt = {
-    enable = config.lib.stylix.mkEnableTarget "QT" pkgs.stdenv.hostPlatform.isLinux;
+  options.stylix.targets.kvantum = {
+    enable = config.lib.stylix.mkEnableTarget "Kvantum" pkgs.stdenv.hostPlatform.isLinux;
     iconThemeName = lib.mkOption {
       description = "Default QT Icons";
       type = lib.types.str;
@@ -13,8 +13,9 @@
     };
   };
 
-  config = lib.mkIf (config.stylix.targets.qt.enable && !config.night-sky.desktops.kde.enable) (let
-    cfg = config.stylix.targets.qt;
+  config = lib.mkIf (config.stylix.targets.kvantum.enable && !config.night-sky.desktops.kde.enable) (let
+    cfg = config.stylix.targets.kvantum;
+
     kvconfig = config.lib.stylix.colors {
       template = ./kvconfig.mustache;
       extension = ".kvconfig";
@@ -36,6 +37,8 @@
       kvantumPackage
       papirus-icon-theme
     ];
+
+    stylix.targets.qt.enable = lib.mkForce false;
 
     qt = {
       enable = true;

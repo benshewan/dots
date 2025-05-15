@@ -25,7 +25,7 @@
   # Bypass Website Paywalls
   "magnolia@12.34" = {
     installation_mode = "normal_installed";
-    install_url = "https://gitlab.com/magnolia1234/bpc-uploads/-/raw/master/bypass_paywalls_clean-latest.xpi";
+    install_url = "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/raw?file=bypass_paywalls_clean-latest.xpi&inline=false";
   };
 
   # Piracy
@@ -74,16 +74,16 @@
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/sidebery/latest.xpi";
   };
 
-  # New Tab Home Page
-  "extension@tabliss.io" = {
-    installation_mode = "normal_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
-  };
-
   # Multi-Account Containers
   "@testpilot-containers" = {
     installation_mode = "normal_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
+  };
+
+  # Temporary Containers
+  "{c607c8df-14a7-4f28-894f-29e8722976af}" = {
+    installation_mode = "normal_installed";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/temporary-containers/latest.xpi";
   };
 
   # Tab Sessions
@@ -143,10 +143,15 @@
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
   };
 
-  # View the web in dark mode
-  "addon@darkreader.org" = {
+  # Violentmonkey user scripts
+  "{aecec67f-0d10-4fa7-b7c7-609a2db280cf}" = {
     installation_mode = "normal_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/darkreader/latest.xpi";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/violentmonkey/latest.xpi";
+  };
+
+  "addon@hoarder.app" = {
+    installation_mode = "normal_installed";
+    install_url = "https://web.archive.org/web/20241201165104if_/https://addons.mozilla.org/firefox/downloads/file/4357468/hoarder-1.2.3.xpi";
   };
 
   # Canadian English
@@ -159,20 +164,4 @@
     installation_mode = "normal_installed";
     install_url = "https://addons.mozilla.org/firefox/downloads/latest/english-ca-language-pack/latest.xpi";
   };
-
-  # Legacy Extensions
-  # ----------------------------------------------------------------------------------
-  # Allow you to hold ctrl to click substring of url
-  "advancedlocationbar@veg.by" = {
-    installation_mode = "normal_installed";
-    install_url = "file://${./AdvancedLocationbar.xpi}";
-  };
-
-  # New tabs inhert the history of their parent tabs
-  # "backtrack@byalexv.co.uk" = {
-  #   installation_mode = "normal_installed";
-  #   install_url = "file://${legacy-extensions}/extensions/backtrack/BackTrack.xpi";
-  # };
-  # Tab Mix Plus
-  # "{dc572301-7619-498c-a57d-39143191b318}"
 }
