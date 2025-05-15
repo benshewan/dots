@@ -1,4 +1,4 @@
-{...}: {
+{pkgs, ...}: {
   night-sky = {
     home.extraOptions.night-sky = {
       programs = {
@@ -9,7 +9,7 @@
         # kitty.enable = true;
         spotify.enable = true;
         webstorm.enable = true;
-        # fish.enable = true;
+        fish.enable = true;
         # kdeconnect.enable = true;
       };
     };
@@ -22,4 +22,13 @@
     "orion" # webkit based browser with tree style tabs
     "mongodb-compass" # Database browser
   ];
+
+  environment.systemPackages = with pkgs;
+    [
+      python3
+    ]
+    # Development stuff
+    ++ (with pkgs; [
+      nodejs
+    ]);
 }
