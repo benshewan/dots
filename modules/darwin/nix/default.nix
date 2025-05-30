@@ -18,7 +18,6 @@
   };
 
   nix.package = pkgs.nixVersions.latest;
-  services.nix-daemon.enable = true;
   nix.settings.trusted-users = ["root" "@admin"];
 
   # This will add each flake input as a registry
