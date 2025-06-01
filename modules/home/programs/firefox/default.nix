@@ -8,88 +8,15 @@
 
   # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
   profile = "default";
-  # userChrome.js loader & scripts
-  userchromejs-scripts = pkgs.fetchFromGitHub {
-    owner = "aminomancer";
-    repo = "uc.css.js";
-    rev = "2b39f40d2f1489fa26f1da0ca6e4887f8987d9f8";
-    sha256 = "sha256-7JyjsD73DFSO9CGAZeRt9938WYCVjqB5BVq93VDu8MU=";
-  };
-  userchromejs-loader =
-    lib.sources.sourceFilesBySuffices
-    (pkgs.fetchFromGitHub {
-      owner = "MrOtherGuy";
-      repo = "fx-autoconfig";
-      rev = "d9133f188d4a037d9bf71aa208d1452d78adb25c";
-      sha256 = "sha256-wJHcthpwoBi+T6NXkxwG+ePTHnIvut7Tr0UJDEOGL2U=";
-      sparseCheckout = [
-        "profile/chome/utils"
-        "profile/chrome/JS"
-      ];
-    })
-    [".js" ".mjs"];
-
-  # Custom CSS styles
-  firefox-gnome-dark = (import ./gnome-theme.nix {inherit pkgs config;}).dark;
-  firefox-gnome-theme =
-    builtins.filterSource (path: type: type == "directory" || baseNameOf path != "dark.css")
-    (pkgs.fetchFromGitHub {
-      owner = "rafaelmardojai";
-      repo = "firefox-gnome-theme";
-      rev = "91ca1f82d717b02ceb03a3f423cbe8082ebbb26d";
-      hash = "sha256-S79Hqn2EtSxU4kp99t8tRschSifWD4p/51++0xNWUxw=";
-    });
 in {
   options.night-sky.programs.firefox = {
     enable = lib.mkEnableOption "firefox";
   };
 
   config = lib.mkIf cfg.enable {
-    # Custom userChrome.js scripts
-    home.file.".mozilla/firefox/${profile}/chrome" = {
-      source = "${userchromejs-loader}/profile/chrome";
-      recursive = true;
-    };
-
-    home.file.".mozilla/firefox/${profile}/chrome/utils/chrome.manifest".text = let
-      root = "${config.night-sky.user.home}/.mozilla/firefox/${profile}/chrome";
-    in ''
-      content userchromejs ${root}/utils/
-      content userscripts ${root}/JS/
-      skin userstyles classic/1.0 ${root}/CSS/
-      content userchrome ${root}/resources/
-    '';
-
-    # Private Tab
-    home.file.".mozilla/firefox/${profile}/chrome/JS/privateTabs.uc.js".source = "${userchromejs-scripts}/JS/privateTabs.uc.js";
-    home.file.".mozilla/firefox/${profile}/chrome/JS/privateWindowHomepage.uc.js".source = "${userchromejs-scripts}/JS/privateWindowHomepage.uc.js";
-
-    home.file.".mozilla/firefox/${profile}/chrome/JS/findbarMods.uc.js".source = "${userchromejs-scripts}/JS/findbarMods.uc.js";
-    home.file.".mozilla/firefox/${profile}/chrome/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js".source = "${userchromejs-scripts}/JS/hideTrackingProtectionIconOnCustomNewTabPage.uc.js";
-
-    # Custom theme
-    home.file.".mozilla/firefox/${profile}/chrome/userChrome.css".text =
-      (builtins.readFile "${firefox-gnome-theme}/userChrome.css")
-      + ''
-        @import "${./multi_column_addons.css}";
-      '';
-    home.file.".mozilla/firefox/${profile}/chrome/userContent.css".source = "${firefox-gnome-theme}/userContent.css";
-    home.file.".mozilla/firefox/${profile}/chrome/theme" = {
-      recursive = true;
-      source = "${firefox-gnome-theme}/theme";
-    };
-    home.file.".mozilla/firefox/${profile}/chrome/theme/colors".enable = false;
-    home.file.".mozilla/firefox/${profile}/chrome/theme/colors/dark.css".source = firefox-gnome-dark;
-
-    # Add aditional css changes
-    home.file.".mozilla/firefox/${profile}/chrome/customChrome.css".source = ./customChrome.css;
-
-    # Stylix support
-    # stylix.targets.firefox.profileNames = [profile];
-
     programs.firefox = {
       enable = true;
-      package = pkgs.wrapFirefox pkgs.firefox-unwrapped {};
+      package = pkgs.firefox;
       nativeMessagingHosts =
         [pkgs.goldwarden]
         ++ lib.optional config.services.kdeconnect.enable pkgs.kdePackages.plasma-browser-integration;

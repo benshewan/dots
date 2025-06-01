@@ -96,9 +96,9 @@
   # ----------------------------------------------------------------------------------
 
   # Youtube customization
-  "enhancerforyoutube@maximerf.addons.mozilla.org" = {
+  "eov3cv@hotmail.com" = {
     installation_mode = "normal_installed";
-    install_url = "https://addons.mozilla.org/firefox/downloads/latest/enhancer-for-youtube/latest.xpi";
+    install_url = "./youtube-extension/youtube-project-v3.xpi";
   };
 
   # View Xpi Id's in Firefox Extension Store

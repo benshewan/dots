@@ -6,6 +6,8 @@
   ...
 }: {
   # NixOS Stuff
+  imports = [inputs.determinate.nixosModules.default];
+
   programs.nix-ld.enable = true;
 
   nix.channel.enable = false;
@@ -18,7 +20,7 @@
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
-  nix.package = pkgs.nixVersions.latest;
+  # nix.package = pkgs.nixVersions.latest;
 
   # This will add each flake input as a registry
   # To make nix3 commands consistent with your flake

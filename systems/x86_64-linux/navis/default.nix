@@ -10,7 +10,6 @@
   night-sky = {
     desktops.hyprland.enable = true;
     programs.npm.enable = true;
-    programs.vivaldi.enable = true;
     home.extraOptions = {
       stylix.targets.kvantum.enable = true;
       night-sky = {
@@ -64,6 +63,12 @@
     })
   ];
 
+  # boot.supportedFilesystems = {
+  #   zfs = true;
+  # };
+  # boot.zfs.forceImportRoot = false;
+  # networking.hostId = "355e7f23";
+
   environment.systemPackages = with pkgs;
     [
       # Audio Configuration https://github.com/ceiphr/ee-framework-presets
@@ -77,6 +82,8 @@
       parsec-bin
       jetbrains-toolbox
       python3
+
+      (proxmark3.override {withGeneric = true;})
     ]
     # Development stuff
     ++ (with pkgs; [

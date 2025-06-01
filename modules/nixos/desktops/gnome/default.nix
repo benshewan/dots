@@ -12,11 +12,11 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Install GNOME
-    services.xserver.desktopManager.gnome.enable = true;
+    services.desktopManager.gnome.enable = true;
     # Default DE
-    services.xserver.displayManager.defaultSession = "gnome";
+    services.displayManager.defaultSession = "gnome";
     # Login Manager
-    services.xserver.displayManager.gdm = {
+    services.displayManager.gdm = {
       enable = true;
       wayland = true;
     };

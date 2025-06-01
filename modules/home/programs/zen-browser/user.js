@@ -60,3 +60,5 @@ user_pref("zen.urlbar.replace-newtab", true); // don't open new tab, only addres
 user_pref("browser.urlbar.suggest.topsites", true); // Shortcuts; disable dropdown suggestions with empty query; required for new tab behavior
 user_pref("browser.tabs.allow_transparent_browser", false); // fixes some websites that don't explicity set a body background color
 user_pref("browser.tabs.hoverPreview.enabled", true); // show tab previews on hover
+
+user_pref("zen.theme.content-element-separation", 0); // change browser padding (default is 8)

@@ -12,11 +12,6 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    # Binary cache for hyprland nightly
-    # nix.settings = {
-    #   substituters = ["https://hyprland.cachix.org"];
-    #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-    # };
     programs.uwsm.enable = true;
     programs.hyprland = {
       enable = true;
@@ -25,15 +20,58 @@ in {
       withUWSM = true;
     };
 
-    night-sky.desktops.hyprland.gdm = lib.mkDefault true;
+    night-sky.desktops.hyprland.greetd = lib.mkDefault true;
     services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
 
-    # ------------------------------ Testing ------------------------------
-
-    # services.displayManager.sddm = {
+    # services.displayManager.ly = {
     #   enable = true;
-    #   wayland.enable = true;
-    #   theme = "chili";
+    #   settings = let
+    #     inherit (config.lib.stylix) colors;
+    #   in {
+    #     waylandsessions = "${config.programs.hyprland.package}/share/wayland-sessions";
+    #     asterisk = "0x2022";
+    #     clear_password = false;
+    #     load = true;
+    #     save = true;
+
+    #     bigclock = "en";
+    #     clock = "%c";
+
+    #     animation = "colormix";
+    #     bg = "0x${colors.base0D}";
+    #     border_fg = "0x${colors.base05}";
+
+    #     # Color mixing animation first color id
+    #     colormix_col1 = "0x00FF0000";
+
+    #     # Color mixing animation second color id
+    #     colormix_col2 = "0x000000FF";
+
+    #     # Color mixing animation third color id
+    #     colormix_col3 = "0x20000000";
+
+    #     # Error background color id
+    #     error_bg = "0x00000000";
+
+    #     # Error foreground color id
+    #     # Default is red and bold
+    #     error_fg = "0x01FF0000";
+
+    #     # Foreground color id
+    #     fg = "0x00FFFFFF";
+
+    #     # Main box horizontal margin
+    #     # margin_box_h = 2
+
+    #     # Main box vertical margin
+    #     # margin_box_v = 1
+
+    #     brightness_down_cmd = "${lib.getExe pkgs.brightnessctl} -e s 5%-";
+    #     brightness_down_key = "XF86MonBrightnessDown";
+
+    #     brightness_up_cmd = "${lib.getExe pkgs.brightnessctl} -e s 5%";
+    #     brightness_up_key = "XF86MonBrightnessUp";
+    #   };
     # };
 
     # Change how the power button works
@@ -41,7 +79,7 @@ in {
       # don't shutdown when power button is short-pressed
       HandlePowerKey=suspend
       # Lock laptop instead of sleeping
-      # HandleLidSwitch=lock
+      HandleLidSwitch=suspend
     '';
 
     # Required Services
@@ -59,12 +97,6 @@ in {
 
     # Basic programs
     environment.systemPackages = with pkgs; [
-      # (sddm-chili-theme.override {
-      #   themeConfig = {
-      #     background = config.stylix.image;
-      #     PasswordFieldOutlined = true;
-      #   };
-      # })
       adwaita-icon-theme
     ];
 

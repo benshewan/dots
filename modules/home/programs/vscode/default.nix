@@ -81,6 +81,7 @@ in {
           "explorer.confirmDragAndDrop" = false;
           "security.workspace.trust.untrustedFiles" = "open";
           "editor.stickyScroll.enabled" = false;
+          "editor.minimap.enabled" = false;
           "editor.linkedEditing" = true;
           "typescript.updateImportsOnFileMove.enabled" = "always";
 
@@ -157,6 +158,10 @@ in {
 
           # Svelte Config
           "svelte.enable-ts-plugin" = true;
+
+          # Typescript Config
+          "editor.experimental.preferTreeSitter.typescript" = true;
+          "typescript.preferGoToSourceDefinition" = true;
 
           # Live Server Config
           "liveServer.settings.donotShowInfoMsg" = true;

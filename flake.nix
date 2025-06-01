@@ -27,6 +27,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master"; # Easy hardware configuration for new machines
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     # nur.url = "github:nix-community/NUR"; # Community app support
 
     # encrypt secrets

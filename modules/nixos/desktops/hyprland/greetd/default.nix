@@ -7,8 +7,6 @@
 }: let
   cfg = config.night-sky.desktops.hyprland.greetd;
   tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
-  hyprland-session = "${inputs.hyprland.packages.${pkgs.system}.hyprland}/share/wayland-sessions";
-  hyprland-session-uwsm = lib.sources.sourceByRegex hyprland-session ["hyprland\.desktop"];
 in {
   options.night-sky.desktops.hyprland.greetd = lib.night-sky.mkOpt lib.types.bool false "Use Greetd as Hyprland's display manager.";
 
@@ -18,7 +16,7 @@ in {
       enable = true;
       settings = {
         default_session = {
-          command = "${tuigreet} --time --remember --remember-session --asterisks --asterisks-char • --sessions ${hyprland-session-uwsm}";
+          command = "${tuigreet} --time --remember --remember-session --asterisks --asterisks-char •";
           user = "greeter";
         };
       };

@@ -82,7 +82,7 @@
         "SUPER SHIFT,c,exec,${lib.getExe' pkgs.hyprpicker "hyprpicker"} -a -f hex"
 
         # Program Keybinds
-        "SUPER,RETURN,exec, ${lib.getExe pkgs.foot}"
+        "SUPER,RETURN,exec, ${lib.getExe pkgs.kitty}"
         "SUPER,f,exec, firefox"
 
         # Rofi keybinds

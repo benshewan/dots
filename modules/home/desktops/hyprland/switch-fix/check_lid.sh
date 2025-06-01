@@ -4,7 +4,7 @@ LID_STATE=$(cat /proc/acpi/button/lid/LID0/state | cut -d':' -f2 | tr -d ' ')
 case ${LID_STATE} in
     closed)
     echo closed
-    exit 1
+    exit 0
     ;;
     open*)
     echo open

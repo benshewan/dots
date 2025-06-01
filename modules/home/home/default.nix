@@ -10,7 +10,7 @@ in {
   imports = [] ++ lib.optional isDarwin inputs.mac-app-util.homeManagerModules.default;
 
   home.stateVersion = lib.mkOverride 1001 (
-    if (isLinux && osConfig.system.stateVersion)
+    if (isLinux && builtins.hasAttr "system" osConfig && builtins.hasAttr "stateVersion" osConfig.system)
     then osConfig.system.stateVersion
     else "23.11"
   );
