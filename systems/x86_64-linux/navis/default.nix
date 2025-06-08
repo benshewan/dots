@@ -79,6 +79,7 @@
       discord
       # lan-mouse
       # orca-slicer
+      night-sky.audio-share
       parsec-bin
       jetbrains-toolbox
       python3
@@ -110,11 +111,27 @@
   };
 
   # For expo
-  networking.firewall.allowedTCPPorts = [8081 7100];
+  networking.firewall.allowedTCPPorts = [8081 7100 65530];
+  networking.firewall.allowedUDPPorts = [65530];
 
-  # for wayvnc
-  # networking.firewall.allowedTCPPorts = [5900];
-  # networking.firewall.allowedUDPPorts = [3389];
+  services.pipewire.extraConfig.pipewire."audio-share-sink" = {
+    "context.objects" = [
+      {
+        factory = "adapter";
+        args = {
+          "factory.name" = "support.null-audio-sink";
+          "node.name" = "Audio Share Sink";
+          "media.class" = "Audio/Sink";
+          "object.linger" = true;
+          "audio.position" = ["FL" "FR"];
+          "priority.session" = 1009;
+          "priority.driver" = 1009;
+          "monitor.channel-volumes" = true;
+          "monitor.passthrough" = true;
+        };
+      }
+    ];
+  };
 
   # MongoDB Extenal access
   # MongoDB port [27017]

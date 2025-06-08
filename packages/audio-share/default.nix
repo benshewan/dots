@@ -11,36 +11,40 @@ stdenv.mkDerivation {
     rev = "342751fe675367483170b002ec6054e243966dc0";
     sha256 = "sha256-EuANnVwxeEzLhp8j/okQ2f1FSt4U61UK9kersgETBpQ=";
   };
+  sourceRoot = "source/server-core";
+
+  nativeBuildInputs = with pkgs; [
+    cmake
+    pkg-config
+  ];
 
   buildInputs = with pkgs; [
-    cmake
     vcpkg
-
     asio
     protobuf
     zlib
     cxxopts
     spdlog
+    pipewire
   ];
 
   postPatch = ''
-    cd server-core
-    cp -r * ../
+    substituteInPlace CMakeLists.txt \
+      --replace-warn 'find_package(Protobuf CONFIG REQUIRED)' 'find_package(Protobuf REQUIRED)' \
+      --replace-warn 'find_package(asio CONFIG REQUIRED)' "" \
+      --replace-warn 'asio::asio' ""
   '';
 
   cmakeFlags = [
-    # "-DENABLE_VCPKG=OFF"
+    "-DCMAKE_BUILD_TYPE=Release"
+    "-DCMAKE_PREFIX_PATH=${pkgs.protobuf}:${pkgs.cxxopts}:${pkgs.spdlog}"
+    "-DASIO_INCLUDE_DIR=${pkgs.asio}/include"
   ];
 
-  buildPhase = ''
-    cmake --preset linux-Release
-    cmake --build --preset linux-Release
-    ls -la /
-  '';
-
   installPhase = ''
+    runHook preInstall
     mkdir -p $out/bin
-    ls -la server-core
-    exit 0
+    install -m 755 as-cmd $out/bin/audio-share
+    runHook postInstall
   '';
 }
