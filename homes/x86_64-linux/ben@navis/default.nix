@@ -44,6 +44,8 @@
       name = "desc:Dell Inc. AW3423DWF 58082S3";
       width = 3440;
       height = 1440;
+      # Some combination of my garbo dock and alpha software makes this explode my computer
+      # colorProfile = "hdr";
       refreshRate = 165;
       scale = 1.25;
       x = 0;

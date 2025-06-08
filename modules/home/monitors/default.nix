@@ -63,6 +63,17 @@ in {
           type = types.nullOr types.str;
           default = null;
         };
+        colorProfile = mkOption {
+          type = types.enum ["auto" "srgb" "wide" "edid" "hdr" "hdredid"];
+          default = "auto";
+        };
+        vrr = mkOption {
+          type = types.enum [0 1 2 3];
+          default = false;
+          example = ''
+            controls the VRR (Adaptive Sync) of your monitors. 0 - off, 1 - on, 2 - fullscreen only, 3 - fullscreen with video or game content type [0/1/2/3]
+          '';
+        };
       };
     });
     default = [];

@@ -166,9 +166,17 @@ in {
             position = "${toString m.x}x${toString m.y}";
             scale = toString m.scale;
             rotate = "transform," + toString m.rotate;
+            colorProfile =
+              "cm, "
+              + m.colorProfile
+              + (
+                if m.colorProfile == "hdr" || m.colorProfile == "hdredid"
+                then ", bitdepth, 10"
+                else ""
+              );
           in "${m.name},${
             if m.enabled
-            then "preferred,${position},${scale},${rotate}"
+            then "preferred,${position},${scale},${rotate},${colorProfile}"
             else "disable"
           }"
         ) (config.monitors))
