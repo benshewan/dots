@@ -62,3 +62,4 @@ user_pref("browser.tabs.allow_transparent_browser", false); // fixes some websit
 user_pref("browser.tabs.hoverPreview.enabled", true); // show tab previews on hover
 
 user_pref("zen.theme.content-element-separation", 0); // change browser padding (default is 8)
+user_pref("browser.tabs.insertAfterCurrent", true);

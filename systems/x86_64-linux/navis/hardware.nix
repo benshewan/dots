@@ -18,7 +18,7 @@
     "amdgpu.abmlevel=0" # Force off because it looks ugly
     "rcu_nocbs=all"
     "rcutree.enable_rcu_lazy=1"
-    # "pcie_aspm=force" # maybe?
+    "pcie_aspm=force" # maybe?
   ];
   # systemd.sleep.extraConfig = "HibernateDelaySec=2h";
   services.logind = {
@@ -46,17 +46,8 @@
   ];
   #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
 
-  services.auto-cpufreq.enable = false;
-  services.auto-cpufreq.settings = {
-    battery = {
-      governor = "powersave";
-      turbo = "never";
-    };
-    charger = {
-      governor = "performance";
-      turbo = "auto";
-    };
-  };
+  # Auto-calibrate with powertop
+  powerManagement.powertop.enable = true;
 
   # AMD OpenGL/Vulkan stuff
   # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
