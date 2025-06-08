@@ -5,23 +5,6 @@
   ...
 }: let
   cfg = config.night-sky.programs.zen;
-
-  # userChrome.js loader & scripts
-  userchromejs-scripts = pkgs.fetchFromGitHub {
-    owner = "aminomancer";
-    repo = "uc.css.js";
-    rev = "d79755e3e747bd8e2733c071fd9a783fa20f5584";
-    sha256 = "sha256-baenZvd8fJDwdRXQIUmzx0El07DqCx3NjvxGzzQGipU=";
-  };
-  userchromejs-loader =
-    lib.sources.sourceFilesBySuffices
-    (pkgs.fetchFromGitHub {
-      owner = "MrOtherGuy";
-      repo = "fx-autoconfig";
-      rev = "d597ff20583f6d948406a1ba1fbeb47bbe33a589";
-      sha256 = "sha256-2rBvZauxGbo1//lbow7wntyLMZ9OJ17+YOssPgX8Q6s=";
-    })
-    [".js" ".mjs"];
 in {
   options.night-sky.programs.zen = {
     enable = lib.mkEnableOption "zen";
@@ -31,27 +14,8 @@ in {
     home.file.".zen/profiles.ini".source = ./profiles.ini;
     home.file.".zen/default/user.js".source = ./user.js;
 
-    # Custom userChrome.js scripts
-    home.file.".zen/default/chrome" = {
-      source = "${userchromejs-loader}/profile/chrome";
-      recursive = true;
-    };
-    home.file.".zen/default/chrome/utils/chrome.manifest".text = let
-      root = "${config.night-sky.user.home}/.zen/default/chrome";
-    in ''
-      content userchromejs ${root}/utils/
-      content userscripts ${root}/JS/
-      skin userstyles classic/1.0 ${root}/CSS/
-      content userchrome ${root}/resources/
-    '';
-
-    # Private Tab
-    home.file.".zen/default/chrome/JS/privateTabs.uc.js".source = ./privateTabs.uc.js;
-    home.file.".zen/default/chrome/JS/privateWindowHomepage.uc.js".source = "${userchromejs-scripts}/JS/privateWindowHomepage.uc.js";
-
     home.packages = [
       (
-        # pkgs.night-sky.zen-with-customjs
         pkgs.wrapFirefox pkgs.zen-browser-unwrapped {
           nativeMessagingHosts =
             [pkgs.goldwarden]
