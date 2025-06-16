@@ -75,12 +75,12 @@ in {
     # };
 
     # Change how the power button works
-    services.logind.extraConfig = ''
-      # don't shutdown when power button is short-pressed
-      HandlePowerKey=suspend
-      # Lock laptop instead of sleeping
-      HandleLidSwitch=suspend
-    '';
+    # services.logind.extraConfig = ''
+    #   # don't shutdown when power button is short-pressed
+    #   HandlePowerKey=suspend
+    #   # Lock laptop instead of sleeping
+    #   HandleLidSwitch=suspend
+    # '';
 
     # Required Services
     services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)

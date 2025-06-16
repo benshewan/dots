@@ -10,24 +10,21 @@
   # Warning, must set real speakers to 100% first
   hardware.framework.laptop13.audioEnhancement.enable = false;
   hardware.framework.laptop13.audioEnhancement.hideRawDevice = false;
+  hardware.framework.enableKmod = true; # Allow userspace access to LEDs and battery charge limit
   services.hardware.bolt.enable = true;
 
-  # Change hiberate settings for better battery
-  # boot.resumeDevice = "/dev/nvme0n1p3";
+  # powerprofilesctl configure-action amdgpu_dpm --enable
   boot.kernelParams = [
     "amdgpu.abmlevel=0" # Force off because it looks ugly
     "rcu_nocbs=all"
     "rcutree.enable_rcu_lazy=1"
-    "pcie_aspm=force" # maybe?
+    # "pcie_aspm=force" # maybe?
   ];
-  # systemd.sleep.extraConfig = "HibernateDelaySec=2h";
+  systemd.sleep.extraConfig = "HibernateDelaySec=1h";
   services.logind = {
     lidSwitch = "suspend-then-hibernate";
-    extraConfig = ''
-      HandlePowerKey=suspend-then-hibernate
-      IdleAction=suspend-then-hibernate
-      IdleActionSec=2m
-    '';
+    lidSwitchDocked = "ignore";
+    powerKey = "suspend-then-hibernate";
   };
 
   # Switch Power Profiles based on if plugged in or not
@@ -35,12 +32,13 @@
   # battery - ENV{POWER_SUPPLY_ONLINE}=="0"
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
   services.udev.extraRules = lib.concatStringsSep "\n" [
-    ''ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"''
-    ''SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced "''
-    ''SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"''
+    ''SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${lib.getExe pkgs.power-profiles-daemon} set balanced"''
+    ''SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${lib.getExe pkgs.power-profiles-daemon} set power-saver"''
 
+    # Testing with thunderbolt
+    # ''ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"''
     # temp fix for bad lid behaviour, i.e. if system is suspended and the lid is closed it will wake back up
-    ''ACTION=="add", SUBSYSTEM=="serio", DRIVERS=="atkbd", ATTR{power/wakeup}="disabled"''
+    # ''ACTION=="add", SUBSYSTEM=="serio", DRIVERS=="atkbd", ATTR{power/wakeup}="disabled"''
     # Allow waking from USB keyboards
     ''ACTION=="add", SUBSYSTEM=="usb", DRIVER=="usb", ATTR{power/wakeup}="enabled"''
   ];

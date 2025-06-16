@@ -6,7 +6,6 @@
 }: let
   hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
   hyprlock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${lib.getExe config.programs.hyprlock.package}; fi";
-
 in {
   config = lib.mkIf config.night-sky.desktops.hyprland.enable {
     services.hypridle = {
@@ -18,6 +17,11 @@ in {
           on-resume = "${hyprctl} dispatch dpms on";
         }
         {
+          timeout = 330;
+          on-timeout = "if ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then systemctl suspend-then-hibernate; fi";
+          on-resume = "${hyprctl} dispatch dpms on";
+        }
+        {
           timeout = 1800;
           on-timeout = hyprlock;
         }
@@ -26,6 +30,10 @@ in {
           on-timeout = "${hyprctl} dispatch dpms off";
           on-resume = "${hyprctl} dispatch dpms on";
         }
+        {
+          timeout = 2130;
+          on-timeout = "systemctl suspend-then-hibernate";
+        }
       ];
 
       settings.general = {
@@ -33,7 +41,7 @@ in {
         unlock_cmd = "";
         after_sleep_cmd = "${hyprctl} dispatch dpms on";
         before_sleep_cmd = hyprlock;
-        ignore_dbus_inhibit = false;
+        inhibit_sleep = 3;
       };
     };
   };

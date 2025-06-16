@@ -111,7 +111,11 @@
   };
 
   # For expo
-  networking.firewall.allowedTCPPorts = [8081 7100 65530];
+  networking.firewall.allowedTCPPorts = [
+    8081
+    7100 # Development
+    65530 # audio-share
+  ];
   networking.firewall.allowedUDPPorts = [65530];
 
   services.pipewire.extraConfig.pipewire."audio-share-sink" = {

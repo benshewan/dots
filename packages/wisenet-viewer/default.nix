@@ -1,6 +1,7 @@
 {
   stdenv,
-  pkgs,
+  pkgs ? import <nixpkgs> {},
+  lib,
   ...
 }: let
   version = "1.05.00";
@@ -55,26 +56,50 @@ in
       psqlodbc
     ];
 
+    desktopItem = pkgs.makeDesktopItem {
+      name = "wisenet-viewer";
+      exec = "wisenet-viewer";
+      comment = "Hanwha Vision Wisenet Viewer";
+      desktopName = "Wisenet Viewer";
+      genericName = "Video Surveillance";
+      categories = ["Network"];
+    };
+
     unpackPhase = ''
+      runHook preUnpack
       unzip $src
-      ls -la
       dpkg-deb -x ./*.deb .
+      runHook postUnpack
     '';
 
     installPhase = ''
-      mkdir -p $out/etc
-      mkdir -p $out/opt
+      runHook preInstall
+
       mkdir -p $out/bin
-      mv usr/* $out
-      mv etc/* $out/etc
-      mv opt/* $out/opt
 
-      substituteInPlace $out/share/applications/wisenet-viewer.desktop \
-        --replace "/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh" "$out/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh" \
+      if [ -d ./usr ]; then cp -r ./usr/* $out/; fi
+      if [ -d ./etc ]; then cp -r ./etc $out/; fi
+      if [ -d ./opt ]; then cp -r ./opt $out/; fi
 
+      # Update the hardcoded path in the launcher script to point to its new home in the Nix store.
       substituteInPlace $out/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh \
-        --replace '$(dirname "$(readlink -f "$0")")' "$out/opt/HanwhaVision/WisenetViewer" \
+        --replace '$(dirname "$(readlink -f "$0")")' "$out/opt/HanwhaVision/WisenetViewer"
 
+      # Create a symlink in $out/bin so the user can run `wisenet-viewer` from their terminal.
       ln -s $out/opt/HanwhaVision/WisenetViewer/WisenetViewer.sh $out/bin/wisenet-viewer
+
+      # Install the generated .desktop file to the correct location.
+      install -Dm644 $desktopItem/share/applications/* -t $out/share/applications
+
+      runHook postInstall
     '';
+
+    meta = with lib; {
+      description = "A viewer for Hanwha Vision (formerly Samsung Techwin) security products";
+      homepage = "https://hanwhavisionamerica.com/";
+      sourceProvenance = [sourceTypes.binaryNativeCode];
+      license = licenses.unfree;
+      platforms = platforms.linux;
+      maintainers = [maintainers.benshewan];
+    };
   }

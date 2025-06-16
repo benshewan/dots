@@ -13,5 +13,6 @@
   users.users.${config.night-sky.user.name}.extraGroups = ["docker"];
   virtualisation.docker = {
     enable = true;
+    enableOnBoot = false; # Docker is a big battery drain
   };
 }

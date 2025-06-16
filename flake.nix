@@ -77,6 +77,9 @@
     stylix.inputs.nixpkgs.follows = "nixpkgs";
     stylix.inputs.home-manager.follows = "home-manager";
 
+    kvlibadwaita.url = "github:MOIS3Y/KvLibadwaita";
+    kvlibadwaita.inputs.nixpkgs.follows = "nixpkgs";
+
     # App configuration helpers
     nixvim.url = "github:nix-community/nixvim";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
