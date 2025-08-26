@@ -7,7 +7,7 @@
 }: let
   cfg = config.night-sky.programs.nvim;
 in {
-  imports = [inputs.nixvim.homeManagerModules.nixvim];
+  imports = [inputs.nixvim.homeModules.nixvim];
 
   options.night-sky.programs.nvim = {
     enable = lib.mkEnableOption "nvim";

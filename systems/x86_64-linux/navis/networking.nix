@@ -15,21 +15,21 @@ in {
 
   sops.secrets."orion-smb" = {};
 
-  fileSystems."/home/${config.night-sky.user.name}/Shares/backup" = {
-    device = "//192.168.2.39/backup";
-    fsType = "cifs";
-    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
-  };
-  fileSystems."/home/${config.night-sky.user.name}/Shares/media" = {
-    device = "//192.168.2.39/media";
-    fsType = "cifs";
-    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
-  };
-  fileSystems."/home/${config.night-sky.user.name}/Shares/downloads" = {
-    device = "//192.168.2.39/downloads";
-    fsType = "cifs";
-    options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
-  };
+  # fileSystems."/home/${config.night-sky.user.name}/Shares/backup" = {
+  #   device = "//192.168.2.39/backup";
+  #   fsType = "cifs";
+  #   options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
+  # };
+  # fileSystems."/home/${config.night-sky.user.name}/Shares/media" = {
+  #   device = "//192.168.2.39/media";
+  #   fsType = "cifs";
+  #   options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
+  # };
+  # fileSystems."/home/${config.night-sky.user.name}/Shares/downloads" = {
+  #   device = "//192.168.2.39/downloads";
+  #   fsType = "cifs";
+  #   options = ["${automount_opts},credentials=${credentials},uid=1000,gid=100"];
+  # };
 
   # Services from Orion
   # networking.extraHosts =

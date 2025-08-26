@@ -98,7 +98,7 @@
   # Youtube customization
   "eov3cv@hotmail.com" = {
     installation_mode = "normal_installed";
-    install_url = "./youtube-extension/youtube-project-v3.xpi";
+    install_url = "https://addons.mozilla.org/firefox/downloads/latest/v3-get-old-youtube-layout/latest.xpi";
   };
 
   # View Xpi Id's in Firefox Extension Store

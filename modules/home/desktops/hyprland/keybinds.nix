@@ -84,6 +84,7 @@
         # Program Keybinds
         "SUPER,RETURN,exec, ${lib.getExe pkgs.kitty}"
         "SUPER,f,exec, firefox"
+        "SUPER,e,exec, dolphin"
 
         # Rofi keybinds
         "ALT,space,exec,${config.night-sky.programs.rofi.launcher.command}"

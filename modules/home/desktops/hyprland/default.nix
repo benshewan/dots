@@ -176,7 +176,7 @@ in {
               );
           in "${m.name},${
             if m.enabled
-            then "preferred,${position},${scale},${rotate},${colorProfile}"
+            then "${resolution},${position},${scale},${rotate},${colorProfile}"
             else "disable"
           }"
         ) (config.monitors))

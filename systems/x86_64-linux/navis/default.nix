@@ -34,6 +34,7 @@
   };
 
   services.keylightd.enable = true;
+  virtualisation.waydroid.enable = true;
 
   services.flatpak.packages = [
     # {
@@ -45,7 +46,7 @@
       origin = "flathub";
     }
     # {
-    #   appId = "com.getpostman.Postman";
+    #   appId = "com.mongodb.Compass";
     #   origin = "flathub";
     # }
     # {

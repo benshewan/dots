@@ -10,7 +10,7 @@
   # Warning, must set real speakers to 100% first
   hardware.framework.laptop13.audioEnhancement.enable = false;
   hardware.framework.laptop13.audioEnhancement.hideRawDevice = false;
-  hardware.framework.enableKmod = true; # Allow userspace access to LEDs and battery charge limit
+  # hardware.framework.enableKmod = true; # Allow userspace access to LEDs and battery charge limit
   services.hardware.bolt.enable = true;
 
   # powerprofilesctl configure-action amdgpu_dpm --enable
@@ -45,7 +45,7 @@
   #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
 
   # Auto-calibrate with powertop
-  powerManagement.powertop.enable = true;
+  # powerManagement.powertop.enable = true;
 
   # AMD OpenGL/Vulkan stuff
   # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];

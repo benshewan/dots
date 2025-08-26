@@ -136,6 +136,7 @@ in {
           "diffEditor.experimental.useTrueInlineView" = true;
           "diffEditor.experimental.showMoves" = true;
           "git.branchProtectionPrompt" = "alwaysCommit"; # Main's not even protected, please shut up.
+          "githubPullRequests.pullBranch" = "never"; # Think on this, but vscode really wants it set.
 
           "gitlens.showWelcomeOnInstall" = false;
           "gitlens.ai.experimental.generateCommitMessage.enabled" = false;
@@ -155,6 +156,9 @@ in {
           "gitlens.telemetry.enabled" = false;
           "telemetry.telemetryLevel" = "off";
           "redhat.telemetry.enabled" = false;
+
+          # Disable AI
+          "inlineChat.lineNaturalLanguageHint" = false;
 
           # Svelte Config
           "svelte.enable-ts-plugin" = true;

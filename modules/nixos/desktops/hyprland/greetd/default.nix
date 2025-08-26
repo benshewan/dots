@@ -6,7 +6,7 @@
   ...
 }: let
   cfg = config.night-sky.desktops.hyprland.greetd;
-  tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
+  tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
 in {
   options.night-sky.desktops.hyprland.greetd = lib.night-sky.mkOpt lib.types.bool false "Use Greetd as Hyprland's display manager.";
 

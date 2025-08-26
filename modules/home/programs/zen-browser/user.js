@@ -63,3 +63,4 @@ user_pref("browser.tabs.hoverPreview.enabled", true); // show tab previews on ho
 
 user_pref("zen.theme.content-element-separation", 0); // change browser padding (default is 8)
 user_pref("browser.tabs.insertAfterCurrent", true);
+user_pref("browser.tabs.fadeOutUnloadedTabs", true);

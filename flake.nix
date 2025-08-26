@@ -18,7 +18,7 @@
       };
 
       overlays = with inputs; [
-        snowfall-flake.overlays.default
+        # snowfall-flake.overlays.default
         inputs.nix-vscode-extensions.overlays.default
       ];
     };

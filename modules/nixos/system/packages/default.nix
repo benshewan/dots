@@ -8,6 +8,7 @@
     dig
     htop
     btop
+    sysz
     # coreutils-full
     neofetch
     bat
@@ -17,7 +18,7 @@
     busybox
 
     # nix stuff
-    snowfallorg.flake
+    # snowfallorg.flake
     nix-prefetch-github
     nix-prefetch-git
     prefetch-npm-deps
