@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./hardware.nix
@@ -11,11 +16,11 @@
     desktops.hyprland.enable = true;
     programs.npm.enable = true;
     home.extraOptions = {
-      stylix.targets.kvantum.enable = true;
       night-sky = {
         desktops.hyprland.enable = true;
         programs = {
           firefox.enable = true;
+          yazi.enable = true;
           zen.enable = true;
           thunderbird.enable = true;
           filebot.enable = true;
@@ -69,23 +74,30 @@
   # };
   # boot.zfs.forceImportRoot = false;
   # networking.hostId = "355e7f23";
-
   environment.systemPackages = with pkgs;
     [
       # Audio Configuration https://github.com/ceiphr/ee-framework-presets
       # easyeffects
       powertop
       piper
-      nm-tray
       discord
       # lan-mouse
       # orca-slicer
-      night-sky.audio-share
+      # night-sky.audio-share
+      xemu
       parsec-bin
       jetbrains-toolbox
       python3
 
+      inputs.winapps.packages.${system}.winapps
+      inputs.winapps.packages.${system}.winapps-launcher
+
       (proxmark3.override {withGeneric = true;})
+
+      (vivaldi.override {
+        proprietaryCodecs = true;
+        enableWidevine = true;
+      })
     ]
     # Development stuff
     ++ (with pkgs; [
@@ -100,24 +112,26 @@
   # hardware.openrazer.enable = true;
   # hardware.openrazer.users = [config.night-sky.user.name];
 
-  programs.goldwarden = {
-    enable = true;
-    useSshAgent = false;
-  };
-
   # Work
   services.mongodb = {
     enable = true;
     package = pkgs.stable.mongodb;
   };
 
+  networking.firewall.enable = true;
   # For expo
   networking.firewall.allowedTCPPorts = [
     8081
     7100 # Development
     65530 # audio-share
+    7236 # Miracast
+    7250 # Miracast
   ];
-  networking.firewall.allowedUDPPorts = [65530];
+  networking.firewall.allowedUDPPorts = [
+    65530 # audio-share
+    7236 # Miracast
+    5353 # Miracast
+  ];
 
   services.pipewire.extraConfig.pipewire."audio-share-sink" = {
     "context.objects" = [

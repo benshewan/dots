@@ -12,7 +12,6 @@
     # coreutils-full
     neofetch
     bat
-    clipboard-jh
     wget
     playerctl
     busybox

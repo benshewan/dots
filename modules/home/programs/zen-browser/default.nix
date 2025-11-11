@@ -18,7 +18,7 @@ in {
       (
         pkgs.wrapFirefox pkgs.zen-browser-unwrapped {
           nativeMessagingHosts =
-            [pkgs.goldwarden]
+            []
             ++ lib.optional config.services.kdeconnect.enable pkgs.kdePackages.plasma-browser-integration;
 
           extraPolicies = {

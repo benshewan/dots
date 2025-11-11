@@ -15,8 +15,8 @@ in {
     programs.uwsm.enable = true;
     programs.hyprland = {
       enable = true;
-      package = pkgs.hyprland;
-      # package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Unstable
+      # package = pkgs.hyprland;
+      package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Unstable
       withUWSM = true;
     };
 
@@ -88,8 +88,10 @@ in {
     services.blueman.enable = true; # GTK Bluetooth manager
 
     services.udisks2.enable = true; # Auto mount removable drives on connect
-    services.udisks2.settings = {
-    };
+    # services.udisks2.settings = {
+    #   "drive.conf".ATA.WriteCacheEnabled = false;
+    # };
+
     programs.waybar.enable = true;
 
     # Additional Services

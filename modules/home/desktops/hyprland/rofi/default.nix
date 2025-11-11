@@ -33,7 +33,7 @@ in {
       style = mkOpt types.int 2 "the style of clipboard";
       command =
         mkOpt types.str
-        ''${./cliphist-rofi-img.sh} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu -p "clipboard" -theme $HOME/.config/rofi/clipboard.rasi | ${lib.getExe pkgs.cliphist} decode | wl-copy''
+        ''${./cliphist-rofi-img.sh} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu -show-icons -i -display-columns 2 -p "clipboard" -theme $HOME/.config/rofi/clipboard.rasi | ${lib.getExe pkgs.cliphist} decode | wl-copy''
         "The command used to launch rofi clipboard";
     };
   };
@@ -47,7 +47,7 @@ in {
       * {
       font: "${config.stylix.fonts.sansSerif.name} ${toString config.stylix.fonts.sizes.desktop}";
       }'';
-    home.file.".config/rofi/shared/colors.rasi".text = ''        
+    home.file.".config/rofi/shared/colors.rasi".text = ''      
       * {
           background:     ${colors.base01};
           background-alt: ${colors.base00};
@@ -63,7 +63,7 @@ in {
 
     programs.rofi = {
       enable = true;
-      package = pkgs.rofi-wayland;
+      package = pkgs.rofi;
       location = "center";
       terminal = lib.getExe pkgs.kitty;
 

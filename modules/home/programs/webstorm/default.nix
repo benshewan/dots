@@ -13,7 +13,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      (jetbrains.webstorm.override {
+      (stable.jetbrains.webstorm.override {
         vmopts = ''
           -Xmx4G
           -Xms2G

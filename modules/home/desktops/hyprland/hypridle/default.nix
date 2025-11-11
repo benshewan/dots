@@ -5,7 +5,7 @@
   ...
 }: let
   hyprctl = lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl";
-  hyprlock = "if ! ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${lib.getExe config.programs.hyprlock.package}; fi";
+  hyprlock = "${lib.getExe' pkgs.sysvtools "pidof"} hyprlock || ${lib.getExe config.programs.hyprlock.package}";
 in {
   config = lib.mkIf config.night-sky.desktops.hyprland.enable {
     services.hypridle = {
@@ -13,17 +13,17 @@ in {
       settings.listener = [
         {
           timeout = 30;
-          on-timeout = "if ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then ${hyprctl} dispatch dpms off; fi";
+          on-timeout = "${lib.getExe' pkgs.sysvtools "pidof"} hyprlock && ${hyprctl} dispatch dpms off";
           on-resume = "${hyprctl} dispatch dpms on";
         }
         {
           timeout = 330;
-          on-timeout = "if ${lib.getExe' pkgs.toybox "pgrep"} -x hyprlock; then systemctl suspend-then-hibernate; fi";
+          on-timeout = "${lib.getExe' pkgs.sysvtools "pidof"} hyprlock && systemctl suspend";
           on-resume = "${hyprctl} dispatch dpms on";
         }
         {
           timeout = 1800;
-          on-timeout = hyprlock;
+          on-timeout = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
         }
         {
           timeout = 1830;
@@ -32,7 +32,7 @@ in {
         }
         {
           timeout = 2130;
-          on-timeout = "systemctl suspend-then-hibernate";
+          on-timeout = "systemctl suspend";
         }
       ];
 
@@ -40,7 +40,7 @@ in {
         lock_cmd = hyprlock;
         unlock_cmd = "";
         after_sleep_cmd = "${hyprctl} dispatch dpms on";
-        before_sleep_cmd = hyprlock;
+        before_sleep_cmd = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
         inhibit_sleep = 3;
       };
     };

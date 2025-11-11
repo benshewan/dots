@@ -84,11 +84,12 @@
         # Program Keybinds
         "SUPER,RETURN,exec, ${lib.getExe pkgs.kitty}"
         "SUPER,f,exec, firefox"
-        "SUPER,e,exec, dolphin"
+        "SUPER,e,exec, ${lib.getExe pkgs.kitty} -e ${lib.getExe config.programs.yazi.package}"
 
         # Rofi keybinds
         "ALT,space,exec,${config.night-sky.programs.rofi.launcher.command}"
         "SUPER,v,exec,${config.night-sky.programs.rofi.clipboard.command}"
+        "SUPER,n,exec,${lib.getExe pkgs.networkmanager_dmenu}"
 
         # Screenshot keybinds
         "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | ${lib.getExe pkgs.satty} -f -"
@@ -155,6 +156,10 @@
         # "SUPER,mouse_up,workspace,e-1"
         "SUPER,mouse:272,movewindow"
         "SUPER,mouse:273,resizewindow"
+      ];
+
+      gesture = [
+        "3, horizontal, workspace"
       ];
     };
   };

@@ -9,8 +9,8 @@
   legacyfox-loader = prev.fetchFromGitHub {
     owner = "girst";
     repo = "LegacyFox-mirror-of-git.gir.st";
-    rev = "312a791ae03bddd725dee063344801f959cfe44d";
-    sha256 = "sha256-3XtqRa07GjA9/LlZw/b2eVZZa7/akaVo3kzRUYBg9xY=";
+    rev = "f732e438a6d8e75ce22c28c43878ca5e3effcadd";
+    sha256 = "sha256-vCRIiYdl7t3I5asndJBjSRVFu9ADBfSEkyKdlgbMxww=";
   };
 
   merged-configjs =

@@ -163,10 +163,10 @@
   # Legacy Extensions
   # ----------------------------------------------------------------------------------
   # Allow you to hold ctrl to click substring of url
-  "advancedlocationbar@veg.by" = {
-    installation_mode = "normal_installed";
-    install_url = "file://${./AdvancedLocationbar.xpi}";
-  };
+  # "advancedlocationbar@veg.by" = {
+  #   installation_mode = "normal_installed";
+  #   install_url = "file://${./AdvancedLocationbar.xpi}";
+  # };
 
   # New tabs inhert the history of their parent tabs
   # "backtrack@byalexv.co.uk" = {

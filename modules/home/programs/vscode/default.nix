@@ -40,7 +40,7 @@ in {
             tamasfe.even-better-toml
             mikestead.dotenv
             svelte.svelte-vscode
-            bradlc.vscode-tailwindcss
+            # bradlc.vscode-tailwindcss
 
             # Intellisense
             # formulahendry.auto-rename-tag # HTML rename support

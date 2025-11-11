@@ -1,9 +1,10 @@
 {config, ...}: {
   programs.git = {
     enable = true;
-    userName = config.night-sky.user.fullName;
-    userEmail = config.night-sky.user.email;
-    extraConfig = {
+    settings = {
+      user.name = config.night-sky.user.fullName;
+      user.email = config.night-sky.user.email;
+
       pull.rebase = false;
 
       merge.tool = "vimdiff";

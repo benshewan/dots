@@ -4,7 +4,7 @@
       taglib
       ffmpegthumbnailer
     ])
-    ++ (with pkgs.libsForQt5; [
+    ++ (with pkgs.kdePackages; [
       dolphin
       ark
       baloo

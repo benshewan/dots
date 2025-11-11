@@ -75,7 +75,6 @@
     # Theming Stuff
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
-    stylix.inputs.home-manager.follows = "home-manager";
 
     kvlibadwaita.url = "github:MOIS3Y/KvLibadwaita";
     kvlibadwaita.inputs.nixpkgs.follows = "nixpkgs";
@@ -92,11 +91,17 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
-    # KDE Configuration SUpport
+    # KDE Configuration Support
     plasma-manager = {
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
+    };
+
+    # Windows apps
+    winapps = {
+      url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Temporary patches

@@ -56,7 +56,6 @@ in {
         "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # allow xdg portal to get the varibales it needs
 
         "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
-        # "${lib.getExe' pkgs.nm-tray "nm-tray"}" # Not working
 
         # Clipboard
         "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
@@ -92,10 +91,6 @@ in {
           scroll_factor = 0.2;
           drag_lock = true;
         };
-      };
-
-      gestures = {
-        workspace_swipe = true;
       };
 
       general = {

@@ -11,7 +11,7 @@ in {
     enable = lib.mkEnableOption "kde";
   };
 
-  imports = [inputs.plasma-manager.homeManagerModules.plasma-manager];
+  imports = [inputs.plasma-manager.homeModules.plasma-manager];
 
   config = lib.mkIf cfg.enable {
     # Enables support for KDE Configuration
