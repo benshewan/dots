@@ -13,13 +13,10 @@ in {
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      (stable.jetbrains.webstorm.override {
+      (jetbrains.webstorm.override {
         vmopts = ''
           -Xmx4G
           -Xms2G
-          --add-opens=java.base/jdk.internal.org.objectweb.asm=ALL-UNNAMED
-          --add-opens=java.base/jdk.internal.org.objectweb.asm.tree=ALL-UNNAMED
-          -javaagent:${config.${namespace}.user.home}/.config/JetBrains/crack/ja-netfilter.jar=jetbrains
           -Dawt.toolkit.name=WLToolkit
         '';
       })

@@ -175,7 +175,7 @@
     distrobox
     kdePackages.kate
     mpv
-    bitwarden
+    bitwarden-desktop
     bottles
     wine
     # stable.kicad
@@ -221,10 +221,10 @@
   #   #   origin = "flathub";
   #   # }
   # ];
-  home.file.".config/JetBrains/WebStorm${lib.versions.majorMinor pkgs.jetbrains.webstorm.version}/prettier" = {
-    source = "${pkgs.nodePackages.prettier}/lib/node_modules/prettier";
-    recursive = true;
-  };
+  # home.file.".config/JetBrains/WebStorm${lib.versions.majorMinor pkgs.jetbrains.webstorm.version}/prettier" = {
+  #   source = "${pkgs.nodePackages.prettier}/lib/node_modules/prettier";
+  #   recursive = true;
+  # };
 
   programs.obs-studio = {
     enable = true;

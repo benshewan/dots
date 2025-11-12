@@ -1,12 +1,10 @@
 {
   pkgs,
   lib,
-  inputs,
   config,
-  namespace,
   ...
 }: let
-  # extensions = inputs.nix-vscode-extensions.extensions.${pkgs.system};
+  # extensions = inputs.nix-vscode-extensions.extensions.${pkgs.stdenv.hostPlatform.system};
   inherit (pkgs.stdenv) isLinux;
   cfg = config.night-sky.programs.vscode;
 in {

@@ -59,6 +59,9 @@ in {
     services.psd.enable = true;
     services.psd.browsers = ["firefox"];
 
+    # only works for firefox color addon or firefox gnome theme
+    stylix.targets.firefox.enable = false;
+
     home.file.".mozilla/firefox/${profile}/chrome/utils" = {
       recursive = true;
       source = "${userchromejs-loader}/profile/chrome/utils";

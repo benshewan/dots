@@ -27,19 +27,19 @@ in {
       foliate
 
       # Can't really replace hyprshade right now but is cool in that it wont effect screenshots or recordings
-      inputs.hyprsunset.packages.${system}.hyprsunset
+      inputs.hyprsunset.packages.${stdenv.hostPlatform.system}.hyprsunset
 
       libnotify # Send notifications
-      kdePackages.xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
+      # kdePackages.xwaylandvideobridge # Allow XWayland apps to view wayland apps and desktops
 
-      inputs.hyprland-qtutils.packages.${system}.hyprland-qtutils
+      inputs.hyprland-qtutils.packages.${stdenv.hostPlatform.system}.hyprland-qtutils
     ];
 
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.systemd.enable = false;
 
     wayland.windowManager.hyprland.plugins = [
-      # inputs.split-monitor-workspaces.packages.${pkgs.system}.split-monitor-workspaces
+      # inputs.split-monitor-workspaces.packages.${pkgs.stdenv.hostPlatform.system}.split-monitor-workspaces
     ];
     services.hyprpaper = {
       enable = true;

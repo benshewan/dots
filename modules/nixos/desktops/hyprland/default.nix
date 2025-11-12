@@ -16,7 +16,7 @@ in {
     programs.hyprland = {
       enable = true;
       # package = pkgs.hyprland;
-      package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Unstable
+      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # Unstable
       withUWSM = true;
     };
 

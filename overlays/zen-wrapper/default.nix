@@ -19,7 +19,7 @@
     )
     + builtins.readFile "${legacyfox-loader}/config.js";
 in {
-  zen-browser-unwrapped = inputs.zen-browser.packages."${prev.system}".zen-browser-unwrapped.overrideAttrs (oldAttrs: {
+  zen-browser-unwrapped = inputs.zen-browser.packages."${final.stdenv.hostPlatform.system}".zen-browser-unwrapped.overrideAttrs (oldAttrs: {
     installPhase =
       oldAttrs.installPhase
       + ''

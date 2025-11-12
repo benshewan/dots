@@ -89,8 +89,8 @@
       jetbrains-toolbox
       python3
 
-      inputs.winapps.packages.${system}.winapps
-      inputs.winapps.packages.${system}.winapps-launcher
+      inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps
+      inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps-launcher
 
       (proxmark3.override {withGeneric = true;})
 

@@ -5,7 +5,7 @@
   config,
   ...
 }: let
-  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
+  spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
   cfg = config.night-sky.programs.spotify;
 in {
   options.night-sky.programs.spotify = {
