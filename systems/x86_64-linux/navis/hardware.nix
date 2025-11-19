@@ -58,7 +58,7 @@
   #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
 
   # Auto-calibrate with powertop
-  powerManagement.powertop.enable = true;
+  # powerManagement.powertop.enable = true;
 
   # AMD OpenGL/Vulkan stuff
   # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
