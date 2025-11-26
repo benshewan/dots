@@ -37,12 +37,6 @@
     options mt7921e disable_aspm=1
   '';
 
-  # configuration.nix
-  systemd.services.power-profiles-daemon.serviceConfig.ExecStart = [
-    "" # This clears the original ExecStart
-    "${pkgs.power-profiles-daemon}/libexec/power-profiles-daemon --block-action=amdgpu_panel_power"
-  ];
-
   # Switch Power Profiles based on if plugged in or not
   # battery - ENV{POWER_SUPPLY_ONLINE}=="0"
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"

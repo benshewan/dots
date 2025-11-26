@@ -100,6 +100,9 @@ in {
     # Basic programs
     environment.systemPackages = with pkgs; [
       adwaita-icon-theme
+
+      # Needed for partition manager exfat support
+      exfatprogs
     ];
 
     xdg.portal = {

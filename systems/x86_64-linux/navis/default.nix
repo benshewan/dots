@@ -74,13 +74,18 @@
   # };
   # boot.zfs.forceImportRoot = false;
   # networking.hostId = "355e7f23";
+
+  # Due to old version of webcord
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-36.9.5"
+  ];
   environment.systemPackages = with pkgs;
     [
       # Audio Configuration https://github.com/ceiphr/ee-framework-presets
       # easyeffects
       powertop
       piper
-      discord
+      webcord-vencord
       # lan-mouse
       # orca-slicer
       # night-sky.audio-share
