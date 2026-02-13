@@ -124,16 +124,8 @@ in {
           }
 
           {
-            name = "*.rst";
-            run = ''piper -- ${rich} -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"'';
-          } # for restructured text (.rst) files
-          {
-            name = "*.ipynb";
-            run = ''piper -- ${rich} -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"'';
-          } # for jupyter notebooks (.ipynb)
-          {
             name = "*.json";
-            run = ''piper -- ${rich} -j --left --panel=rounded --guides --line-numbers --force-terminal "$1"'';
+            run = ''piper -- ${lib.getExe pkgs.jq} -C . "$1"'';
           } # for json (.json) files
           #    { name = "*.lang_type", run = "rich-preview"} # for particular language files eg. .py, .go., .lua, etc.
 

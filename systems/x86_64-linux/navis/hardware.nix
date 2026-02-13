@@ -29,6 +29,8 @@
       HandleLidSwitch = "suspend";
       HandleLidSwitchDocked = "ignore";
       HandlePowerKey = "suspend";
+      idleAction = "ignore"; # Disable logind's internal idle handling
+      idleActionSec = "0m"; # Optional, ensures it's disabled
     };
   };
 
@@ -53,9 +55,6 @@
 
   # Auto-calibrate with powertop
   # powerManagement.powertop.enable = true;
-
-  # AMD OpenGL/Vulkan stuff
-  # hardware.graphics.extraPackages = [pkgs.rocm-opencl-icd pkgs.amdvlk];
 
   # Add support for temp, voltage, current, and power reading
   # boot.extraModulePackages = with config.boot.kernelPackages; [zenpower];

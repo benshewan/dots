@@ -41,6 +41,12 @@
   services.keylightd.enable = true;
   virtualisation.waydroid.enable = true;
 
+  programs.steam = {
+    enable = true;
+    gamescopeSession.enable = true;
+    extest.enable = true;
+  };
+
   services.flatpak.packages = [
     # {
     #   appId = "com.parsecgaming.parsec";
@@ -50,10 +56,10 @@
       appId = "org.jdownloader.JDownloader";
       origin = "flathub";
     }
-    # {
-    #   appId = "com.mongodb.Compass";
-    #   origin = "flathub";
-    # }
+    {
+      appId = "com.moonlight_stream.Moonlight";
+      origin = "flathub";
+    }
     # {
     #   appId = "com.github.tchx84.Flatseal";
     #   origin = "flathub";
@@ -92,10 +98,15 @@
       xemu
       parsec-bin
       jetbrains-toolbox
+      dotnet-sdk_10
+      (jetbrains.rider.override {
+        vmopts = ''
+          -Xmx4G
+          -Xms2G
+          -Dawt.toolkit.name=WLToolkit
+        '';
+      })
       python3
-
-      inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps
-      inputs.winapps.packages.${stdenv.hostPlatform.system}.winapps-launcher
 
       (proxmark3.override {withGeneric = true;})
 
@@ -128,12 +139,10 @@
   networking.firewall.allowedTCPPorts = [
     8081
     7100 # Development
-    65530 # audio-share
     7236 # Miracast
     7250 # Miracast
   ];
   networking.firewall.allowedUDPPorts = [
-    65530 # audio-share
     7236 # Miracast
     5353 # Miracast
   ];

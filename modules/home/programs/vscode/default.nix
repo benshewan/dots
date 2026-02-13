@@ -38,6 +38,7 @@ in {
             tamasfe.even-better-toml
             mikestead.dotenv
             svelte.svelte-vscode
+            angular.ng-template
             # bradlc.vscode-tailwindcss
 
             # Intellisense
@@ -157,6 +158,7 @@ in {
 
           # Disable AI
           "inlineChat.lineNaturalLanguageHint" = false;
+          "terminal.integrated.initialHint" = false;
 
           # Svelte Config
           "svelte.enable-ts-plugin" = true;

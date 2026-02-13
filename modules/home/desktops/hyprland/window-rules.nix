@@ -37,42 +37,29 @@
 
       # Firefox Start
       # ------------------------------------------------------------------------------------------------------------------------
-      "idle_inhibit fullscreen, match:class ^(firefox.*|zen)$"
-      "suppress_event maximize, match:class ^(firefox.*|zen)$"
-      # PIP
-      "match:title ^(Picture-in-Picture)$, float true, match:class ^(firefox.*|zen)$"
-      "match:title (Picture-in-Picture), size 600 338, match:class ^(firefox.*|zen)$"
-      "match:title ^(Picture-in-Picture)$, pin true, match:class ^(firefox.*|zen)$"
-      "match:title ^(Picture-in-Picture)$, suppress_event maximize, match:class ^(firefox.*|zen)$"
-      "match:title ^(Picture-in-Picture)$, suppress_event fullscreen, match:class ^(firefox.*|zen)$"
-      "match:title ^(Picture-in-Picture)$, move onscreen 100%-w-15 5%, match:class ^(firefox.*|zen)$"
-      "match:title ^(Picture-in-Picture)$, no_anim on, match:class ^(firefox.*|zen)$"
-      "match:title ^(Picture-in-Picture)$, no_initial_focus true, match:class ^(firefox.*|zen)$"
+      "match:class ^(firefox.*|zen)$, idle_inhibit fullscreen, suppress_event maximize"
+
+      {
+        name = "Firefox PIP";
+        "match:title" = "^(Picture-in-Picture)$";
+        "match:class" = "^(firefox.*|zen)$";
+        float = true;
+        size = "600 338";
+        pin = true;
+        suppress_event = "maximize fullscreen";
+        move = "(monitor_w-window_w-15) ((monitor_h-window_h)*0.05)";
+        no_anim = true;
+        no_initial_focus = true;
+      }
 
       # Dialogs
-      "match:class ^(firefox)$,match:title ^(File Upload)$, float true"
-      "match:class ^(firefox)$,match:title ^(File Upload)$, center true"
-      "match:class ^(firefox)$,match:title ^(File Upload)$, stay_focused true"
-      "match:class ^(firefox)$,match:title ^(File Upload)$, dim_around true"
-      "match:class ^(firefox)$,match:title ^(File Upload)$, size 800 450"
+      "match:class ^(firefox.*|zen)$, match:title ^(File Upload)$, float true, center true, stay_focused true, dim_around true, size 800 450"
 
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, float true"
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, suppress_event fullscreen"
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, fullscreen_state 0 2"
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, center true"
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, stay_focused true"
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, dim_around true"
-      "match:class ^(firefox)$,match:title ^(Opening)(.*)$, size 800 450"
+      "match:class ^(firefox.*|zen)$, match:title ^(Opening)(.*)$, float true, suppress_event fullscreen, fullscreen_state 0 2, center true, stay_focused true, dim_around true, size 800 450"
 
-      "match:title ^()$, suppress_event maximize, match:class ^(firefox)$"
-      "match:title ^()$, suppress_event fullscreen, match:class ^(firefox)$"
-      "match:title ^()$, float true, match:class ^(firefox)$"
+      "match:class ^(firefox.*|zen)$, match:title ^()$, suppress_event maximize fullscreen, float true"
 
-      "match:title ^(Save As)$, float true"
-      "match:title ^(Save As)$, size 800 450"
-      "match:title ^(Save As)$, stay_focused true"
-      "match:title ^(Save As)$, dim_around true"
-      "match:title ^(Save As)$, center true"
+      "match:title ^(Save As)$, float true, size 800 450, stay_focused true, dim_around true, center true"
 
       # Firefox End
       # ------------------------------------------------------------------------------------------------------------------------

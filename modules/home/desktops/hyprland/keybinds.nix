@@ -12,6 +12,7 @@
         "SUPER SHIFT,Q,closewindow,"
         "SUPER,M,exit,"
         "SUPER SHIFT, f, togglefloating,"
+        "SUPER, f, togglefloating,"
         "SUPER,g,togglegroup"
         # "SUPER,tab,changegroupactive"
         # "SUPER,P,pseudo,"
@@ -83,8 +84,8 @@
 
         # Program Keybinds
         "SUPER,RETURN,exec, ${lib.getExe pkgs.kitty}"
-        "SUPER,f,exec, firefox"
         "SUPER,e,exec, ${lib.getExe pkgs.kitty} -e ${lib.getExe config.programs.yazi.package}"
+        # "SUPER,d,submap, launch_applications"
 
         # Rofi keybinds
         "ALT,space,exec,${config.night-sky.programs.rofi.launcher.command}"
@@ -161,6 +162,21 @@
       gesture = [
         "3, horizontal, workspace"
       ];
+
+      # submaps = {
+      #   launch_applications = {
+      #     settings = {
+      #       bind = [
+      #         ", j, exec, ${lib.getExe config.programs.firefox.package}"
+      #         # ", j, movefocus, d"
+      #         # ", k, movefocus, u"
+      #         # ", l, movefocus, r"
+
+      #         ", catchall, submap, reset"
+      #       ];
+      #     };
+      #   };
+      # };
     };
   };
 }

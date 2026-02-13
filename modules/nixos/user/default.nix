@@ -64,7 +64,7 @@ in {
         shell = pkgs.fish;
 
         uid = 1000;
-        extraGroups = ["wheel" "docker" "video" "libvirtd" "plugdev" "${config.night-sky.user.name}"] ++ cfg.extraGroups;
+        extraGroups = ["wheel" "docker" "video" "libvirtd" "plugdev" "dialout" "${config.night-sky.user.name}"] ++ cfg.extraGroups;
       }
       // cfg.extraOptions;
   };

@@ -1,4 +1,9 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   networking.networkmanager.enable = true;
   users.users.${config.night-sky.user.name}.extraGroups = ["networkmanager"];
 
@@ -17,6 +22,22 @@
   #   "8.8.8.8"
   #   "8.8.4.4"
   # ];
+
+  # disable wifi when ethernet is connected, mostly to fix inconsistencies when streaming with moonlight
+  networking.networkmanager.dispatcherScripts = [
+    {
+      source = pkgs.writeShellScript "ethernet-toggles-wifi" ''
+        #!/usr/bin/env bash
+        # Check if any interface of type 'ethernet' is currently 'connected'
+        if ${lib.getExe' pkgs.networkmanager "nmcli"} -t -f TYPE,STATE dev | ${lib.getExe' pkgs.busybox "grep"} -q "^ethernet:connected"; then
+          ${lib.getExe' pkgs.networkmanager "nmcli"} radio wifi off
+        else
+          ${lib.getExe' pkgs.networkmanager "nmcli"} radio wifi on
+        fi
+      '';
+      type = "basic";
+    }
+  ];
 
   # Need to set regulatory domain for AMD RZ616 wifi card
   hardware.wirelessRegulatoryDatabase = true;

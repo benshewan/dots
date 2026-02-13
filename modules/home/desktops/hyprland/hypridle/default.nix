@@ -19,7 +19,6 @@ in {
         {
           timeout = 330;
           on-timeout = "${lib.getExe' pkgs.sysvtools "pidof"} hyprlock && systemctl suspend";
-          on-resume = "${hyprctl} dispatch dpms on";
         }
         {
           timeout = 1800;

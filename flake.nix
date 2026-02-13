@@ -48,9 +48,8 @@
     mac-app-util.url = "github:hraban/mac-app-util";
 
     # Use file structure routing to build this flake
-    snowfall-lib.url = "github:snowfallorg/lib/dev";
+    snowfall-lib.url = "github:snowfallorg/lib";
     snowfall-lib.inputs.nixpkgs.follows = "nixpkgs";
-    snowfall-flake.url = "github:snowfallorg/flake";
 
     # Home Manager
     home-manager = {
@@ -59,7 +58,7 @@
     };
 
     # Hyprland
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland.url = "github:hyprwm/Hyprland";
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
@@ -96,12 +95,6 @@
       url = "github:pjones/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
-    };
-
-    # Windows apps
-    winapps = {
-      url = "github:winapps-org/winapps";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Temporary patches

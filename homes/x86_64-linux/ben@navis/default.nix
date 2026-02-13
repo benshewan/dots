@@ -62,8 +62,8 @@
   xdg.mimeApps.defaultApplications = {
     # Browser files
     "text/html" = "firefox-devedition.desktop";
-    "x-scheme-handler/http" = "firefox.desktop";
-    "x-scheme-handler/https" = "firefox.desktop";
+    "x-scheme-handler/http" = "firefox-devedition.desktop";
+    "x-scheme-handler/https" = "firefox-devedition.desktop";
 
     # Text files
     "text/plain" = "org.kde.kate.desktop";
@@ -182,7 +182,7 @@
     # plex-media-player
     # jellyfin-media-player
     # jetbrains.pycharm-professional
-    moonlight-qt
+    # stable.moonlight-qt
 
     # Work stuff
     # teamviewer
@@ -191,8 +191,6 @@
     # masterpdfeditor
     night-sky.wisenet-viewer
     inkscape
-    krita
-    obsidian
 
     # Messing around
     syncthingtray
@@ -207,6 +205,15 @@
     package = pkgs.jdk;
   };
 
+  programs.obsidian = {
+    enable = true;
+    vaults."default" = {
+      target = "Documents/Obsidian Vault";
+    };
+    defaultSettings.communityPlugins = with pkgs; [
+      night-sky.harper-obsidian-plugin
+    ];
+  };
   # services.flatpak.packages = [
   #   {
   #     appId = "com.parsecgaming.parsec";
