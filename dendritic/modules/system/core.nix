@@ -1,11 +1,10 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: {
+{config, ...}: {
   # NixOS
   flake.modules.nixos.system = {
+    pkgs,
+    lib,
+    ...
+  }: {
     time.timeZone = lib.mkDefault config.flake.meta.hosts.timezone;
     # Disable systemd TPM2 setup services - they wait for measured UKI which we don't use
     # This prevents a 60+ second timeout during boot
