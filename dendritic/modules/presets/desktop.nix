@@ -16,7 +16,6 @@
       "services/timezone"
       "programs/direnv"
       "programs/comma"
-      "programs/vscode"
       # NixOS-specific
       "system"
       "system/ananicy"
@@ -31,6 +30,7 @@
       "monitors"
       "programs/git"
       "programs/firefox"
+      "programs/vscode"
     ];
   };
 }
