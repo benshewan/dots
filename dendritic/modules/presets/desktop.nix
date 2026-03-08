@@ -16,6 +16,7 @@
       "services/timezone"
       "programs/direnv"
       "programs/comma"
+      "programs/vscode"
       # NixOS-specific
       "system"
       "system/ananicy"
