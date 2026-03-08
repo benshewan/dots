@@ -49,5 +49,7 @@
       url = "path:./packages";
     };
     pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 }

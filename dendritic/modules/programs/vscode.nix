@@ -1,4 +1,4 @@
-_: {
+{inputs, ...}: {
   flake.modules.homeManager."programs/vscode" = {
     pkgs,
     lib,
@@ -191,5 +191,13 @@ _: {
         };
       };
     };
+  };
+  flake.modules.nixos."programs/vscode" = {
+    pkgs,
+    lib,
+    config,
+    ...
+  }: {
+    nixpkgs.overlays = [inputs.nix-vscode-extensions.overlays.default];
   };
 }
