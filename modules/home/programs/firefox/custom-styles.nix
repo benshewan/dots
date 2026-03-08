@@ -12,8 +12,8 @@
   ff-ultima-theme = pkgs.fetchFromGitHub {
     owner = "soulhotel";
     repo = "FF-ULTIMA";
-    rev = "dba0da142d7501daa9e3f7878c06ca24d194b4df";
-    sha256 = "sha256-yAxqGuS4R591KwuzU+GmWgiKpVoxuS/1qoEaf6dbCl0=";
+    rev = "f99ca1cbfee282d7d12d155d86c4e85a7c87b91a";
+    sha256 = "sha256-ys0hr+WMldEq+wyPNJ584US7JKoaSwTcHaS5Dk7u/DI=";
   };
 
   firefox-second-sidebar = pkgs.fetchFromGitHub {
@@ -24,14 +24,14 @@
   };
 in {
   config = lib.mkIf cfg.enable {
-    home.file.".mozilla/firefox/${profile}/chrome" = {
+    home.file.".config/mozilla/firefox/${profile}/chrome" = {
       recursive = true;
       source = ff-ultima-theme;
     };
 
-    home.file.".mozilla/firefox/${profile}/chrome/JS" = {
-      recursive = true;
-      source = "${firefox-second-sidebar}/src";
-    };
+    # home.file.".config/mozilla/firefox/${profile}/chrome/JS" = {
+    #   recursive = true;
+    #   source = "${firefox-second-sidebar}/src";
+    # };
   };
 }

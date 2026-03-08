@@ -8,7 +8,5 @@
   environment.shellAliases = {
     reboot = "systemctl reboot";
     poweroff = "systemctl poweroff";
-    # nix-switch = "sudo nixos-rebuild switch --flake ${outputs.src}#${config.networking.hostName}";
-    # home-switch = "home-manager switch --flake ${outputs.src}#${config.night-sky.user.name}@${config.networking.hostName}";
   };
 }

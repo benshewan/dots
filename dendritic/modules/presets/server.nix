@@ -1,0 +1,32 @@
+{config, ...}: {
+  # Server preset - combines common server modules
+  # Replaces the mkHost preset="server" pattern with explicit dendritic imports
+  #
+  # Based on config.flake.meta.presets.server:
+  #   modules: users, security, development, shell
+  #   nixos: system, vpn
+  #   homeManager: dotfiles
+
+  flake.modules.nixos."presets/server" = {
+    imports = config.flake.lib.resolve [
+      # Common modules
+      "users"
+      "programs/direnv"
+
+      # NixOS-specific
+      "system"
+    ];
+  };
+
+  # For Home Manager contexts (e.g., macOS with home-manager only)
+  flake.modules.homeManager."presets/server" = {
+    imports = config.flake.lib.resolveHm [
+      # Common modules
+      "users"
+      "dotfiles"
+      "security"
+      "development"
+      "shell"
+    ];
+  };
+}

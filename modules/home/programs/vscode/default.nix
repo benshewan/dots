@@ -13,16 +13,21 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.sessionVariables = {EDITOR = "code";};
+    home.sessionVariables = {
+      EDITOR = "code";
+      # VSCODE_CLI_DATA_DIR = "$XDG_DATA_HOME/vscode";
+      };
     stylix.targets.vscode.profileNames = ["default"];
     programs.vscode = {
       enable = true;
       package =
         lib.mkIf isLinux (pkgs.vscode.override {
-          commandLineArgs = ''--password-store=gnome-libsecret --enable-features=UseOzonePlatform --ozone-platform=wayland'';
+          commandLineArgs = ''--password-store=gnome-libsecret --enable-features=UseOzonePlatform --ozone-platform=wayland '';
+          # --extensions-dir "$XDG_DATA_HOME/vscode" --user-data-dir "$XDG_DATA_HOME/vscode"
         })
         // pkgs.vscode;
-
+        # dataFolderName = "/home/${config.night-sky.user.name}/.config/vscode";
+        # nameShort = "vscode";
       profiles.default = {
         # forces config to be read-only, which makes vscode very upset
         # enableUpdateCheck = false;

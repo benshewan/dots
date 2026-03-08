@@ -30,6 +30,9 @@ in {
       XCOMPOSEFILE = ''$XDG_CONFIG_HOME/X11/xcompose''; # X11
       XCOMPOSECACHE = ''$XDG_CACHE_HOME/X11/xcompose''; # x11
       CARGO_HOME = ''$XDG_CACHE_HOME/cargo''; # Rust
+      DOCKER_CONFIG = ''"$XDG_CONFIG_HOME"/docker''; # Docker
+      NUGET_PACKAGES = ''"$XDG_CACHE_HOME"/NuGetPackages'';
+      DOTNET_CLI_HOME = ''"$XDG_DATA_HOME"/dotnet'';
     };
 
     night-sky.home.extraOptions = {

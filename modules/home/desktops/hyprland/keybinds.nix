@@ -114,6 +114,8 @@
         # Control display brightness
         ",XF86MonBrightnessUp, exec, ${dunst/volume_brightness.sh} brightness_up"
         ",XF86MonBrightnessDown, exec, ${dunst/volume_brightness.sh} brightness_down"
+        "ALT,7, exec, ${scripts/adjust-brightness-focused.sh} -"
+        "ALT,8, exec, ${scripts/adjust-brightness-focused.sh} +"
       ];
 
       # Run even when screen locked

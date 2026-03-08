@@ -1,56 +1,101 @@
+# from: https://code.thishorsie.rocks/ryze/stackpkgs/src/branch/main/packages/audiorelay.nix
 {
+  lib,
   stdenv,
-  pkgs,
-  ...
+  fetchzip,
+  makeWrapper,
+  makeDesktopItem,
+  temurin-bin-17,
+  zip,
+  libglvnd,
+  alsa-lib,
+  libpulseaudio,
 }: let
-  version = "0.27.5";
-  src = pkgs.fetchurl {
-    url = "https://dl.audiorelay.net/setups/linux/audiorelay-${version}.tar.gz";
-    sha256 = "sha256-xIVBOaS9Iee/eIGntuIevEz+gjKGeD1Pua1L9O346Mc=";
+  manifest = ''
+    Manifest-Version: 1.0
+    Main-Class: com.azefsw.audioconnect.desktop.app.MainKt
+    Specification-Title: Java Platform API Specification
+    Specification-Version: 17
+    Specification-Vendor: Oracle Corporation
+    Implementation-Title: Java Runtime Environment
+    Implementation-Version: 17.0.6
+    Implementation-Vendor: Eclipse Adoptium
+    Created-By: 17.0.5 (Eclipse Adoptium)
+  '';
+
+  runtimeLibs = [
+    libglvnd
+    alsa-lib
+    libpulseaudio
+    stdenv.cc.cc.lib
+  ];
+
+  desktopItem = makeDesktopItem {
+    name = "audiorelay";
+
+    desktopName = "AudioRelay";
+    comment = "Stream audio between your devices";
+    categories = ["AudioVideo" "Audio" "Network"];
+    icon = "audiorelay";
+    exec = "audiorelay";
+
+    startupNotify = true;
+    startupWMClass = "com-azefsw-audioconnect-desktop-app-MainKt";
   };
 in
   stdenv.mkDerivation {
     pname = "audiorelay";
-    inherit src version;
+    version = "0.27.5";
 
-    # We are using steam-run as it provides a robust FHS environment
-    # that is proven to work for this pre-packaged application.
-    nativeBuildInputs = with pkgs; [
+    src = fetchzip {
+      url = "https://dl.audiorelay.net/setups/linux/audiorelay-0.27.5.tar.gz";
+      hash = "sha256-KfhAimDIkwYYUbEcgrhvN5DGHg8DpAHfGkibN1Ny4II=";
+      stripRoot = false;
+    };
+
+    nativeBuildInputs = [
       makeWrapper
-      steam-run
+      zip
     ];
 
-    buildInputs = with pkgs; [
-      alsa-lib
-      alsa-plugins
-      gtk3
-      pipewire
-      pulseaudioFull # Kept for good measure, as steam-run might use it.
-    ];
+    # Patch the jar with manifest with main class to use it unwrapped
+    patchPhase = ''
+      mkdir META-INF
 
-    unpackPhase = ''
-      tar -xzf $src
+      echo '${manifest}' > META-INF/MANIFEST.MF
+      zip -r lib/app/audiorelay.jar META-INF/MANIFEST.MF
     '';
 
     installPhase = ''
       runHook preInstall
 
-      mkdir -p $out/bin
-      mkdir -p $out/share/audiorelay
-      mv * $out/share/audiorelay/
+      install -Dm644 ${desktopItem}/share/applications/audiorelay.desktop $out/share/applications/audiorelay.desktop
+      install -Dm644 lib/AudioRelay.png $out/share/pixmaps/audiorelay.png
 
-      makeWrapper "${pkgs.steam-run}/bin/steam-run" $out/bin/audiorelay \
-        --add-flags "$out/share/audiorelay/bin/AudioRelay" \
-        --set-default PULSE_SERVER "unix:\$XDG_RUNTIME_DIR/pulse/native" \
+      install -Dm644 lib/app/audiorelay.jar $out/share/audiorelay/audiorelay.jar
+
+      # Can't use from pkgs since these ones are older and newer fails to load some symbols
+      install -D lib/runtime/lib/libnative-rtaudio.so $out/lib/libnative-rtaudio.so
+      install -D lib/runtime/lib/libnative-opus.so $out/lib/libnative-opus.so
+
+      makeWrapper ${temurin-bin-17}/bin/java $out/bin/audiorelay \
+        --add-flags "-jar $out/share/audiorelay/audiorelay.jar" \
+        --prefix LD_LIBRARY_PATH : $out/lib/ \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath runtimeLibs}
 
       runHook postInstall
     '';
 
-    meta = with pkgs.lib; {
-      description = "Stream audio from your PC to your phone";
-      homepage = "https://audiorelay.net/";
-      license = licenses.unfree;
-      platforms = platforms.linux;
-      maintainers = with maintainers; [benshewan];
+    meta = {
+      description = "Application to stream every sound from your PC to one or multiple Android devices";
+      homepage = "https://audiorelay.net";
+      downloadPage = "https://audiorelay.net/downloads";
+      license = lib.licenses.unfree;
+      mainProgram = "audiorelay";
+
+      sourceProvenance = with lib.sourceTypes; [
+        binaryBytecode
+        binaryNativeCode # native rtaudio and opus libs
+      ];
     };
   }

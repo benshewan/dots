@@ -33,6 +33,10 @@ stdenv.mkDerivation {
       --replace-warn 'find_package(Protobuf CONFIG REQUIRED)' 'find_package(Protobuf REQUIRED)' \
       --replace-warn 'find_package(asio CONFIG REQUIRED)' "" \
       --replace-warn 'asio::asio' ""
+
+    # Fix for modern ASIO: io_context::post is removed in favor of the free function asio::post
+    substituteInPlace src/network_manager.cpp \
+      --replace-warn '_ioc->post(' 'asio::post(*_ioc, '
   '';
 
   cmakeFlags = [

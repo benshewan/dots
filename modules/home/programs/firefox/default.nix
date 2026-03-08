@@ -34,14 +34,14 @@
     buildCommand =
       (oldAttrs.buildCommand or "")
       + ''
-        mkdir -p $out/lib/firefox-bin-${oldAttrs.version}/browser/defaults/preferences
+        mkdir -p $out/lib/firefox-devedition/browser/defaults/preferences
 
         cp ${pkgs.writeText "config.js" merged-configjs} $out/lib/firefox-devedition/config.js
 
         cp -r ${legacyfox-loader}/legacy $out/lib/firefox-devedition/legacy
         cp ${legacyfox-loader}/legacy.manifest $out/lib/firefox-devedition/legacy.manifest
 
-        cp ${userchromejs-loader}/program/defaults/pref/config-prefs.js $out/lib/firefox-devedition/browser/defaults/preferences/config-prefs.js
+        cp ${userchromejs-loader}/program/defaults/pref/config-prefs.js $out/lib/firefox-devedition/defaults/pref/config-prefs.js
       '';
   });
 
@@ -56,16 +56,19 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Move browser profile into ram disk
-    services.psd.enable = true;
-    services.psd.browsers = ["firefox"];
+    # services.psd.enable = true;
+    # services.psd.browsers = ["firefox"];
 
     # only works for firefox color addon or firefox gnome theme
     stylix.targets.firefox.enable = false;
 
-    home.file.".mozilla/firefox/${profile}/chrome/utils" = {
+    home.file.".config/mozilla/firefox/${profile}/chrome/utils" = {
       recursive = true;
       source = "${userchromejs-loader}/profile/chrome/utils";
     };
+
+    programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
+    home.file.".mozilla/native-messaging-hosts".enable = false;
 
     programs.firefox = {
       enable = true;

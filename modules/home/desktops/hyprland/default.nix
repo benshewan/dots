@@ -22,9 +22,13 @@ in {
       wl-clipboard # Clipboard helper
       cliphist
       stable.pavucontrol # Audio Control
-      brightnessctl
       loupe
       foliate
+
+      # for scripts
+      ddcutil
+      brightnessctl
+      jq
 
       # Can't really replace hyprshade right now but is cool in that it wont effect screenshots or recordings
       inputs.hyprsunset.packages.${stdenv.hostPlatform.system}.hyprsunset

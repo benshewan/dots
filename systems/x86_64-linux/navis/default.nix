@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }: {
   imports = [
@@ -21,7 +22,7 @@
         programs = {
           firefox.enable = true;
           yazi.enable = true;
-          zen.enable = true;
+          zen.enable = false;
           thunderbird.enable = true;
           filebot.enable = true;
           chromium.enable = true;
@@ -33,6 +34,7 @@
           fish.enable = true;
           kdeconnect.enable = true;
           vscode.enable = true;
+          virt-manager.enable = true;
         };
       };
     };
@@ -91,13 +93,14 @@
       # easyeffects
       powertop
       piper
-      webcord-vencord
       # lan-mouse
       # orca-slicer
       # night-sky.audio-share
       xemu
       parsec-bin
       jetbrains-toolbox
+      bitwarden-desktop
+
       dotnet-sdk_10
       (jetbrains.rider.override {
         vmopts = ''
@@ -114,16 +117,31 @@
         proprietaryCodecs = true;
         enableWidevine = true;
       })
+
+      night-sky.audiorelay
     ]
     # Development stuff
     ++ (with pkgs; [
       (android-studio.override {forceWayland = true;})
     ]);
 
+  # displaylink
+  boot.kernelModules = ["udl"];
+
   hardware.logitech.wireless = {
     enable = true;
     enableGraphical = true;
   };
+
+  services.ddccontrol.enable = true;
+  users.users.${config.night-sky.user.name}.extraGroups = ["i2c"];
+  services.ananicy = {
+    enable = true;
+    package = pkgs.ananicy-cpp;
+    rulesProvider = pkgs.ananicy-rules-cachyos;
+  };
+  # services.howdy.enable = true;
+  # services.linux-enable-ir-emitter.enable = true;
 
   # hardware.openrazer.enable = true;
   # hardware.openrazer.users = [config.night-sky.user.name];
@@ -141,29 +159,71 @@
     7100 # Development
     7236 # Miracast
     7250 # Miracast
+    59100 # Audio relay
+    65530
+    4242
   ];
   networking.firewall.allowedUDPPorts = [
     7236 # Miracast
     5353 # Miracast
+    59100
+    59200 # Audio relay
+    65530
+    4242
   ];
 
-  services.pipewire.extraConfig.pipewire."audio-share-sink" = {
-    "context.objects" = [
-      {
-        factory = "adapter";
-        args = {
-          "factory.name" = "support.null-audio-sink";
-          "node.name" = "Audio Share Sink";
-          "media.class" = "Audio/Sink";
-          "object.linger" = true;
-          "audio.position" = ["FL" "FR"];
-          "priority.session" = 1009;
-          "priority.driver" = 1009;
-          "monitor.channel-volumes" = true;
-          "monitor.passthrough" = true;
-        };
-      }
-    ];
+  services.pipewire.extraConfig.pipewire = {
+    # "audio-share-sink" = {
+    #   "context.objects" = [
+    #     {
+    #       factory = "adapter";
+    #       args = {
+    #         "factory.name" = "support.null-audio-sink";
+    #         "node.name" = "Audio Share Sink";
+    #         "media.class" = "Audio/Sink";
+    #         "object.linger" = true;
+    #         "audio.position" = ["FL" "FR"];
+    #         "priority.session" = 1009;
+    #         "priority.driver" = 1009;
+    #         "monitor.channel-volumes" = true;
+    #         "monitor.passthrough" = true;
+    #       };
+    #     }
+    #   ];
+    # };
+    "10-null-sink" = {
+      "context.objects" = [
+        {
+          factory = "adapter";
+          args = {
+            "factory.name" = "support.null-audio-sink";
+            "node.name" = "audiorelay-virtual-mic-sink";
+            "node.description" = "Virtual Mic Sink";
+            "media.class" = "Audio/Sink";
+            "audio.position" = "FL,FR";
+          };
+        }
+      ];
+    };
+    "20-virtual-mic" = {
+      "context.modules" = [
+        {
+          name = "libpipewire-module-loopback";
+          args = {
+            "capture.props" = {
+              "node.target" = "audiorelay-virtual-mic-sink";
+            };
+            "playback.props" = {
+              "node.name" = "audiorelay-virtual-mic";
+              "node.description" = "Virtual Mic";
+              "media.class" = "Audio/Source";
+              "audio.position" = "FL,FR";
+              "node.passive" = true;
+            };
+          };
+        }
+      ];
+    };
   };
 
   # MongoDB Extenal access

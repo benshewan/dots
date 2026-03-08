@@ -18,16 +18,11 @@
     </head>
 
     <body>
-    <script src="mainbar.js"></script>
     <script src="monochromeIcons.js"></script>
-    <script src="ybAddressBar.js"></script>
     <script src="mdNotes.js"></script>
     <script src="globalMediaControls.js"></script>
-    <script src="autoHidePanel.js"></script>
-     <!-- <script src="dialogTab.js"></script> -->
     <script src="feedIcon.js"></script>
     <script src="collapseKeyboardSettings.js"></script>
-    <script src="accentMod.js"></script>
     <script src="importExportCommandChains.js"></script>
     </body>
 

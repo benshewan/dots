@@ -15,7 +15,7 @@
 
   # powerprofilesctl configure-action amdgpu_dpm --enable
   boot.kernelParams = [
-    "amdgpu.abmlevel=0" # Force off because it looks ugly
+    "amdgpu.abmlevel=2" # Force off because it looks ugly
     "rcu_nocbs=all"
     "rcutree.enable_rcu_lazy=1"
     "pcie_aspm=force" # maybe?
@@ -34,11 +34,6 @@
     };
   };
 
-  boot.extraModprobeConfig = ''
-    # Disables ASPM for the mt7921e driver to prevent instability
-    options mt7921e disable_aspm=1
-  '';
-
   # Switch Power Profiles based on if plugged in or not
   # battery - ENV{POWER_SUPPLY_ONLINE}=="0"
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
@@ -52,12 +47,6 @@
     ''ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"''
   ];
   #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
-
-  # Auto-calibrate with powertop
-  # powerManagement.powertop.enable = true;
-
-  # Add support for temp, voltage, current, and power reading
-  # boot.extraModulePackages = with config.boot.kernelPackages; [zenpower];
 
   # Firmware
   services.fwupd = {
