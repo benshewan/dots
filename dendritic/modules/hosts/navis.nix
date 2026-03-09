@@ -40,6 +40,7 @@ in {
 
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
+      environment.systemPackages = with pkgs; [local.audiorelay];
 
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
@@ -48,6 +49,7 @@ in {
           "presets/hyprland"
           "programs/webstorm"
           "programs/yazi"
+          "programs/spotify"
         ];
 
         monitors = [

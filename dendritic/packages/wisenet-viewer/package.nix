@@ -28,16 +28,16 @@ in
 
       fontconfig
       freetype
-      xorg.libX11
+      libx11
       libusb1.out
-      xorg.xcbutilwm
-      xorg.xcbutilimage
-      xorg.xcbutil
-      xorg.xcbutilkeysyms
-      xorg.xcbutilrenderutil
-      xorg.libXcomposite
-      xorg.libXdamage
-      xorg.libXtst
+      libxcb-wm
+      libxcb-image
+      libxcb-util
+      libxcb-keysyms
+      libxcb-render-util
+      libxcomposite
+      libxdamage
+      libxtst
       libpng
       libGL
       libpulseaudio
@@ -46,7 +46,7 @@ in
       nspr
       zlib
       krb5
-      xorg.libxcb
+      libxcb
       pango
       cairo
       gdk-pixbuf

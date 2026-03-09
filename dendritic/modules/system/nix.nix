@@ -1,4 +1,4 @@
-{...}: let
+{inputs, ...}: let
   # Shared Cachix configuration for both NixOS and Darwin
   sharedCachixConfig = {
     substituters = [
@@ -57,6 +57,8 @@ in {
       optimise.automatic = true;
       channel.enable = false;
     };
+    #  add flake parts overlay
+    nixpkgs.overlays = [inputs.self.overlays.default];
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave

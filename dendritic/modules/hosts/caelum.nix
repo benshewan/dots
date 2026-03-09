@@ -45,15 +45,16 @@ in {
           "presets/hyprland"
           "programs/webstorm"
           "programs/yazi"
+          "programs/spotify"
         ];
 
         monitors = [
-         {
-             name = "Virtual-1";
-             width = 1920;
-             height = 1080;
-             refreshRate = 60;
-             primary = true;
+          {
+            name = "Virtual-1";
+            width = 1920;
+            height = 1080;
+            refreshRate = 60;
+            primary = true;
           }
         ];
       };

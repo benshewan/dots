@@ -30,6 +30,9 @@
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak";
 
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Theming Stuff
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";

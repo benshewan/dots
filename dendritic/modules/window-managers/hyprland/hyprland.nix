@@ -8,6 +8,7 @@
     inherit (pkgs.stdenv.hostPlatform) system;
   in {
     programs.uwsm.enable = true;
+    programs.dconf.enable = true;
     programs.hyprland = {
       enable = true;
       package = inputs.hyprland.packages.${system}.hyprland; # Unstable
