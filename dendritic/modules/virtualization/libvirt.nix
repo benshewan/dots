@@ -12,13 +12,6 @@
 
     programs.virt-manager.enable = true;
 
-    dconf.settings = {
-      "org/virt-manager/virt-manager/connections" = {
-        autoconnect = ["qemu:///system"];
-        uris = ["qemu:///system"];
-      };
-    };
-
     users.users.${config.flake.meta.user.username}.extraGroups = ["libvirtd"];
 
     environment.systemPackages = with pkgs; [
@@ -35,5 +28,13 @@
     ];
 
     networking.firewall.trustedInterfaces = ["virbr0"];
+  };
+  flake.modules.homeManager."virtualization/libvirt" = {pkgs, ...}: {
+    dconf.settings = {
+      "org/virt-manager/virt-manager/connections" = {
+        autoconnect = ["qemu:///system"];
+        uris = ["qemu:///system"];
+      };
+    };
   };
 }
