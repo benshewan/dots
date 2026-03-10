@@ -15,7 +15,7 @@
   };
 
   # For Home Manager contexts (e.g., macOS with home-manager only)
-  flake.modules.homeManager."presets/hyprland" = {
+  flake.modules.homeManager."presets/hyprland" = {pkgs, ...}: {
     imports = config.flake.lib.resolveHm [
       "window-managers/hyprland"
       "programs/satty"
