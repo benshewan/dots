@@ -46,6 +46,7 @@ in {
           "programs/webstorm"
           "programs/yazi"
           "programs/spotify"
+          "programs/dolphin"
         ];
 
         monitors = [

@@ -22,5 +22,11 @@
       "programs/rofi"
       "programs/kitty"
     ];
+
+    home.packages = with pkgs; [
+      stable.pavucontrol # Audio Control
+      loupe
+      foliate
+    ];
   };
 }

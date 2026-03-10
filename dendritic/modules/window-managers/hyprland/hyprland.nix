@@ -84,6 +84,12 @@
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.systemd.enable = false;
 
+    home.packages = with pkgs; [
+      libnotify # Send notifications
+
+      inputs.hyprland-qtutils.packages.${stdenv.hostPlatform.system}.hyprland-qtutils
+    ];
+
     # Setup wallpaper
     services.hyprpaper = {
       enable = true;
@@ -103,13 +109,12 @@
 
         # Clipboard
         "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
-        "wl-paste --type text --watch ${lib.getExe pkgs.cliphist} store"
-        "wl-paste --type image --watch ${lib.getExe pkgs.cliphist} store"
+        "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --type text --watch ${lib.getExe pkgs.cliphist} store"
+        "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --type image --watch ${lib.getExe pkgs.cliphist} store"
 
         # Style
         "${lib.getExe pkgs.dunst}"
         ''hyprctl setcursor "${config.stylix.cursor.name}" ${toString config.stylix.cursor.size}''
-        # "swaync"
       ];
 
       plugin = {

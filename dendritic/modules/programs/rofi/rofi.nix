@@ -17,6 +17,30 @@
       rev = "a3c2def145e354d3cb88fafbbccfe8bd37da88db";
       sha256 = "sha256-Ew3Po2y20OlOtiX08A4ySxvdLC9KTrNQd32SQZz6DJM=";
     };
+
+    cliphist-script = pkgs.writeShellScriptBin "cliphist-script" ''
+      tmp_dir="/tmp/cliphist"
+      ${lib.getExe' pkgs.coreutils "rm"} -rf "''$tmp_dir"
+
+      if [[ -n "''$1" ]]; then
+          ${lib.getExe pkgs.cliphist} decode <<<"''$1" | ${lib.getExe' pkgs.wl-clipboard "wl-copy"}
+          exit
+      fi
+
+      ${lib.getExe' pkgs.coreutils "mkdir"} -p "''$tmp_dir"
+
+      read -r -d "" prog <<EOF
+      /^[0-9]+\s<meta http-equiv=/ { next }
+      match(\$0, /^([0-9]+)\s(\[\[\s)?binary.*(jpg|jpeg|png|bmp)/, grp) {
+          system("echo " grp[1] "\\\\\t | ${lib.getExe pkgs.cliphist} decode >''$tmp_dir/"grp[1]"."grp[3])
+          print \$0"\0icon\x1f''$tmp_dir/"grp[1]"."grp[3]
+          next
+      }
+      1
+      EOF
+
+      ${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.gawk} "''$prog"
+    '';
   in {
     options.programs.rofi = {
       launcher = {
@@ -33,7 +57,7 @@
         style = mkOpt types.int 2 "the style of clipboard";
         command =
           mkOpt types.str
-          ''${./cliphist-rofi-img.sh} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu -show-icons -i -display-columns 2 -p "clipboard" -theme $HOME/.config/rofi/clipboard.rasi | ${lib.getExe pkgs.cliphist} decode | wl-copy''
+          ''${cliphist-script} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu -show-icons -i -display-columns 2 -p "clipboard" -theme $HOME/.config/rofi/clipboard.rasi | ${lib.getExe pkgs.cliphist} decode | wl-copy''
           "The command used to launch rofi clipboard";
       };
     };
@@ -46,7 +70,7 @@
         font: "${config.stylix.fonts.sansSerif.name} ${toString config.stylix.fonts.sizes.desktop}";
         }'';
 
-      home.file.".config/rofi/shared/colors.rasi".text = ''            
+      home.file.".config/rofi/shared/colors.rasi".text = ''        
         * {
             background:     ${colors.base01};
             background-alt: ${colors.base00};
