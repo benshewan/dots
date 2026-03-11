@@ -59,6 +59,7 @@
 
   # Home Manager
   flake.modules.homeManager.system = {
+    xdg.enable = true;
     home.preferXdgDirectories = true;
   };
 }
