@@ -33,6 +33,7 @@ in {
         # Software
         "programs/adb"
         "services/keylightd"
+        "programs/npm"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -50,6 +51,34 @@ in {
           "programs/webstorm"
           "programs/yazi"
           "programs/spotify"
+          "programs/obs"
+        ];
+        home.packages = with pkgs; [
+          distrobox
+          kdePackages.kate
+          mpv
+          bottles
+          wine
+          # stable.kicad
+          # plex-media-player
+          # jellyfin-media-player
+          # jetbrains.pycharm-professional
+          # stable.moonlight-qt
+
+          # Work stuff
+          # teamviewer
+          libreoffice-fresh
+          gnome-network-displays
+          # masterpdfeditor
+          local.wisenet-viewer
+          inkscape
+
+          # Messing around
+          syncthingtray
+          stable.handbrake
+
+          # Audio
+          qpwgraph
         ];
 
         monitors = [

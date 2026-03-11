@@ -21,6 +21,7 @@
       "programs/satty"
       "programs/rofi"
       "programs/kitty"
+      "programs/obsidian"
     ];
 
     home.packages = with pkgs; [

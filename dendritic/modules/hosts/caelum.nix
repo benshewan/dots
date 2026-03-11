@@ -33,6 +33,7 @@ in {
         # Software
         "programs/adb"
         "services/keylightd"
+        "programs/npm"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
@@ -47,6 +48,7 @@ in {
           "programs/yazi"
           "programs/spotify"
           "programs/dolphin"
+          "programs/prism-launcher"
         ];
 
         monitors = [
