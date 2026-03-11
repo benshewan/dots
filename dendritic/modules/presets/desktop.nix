@@ -27,6 +27,7 @@
   flake.modules.homeManager."presets/desktop" = {
     imports = config.flake.lib.resolveHm [
       # All desktop features for home-manager-only systems
+      "system"
       "users"
       "monitors"
       "programs/git"
