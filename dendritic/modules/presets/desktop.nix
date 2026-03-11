@@ -32,6 +32,8 @@
       "programs/git"
       "programs/firefox"
       "programs/vscode"
+      "programs/fish"
+      "programs/bash"
     ];
   };
 }
