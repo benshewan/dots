@@ -18,7 +18,7 @@
       sha256 = "sha256-Ew3Po2y20OlOtiX08A4ySxvdLC9KTrNQd32SQZz6DJM=";
     };
 
-    cliphist-script = pkgs.writeShellScriptBin "cliphist-script" ''
+    cliphist-script = pkgs.writeShellApplication "cliphist-script" ''
       tmp_dir="/tmp/cliphist"
       ${lib.getExe' pkgs.coreutils "rm"} -rf "''$tmp_dir"
 
@@ -70,7 +70,7 @@
         font: "${config.stylix.fonts.sansSerif.name} ${toString config.stylix.fonts.sizes.desktop}";
         }'';
 
-      home.file.".config/rofi/shared/colors.rasi".text = ''        
+      home.file.".config/rofi/shared/colors.rasi".text = ''              
         * {
             background:     ${colors.base01};
             background-alt: ${colors.base00};
