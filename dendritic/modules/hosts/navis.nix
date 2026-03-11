@@ -70,7 +70,7 @@ in {
           libreoffice-fresh
           gnome-network-displays
           # masterpdfeditor
-          local.wisenet-viewer
+          # local.wisenet-viewer # Link broken
           inkscape
 
           # Messing around

@@ -1,7 +1,8 @@
 _: {
   flake.modules.homeManager."programs/npm" = {pkgs, ...}: {
     home.sessionVariables.NODE_REPL_HISTORY = ''$XDG_CACHE_HOME/node_repl_history'';
-    home.sessionVariables.NPM_CONFIG_USERCONFIG = ''$XDG_CONFIG_HOME/npm/npmrc'';
+    # handled by config.home.preferXdgDirectories
+    # home.sessionVariables.NPM_CONFIG_USERCONFIG = ''$XDG_CONFIG_HOME/npm/npmrc'';
 
     home.packages = with pkgs; [
       nodejs

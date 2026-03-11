@@ -56,4 +56,9 @@
   # Darwin
   flake.modules.darwin.system = {
   };
+
+  # Home Manager
+  flake.modules.homeManager.system = {
+    home.preferXdgDirectories = true;
+  };
 }
