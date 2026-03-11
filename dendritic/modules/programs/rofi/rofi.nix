@@ -18,7 +18,7 @@
       sha256 = "sha256-Ew3Po2y20OlOtiX08A4ySxvdLC9KTrNQd32SQZz6DJM=";
     };
 
-    cliphist-script = pkgs.writeShellApplication "cliphist-script" ''
+    cliphist-script = pkgs.writeShellScriptBin "cliphist-script" ''
       tmp_dir="/tmp/cliphist"
       ${lib.getExe' pkgs.coreutils "rm"} -rf "''$tmp_dir"
 
@@ -57,7 +57,7 @@
         style = mkOpt types.int 2 "the style of clipboard";
         command =
           mkOpt types.str
-          ''${cliphist-script} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu -show-icons -i -display-columns 2 -p "clipboard" -theme $HOME/.config/rofi/clipboard.rasi | ${lib.getExe pkgs.cliphist} decode | wl-copy''
+          ''${lib.getExe cliphist-script} | ${lib.getExe' config.programs.rofi.package "rofi"} -dmenu -show-icons -i -display-columns 2 -p "clipboard" -theme $HOME/.config/rofi/clipboard.rasi | ${lib.getExe pkgs.cliphist} decode | wl-copy''
           "The command used to launch rofi clipboard";
       };
     };
