@@ -33,7 +33,6 @@ in {
         # Software
         "programs/adb"
         "services/keylightd"
-        "programs/npm"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -52,6 +51,7 @@ in {
           "programs/yazi"
           "programs/spotify"
           "programs/obs"
+          "programs/npm"
         ];
         home.packages = with pkgs; [
           distrobox
