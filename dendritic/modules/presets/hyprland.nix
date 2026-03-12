@@ -9,7 +9,7 @@
 
   flake.modules.nixos."presets/hyprland" = {
     imports = config.flake.lib.resolve [
-      "display-managers/tuigreet"
+      "display-managers/sddm"
       "window-managers/hyprland"
     ];
   };

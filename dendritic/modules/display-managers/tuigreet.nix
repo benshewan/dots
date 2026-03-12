@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}: {
+{lib, ...}: {
   flake.modules.nixos."display-managers/tuigreet" = {pkgs, ...}: {
     services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
     services.greetd = {
