@@ -1,7 +1,8 @@
-{inputs, ...}: {
+{...} @ flake: {
   flake.modules.nixos."display-managers/sddm" = {
     pkgs,
     lib,
+    config,
     ...
   }: {
     # services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
@@ -9,11 +10,19 @@
     #   enable = true;
     #   wayland.enable = true;
     # };
-    imports = [inputs.silentSDDM.nixosModules.default];
+    imports = [flake.inputs.silentSDDM.nixosModules.default];
     programs.silentSDDM = {
       enable = true;
       theme = "rei";
-      # settings = { ... }; see example in module
+      backgrounds = {
+        default = config.flake.stylix.image;
+      };
+      profileIcons = {
+        "${flake.config.flake.meta.user.username}" = flake.config.flake.meta.user.avatar;
+      };
+      # settings = {
+      #   # LockScreen.background =
+      # };
     };
   };
 }
