@@ -20,9 +20,9 @@
       profileIcons = {
         "${flake.config.flake.meta.user.username}" = flake.config.flake.meta.user.avatar;
       };
-      # settings = {
-      #   # LockScreen.background =
-      # };
+      settings = {
+        LoginScreen.background = config.flake.stylix.image;
+      };
     };
   };
 }
