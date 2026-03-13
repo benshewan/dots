@@ -15,13 +15,21 @@
       enable = true;
       theme = "rei";
       backgrounds = {
-        default = config.flake.stylix.image;
+        default = config.stylix.image;
       };
-      profileIcons = {
-        "${flake.config.flake.meta.user.username}" = flake.config.flake.meta.user.avatar;
+      profileIcons = let
+        avatarFile =
+          if flake.config.flake.meta.user.avatar.source != null
+          then flake.config.flake.meta.user.avatar.source
+          else
+            pkgs.fetchurl {
+              inherit (flake.config.flake.meta.user.avatar) url sha256;
+            };
+      in {
+        "${flake.config.flake.meta.user.username}" = avatarFile;
       };
       settings = {
-        LoginScreen.background = config.flake.stylix.image;
+        LoginScreen.background = config.stylix.image;
       };
     };
   };
