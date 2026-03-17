@@ -29,7 +29,13 @@
         "${flake.config.flake.meta.user.username}" = avatarFile;
       };
       settings = {
-        LoginScreen.background = config.stylix.image;
+        "LockScreen" = {
+          background = builtins.baseNameOf config.stylix.image;
+          display = false;
+        };
+        "LoginScreen" = {
+          background = builtins.baseNameOf config.stylix.image;
+        };
       };
     };
   };
