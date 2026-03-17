@@ -52,6 +52,8 @@ in {
           "programs/spotify"
           "programs/obs"
           "programs/npm"
+          "programs/vivaldi"
+          "programs/chromium"
         ];
         home.packages = with pkgs; [
           distrobox

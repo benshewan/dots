@@ -68,13 +68,6 @@
       withSystem prev.stdenv.hostPlatform.system (
         {config, ...}: {
           local = config.packages;
-          stable = import inputs.nixpkgs-stable {
-            system = final.stdenv.hostPlatform.system;
-            config.allowUnfree = true;
-          };
-          # buildNpmGlobalPackage = import "${inputs.self}/pkgs/lib/buildNpmGlobalPackage.nix" {
-          #   pkgs = final;
-          # };
         }
       );
   };

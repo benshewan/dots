@@ -49,6 +49,9 @@ in {
           "programs/dolphin"
           "programs/prism-launcher"
           "programs/npm"
+          "programs/python"
+          "programs/vivaldi"
+          "programs/chromium"
         ];
 
         monitors = [

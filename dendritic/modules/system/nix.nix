@@ -1,4 +1,8 @@
-{inputs, ...}: let
+{
+  inputs,
+  lib,
+  ...
+} @ args: let
   # Shared Cachix configuration for both NixOS and Darwin
   sharedCachixConfig = {
     substituters = [
@@ -36,6 +40,14 @@
     useUserPackages = true;
     backupFileExtension = "hm-backup";
   };
+
+  # Overlays
+  # ------------------------------
+  allFiles = lib.filesystem.listFilesRecursive ../../overlays;
+
+  nixFiles = builtins.filter (file: lib.hasSuffix ".nix" (builtins.toString file)) allFiles;
+
+  dynamicOverlays = map (file: import file args) nixFiles;
 in {
   # NixOS
   flake.modules.nixos.system = {
@@ -58,7 +70,7 @@ in {
       channel.enable = false;
     };
     #  add flake parts overlay
-    nixpkgs.overlays = [inputs.self.overlays.default];
+    nixpkgs.overlays = [inputs.self.overlays.default] ++ dynamicOverlays;
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
