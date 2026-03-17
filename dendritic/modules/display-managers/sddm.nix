@@ -4,7 +4,17 @@
     lib,
     config,
     ...
-  }: {
+  }: let
+    avatarFile =
+      if flake.config.flake.meta.user.avatar.source != null
+      then flake.config.flake.meta.user.avatar.source
+      else
+        pkgs.fetchurl {
+          inherit (flake.config.flake.meta.user.avatar) url sha256;
+        };
+
+    colors = config.lib.stylix.colors.withHashtag;
+  in {
     # services.xserver.displayManager.lightdm.enable = lib.mkDefault false;
     # services.sddm = {
     #   enable = true;
@@ -17,15 +27,7 @@
       backgrounds = {
         default = config.stylix.image;
       };
-      profileIcons = let
-        avatarFile =
-          if flake.config.flake.meta.user.avatar.source != null
-          then flake.config.flake.meta.user.avatar.source
-          else
-            pkgs.fetchurl {
-              inherit (flake.config.flake.meta.user.avatar) url sha256;
-            };
-      in {
+      profileIcons = {
         "${flake.config.flake.meta.user.username}" = avatarFile;
       };
       settings = {
@@ -40,15 +42,15 @@
           background = builtins.baseNameOf config.stylix.image;
         };
         "LoginScreen.LoginArea.Avatar" = {
-          active-border-color = "#FF0000";
-          inactive-border-color = "#FFFF00";
+          active-border-color = colors.base02;
+          inactive-border-color = colors.base01;
         };
         "LoginScreen.LoginArea.Username" = {
-          color = "#FFF";
+          color = colors.base05;
         };
         "LoginScreen.LoginArea.PasswordInput" = {
-          content-color = "#000";
-          background-color = "#FFF";
+          content-color = colors.base04;
+          background-color = colors.base01;
           border-color = "#FF00FF";
           masked-character = "●";
         };
