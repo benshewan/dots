@@ -11,9 +11,8 @@
     ];
   };
 in {
-  # rvn-pc: Dendritic host configuration for desktop workstation
-  # Hardware: Custom desktop with Intel CPU and NVIDIA GPU
-  # Role: Primary workstation for gaming, development, and daily use
+  # Hardware: Framework 13 AMD 7840U
+  # Role: Primary Machine, both for work and personal
 
   flake = {
     # Host metadata
@@ -59,20 +58,11 @@ in {
           distrobox
           kdePackages.kate
           mpv
-          bottles
-          wine
-          # stable.kicad
-          # plex-media-player
-          # jellyfin-media-player
-          # jetbrains.pycharm-professional
-          # stable.moonlight-qt
 
           # Work stuff
-          # teamviewer
           libreoffice-fresh
           gnome-network-displays
-          # masterpdfeditor
-          # local.wisenet-viewer # Link broken
+          local.wisenet-viewer # Link broken
           inkscape
 
           # Messing around

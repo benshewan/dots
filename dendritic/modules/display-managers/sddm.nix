@@ -29,12 +29,28 @@
         "${flake.config.flake.meta.user.username}" = avatarFile;
       };
       settings = {
+        # Lock Screen
         "LockScreen" = {
           background = builtins.baseNameOf config.stylix.image;
           display = false;
         };
+
+        # Login Screen
         "LoginScreen" = {
           background = builtins.baseNameOf config.stylix.image;
+        };
+        "LoginScreen.LoginArea.Avatar" = {
+          active-border-color = "#FF0000";
+          inactive-border-color = "#FFFF00";
+        };
+        "LoginScreen.LoginArea.Username" = {
+          color = "#FFF";
+        };
+        "LoginScreen.LoginArea.PasswordInput" = {
+          content-color = "#000";
+          background-color = "#FFF";
+          border-color = "#FF00FF";
+          masked-character = "●";
         };
       };
     };

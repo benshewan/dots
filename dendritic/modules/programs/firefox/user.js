@@ -95,7 +95,7 @@ user_pref("ultima.navbar.autohide", false);
 user_pref("ultima.navbar.float", true);
 user_pref("ultima.navbar.float.fullsize", false);
 user_pref("ultima.navbar.hide.buttons", false);
-user_pref("ultima.navbar.position", "bottom"); // top or bottomuser_pref("ultima.navbar.bookmarks.autotruehide", true);
+user_pref("ultima.navbar.position", "top"); // top or bottomuser_pref("ultima.navbar.bookmarks.autotruehide", true);
 user_pref("ultima.navbar.bookmarks.compact", false);
 user_pref("ultima.navbar.bookmarks.position", "center");
 user_pref("ultima.navbar.bookmarks.scrollable", true);

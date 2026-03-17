@@ -52,6 +52,7 @@
       enable = true;
       package = pkgs.yazi.override {_7zz = pkgs._7zz-rar;};
       enableFishIntegration = true;
+      shellWrapperName = "yy";
       settings = {
         # kdeconnect-send = {
         #   auto-select-single = true;
