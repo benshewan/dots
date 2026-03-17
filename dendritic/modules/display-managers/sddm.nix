@@ -51,8 +51,13 @@
         "LoginScreen.LoginArea.PasswordInput" = {
           content-color = colors.base04;
           background-color = colors.base01;
-          border-color = "#FF00FF";
+          border-color = colors.base02;
           masked-character = "●";
+        };
+        "LoginScreen.MenuArea.Session" = {
+          background-color = colors.base01;
+          content-color = colors.base04;
+          active-content-color = colors.base02;
         };
       };
     };
