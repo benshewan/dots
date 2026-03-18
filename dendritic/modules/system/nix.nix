@@ -49,8 +49,25 @@
 
   dynamicOverlays = map (file: import file args) nixFiles;
 in {
+  flake-file.inputs = {
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    # determinate-nixpkgs.url = "https://flakehub.com/f/DeterminateSystems/nixpkgs-weekly/0.1";
+    # determinate = {
+    #   inputs.nixpkgs.follows = "determinate-nixpkgs";
+    #   url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
+    # };
+    home-manager.url = "github:nix-community/home-manager";
+    darwin.url = "github:LnL7/nix-darwin";
+    nix-darwin = {
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+    };
+    # mac-app-util.url = "github:hraban/mac-app-util";
+  };
+
   # NixOS
   flake.modules.nixos.system = {
+    # imports = [inputs.determinate.nixosModules.default];
     programs.nix-ld.enable = true;
     nixpkgs.config.allowUnfree = true;
 

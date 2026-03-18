@@ -1,4 +1,7 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    lan-mouse.url = "github:feschber/lan-mouse";
+  };
   flake.modules.homeManager."programs/lan-mouse" = {
     pkgs,
     lib,

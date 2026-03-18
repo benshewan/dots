@@ -68,6 +68,6 @@ in {
 
     networking.nameservers = hostMeta.dnsServers;
 
-    services.keylightd.enable = true;
+    # services.keylightd.enable = true;
   };
 }

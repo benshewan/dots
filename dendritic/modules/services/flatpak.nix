@@ -1,4 +1,8 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
+  };
+
   flake.modules.nixos."services/flatpak" = {
     pkgs,
     config,

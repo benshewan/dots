@@ -1,4 +1,8 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+  };
+
   flake.modules.homeManager."programs/spotify" = {
     pkgs,
     lib,

@@ -1,4 +1,8 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
+  };
   # NixOS
   flake.modules.nixos."window-managers/hyprland" = {
     pkgs,

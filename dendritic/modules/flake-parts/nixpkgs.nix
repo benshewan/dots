@@ -3,6 +3,12 @@
   withSystem,
   ...
 }: {
+  flake-file.inputs = {
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  };
+
   systems = [
     "x86_64-linux"
     "aarch64-linux"
@@ -51,15 +57,13 @@
       then lib.concatMapAttrs (name: flattenPkgs separator (path ++ [name])) value
       else {};
   in {
-    legacyPackages = lib.mkIf enableByName (lib.mkForce byNameLegacyPackages);
+    legacyPackages = lib.mkIf enableByName byNameLegacyPackages;
 
     packages = lib.mkIf enableByName (
-      lib.mkForce (
-        let
-          flatPackages = flattenPkgs "/" [] byNameLegacyPackages;
-        in
-          lib.filterAttrs (_: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg) flatPackages
-      )
+      let
+        flatPackages = flattenPkgs "/" [] byNameLegacyPackages;
+      in
+        lib.filterAttrs (_: pkg: lib.meta.availableOn pkgs.stdenv.hostPlatform pkg) flatPackages
     );
   };
 

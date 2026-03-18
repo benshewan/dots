@@ -1,4 +1,7 @@
 {...} @ flake: {
+  flake-file.inputs = {
+    silentSDDM.url = "github:uiriansan/SilentSDDM";
+  };
   flake.modules.nixos."display-managers/sddm" = {
     pkgs,
     lib,

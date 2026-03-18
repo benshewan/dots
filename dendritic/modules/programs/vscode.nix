@@ -1,4 +1,8 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
+  };
+
   flake.modules.homeManager."programs/vscode" = {
     pkgs,
     lib,
