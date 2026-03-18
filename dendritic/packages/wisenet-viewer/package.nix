@@ -6,7 +6,7 @@
 }: let
   version = "1.05.00";
   src = pkgs.fetchurl {
-    url = "https://hanwhavisionamerica.com/download/48379";
+    url = "https://centralprdcdn.azureedge.net/hanwha/Wisenet%20Viewer/Software_Wisenet%20Viewer_231017_Common_Ubuntu_1.05.00.deb.zip";
     sha256 = "sha256-LYcniRFPI1867ronEk2iuEnIpgBw6O/qiFvNsjpMkdw=";
   };
 in
