@@ -20,7 +20,7 @@
     "rcutree.enable_rcu_lazy=1"
     "pcie_aspm=force" # maybe?
     # "mem_sleep_default=deep" # break sleep behavior
-    "pcie_aspm.policy=powersupersave"
+    # "pcie_aspm.policy=powersupersave"
     "nvme_core.default_ps_max_latency_us=5500"
   ];
   # systemd.sleep.extraConfig = "HibernateDelaySec=1h";

@@ -45,6 +45,7 @@ in {
       home-manager.users.${config.flake.meta.user.username} = {
         imports = config.flake.lib.resolveHm [
           "presets/laptop"
+          "virtualization/libvirt"
           "presets/hyprland"
           "programs/webstorm"
           "programs/yazi"

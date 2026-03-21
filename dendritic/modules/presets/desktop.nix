@@ -11,6 +11,7 @@
     imports = config.flake.lib.resolve [
       # Common modules
       "users"
+      "desktop"
       # "services/flatpak" # need a desktop environment
       "services/printing"
       "services/timezone"
