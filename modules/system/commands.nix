@@ -8,7 +8,7 @@ _: {
       htop # check resource usage
       btop # check resource usage
       sysz # find systemd processes
-      neofetch # check system stats
+      fastfetch # check system stats
       bat # nice cat alternative
       wget # basic file downloading
       busybox # many basic linux utils

@@ -1,7 +1,6 @@
 # DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
@@ -14,12 +13,12 @@
     import-tree.url = "github:vic/import-tree";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-auto-follow = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:fzakaria/nix-auto-follow";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-darwin = {
-      inputs.nixpkgs.follows = "nixpkgs-darwin";
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nix-index-database.url = "github:Mic92/nix-index-database";
@@ -32,5 +31,4 @@
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
     stylix.url = "github:danth/stylix";
   };
-
 }

@@ -59,6 +59,7 @@ in {
           distrobox
           kdePackages.kate
           mpv
+          moonlight-qt
 
           # Work stuff
           libreoffice-fresh
