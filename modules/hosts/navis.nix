@@ -32,6 +32,7 @@ in {
         # Software
         "programs/adb"
         "services/keylightd"
+        "services/tailscale"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -54,6 +55,7 @@ in {
           "programs/npm"
           "programs/vivaldi"
           "programs/chromium"
+          "programs/mongodb-compass"
         ];
         home.packages = with pkgs; [
           distrobox
@@ -66,6 +68,7 @@ in {
           gnome-network-displays
           local.wisenet-viewer # Link broken
           inkscape
+          parsec-bin
 
           # Messing around
           syncthingtray

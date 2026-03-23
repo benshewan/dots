@@ -21,7 +21,7 @@ function get_mute {
 
 # Uses regex to get brightness
 function get_brightness {
-    echo "x=$(brightnessctl g) / 255 * 100;scale=0; x / 1" | bc -l
+    echo "x=$(brightnessctl g) / $(brightnessctl m) * 100;scale=0; x / 1" | bc -l
 }
 
 # Returns a mute icon, a volume-low icon, or a volume-high icon, depending on the volume

@@ -99,6 +99,11 @@
       libnotify # Send notifications
 
       inputs.hyprland-qtutils.packages.${stdenv.hostPlatform.system}.hyprland-qtutils
+
+      # TEMP fix later
+      brightnessctl
+      ddcutil
+      playerctl
     ];
 
     # Setup wallpaper
