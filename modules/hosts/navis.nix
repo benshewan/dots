@@ -53,9 +53,11 @@ in {
           "programs/spotify"
           "programs/obs"
           "programs/npm"
+          "programs/python"
           "programs/vivaldi"
           "programs/chromium"
           "programs/mongodb-compass"
+          "services/kdeconnect"
         ];
         home.packages = with pkgs; [
           distrobox

@@ -6,7 +6,7 @@
     # Setup CUPS
     services.printing = {
       enable = true;
-      drivers = with pkgs; [foomatic-db-ppds-withNonfreeDb gutenprint hplip splix ptouch-driver];
+      # drivers = with pkgs; [foomatic-db-ppds-withNonfreeDb gutenprint hplip splix ptouch-driver];
     };
     # Allow configuring printers without root password
     users.users.${config.flake.meta.user.username}.extraGroups = ["lpadmin"];

@@ -52,6 +52,7 @@ in {
           "programs/python"
           "programs/vivaldi"
           "programs/chromium"
+          "services/kdeconnect"
         ];
 
         monitors = [
