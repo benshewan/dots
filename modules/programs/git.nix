@@ -11,6 +11,7 @@
         merge.tool = "vimdiff";
         merge.conflictstyle = "diff3";
         mergetool.prompt = false;
+        advice.detachedHead = false;
       };
     };
   };
