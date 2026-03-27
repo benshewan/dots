@@ -1,13 +1,14 @@
 _: {
-  flake.modules.nixos."programs/direnv" = {
+  flake.modules.homeManager."programs/direnv" = {
     pkgs,
     config,
     ...
   }: {
     programs.direnv = {
-      silent = false;
-      loadInNixShell = true;
+      enable = true;
+      silent = true;
       nix-direnv.enable = true;
+      enableFishIntegration = true;
     };
   };
 }
