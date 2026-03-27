@@ -15,7 +15,6 @@
       # "services/flatpak" # need a desktop environment
       "services/printing"
       "services/timezone"
-      "programs/direnv"
       "programs/comma"
       "programs/vscode"
       # NixOS-specific
@@ -32,6 +31,7 @@
       "users"
       "monitors"
       "programs/git"
+      "programs/direnv"
       "programs/firefox"
       "programs/vscode"
       "programs/fish"

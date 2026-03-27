@@ -33,6 +33,8 @@ in {
         "programs/adb"
         "services/keylightd"
         "services/tailscale"
+        "programs/solaar"
+        "services/kdeconnect"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -41,6 +43,10 @@ in {
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
       environment.systemPackages = with pkgs; [local.audiorelay];
+      services.mongodb = {
+        enable = true;
+        package = pkgs.stable.mongodb;
+      };
 
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
@@ -64,6 +70,8 @@ in {
           kdePackages.kate
           mpv
           moonlight-qt
+          (proxmark3.override {withGeneric = true;})
+          chameleon-cli
 
           # Work stuff
           libreoffice-fresh
