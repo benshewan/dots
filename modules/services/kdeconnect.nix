@@ -28,4 +28,15 @@
       indicator = false;
     };
   };
+  flake.modules.nixos."services/kdeconnect" = {pkgs, ...}: {
+    networking.firewall = rec {
+      allowedTCPPortRanges = [
+        {
+          from = 1714;
+          to = 1764;
+        }
+      ];
+      allowedUDPPortRanges = allowedTCPPortRanges;
+    };
+  };
 }
