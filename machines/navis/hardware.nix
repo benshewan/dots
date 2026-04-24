@@ -58,7 +58,6 @@
   services.fprintd.enable = false;
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
     # Performance Tweaks courtesy of https://gitlab.com/cscs/maxperfwiz
     # These values are for navis only, please consult the script if copying these tweaks
     kernel.sysctl = {

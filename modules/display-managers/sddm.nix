@@ -1,6 +1,7 @@
 {...} @ flake: {
   flake-file.inputs = {
     silentSDDM.url = "github:uiriansan/SilentSDDM";
+    silentSDDM.inputs.nixpkgs.follows = "nixpkgs";
   };
   flake.modules.nixos."display-managers/sddm" = {
     pkgs,
@@ -24,6 +25,7 @@
     #   wayland.enable = true;
     # };
     imports = [flake.inputs.silentSDDM.nixosModules.default];
+    services.displayManager.sddm.wayland.compositor = "kwin";
     programs.silentSDDM = {
       enable = true;
       theme = "rei";

@@ -12,9 +12,10 @@
       # Common modules
       "users"
       "desktop"
-      # "services/flatpak" # need a desktop environment
+      "services/flatpak"
       "services/printing"
       "services/timezone"
+      "services/ssh"
       "programs/comma"
       "programs/vscode"
       # NixOS-specific

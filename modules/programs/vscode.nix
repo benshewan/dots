@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake-file.inputs = {
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
+    nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   flake.modules.homeManager."programs/vscode" = {
@@ -88,7 +89,9 @@
           "update.mode" = "none";
 
           # Theme Config
-          "window.titleBarStyle" = "custom";
+          "window.titleBarStyle" = "native";
+          "window.controlsStyle" = "native";
+          "window.menuStyle" = "custom";
           "workbench.layoutControl.enabled" = false;
           "window.density.editorTabHeight" = "default";
           "editor.fontLigatures" = true;
@@ -124,6 +127,9 @@
             "source.sortImports" = "always";
             "source.organizeImports" = "explicit";
           };
+
+          # Format on paste
+          "editor.autoIndentOnPaste" = true;
 
           # Git Config
           "git.confirmSync" = false;

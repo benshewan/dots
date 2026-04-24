@@ -1,10 +1,10 @@
-{self, ...}: {
+{config, ...}: {
   flake.modules.nixos.system = {pkgs, ...}: {
     programs.nh = {
       enable = true;
       clean.enable = true;
       clean.extraArgs = "--keep-since 7d --keep 15";
-      flake = "${self}";
+      flake = "${config.flake.meta.flake-path}/";
     };
   };
 }

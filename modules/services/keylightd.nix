@@ -28,11 +28,11 @@
         powerLed = mkOption {
           type = types.bool;
           example = true;
-          default = false;
+          default = true;
         };
       };
 
-      config = mkIf cfg.enable {
+      config = {
         environment.systemPackages = [cfg.package]; # for the CLI
         systemd.packages = [cfg.package];
         systemd.services = {
@@ -45,7 +45,7 @@
             serviceConfig = {
               # ${mkIf cfg.powerLed "--power"}
               Type = "exec";
-              ExecStart = "${cfg.package}/bin/keylightd --brightness ${toString cfg.brightness} --timeout ${toString cfg.timeout} ";
+              ExecStart = "${cfg.package}/bin/keylightd --power --brightness ${toString cfg.brightness} --timeout ${toString cfg.timeout} ";
               Restart = "on-failure";
               RestartSec = "1s";
             };

@@ -1,13 +1,13 @@
-{inputs, ...}: {
+{
+  inputs,
+  config,
+  ...
+}: {
   flake-file.inputs = {
     nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
 
-  flake.modules.nixos."services/flatpak" = {
-    pkgs,
-    config,
-    ...
-  }: {
+  flake.modules.nixos."services/flatpak" = {pkgs, ...}: {
     # For network auto discovery
     imports = [inputs.nix-flatpak.nixosModules.nix-flatpak];
     services.flatpak = {
@@ -25,7 +25,7 @@
       ];
 
       update = {
-        onActivation = false; # Update when config is switched
+        onActivation = true; # Update when config is switched
         auto = {
           # update based on time
           enable = true;

@@ -34,10 +34,10 @@ in {
       description = "User metadata";
     };
 
-    dotfiles = lib.mkOption {
-      type = lib.types.unspecified;
-      default = {};
-      description = "Dotfiles configuration";
+    flake-path = lib.mkOption {
+      type = lib.types.str;
+      default = "/home/${user.username}/.nix";
+      description = "nix flake path configuration";
     };
 
     hosts = lib.mkOption {
@@ -83,9 +83,5 @@ in {
 
   config.flake.meta = {
     inherit user;
-
-    dotfiles = {
-      url = "https://github.com/fbosch/dotfiles";
-    };
   };
 }

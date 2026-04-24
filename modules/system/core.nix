@@ -20,9 +20,7 @@
     # Enable ~/.local/bin in PATH for user-installed binaries (e.g. uv tools)
     environment.localBinInPath = true;
 
-    # Firmware / Kernel
-    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
-    powerManagement.cpuFreqGovernor = "schedutil";
+    # Firmware
     hardware.enableAllFirmware = true;
 
     # Some basic nice aliases

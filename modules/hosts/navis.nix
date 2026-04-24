@@ -1,6 +1,7 @@
 {
   inputs,
   config,
+  lib,
   ...
 }: let
   hostMeta = {
@@ -19,6 +20,7 @@ in {
     meta.hosts = [hostMeta];
 
     modules.nixos."hosts/${hostMeta.name}" = {pkgs, ...}: {
+      # age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDg4CemGcdSt0uDCZ5yBUyBswjBdzo6MrIz1wztSS+O root@navis";
       imports = config.flake.lib.resolve [
         # Desktop preset (users, security, development, shell, system, desktop environment)
         "presets/laptop"
@@ -35,6 +37,7 @@ in {
         "services/tailscale"
         "programs/solaar"
         "services/kdeconnect"
+        "programs/lan-mouse"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -42,10 +45,19 @@ in {
 
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
+      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-zen4;
+
       environment.systemPackages = with pkgs; [local.audiorelay];
       services.mongodb = {
         enable = true;
         package = pkgs.stable.mongodb;
+      };
+      programs.yubikey-manager.enable = true;
+
+      networking.firewall = rec {
+        allowedTCPPorts = [
+          7100
+        ];
       };
 
       # Home Manager configuration for user
@@ -64,6 +76,11 @@ in {
           "programs/chromium"
           "programs/mongodb-compass"
           "services/kdeconnect"
+          "programs/filebot"
+          "programs/lan-mouse"
+          "programs/bottles"
+          "programs/prism-launcher"
+          "programs/dolphin"
         ];
         home.packages = with pkgs; [
           distrobox
@@ -76,7 +93,8 @@ in {
           # Work stuff
           libreoffice-fresh
           gnome-network-displays
-          local.wisenet-viewer # Link broken
+          local.wisenet-viewer
+          yaak
           inkscape
           parsec-bin
 

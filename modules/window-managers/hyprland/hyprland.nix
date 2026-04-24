@@ -1,7 +1,10 @@
-{inputs, ...}: {
+{inputs, ...} @ flake: {
   flake-file.inputs = {
     hyprland.url = "github:hyprwm/Hyprland";
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+
     hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
+    hyprland-qtutils.inputs.nixpkgs.follows = "nixpkgs";
   };
   # NixOS
   flake.modules.nixos."window-managers/hyprland" = {
@@ -12,11 +15,12 @@
     inherit (pkgs.stdenv.hostPlatform) system;
   in {
     # Hyprland Cache
-    nix.settings = {
-      substituters = ["https://hyprland.cachix.org"];
-      trusted-substituters = ["https://hyprland.cachix.org"];
-      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-    };
+    # Doesn't work if you override nixpkgs
+    # nix.settings = {
+    #   substituters = ["https://hyprland.cachix.org"];
+    #   trusted-substituters = ["https://hyprland.cachix.org"];
+    #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    # };
 
     programs.uwsm.enable = true;
     programs.dconf.enable = true;
@@ -85,6 +89,10 @@
       };
       hypridle = {};
     };
+
+    # TEMP for DDC Util
+    hardware.i2c.enable = true;
+    users.users.${flake.config.flake.meta.user.username}.extraGroups = ["i2c"];
   };
   flake.modules.homeManager."window-managers/hyprland" = {
     pkgs,
@@ -104,6 +112,7 @@
       brightnessctl
       ddcutil
       playerctl
+      jq
     ];
 
     # Setup wallpaper

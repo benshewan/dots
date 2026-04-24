@@ -50,7 +50,7 @@ in
       pango
       cairo
       gdk-pixbuf
-      unixODBC
+      unixodbc
       atkmm
       gtk3.out
       psqlodbc

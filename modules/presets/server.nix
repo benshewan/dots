@@ -12,6 +12,7 @@
       # Common modules
       "users"
       "programs/direnv"
+      "services/ssh"
 
       # NixOS-specific
       "system"
