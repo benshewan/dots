@@ -15,7 +15,7 @@
 
   # powerprofilesctl configure-action amdgpu_dpm --enable
   boot.kernelParams = [
-    "amdgpu.abmlevel=2" # Force off because it looks ugly
+    "amdgpu.abmlevel=0" # Force off because it looks ugly
     "rcu_nocbs=all"
     "rcutree.enable_rcu_lazy=1"
     "pcie_aspm=force" # maybe?
