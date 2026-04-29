@@ -12,14 +12,8 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hyprland-qtutils = {
-      url = "github:hyprwm/hyprland-qtutils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
     import-tree.url = "github:vic/import-tree";
     lan-mouse.url = "github:feschber/lan-mouse";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";

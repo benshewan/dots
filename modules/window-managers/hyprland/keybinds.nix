@@ -133,7 +133,7 @@
           ", XF86AudioPrev, exec, ${scripts/volume_brightness.sh} prev_track"
 
           # Lock screen
-          "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --immediate"
+          "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --grace 0"
         ]
         ++ lib.flatten (map (
             m: let

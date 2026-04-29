@@ -38,6 +38,21 @@ in {
         "programs/solaar"
         "services/kdeconnect"
         "programs/lan-mouse"
+        "programs/vivaldi"
+        "programs/yazi"
+        "programs/spotify"
+        "programs/obs"
+        "programs/chromium"
+        "programs/mongodb-compass"
+        "programs/filebot"
+        "programs/bottles"
+        "programs/prism-launcher"
+        "programs/dolphin"
+
+        # Programming
+        "programs/webstorm"
+        "programs/npm"
+        "programs/python"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -62,26 +77,6 @@ in {
 
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
-        imports = config.flake.lib.resolveHm [
-          "presets/laptop"
-          "virtualization/libvirt"
-          "presets/hyprland"
-          "programs/webstorm"
-          "programs/yazi"
-          "programs/spotify"
-          "programs/obs"
-          "programs/npm"
-          "programs/python"
-          "programs/vivaldi"
-          "programs/chromium"
-          "programs/mongodb-compass"
-          "services/kdeconnect"
-          "programs/filebot"
-          "programs/lan-mouse"
-          "programs/bottles"
-          "programs/prism-launcher"
-          "programs/dolphin"
-        ];
         home.packages = with pkgs; [
           distrobox
           kdePackages.kate

@@ -1,10 +1,10 @@
 {inputs, ...} @ flake: {
   flake-file.inputs = {
     hyprland.url = "github:hyprwm/Hyprland";
-    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+    # hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
-    hyprland-qtutils.inputs.nixpkgs.follows = "nixpkgs";
+    # hyprland-qtutils.inputs.nixpkgs.follows = "nixpkgs";
   };
   # NixOS
   flake.modules.nixos."window-managers/hyprland" = {
@@ -16,11 +16,11 @@
   in {
     # Hyprland Cache
     # Doesn't work if you override nixpkgs
-    # nix.settings = {
-    #   substituters = ["https://hyprland.cachix.org"];
-    #   trusted-substituters = ["https://hyprland.cachix.org"];
-    #   trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
-    # };
+    nix.settings = {
+      substituters = ["https://hyprland.cachix.org"];
+      trusted-substituters = ["https://hyprland.cachix.org"];
+      trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+    };
 
     programs.uwsm.enable = true;
     programs.dconf.enable = true;

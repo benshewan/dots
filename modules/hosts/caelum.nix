@@ -33,6 +33,16 @@ in {
         # Software
         "programs/adb"
         "services/keylightd"
+        "programs/webstorm"
+        "programs/yazi"
+        "programs/spotify"
+        "programs/dolphin"
+        "programs/prism-launcher"
+        "programs/npm"
+        "programs/python"
+        "programs/vivaldi"
+        "programs/chromium"
+        "services/kdeconnect"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
@@ -40,21 +50,6 @@ in {
 
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
-        imports = config.flake.lib.resolveHm [
-          "presets/desktop"
-          "presets/hyprland"
-          "programs/webstorm"
-          "programs/yazi"
-          "programs/spotify"
-          "programs/dolphin"
-          "programs/prism-launcher"
-          "programs/npm"
-          "programs/python"
-          "programs/vivaldi"
-          "programs/chromium"
-          "services/kdeconnect"
-        ];
-
         monitors = [
           {
             name = "Virtual-1";
