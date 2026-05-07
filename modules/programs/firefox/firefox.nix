@@ -7,42 +7,6 @@
   }: let
     # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
     profile = "dev-edition-default";
-
-    userchromejs-loader = pkgs.fetchFromGitHub {
-      owner = "MrOtherGuy";
-      repo = "fx-autoconfig";
-      rev = "849602523e2a7fe7747dd964cc028e54078a5247";
-      sha256 = "sha256-ibtYuRv21s4T+PbV0o3jRAuG/6mlaLzwWhkEivL1sho=";
-    };
-
-    legacyfox-loader = pkgs.fetchFromGitHub {
-      owner = "girst";
-      repo = "LegacyFox-mirror-of-git.gir.st";
-      rev = "f732e438a6d8e75ce22c28c43878ca5e3effcadd";
-      sha256 = "sha256-vCRIiYdl7t3I5asndJBjSRVFu9ADBfSEkyKdlgbMxww=";
-    };
-
-    merged-configjs =
-      (
-        (builtins.readFile "${userchromejs-loader}/program/config.js") + "\n"
-      )
-      + builtins.readFile "${legacyfox-loader}/config.js";
-
-    firefox-package = (pkgs.firefox-devedition).overrideAttrs (oldAttrs: {
-      # Add support for https://github.com/MrOtherGuy/fx-autoconfig
-      buildCommand =
-        (oldAttrs.buildCommand or "")
-        + ''
-          mkdir -p $out/lib/firefox-devedition/browser/defaults/preferences
-
-          cp ${pkgs.writeText "config.js" merged-configjs} $out/lib/firefox-devedition/config.js
-
-          cp -r ${legacyfox-loader}/legacy $out/lib/firefox-devedition/legacy
-          cp ${legacyfox-loader}/legacy.manifest $out/lib/firefox-devedition/legacy.manifest
-
-          cp ${userchromejs-loader}/program/defaults/pref/config-prefs.js $out/lib/firefox-devedition/defaults/pref/config-prefs.js
-        '';
-    });
   in {
     # Move browser profile into ram disk
     # services.psd.enable = true;
@@ -51,17 +15,11 @@
     # only works for firefox color addon or firefox gnome theme
     stylix.targets.firefox.enable = false;
 
-    home.file.".config/mozilla/firefox/${profile}/chrome/utils" = {
-      recursive = true;
-      source = "${userchromejs-loader}/profile/chrome/utils";
-    };
-
     programs.firefox.configPath = "${config.xdg.configHome}/mozilla/firefox";
     home.file.".mozilla/native-messaging-hosts".enable = false;
 
     programs.firefox = {
       enable = true;
-      package = firefox-package;
       nativeMessagingHosts =
         [pkgs.tridactyl-native]
         ++ lib.optional config.services.kdeconnect.enable pkgs.kdePackages.plasma-browser-integration;

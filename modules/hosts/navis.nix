@@ -48,11 +48,14 @@ in {
         "programs/bottles"
         "programs/prism-launcher"
         "programs/dolphin"
+        "programs/helium"
 
         # Programming
         "programs/webstorm"
+        "programs/zed"
         "programs/npm"
         "programs/python"
+        "programs/claude-code"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -152,7 +155,7 @@ in {
       };
     };
 
-    networking.nameservers = hostMeta.dnsServers;
+    # networking.nameservers = hostMeta.dnsServers;
 
     services.keylightd.enable = true;
   };

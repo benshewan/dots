@@ -9,8 +9,9 @@
       isNormalUser = true;
       description = config.flake.meta.user.fullName;
       extraGroups = [
-        "networkmanager"
-        "wheel"
+        "networkmanager" # For wifi configuration access
+        "wheel" # For sudo access
+        "dialout" # For serial deivce access
       ];
       shell = lib.mkOverride 500 pkgs.fish; # can't use mkDefault because others set a default
       ignoreShellProgramCheck = true;

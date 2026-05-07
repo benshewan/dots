@@ -17,13 +17,16 @@ _: {
       sha256 = "sha256-aJs74EqAVMJBPS6ox2V7S9Vp47PoHlGbBuF5DBWqwiI=";
     };
   in {
-    home.file.".config/mozilla/firefox/${profile}/chrome" = {
+    home.file.".config/mozilla/firefox/${profile}/chrome/userChrome.css".source = "${ff-ultima-theme}/userChrome.css";
+    home.file.".config/mozilla/firefox/${profile}/chrome/userContent.css".source = "${ff-ultima-theme}/userContent.css";
+    home.file.".config/mozilla/firefox/${profile}/chrome/theme" = {
       recursive = true;
-      source = ff-ultima-theme;
+      source = "${ff-ultima-theme}/theme";
     };
-    # home.file.".config/mozilla/firefox/${profile}/chrome/JS" = {
-    #   recursive = true;
-    #   source = "${firefox-second-sidebar}/src";
-    # };
+
+    home.file.".config/mozilla/firefox/${profile}/chrome/JS" = {
+      recursive = true;
+      source = "${firefox-second-sidebar}/src";
+    };
   };
 }
