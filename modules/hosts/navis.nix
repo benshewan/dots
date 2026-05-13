@@ -47,6 +47,7 @@ in {
         "programs/filebot"
         "programs/bottles"
         "programs/prism-launcher"
+        "programs/partition-manager"
         "programs/dolphin"
         "programs/helium"
 
@@ -99,6 +100,7 @@ in {
           # Messing around
           syncthingtray
           stable.handbrake
+          brasero
 
           # Audio
           qpwgraph

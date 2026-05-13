@@ -19,10 +19,10 @@ _: {
       };
 
       # Bypass Website Paywalls
-      "magnolia@12.34" = {
-        installation_mode = "normal_installed";
-        install_url = "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/?file=bypass_paywalls_clean-latest.xpi&branch=main";
-      };
+      # "magnolia@12.34" = {
+      #   installation_mode = "normal_installed";
+      #   install_url = "https://gitflic.ru/project/magnolia1234/bpc_uploads/blob/?file=bypass_paywalls_clean-latest.xpi&branch=main";
+      # };
 
       # Piracy
       # ----------------------------------------------------------------------------------
@@ -157,13 +157,13 @@ _: {
         install_url = "https://addons.mozilla.org/firefox/downloads/latest/canadian-english-dictionary/latest.xpi";
       };
 
-      "langpack-en-CA@firefox.mozilla.org" = {
-        installation_mode = "normal_installed";
-        install_url = "https://addons.mozilla.org/firefox/downloads/latest/english-ca-language-pack/latest.xpi";
-      };
-
       # Legacy Extensions
       # ----------------------------------------------------------------------------------
+
+      "advancedlocationbar@veg.by" = {
+        installation_mode = "normal_installed";
+        install_url = "file://${./legacy-extensions/AdvancedLocationbar.xpi}";
+      };
       # Allow you to hold ctrl to click substring of url
       # "advancedlocationbar@veg.by" = {
       #   installation_mode = "normal_installed";

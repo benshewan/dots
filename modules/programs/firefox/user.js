@@ -1,5 +1,6 @@
 // Overrides
 user_pref("browser.startup.page", 3); // browser should restore previous session
+user_pref("browser.newtab.url",	"https://home.benshewan.dev");
 //fix for hover on drag (fixes sideberry tab drag, does not work on hyprland) https://bugzilla.mozilla.org/show_bug.cgi?id=1818517
 // user_pref("widget.gtk.ignore-bogus-leave-notify", 1);
 user_pref("widget.use-xdg-desktop-portal", true); // tell firefox to use my XDG Portal
@@ -8,16 +9,10 @@ user_pref("browser.download.useDownloadDir", true); // one-click downloads
 user_pref("accessibility.force_disabled", 1); // disable Accessibility features
 user_pref("browser.toolbars.bookmarks.visibility", "never"); // always hide bookmark bar
 user_pref("browser.urlbar.trimHttps", true); // hide https in URL bar [FF119]
-user_pref(
-  "media.videocontrols.picture-in-picture.display-text-tracks.size",
-  "small"
-); // PiP
-user_pref(
-  "media.videocontrols.picture-in-picture.urlbar-button.enabled",
-  false
-); // PiP in address bar
+user_pref("media.videocontrols.picture-in-picture.display-text-tracks.size", "small"); // PiP
+user_pref("media.videocontrols.picture-in-picture.urlbar-button.enabled", false); // PiP in address bar
 user_pref("extensions.webextensions.restrictedDomains", ""); // remove Mozilla domains so adblocker works on pages
-user_pref("privacy.resistFingerprinting.block_mozAddonManager", true) // also required to get extensions working on the addon store
+user_pref("privacy.resistFingerprinting.block_mozAddonManager", true); // also required to get extensions working on the addon store
 user_pref("browser.sessionstore.restore_pinned_tabs_on_demand", true); // force pinned tabs to not load on startup
 // user_pref("browser.sessionhistory.max_total_viewers", 4); // only remember # of pages in Back-Forward cache
 user_pref("media.eme.enabled", true); // enable DRM protected content
@@ -25,10 +20,7 @@ user_pref("browser.eme.ui.enabled", false); // hide DRM ui
 user_pref("identity.fxaccounts.enabled", true); // enable firefox sync
 // user_pref("browser.tabs.firefox-view", false); // disable firefox view
 user_pref("general.autoScroll", false); // disable middle click to scroll
-user_pref(
-  "browser.newtabpage.activity-stream.logowordmark.alwaysVisible",
-  true
-); // Firefox logo to always show
+user_pref("browser.newtabpage.activity-stream.logowordmark.alwaysVisible",true); // Firefox logo to always show
 user_pref("pdfjs.sidebarViewOnLoad", 1); // no sidebar on pdf by default
 user_pref("widget.gtk.hide-pointer-while-typing.enabled", false);
 user_pref("browser.tabs.closeWindowWithLastTab", true);
@@ -48,10 +40,8 @@ user_pref("extensions.experiments.enabled", true);
 // disable ALT behaviour
 user_pref("ui.key.menuAccessKeyFocuses", false);
 
-
 //For https://github.com/aminought/firefox-second-sidebar
 user_pref("dom.allow_scripts_to_close_windows", true);
-
 
 // Smooth fox
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
@@ -126,7 +116,7 @@ user_pref("ultima.urlbar.focus.blur", true);
 user_pref("ultima.urlbar.focus.blur.all", false);
 user_pref("ultima.urlbar.focus.text.aligns.left", false);
 user_pref("ultima.urlbar.hide.buttons.in.edge", false);
-user_pref("ultima.urlbar.hide.trackingprotection.icon", false);
+user_pref("ultima.urlbar.hide.trackingprotection.icon", true);
 
 /* sidebar */
 user_pref("ultima.sidebar.seperator", false);
@@ -194,7 +184,7 @@ user_pref("ultima.contextmenu.no.navigation.icons", false);
 user_pref("ultima.contextmenu.reduce.options", false);
 
 /* alternate styles */
-user_pref("ultima.spacing.compact", false);
+user_pref("ultima.spacing.compact", true);
 user_pref("ultima.spacing.relaxed", false); /*wip*/
 user_pref("ultima.tabs.tabContainer.1", false);
 user_pref("ultima.tabs.tabContainer.2", false);

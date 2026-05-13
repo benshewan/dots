@@ -23,12 +23,7 @@ _: {
       sha256 = "sha256-vCRIiYdl7t3I5asndJBjSRVFu9ADBfSEkyKdlgbMxww=";
     };
 
-    merged-configjs =
-      # (
-      builtins.readFile "${userchromejs-loader}/program/config.js";
-    #   + "\n"
-    # )
-    # + builtins.readFile "${legacyfox-loader}/config.js";
+    merged-configjs = (builtins.readFile "${userchromejs-loader}/program/config.js" + "\n") + builtins.readFile "${legacyfox-loader}/config.js";
 
     firefox-package = (pkgs.firefox-devedition).overrideAttrs (oldAttrs: {
       # Add support for https://github.com/MrOtherGuy/fx-autoconfig
@@ -42,7 +37,7 @@ _: {
           cp -r ${legacyfox-loader}/legacy $out/lib/firefox-devedition/legacy
           cp ${legacyfox-loader}/legacy.manifest $out/lib/firefox-devedition/legacy.manifest
 
-          cp ${userchromejs-loader}/program/defaults/pref/config-prefs.js $out/lib/firefox-devedition/defaults/pref/config-prefs.js
+          cp ${userchromejs-loader}/program/defaults/pref/config-prefs.js $out/lib/firefox-devedition/defaults/pref/autoconfig.js
         '';
     });
   in {
@@ -51,7 +46,12 @@ _: {
       source = "${userchromejs-loader}/profile/chrome/utils";
     };
 
+    # Make it so pressing CTRL+F again will close the findbar
     home.file.".config/mozilla/firefox/${profile}/chrome/JS/findbarMods.uc.js".source = "${aminomancer-scripts}/JS/findbarMods.uc.js";
+    # Allow you to customize the url of the new tab page (works better then something like new tab override extension)
+    home.file.".config/mozilla/firefox/${profile}/chrome/JS/newtab-customize.uc.js".source = ./custom-user-js/newtab-customize.uc.js;
+    # Works like the old legacy backtrack extension, copies the history from the parent tab when opening something in a new tab
+    # home.file.".config/mozilla/firefox/${profile}/chrome/JS/backtrack.uc.js".source = ./custom-user-js/backtrack.uc.js;
 
     programs.firefox.package = firefox-package;
   };
