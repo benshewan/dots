@@ -1,13 +1,13 @@
-_: {
-  flake.modules.homeManager."programs/filebot" = {
-    pkgs,
-    lib,
-    config,
-    ...
-  }: {
+{...} @ flake: {
+  flake.modules.homeManager."programs/filebot" = {pkgs, ...}: {
     home.packages = with pkgs; [filebot];
-    # sops.secrets."filebot-license" = {
-    #   path = "${config.xdg.dataHome}/filebot/data/.license";
-    # };
+  };
+  flake.modules.nixos."programs/filebot" = {pkgs, ...}: {
+    age.secrets."filebot-license" = {
+      rekeyFile = ../../secrets/filebot.age;
+      owner = flake.config.flake.meta.user.username;
+      group = "users";
+      path = "/home/${flake.config.flake.meta.user.username}/.local/share/filebot/data/.license";
+    };
   };
 }

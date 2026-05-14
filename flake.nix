@@ -4,6 +4,8 @@
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
+    agenix.url = "github:ryantm/agenix";
+    agenix-rekey.url = "github:oddlama/agenix-rekey";
     darwin.url = "github:LnL7/nix-darwin";
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     flake-file.url = "github:vic/flake-file";
