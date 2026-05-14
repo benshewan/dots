@@ -23,6 +23,9 @@
     # Firmware
     hardware.enableAllFirmware = true;
 
+    # Enable support for apple apfs filesystem, note: doesn't seem to work with my cachy kernel
+    # boot.supportedFilesystems.apfs = true;
+
     # Some basic nice aliases
     environment.shellAliases = {
       reboot = "systemctl reboot";
