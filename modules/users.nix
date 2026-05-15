@@ -1,15 +1,16 @@
-{
-  config,
-  lib,
-  ...
-}: {
+{lib, ...} @ flake: {
   # Nix OS
-  flake.modules.nixos.users = {pkgs, ...}: {
-    users.users.${config.flake.meta.user.username} = {
+  flake.modules.nixos.users = {
+    pkgs,
+    config,
+    ...
+  }: {
+    age.secrets."user-password".rekeyFile = ../secrets/user-password.age;
+    users.users.${flake.config.flake.meta.user.username} = {
       isNormalUser = true;
-      description = config.flake.meta.user.fullName;
+      description = flake.config.flake.meta.user.fullName;
+      hashedPasswordFile = config.age.secrets."user-password".path;
       extraGroups = [
-        "networkmanager" # For wifi configuration access
         "wheel" # For sudo access
         "dialout" # For serial deivce access
       ];
@@ -25,19 +26,19 @@
     ...
   }: let
     avatarFile =
-      if config.flake.meta.user.avatar.source != null
-      then config.flake.meta.user.avatar.source
+      if flake.config.flake.meta.user.avatar.source != null
+      then flake.config.flake.meta.user.avatar.source
       else
         pkgs.fetchurl {
-          inherit (config.flake.meta.user.avatar) url sha256;
+          inherit (flake.config.flake.meta.user.avatar) url sha256;
         };
   in {
     programs.home-manager.enable = true;
     systemd.user.startServices = lib.mkDefault "sd-switch";
 
     home = {
-      inherit (config.flake.meta.user) username;
-      homeDirectory = lib.mkDefault "/home/${config.flake.meta.user.username}";
+      inherit (flake.config.flake.meta.user) username;
+      homeDirectory = lib.mkDefault "/home/${flake.config.flake.meta.user.username}";
       stateVersion = "25.05";
 
       # Link avatar to .face for display managers

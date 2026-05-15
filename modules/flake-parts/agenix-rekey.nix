@@ -41,8 +41,10 @@ in {
       ageConfigModule
     ];
     nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
+    environment.systemPackages = [pkgs.agenix-rekey];
   };
 
+  # Works, but I don't like having to use my users ssh key to deal with secret files.
   # flake.modules.homeManager.system = {
   #   pkgs,
   #   osConfig,
@@ -54,7 +56,6 @@ in {
   #     inputs.agenix-rekey.homeManagerModules.default
   #     ageConfigModule
   #   ];
-  #   home.packages = [pkgs.agenix-rekey];
   #   age = {
   #     secretsDir = "${config.xdg.dataHome}/agenix/agenix";
   #     secretsMountPoint = "${config.xdg.dataHome}/agenix/agenix.d";
