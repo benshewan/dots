@@ -2,8 +2,11 @@
   inputs,
   self,
   lib,
+  config,
   ...
 } @ flake: let
+  enableSecrets = flake.config.flake.enableSecrets;
+
   ageConfigModule = args @ {config, ...}: let
     # 2. Determine the hostname dynamically
     hostName =
@@ -20,6 +23,12 @@
     age.rekey.localStorageDir = inputs.secrets + "/rekeyed/${path}";
   };
 in {
+  options.flake.enableSecrets = lib.mkOption {
+    type = lib.types.bool;
+    default = builtins.pathExists (inputs.secrets + "/yubikey-93302b8a.pub");
+    description = "Auto-detected from secrets input. Override-input to stub → auto-disabled.";
+  };
+
   flake-file.inputs = {
     agenix.url = "github:ryantm/agenix";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
@@ -29,23 +38,25 @@ in {
     };
   };
 
-  flake.agenix-rekey = inputs.agenix-rekey.configure {
+  flake.agenix-rekey = lib.mkIf enableSecrets (inputs.agenix-rekey.configure {
     userFlake = self;
     nixosConfigurations = self.nixosConfigurations;
     darwinConfigurations = self.darwinConfigurations or {};
     homeConfigurations = self.homeConfigurations or {};
     # Example for colmena:
     # nixosConfigurations = ((colmena.lib.makeHive self.colmena).introspect (x: x)).nodes;
-  };
+  });
 
-  flake.modules.nixos.system = {pkgs, ...}: {
-    imports = [
+  flake.modules.nixos.system = {pkgs, lib, ...}: {
+    imports = lib.optionals enableSecrets [
       inputs.agenix.nixosModules.default
       inputs.agenix-rekey.nixosModules.default
       ageConfigModule
     ];
-    nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
-    environment.systemPackages = [pkgs.agenix-rekey];
+    config = lib.mkIf enableSecrets {
+      nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
+      environment.systemPackages = [pkgs.agenix-rekey];
+    };
   };
 
   # Works, but I don't like having to use my users ssh key to deal with secret files.

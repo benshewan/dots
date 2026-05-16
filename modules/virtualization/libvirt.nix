@@ -1,6 +1,8 @@
 {config, ...}: {
   flake.modules.nixos."virtualization/libvirt" = {pkgs, ...}: {
     # Libvirt/QEMU
+    virtualisation.spiceUSBRedirection.enable = true;
+
     virtualisation.libvirtd = {
       enable = true;
       qemu = {
@@ -12,7 +14,7 @@
 
     programs.virt-manager.enable = true;
 
-    users.users.${config.flake.meta.user.username}.extraGroups = ["libvirtd"];
+    users.users.${config.flake.meta.user.username}.extraGroups = ["libvirtd" "plugdev"];
 
     environment.systemPackages = with pkgs; [
       # QEMU/KVM tools
