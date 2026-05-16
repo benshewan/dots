@@ -29,33 +29,35 @@ in {
     description = "Auto-detected from secrets input. Override-input to stub → auto-disabled.";
   };
 
-  flake-file.inputs = {
-    agenix.url = "github:ryantm/agenix";
-    agenix-rekey.url = "github:oddlama/agenix-rekey";
-    secrets = {
-      url = "git+ssh://git@github.com/benshewan/nix-secrets";
-      flake = false;
+  config = {
+    flake-file.inputs = {
+      agenix.url = "github:ryantm/agenix";
+      agenix-rekey.url = "github:oddlama/agenix-rekey";
+      secrets = {
+        url = "git+ssh://git@github.com/benshewan/nix-secrets";
+        flake = false;
+      };
     };
-  };
 
-  flake.agenix-rekey = lib.mkIf enableSecrets (inputs.agenix-rekey.configure {
-    userFlake = self;
-    nixosConfigurations = self.nixosConfigurations;
-    darwinConfigurations = self.darwinConfigurations or {};
-    homeConfigurations = self.homeConfigurations or {};
-    # Example for colmena:
-    # nixosConfigurations = ((colmena.lib.makeHive self.colmena).introspect (x: x)).nodes;
-  });
+    flake.agenix-rekey = lib.mkIf enableSecrets (inputs.agenix-rekey.configure {
+      userFlake = self;
+      nixosConfigurations = self.nixosConfigurations;
+      darwinConfigurations = self.darwinConfigurations or {};
+      homeConfigurations = self.homeConfigurations or {};
+      # Example for colmena:
+      # nixosConfigurations = ((colmena.lib.makeHive self.colmena).introspect (x: x)).nodes;
+    });
 
-  flake.modules.nixos.system = {pkgs, lib, ...}: {
-    imports = lib.optionals enableSecrets [
-      inputs.agenix.nixosModules.default
-      inputs.agenix-rekey.nixosModules.default
-      ageConfigModule
-    ];
-    config = lib.mkIf enableSecrets {
-      nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
-      environment.systemPackages = [pkgs.agenix-rekey];
+    flake.modules.nixos.system = {pkgs, lib, ...}: {
+      imports = lib.optionals enableSecrets [
+        inputs.agenix.nixosModules.default
+        inputs.agenix-rekey.nixosModules.default
+        ageConfigModule
+      ];
+      config = lib.mkIf enableSecrets {
+        nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
+        environment.systemPackages = [pkgs.agenix-rekey];
+      };
     };
   };
 
