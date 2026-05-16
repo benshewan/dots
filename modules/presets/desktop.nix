@@ -12,31 +12,24 @@
       # Common modules
       "users"
       "desktop"
+      "monitors"
+      # Services
       "services/flatpak"
       "services/printing"
       "services/timezone"
       "services/ssh"
+      # Software
       "programs/comma"
       "programs/vscode"
-      # NixOS-specific
-      "system"
-      "system/ananicy"
-    ];
-  };
-
-  # For Home Manager contexts (e.g., macOS with home-manager only)
-  flake.modules.homeManager."presets/desktop" = {
-    imports = config.flake.lib.resolveHm [
-      # All desktop features for home-manager-only systems
-      "system"
-      "users"
-      "monitors"
       "programs/git"
-      "programs/direnv"
       "programs/firefox"
       "programs/vscode"
       "programs/fish"
       "programs/bash"
+      "programs/direnv"
+      # NixOS-specific
+      "system"
+      "system/ananicy"
     ];
   };
 }

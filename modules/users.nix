@@ -1,11 +1,11 @@
-{lib, ...} @ flake: {
+{lib, inputs, ...} @ flake: {
   # Nix OS
   flake.modules.nixos.users = {
     pkgs,
     config,
     ...
   }: {
-    age.secrets."user-password".rekeyFile = ../secrets/user-password.age;
+    age.secrets."user-password".rekeyFile = inputs.secrets + "/user-password.age";
     users.users.${flake.config.flake.meta.user.username} = {
       isNormalUser = true;
       description = flake.config.flake.meta.user.fullName;

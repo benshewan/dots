@@ -1608,6 +1608,7 @@
         "nixpkgs": "nixpkgs_11",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nixpkgs-stable": "nixpkgs-stable",
+        "secrets": "secrets",
         "silentSDDM": "silentSDDM",
         "spicetify-nix": "spicetify-nix",
         "stylix": "stylix"
@@ -1632,6 +1633,22 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778852349,
+        "narHash": "sha256-cchXfBOLmK3KsIE1XY1j4YDOVh2N5BV0Hfzp9OAyYL0=",
+        "ref": "refs/heads/main",
+        "rev": "bff87d0341599a22715ac7c8909865dd8c85f77f",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/benshewan/nix-secrets"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/benshewan/nix-secrets"
       }
     },
     "silentSDDM": {

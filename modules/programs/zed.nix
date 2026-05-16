@@ -24,6 +24,7 @@ _: {
 
         # General
         always_treat_brackets_as_autoclosed = true;
+        extend_comment_on_newline = false;
         autosave = "on_focus_change";
 
         # Apperance

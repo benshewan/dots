@@ -15,14 +15,18 @@
       then hostName
       else "${config.home.username}-${hostName}";
   in {
-    age.rekey.masterIdentities = [../../secrets/yubikey-93302b8a.pub];
+    age.rekey.masterIdentities = [(inputs.secrets + "/yubikey-93302b8a.pub")];
     age.rekey.storageMode = "local";
-    age.rekey.localStorageDir = ../../. + "/secrets/rekeyed/${path}";
+    age.rekey.localStorageDir = inputs.secrets + "/rekeyed/${path}";
   };
 in {
   flake-file.inputs = {
     agenix.url = "github:ryantm/agenix";
     agenix-rekey.url = "github:oddlama/agenix-rekey";
+    secrets = {
+      url = "git+ssh://git@github.com/benshewan/nix-secrets";
+      flake = false;
+    };
   };
 
   flake.agenix-rekey = inputs.agenix-rekey.configure {

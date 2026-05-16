@@ -37,6 +37,10 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    secrets = {
+      url = "git+ssh://git@github.com/benshewan/nix-secrets";
+      flake = false;
+    };
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";

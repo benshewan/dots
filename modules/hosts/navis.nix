@@ -50,6 +50,7 @@ in {
         "programs/partition-manager"
         "programs/dolphin"
         "programs/helium"
+        "programs/obsidian"
 
         # Programming
         "programs/webstorm"

@@ -13,12 +13,4 @@
       "services/upower"
     ];
   };
-
-  # For Home Manager contexts (e.g., macOS with home-manager only)
-  flake.modules.homeManager."presets/laptop" = {
-    imports = config.flake.lib.resolveHm [
-      # All desktop features for home-manager-only systems
-      "presets/desktop"
-    ];
-  };
 }

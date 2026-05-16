@@ -11,21 +11,20 @@
     imports = config.flake.lib.resolve [
       "display-managers/sddm"
       "window-managers/hyprland"
+
+      # Software
+      "programs/satty"
+      "programs/rofi"
+      "programs/kitty"
     ];
   };
 
   # For Home Manager contexts (e.g., macOS with home-manager only)
   flake.modules.homeManager."presets/hyprland" = {pkgs, ...}: {
-    imports = config.flake.lib.resolveHm [
-      "window-managers/hyprland"
-      "programs/satty"
-      "programs/rofi"
-      "programs/kitty"
-      "programs/obsidian"
-    ];
-
     home.packages = with pkgs; [
       stable.pavucontrol # Audio Control
+
+      # Should move these somewhere else, not really preset material
       loupe
       foliate
     ];

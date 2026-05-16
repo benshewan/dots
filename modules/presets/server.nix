@@ -19,15 +19,15 @@
     ];
   };
 
-  # For Home Manager contexts (e.g., macOS with home-manager only)
-  flake.modules.homeManager."presets/server" = {
-    imports = config.flake.lib.resolveHm [
-      # Common modules
-      "users"
-      "dotfiles"
-      "security"
-      "development"
-      "shell"
-    ];
-  };
+  # # For Home Manager contexts (e.g., macOS with home-manager only)
+  # flake.modules.homeManager."presets/server" = {
+  #   imports = config.flake.lib.resolveHm [
+  #     # Common modules
+  #     "users"
+  #     "dotfiles"
+  #     "security"
+  #     "development"
+  #     "shell"
+  #   ];
+  # };
 }
