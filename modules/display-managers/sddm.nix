@@ -45,6 +45,7 @@
         # Login Screen
         "LoginScreen" = {
           background = builtins.baseNameOf config.stylix.image;
+          blur = 16;
         };
         "LoginScreen.LoginArea.Avatar" = {
           active-border-color = colors.base02;

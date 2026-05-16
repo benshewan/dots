@@ -25,7 +25,7 @@
       # Only use one of the two overlays!
     ];
     # Firmware / Kernel
-    boot.kernelPackages = lib.mkDefault pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
+    boot.kernelPackages = lib.mkDefault pkgs.linuxPackages_latest; # pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
     powerManagement.cpuFreqGovernor = "schedutil";
     hardware.enableAllFirmware = true;
   };

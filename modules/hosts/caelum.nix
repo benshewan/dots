@@ -20,6 +20,7 @@ in {
     meta.hosts = [hostMeta];
 
     modules.nixos."hosts/${hostMeta.name}" = {pkgs, ...}: {
+      age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIA1d78bzDG4zyENobh73Npv64fWDZY0sxK8WTVl4H4vJ root@caelum";
       imports = config.flake.lib.resolve [
         # Desktop preset (users, security, development, shell, system, desktop environment)
         "presets/desktop"

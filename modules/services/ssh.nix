@@ -1,5 +1,6 @@
 _: {
   flake.modules.nixos."services/ssh" = {pkgs, ...}: {
+    programs.ssh.startAgent = true;
     services.openssh = {
       enable = true;
       settings = {

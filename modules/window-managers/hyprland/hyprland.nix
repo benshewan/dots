@@ -10,6 +10,7 @@
   flake.modules.nixos."window-managers/hyprland" = {
     pkgs,
     config,
+    lib,
     ...
   }: let
     inherit (pkgs.stdenv.hostPlatform) system;
@@ -34,6 +35,7 @@
     # Required Services
     # ----------------------------------------
     services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
+    services.gnome.gcr-ssh-agent.enable = lib.mkForce false;
 
     programs.seahorse.enable = true; # Manage Keys with a GUI
     services.blueman.enable = true; # GTK Bluetooth manager
