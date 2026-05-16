@@ -18,6 +18,7 @@
       "services/printing"
       "services/timezone"
       "services/ssh"
+      "security/yubikey"
       # Software
       "programs/comma"
       "programs/vscode"
