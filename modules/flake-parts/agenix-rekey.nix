@@ -7,20 +7,9 @@
 } @ flake: let
   enableSecrets = flake.config.flake.enableSecrets;
 
-  ageConfigModule = args @ {config, ...}: let
-    # 2. Determine the hostname dynamically
-    hostName =
-      if args ? osConfig
-      then args.osConfig.networking.hostName # We are inside a Home Manager module
-      else config.networking.hostName; # We are inside a NixOS/Darwin system module
-    path =
-      if (lib.hasAttr "networking" config)
-      then hostName
-      else "${config.home.username}-${hostName}";
-  in {
+  ageConfigModule = {
     age.rekey.masterIdentities = [(inputs.secrets + "/yubikey-93302b8a.pub")];
-    age.rekey.storageMode = "local";
-    age.rekey.localStorageDir = inputs.secrets + "/rekeyed/${path}";
+    age.rekey.storageMode = "derivation";
   };
 in {
   options.flake.enableSecrets = lib.mkOption {
@@ -48,7 +37,12 @@ in {
       # nixosConfigurations = ((colmena.lib.makeHive self.colmena).introspect (x: x)).nodes;
     });
 
-    flake.modules.nixos.system = {pkgs, lib, ...}: {
+    flake.modules.nixos.system = {
+      pkgs,
+      lib,
+      config,
+      ...
+    }: {
       imports = lib.optionals enableSecrets [
         inputs.agenix.nixosModules.default
         inputs.agenix-rekey.nixosModules.default
@@ -57,6 +51,7 @@ in {
       config = lib.mkIf enableSecrets {
         nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
         environment.systemPackages = [pkgs.agenix-rekey];
+        nix.settings.extra-sandbox-paths = ["/tmp/agenix-rekey.${toString config.users.users.${flake.config.flake.meta.user.username}.uid}"];
       };
     };
   };
