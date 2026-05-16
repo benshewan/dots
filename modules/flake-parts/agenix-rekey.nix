@@ -48,7 +48,7 @@ in {
         inputs.agenix-rekey.nixosModules.default
         ageConfigModule
       ];
-      config = lib.mkIf enableSecrets {
+      config = {
         nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
         environment.systemPackages = [pkgs.agenix-rekey];
         nix.settings.extra-sandbox-paths = ["/tmp/agenix-rekey.${toString config.users.users.${flake.config.flake.meta.user.username}.uid}"];
