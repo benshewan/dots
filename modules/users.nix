@@ -1,4 +1,8 @@
-{lib, inputs, ...} @ flake: let
+{
+  lib,
+  inputs,
+  ...
+} @ flake: let
   enableSecrets = flake.config.flake.enableSecrets;
   username = flake.config.flake.meta.user.username;
 in {
@@ -8,27 +12,29 @@ in {
     config,
     lib,
     ...
-  }: lib.mkMerge [
+  }:
     {
-      users.users.${username} = {
-        isNormalUser = true;
-        description = flake.config.flake.meta.user.fullName;
-        extraGroups = [
-          "wheel" # For sudo access
-          "dialout" # For serial deivce access
-        ];
-        shell = lib.mkOverride 500 pkgs.fish; # can't use mkDefault because others set a default
-        ignoreShellProgramCheck = true;
-      };
+      users.users.${username} =
+        {
+          isNormalUser = true;
+          description = flake.config.flake.meta.user.fullName;
+          extraGroups = [
+            "wheel" # For sudo access
+            "dialout" # For serial deivce access
+          ];
+          shell = lib.mkOverride 500 pkgs.fish; # can't use mkDefault because others set a default
+          ignoreShellProgramCheck = true;
+        }
+        // lib.optionalAttrs enableSecrets {
+          hashedPasswordFile = config.age.secrets."user-password".path;
+        }
+        // lib.optionalAttrs (!enableSecrets) {
+          initialPassword = "changeme";
+        };
     }
-    (lib.mkIf enableSecrets {
+    // lib.optionalAttrs enableSecrets {
       age.secrets."user-password".rekeyFile = inputs.secrets + "/user-password.age";
-      users.users.${username}.hashedPasswordFile = config.age.secrets."user-password".path;
-    })
-    (lib.mkIf (!enableSecrets) {
-      users.users.${username}.initialPassword = "changeme";
-    })
-  ];
+    };
 
   # Home Manager
   flake.modules.homeManager.users = {
