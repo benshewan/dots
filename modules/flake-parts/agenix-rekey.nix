@@ -10,6 +10,7 @@
   ageConfigModule = {
     age.rekey.masterIdentities = [(inputs.secrets + "/yubikey-93302b8a.pub")];
     age.rekey.storageMode = "derivation";
+    age.rekey.cacheDir = "/var/tmp/agenix-rekey/\"$UID\"";
   };
 in {
   options.flake.enableSecrets = lib.mkOption {
@@ -48,10 +49,14 @@ in {
         inputs.agenix-rekey.nixosModules.default
         ageConfigModule
       ];
+      # This adds support for rekeying when system has just been bootstrapped and the rest hasn't been loaded yet
       config = {
         nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
         environment.systemPackages = [pkgs.agenix-rekey];
-        nix.settings.extra-sandbox-paths = ["/tmp/agenix-rekey.${toString config.users.users.${flake.config.flake.meta.user.username}.uid}"];
+        nix.settings.extra-sandbox-paths = ["/var/tmp/agenix-rekey"];
+        systemd.tmpfiles.rules = [
+          "d /var/tmp/agenix-rekey 1777 root root"
+        ];
       };
     };
   };
