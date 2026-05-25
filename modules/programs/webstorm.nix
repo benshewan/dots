@@ -9,5 +9,6 @@ _: {
         '';
       })
     ];
+    # home.file.".config/JetBrains/prettier".source = pkgs.prettier;
   };
 }
