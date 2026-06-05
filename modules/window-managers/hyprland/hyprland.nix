@@ -94,7 +94,13 @@
 
     # TEMP for DDC Util
     hardware.i2c.enable = true;
-    users.users.${flake.config.flake.meta.user.username}.extraGroups = ["i2c"];
+    users.users.${flake.config.flake.meta.user.username}.extraGroups = ["i2c" "video"];
+
+    # brightnessctl: install udev rules so backlight is writable by the `video`
+    # group. Lets it write sysfs directly instead of via systemd-logind, which
+    # rejects calls from non-active sessions (editor terminal, hyprland keybind)
+    # with "Failed to set brightness: Invalid request descriptor".
+    services.udev.packages = [pkgs.brightnessctl];
   };
   flake.modules.homeManager."window-managers/hyprland" = {
     pkgs,
@@ -184,7 +190,6 @@
         rounding = 8;
         shadow = {
           enabled = true; # Power hungry effect
-          ignore_window = true;
           render_power = 2;
           range = 15;
         };
@@ -221,9 +226,7 @@
       };
 
       misc = {
-        vfr = true; # misc:no_vfr -> misc:vfr. bool, heavily recommended to leave at default on. Saves on CPU usage.
         vrr = 0; # misc:vrr -> Adaptive sync of your monitor. 0 (off), 1 (on), 2 (fullscreen only). Default 0 to avoid white flashes on select hardware.
-
         disable_hyprland_logo = true;
       };
 

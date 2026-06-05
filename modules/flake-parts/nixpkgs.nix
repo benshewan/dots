@@ -4,8 +4,8 @@
   ...
 }: {
   flake-file.inputs = {
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   };
 

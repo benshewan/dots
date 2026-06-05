@@ -7,8 +7,18 @@ _: {
     programs.zed-editor = {
       enable = true;
       extensions = [
-        "nix"
-        "colored-zed-icons-theme"
+        # Languages
+        "git-firefly" # git syntax support
+        "nix" # nix LSP support
+        "ini" # ini/config language support
+        "angular" # Angular support
+        "lua" # Lua support
+        "xml" # XML support
+        # Comfort
+        "comment" # Hightlight special comments eg. TODO
+        "codebook" # Spell checker
+        "rainbow-csv" # make CSVs readable
+        "colored-zed-icons-theme" # pretty icons
       ];
       userSettings = {
         # Telemetry
@@ -24,11 +34,21 @@ _: {
 
         # General
         always_treat_brackets_as_autoclosed = true;
+        focus_follows_mouse = {
+          enabled = true;
+          debounce_ms = 0;
+        };
         extend_comment_on_newline = false;
         autosave = "on_focus_change";
 
+        # Colab
+        collaboration_panel.button = false;
+        chat_panel.button = false;
+        notification_panel.button = false;
+
         # Apperance
         buffer_font_size = lib.mkForce 14.0; # Override stylix font size
+        title_bar.show_sign_in = false;
         icon_theme = "Colored Zed Icons Theme Dark";
         colorize_brackets = true;
         indent_guides.coloring = "indent_aware";
@@ -49,6 +69,21 @@ _: {
           };
         };
 
+        # JavaScript Support
+        languages.JavaScript = {
+          formatter.external = {
+            "command" = lib.getExe pkgs.biome;
+            "arguments" = ["format" "--stdin-file-path" "{buffer_path}"];
+          };
+          formatter.code_actions = {
+            "source.fixAll.eslint" = true;
+          };
+        };
+
+        # CSV Support
+        languages.CSV = {
+          soft_wrap = "none";
+        };
         # AI
         language_models.openai_compatible.Orion = {
           api_url = "http://192.168.2.39:8433/v1";

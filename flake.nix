@@ -35,8 +35,8 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-25.11-darwin";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-darwin.url = "github:nixos/nixpkgs/nixpkgs-26.05-darwin";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-26.05";
     secrets = {
       url = "git+ssh://git@github.com/benshewan/nix-secrets";
       flake = false;

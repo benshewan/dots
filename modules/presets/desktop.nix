@@ -28,6 +28,7 @@
       "programs/fish"
       "programs/bash"
       "programs/direnv"
+      "programs/btop"
       # NixOS-specific
       "system"
       "system/ananicy"

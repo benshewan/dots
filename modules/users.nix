@@ -21,6 +21,7 @@ in {
           extraGroups = [
             "wheel" # For sudo access
             "dialout" # For serial deivce access
+            "video" # For backlight control
           ];
           shell = lib.mkOverride 500 pkgs.fish; # can't use mkDefault because others set a default
           ignoreShellProgramCheck = true;

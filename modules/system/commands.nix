@@ -6,7 +6,6 @@ _: {
       git # downloading git code
       dig # look at dns records
       htop # check resource usage
-      btop # check resource usage
       sysz # find systemd processes
       fastfetch # check system stats
       bat # nice cat alternative

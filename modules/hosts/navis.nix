@@ -51,6 +51,9 @@ in {
         "programs/dolphin"
         "programs/helium"
         "programs/obsidian"
+        "services/sunshine"
+        "programs/steam"
+        "services/easyeffects"
 
         # Programming
         "programs/webstorm"

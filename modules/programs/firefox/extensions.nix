@@ -160,10 +160,10 @@ _: {
       # Legacy Extensions
       # ----------------------------------------------------------------------------------
 
-      "advancedlocationbar@veg.by" = {
-        installation_mode = "normal_installed";
-        install_url = "file://${./legacy-extensions/AdvancedLocationbar.xpi}";
-      };
+      # "advancedlocationbar@veg.by" = {
+      #   installation_mode = "normal_installed";
+      #   install_url = "file://${./legacy-extensions/AdvancedLocationbar.xpi}";
+      # };
       # Allow you to hold ctrl to click substring of url
       # "advancedlocationbar@veg.by" = {
       #   installation_mode = "normal_installed";

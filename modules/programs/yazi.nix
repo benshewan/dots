@@ -60,14 +60,14 @@
 
         plugin.prepend_fetchers = [
           {
-            id = "git";
-            name = "*";
+            url = "*";
             run = "git";
+            group = "git";
           }
           {
-            id = "git";
-            name = "*/";
+            url = "*/";
             run = "git";
+            group = "git";
           }
         ];
 
@@ -91,7 +91,7 @@
             run = "office";
           }
           {
-            name = "*.docx";
+            url = "*.docx";
             run = "office";
           }
         ];
@@ -107,7 +107,7 @@
             run = ''piper -- CLICOLOR_FORCE=1 ${lib.getExe pkgs.glow} -w=$w -s=dark "$1"'';
           }
           {
-            name = "*.json";
+            url = "*.json";
             run = ''piper -- ${lib.getExe pkgs.jq} -C . "$1"'';
           }
 
@@ -129,7 +129,7 @@
             run = "office";
           }
           {
-            name = "*.docx";
+            url = "*.docx";
             run = "office";
           }
         ];
