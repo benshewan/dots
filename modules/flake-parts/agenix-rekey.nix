@@ -11,6 +11,7 @@
     age.rekey.masterIdentities = [(inputs.secrets + "/yubikey-93302b8a.pub")];
     age.rekey.storageMode = "derivation";
     age.rekey.cacheDir = "/var/tmp/agenix-rekey/\"$UID\"";
+    nix.settings.extra-sandbox-paths = ["/var/tmp/agenix-rekey"];
   };
 in {
   options.flake.enableSecrets = lib.mkOption {
@@ -53,7 +54,6 @@ in {
       config = {
         nixpkgs.overlays = [inputs.agenix-rekey.overlays.default];
         environment.systemPackages = [pkgs.agenix-rekey];
-        nix.settings.extra-sandbox-paths = ["/var/tmp/agenix-rekey"];
         systemd.tmpfiles.rules = [
           "d /var/tmp/agenix-rekey 1777 root root"
         ];
