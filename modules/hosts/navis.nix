@@ -78,6 +78,11 @@ in {
       };
       services.keylightd.enable = true;
 
+      # Because of stylix forcing a rebuild updates take forever otherwise
+      services.flatpak.packages = [
+        {appId = "org.inkscape.Inkscape";}
+      ];
+
       networking.firewall = rec {
         allowedTCPPorts = [
           7100
@@ -99,7 +104,6 @@ in {
           gnome-network-displays
           local.wisenet-viewer
           yaak
-          inkscape
           parsec-bin
 
           # Messing around
