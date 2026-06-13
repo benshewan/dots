@@ -7,8 +7,8 @@
     kdeconnect-send = pkgs.fetchFromGitHub {
       owner = "Deepak22903";
       repo = "kdeconnect-send.yazi";
-      rev = "8a6936b8d488eea43ee3910745b26fdfdbb2efbc";
-      sha256 = "sha256-Ei29Sey0wVKglT8OLd3zmOPxj5xEnpWpSvqoICuXKRo=";
+      rev = "06674d12779bd7243793bb29cf0a5f1273467d3d";
+      sha256 = "sha256-katk13VE8J/Gn7N2Ez30/Xq0ldBV3yP2kowA0qVWYEg=";
     };
 
     office = pkgs.fetchFromGitHub {
@@ -21,21 +21,21 @@
     open-with-cmd = pkgs.fetchFromGitHub {
       owner = "Ape";
       repo = "open-with-cmd.yazi";
-      rev = "e3d430f8b12cb314a1d5744bcf8f76dd56b071e7";
-      sha256 = "sha256-vN7zQeGuYN8TPKlA/6+SNFTVsA607z1DJPKXlNFJ9YM=";
+      rev = "eba191d9915cdca48333740290bb604400392ef6";
+      sha256 = "sha256-5Etw2bKTfhWHBXkIR6VZsbEbCN079QfIGLnQEYiR7Lw=";
     };
 
     sshfs = pkgs.fetchFromGitHub {
       owner = "uhs-robert";
       repo = "sshfs.yazi";
-      rev = "2728b14da2dff86b93aed9e04c45c60d5a06bdcd";
-      sha256 = "sha256-KYO5h+yl2kpzWFt8OyGkfvW/I6XsSv4E/wB7PrgD6AA=";
+      rev = "a8b8903c0da5a4febe91713108a9b0c8a2749475";
+      sha256 = "sha256-RYZ0wFkYfR/TfYntRipNPvpSl4gvtmNukLBQONRk1jU=";
     };
     f3d-preview = pkgs.fetchFromGitHub {
-      owner = "Ruudjhuu";
+      owner = "christopher-nies";
       repo = "f3d-preview.yazi";
       rev = "76d115d94280828a2116aab3a46e43538f291331";
-      sha256 = "sha256-katk13VE8J/Gn7N2Ez30/Xq0ldBV3yP2kowA0qVWYEg=";
+      sha256 = "sha256-pfvmjQw8m/0yUdCK+TW0mvZDWAfyx1skmPjvWSTvk00=";
     };
   in {
     home.packages = with pkgs; [
