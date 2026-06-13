@@ -110,6 +110,17 @@
       "suppress_event fullscreen, match:title ^(Wisenet Viewer)$"
       "suppress_event maximize, match:title ^(Wisenet Viewer)$"
 
+      # Libreoffice
+      {
+        name = "LibreOffice focus import";
+        "match:title" = "^(Text Import - \\[.*)$";
+        "match:class" = "^(soffice)$";
+        float = true;
+        size = "800 800";
+        center = true;
+        stay_focused = true;
+        dim_around = true;
+      }
       # XWayland Stuff
       # ------------------------------------------------------------------------------------------------------------------------
 

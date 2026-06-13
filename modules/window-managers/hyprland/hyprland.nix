@@ -110,6 +110,7 @@
   }: {
     wayland.windowManager.hyprland.enable = true;
     wayland.windowManager.hyprland.systemd.enable = false;
+    wayland.windowManager.hyprland.configType = "hyprlang";
 
     home.packages = with pkgs; [
       libnotify # Send notifications
