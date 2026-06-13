@@ -1,0 +1,55 @@
+{
+  "brave": {
+    "darker_mode": true,
+    "bookmark_bar": {
+      "show_on_all_tabs": false
+    },
+    "ai_chat": {
+      "context_menu_enabled": true,
+      "custom_models": [
+        {
+          "api_key": "",
+          "context_size": 64000,
+          "endpoint_url": "http://192.168.2.39:8433/v1/chat/completions",
+          "key": "custom:7b01d8b9",
+          "label": "Orion Gemma 4",
+          "model_request_name": "unsloth/gemma-4-E4B-it-GGUF",
+          "model_system_prompt": "",
+          "supports_tools": true,
+          "vision_support": true
+        }
+      ],
+      "show_toolbar_button": false,
+      "tab_organization_enabled": false,
+      "toolbar_button_opens_full_page": false,
+      "user_dismissed_storage_notice": true
+    },
+    "tabs": {
+      "hover_mode": 0,
+      "vertical_tabs_collapsed": true,
+      "vertical_tabs_enabled": true,
+      "vertical_tabs_expanded_state_per_window": false,
+      "vertical_tabs_floating_enabled": true,
+      "vertical_tabs_hide_completely_when_collapsed": false,
+      "vertical_tabs_show_title_on_window": false
+    },
+    "sidebar": {
+      "hidden_built_in_items": [1, 2],
+      "sidebar_items": [
+        {
+          "built_in_item_type": 7,
+          "type": 0
+        },
+        {
+          "built_in_item_type": 3,
+          "type": 0
+        },
+        {
+          "built_in_item_type": 4,
+          "type": 0
+        }
+      ],
+      "sidebar_show_option": 0
+    }
+  }
+}

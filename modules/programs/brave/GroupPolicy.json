@@ -1,0 +1,21 @@
+{
+  "BraveAIChatEnabled": true,
+  "BraveRewardsDisabled": true,
+  "BraveVPNDisabled": true,
+  "BraveNewsDisabled": true,
+  "BraveTalkDisabled": true,
+  "BraveStatsPingEnabled": false,
+  "BraveP3AEnabled": false,
+  "BraveWebDiscoveryEnabled": false,
+
+  "PasswordManagerEnabled": false,
+  "AutofillAddressEnabled": false,
+  "AutofillCreditCardEnabled": false,
+  "ImportAutofillFormData": false,
+  "AutofillPredictionSettings": 2,
+  "DefaultNotificationsSetting": 2,
+  "SuggestedContentEnabled": false,
+  "BackgroundModeEnabled": false,
+  "BrowserSwitcherKeepLastChromeTab": true,
+  "FullscreenAlertEnabled": false
+}
