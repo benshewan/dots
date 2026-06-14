@@ -21,10 +21,9 @@
       "security/yubikey"
       # Software
       "programs/comma"
-      "programs/vscode"
       "programs/git"
       "programs/firefox"
-      "programs/vscode"
+      "programs/zed"
       "programs/fish"
       "programs/bash"
       "programs/direnv"

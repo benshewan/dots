@@ -24,25 +24,17 @@ in {
       imports = config.flake.lib.resolve [
         # Desktop preset (users, security, development, shell, system, desktop environment)
         "presets/desktop"
-        "presets/hyprland"
+        "presets/mangowm"
         "theme/gruvbox-dark"
-
-        # virtualization
-        "virtualization/docker"
-        "virtualization/libvirt"
 
         # Software
         "programs/adb"
         "services/keylightd"
         "programs/webstorm"
         "programs/yazi"
-        "programs/spotify"
         "programs/dolphin"
-        "programs/prism-launcher"
         "programs/npm"
         "programs/python"
-        "programs/vivaldi"
-        "programs/chromium"
         "services/kdeconnect"
 
         # hardware configuration

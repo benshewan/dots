@@ -58,7 +58,7 @@ in {
 
         # Programming
         # "programs/webstorm"
-        "programs/zed"
+        "programs/vscode"
         "programs/npm"
         "programs/python"
         # "programs/claude-code"
