@@ -17,11 +17,12 @@
     programs.noctalia = {
       enable = true;
       settings = {
-        theme = {
-          mode = "dark";
-          source = "custom";
-          custom_palette = "stylix";
+        # custom 12hr time widget
+        widget.clock-12h = {
+          type = "clock";
+          format = "{:%-I:%M %p}";
         };
+        widget.network.show_label = false; # don't show interface/network in bar
         bar.main = {
           position = "top";
           enabled = true;
@@ -32,19 +33,46 @@
           background_opacity = 1.0;
           border = "outline";
           border_width = 0.0;
-          shadow = true;
-          margin_edge = 10;
+          shadow = false;
+          margin_edge = 3; # gap from screen top, match mongo outer vertical gap
+          margin_ends = 0; # gap from screen edge
+          radius = 0; # disable radius
+          # radius_bottom_left = -8;
+          # radius_bottom_right = -8;
 
           capsule = true;
 
-          start = ["launcher" "workspaces"];
-          center = ["clock"];
-          end = ["media" "tray" "notifications" "clipboard" "network" "bluetooth" "volume" "brightness" "battery" "control-center" "session"];
+          start = ["workspaces"];
+          center = ["clock-12h"];
+          end = ["tray" "notifications" "caffeine" "network" "bluetooth" "volume" "brightness" "battery" "control-center" "session"];
         };
+
+        # Use Stylix wallpaper
         wallpaper = {
           enabled = true;
           default.path = toString config.stylix.image;
         };
+
+        # Use satty for screenshot editing
+        shell.screenshot = {
+          save_to_file = false;
+          pipe_to_command = true;
+          pipe_command = "${lib.getExe pkgs.satty} -f -";
+        };
+        shell.animation.speed = 2.0;
+        shell.clipboard_auto_paste = "off";
+        shell.polkit_agent = true;
+        shell.setup_wizard_enabled = false;
+        shell.telemetry_enabled = false;
+        shell.middle_click_opens_widget_settings = false;
+        shell.font_family = config.stylix.fonts.sansSerif.name;
+      };
+
+      # Follow Stylx for theming, thanks AI
+      settings.theme = {
+        mode = "dark";
+        source = "custom";
+        custom_palette = "stylix";
       };
       customPalettes.stylix = {
         dark = {
