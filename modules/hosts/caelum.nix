@@ -30,25 +30,27 @@ in {
         # Software
         "programs/adb"
         "services/keylightd"
-        "programs/webstorm"
         "programs/yazi"
         "programs/dolphin"
         "programs/npm"
         "programs/python"
         "services/kdeconnect"
+        "programs/opencode"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
       ];
 
+      environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = 1;
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
         monitors = [
           {
             name = "Virtual-1";
-            width = 1920;
-            height = 1080;
+            width = 3840;
+            height = 2160;
             refreshRate = 60;
+            scale = 2.0;
             primary = true;
           }
         ];
