@@ -31,17 +31,18 @@
       rev = "a8b8903c0da5a4febe91713108a9b0c8a2749475";
       sha256 = "sha256-RYZ0wFkYfR/TfYntRipNPvpSl4gvtmNukLBQONRk1jU=";
     };
-    f3d-preview = pkgs.fetchFromGitHub {
-      owner = "christopher-nies";
-      repo = "f3d-preview.yazi";
-      rev = "76d115d94280828a2116aab3a46e43538f291331";
-      sha256 = "sha256-pfvmjQw8m/0yUdCK+TW0mvZDWAfyx1skmPjvWSTvk00=";
-    };
+    # broken
+    # f3d-preview = pkgs.fetchFromGitHub {
+    #   owner = "christopher-nies";
+    #   repo = "f3d-preview.yazi";
+    #   rev = "76d115d94280828a2116aab3a46e43538f291331";
+    #   sha256 = "sha256-pfvmjQw8m/0yUdCK+TW0mvZDWAfyx1skmPjvWSTvk00=";
+    # };
   in {
     home.packages = with pkgs; [
       trash-cli
       ouch
-      f3d
+      # f3d
     ];
 
     programs.yazi = {
@@ -73,10 +74,10 @@
 
         plugin.prepend_preloaders = [
           # ---- f3d-preview plugin ----
-          {
-            url = "*.{3mf,obj,pts,ply,stl,step,stp}";
-            run = "f3d-preview";
-          }
+          # {
+          #   url = "*.{3mf,obj,pts,ply,stl,step,stp}";
+          #   run = "f3d-preview";
+          # }
           # Office Documents
           {
             mime = "application/oasis.opendocument.*";
@@ -98,18 +99,18 @@
 
         plugin.prepend_previewers = [
           # ---- f3d-preview plugin ----
-          {
-            url = "*.{3mf,obj,pts,ply,stl,step,stp}";
-            run = "f3d-preview";
-          }
-          {
-            url = "*.md";
-            run = ''piper -- CLICOLOR_FORCE=1 ${lib.getExe pkgs.glow} -w=$w -s=dark "$1"'';
-          }
-          {
-            url = "*.json";
-            run = ''piper -- ${lib.getExe pkgs.jq} -C . "$1"'';
-          }
+          # {
+          #   url = "*.{3mf,obj,pts,ply,stl,step,stp}";
+          #   run = "f3d-preview";
+          # }
+          # {
+          #   url = "*.md";
+          #   run = ''piper -- CLICOLOR_FORCE=1 ${lib.getExe pkgs.glow} -w=$w -s=dark "$1"'';
+          # }
+          # {
+          #   url = "*.json";
+          #   run = ''piper -- ${lib.getExe pkgs.jq} -C . "$1"'';
+          # }
 
           # Office Documents
           {
@@ -242,9 +243,9 @@
         require("recycle-bin"):setup()
       '';
 
-      plugins = with pkgs.yaziPlugins; {
-        inherit vcs-files piper smart-filter git wl-clipboard mount recycle-bin ouch; # Nix Pkgs
-        inherit kdeconnect-send office open-with-cmd sshfs f3d-preview; # Git
+      plugins = {
+        inherit (pkgs.yaziPlugins) vcs-files piper smart-filter git wl-clipboard mount recycle-bin ouch; # Nix Pkgs
+        inherit kdeconnect-send office open-with-cmd sshfs; # Git (local defs)
       };
     };
   };
