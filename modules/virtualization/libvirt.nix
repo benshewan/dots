@@ -3,6 +3,8 @@
     # Libvirt/QEMU
     virtualisation.spiceUSBRedirection.enable = true;
 
+    users.groups.plugdev = {};
+
     virtualisation.libvirtd = {
       enable = true;
       qemu = {
