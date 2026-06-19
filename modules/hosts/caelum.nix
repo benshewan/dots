@@ -46,7 +46,7 @@ in {
       home-manager.users.${config.flake.meta.user.username} = {
         monitors = [
           {
-            name = "Virtual-1";
+            name = "name:Virtual-1";
             width = 3840;
             height = 2160;
             refreshRate = 60;

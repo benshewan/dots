@@ -16,17 +16,17 @@
 
     programs.mangowc.enable = true;
     # Enable UWSM and register MangoWM as a valid compositor session
-    # programs.uwsm = {
-    #   enable = true;
-    #   waylandCompositors = {
-    #     mango = {
-    #       prettyName = "MangoWM";
-    #       comment = "MangoWM compositor managed by UWSM";
-    #       # Points to the system binary path provided by programs.mango
-    #       binPath = lib.getExe config.programs.mangowc.package;
-    #     };
-    #   };
-    # };
+    programs.uwsm = {
+      enable = true;
+      waylandCompositors = {
+        mango = {
+          prettyName = "MangoWM";
+          comment = "MangoWM compositor managed by UWSM";
+          # Points to the system binary path provided by programs.mango
+          binPath = lib.getExe config.programs.mangowc.package;
+        };
+      };
+    };
     # Required Services
     # ----------------------------------------
     services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
@@ -84,8 +84,8 @@
 
     wayland.windowManager.mango = {
       enable = true;
-      systemd.enable = true; # Import important vars
-      systemd.xdgAutostart = true; # allow apps to autostart with systemd
+      systemd.enable = false; # Import important vars
+      systemd.xdgAutostart = false; # allow apps to autostart with systemd
       # Script to run at startup
       # autostart_sh = ''
 
@@ -96,7 +96,7 @@
       # Support for xwayland
       env = ["DISPLAY,:2"];
       exec-once = [
-        # "${lib.getExe pkgs.uwsm} finalize"
+        "${lib.getExe pkgs.uwsm} finalize"
         "${lib.getExe pkgs.xwayland-satellite} :2"
       ];
 
