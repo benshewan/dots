@@ -38,8 +38,8 @@
   # battery - ENV{POWER_SUPPLY_ONLINE}=="0"
   # AC - ENV{POWER_SUPPLY_ONLINE}=="1"
   services.udev.extraRules = lib.concatStringsSep "\n" [
-    ''SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${lib.getExe pkgs.power-profiles-daemon} set balanced"''
-    ''SUBSYSTEM=="power_supply",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${lib.getExe pkgs.power-profiles-daemon} set power-saver"''
+    ''SUBSYSTEM=="power_supply",ATTR{type}=="Mains",ENV{POWER_SUPPLY_ONLINE}=="1",RUN+="${lib.getExe pkgs.power-profiles-daemon} set balanced"''
+    ''SUBSYSTEM=="power_supply",ATTR{type}=="Mains",ENV{POWER_SUPPLY_ONLINE}=="0",RUN+="${lib.getExe pkgs.power-profiles-daemon} set power-saver"''
     # Allow waking from USB keyboards
     ''ACTION=="add", SUBSYSTEM=="usb", DRIVER=="usb", ATTR{power/wakeup}="enabled"''
 
