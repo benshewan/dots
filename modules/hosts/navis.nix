@@ -24,7 +24,7 @@ in {
       imports = config.flake.lib.resolve [
         # Desktop preset (users, security, development, shell, system, desktop environment)
         "presets/laptop"
-        "presets/hyprland"
+        "presets/mangowm"
         "theme/gruvbox-dark"
 
         # virtualization
@@ -40,7 +40,7 @@ in {
         "programs/lan-mouse"
         "programs/vivaldi"
         "programs/yazi"
-        "programs/spotify"
+        # "programs/spotify"
         "programs/obs"
         "programs/chromium"
         "programs/mongodb-compass"
@@ -87,9 +87,45 @@ in {
       networking.firewall = rec {
         allowedTCPPorts = [
           7100
+          59100
         ];
+        allowedUDPPorts = [59100 59200];
       };
-
+      services.pipewire.extraConfig.pipewire = {
+        "10-null-sink" = {
+          "context.objects" = [
+            {
+              factory = "adapter";
+              args = {
+                "factory.name" = "support.null-audio-sink";
+                "node.name" = "audiorelay-virtual-mic-sink";
+                "node.description" = "Virtual Mic Sink";
+                "media.class" = "Audio/Sink";
+                "audio.position" = "FL,FR";
+              };
+            }
+          ];
+        };
+        "20-virtual-mic" = {
+          "context.modules" = [
+            {
+              name = "libpipewire-module-loopback";
+              args = {
+                "capture.props" = {
+                  "node.target" = "audiorelay-virtual-mic-sink";
+                };
+                "playback.props" = {
+                  "node.name" = "audiorelay-virtual-mic";
+                  "node.description" = "Virtual Mic";
+                  "media.class" = "Audio/Source";
+                  "audio.position" = "FL,FR";
+                  "node.passive" = true;
+                };
+              };
+            }
+          ];
+        };
+      };
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
         home.packages = with pkgs; [
@@ -119,49 +155,53 @@ in {
         monitors = [
           # Internal Monitor
           {
-            name = "eDP-1";
+            name = "name:eDP-1";
             width = 2256;
             height = 1504;
             primary = true;
             scale = 1.566667;
+            x = 2048;
+            y = 1152;
           }
 
           # Work Monitors
           {
-            name = "desc:Dell Inc. DELL P2417H KH0NG95K15KL";
+            # Dell Inc. DELL P2417H KH0NG95K15KL
+            name = "serial:KH0NG95K15KL";
             width = 1920;
             height = 1080;
-            x = -1017;
-            y = -1080;
+            x = 1031;
+            y = 72;
           }
           {
-            name = "desc:Dell Inc. DELL P2417H KH0NG95F0AMI";
+            # Dell Inc. DELL P2417H KH0NG95F0AMI
+            name = "serial:KH0NG95F0AMI";
             width = 1920;
             height = 1080;
-            x = 903;
-            y = -1080;
+            x = 2951;
+            y = 72;
           }
 
           # Home Monitors
           {
-            name = "desc:Lenovo Group Limited P24q-10 U4P00001";
+            # Lenovo Group Limited P24q-10 U4P00001
+            name = "serial:U4P00001";
             # rotate = 1;
             width = 2560;
             height = 1440;
             scale = 1.25;
-            y = -1152;
-            x = -2048;
+            y = 0;
+            x = 0;
           }
           {
-            name = "desc:Dell Inc. AW3423DWF 58082S3";
+            # "Dell Inc. AW3423DWF 58082S3
+            name = "serial:58082S3";
             width = 3440;
             height = 1440;
-            # Some combination of my garbo dock and alpha software makes this explode my computer
-            # colorProfile = "hdr";
             refreshRate = 165;
             scale = 1.25;
-            x = 0;
-            y = -1152;
+            x = 2048;
+            y = 0;
           }
         ];
 
