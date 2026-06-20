@@ -21,9 +21,9 @@ in
 
       ffmpeg_4.lib
       gcc-unwrapped.lib
-      libsForQt5.qt5.qtbase.out
-      libsForQt5.qt5.qtdeclarative.out
-      libsForQt5.qt5.qtmultimedia.out
+      qt5.qtbase.out
+      qt5.qtdeclarative.out
+      qt5.qtmultimedia.out
       libusb1.out
 
       fontconfig
