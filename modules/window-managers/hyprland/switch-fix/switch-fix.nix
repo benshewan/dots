@@ -17,7 +17,7 @@ _: {
               position = "${toString m.x}x${toString m.y}";
               scale = toString m.scale;
             in
-              if m.name == "eDP-1"
+              if lib.hasInfix "eDP-1" m.name
               then [
                 ''
                   result=$(${./check_lid.sh})
@@ -26,10 +26,10 @@ _: {
                   if [ $result == "closed" ]; then
                     # Code to execute if the condition is true
                     echo "disabling"
-                    ${lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl"} keyword monitor '${m.name}, disable'
+                    ${lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl"} keyword monitor '${config.lib.monitors.hyprName m.name}, disable'
 
                   elif [ $result == "open" ]; then
-                    ${lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl"} keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'
+                    ${lib.getExe' config.wayland.windowManager.hyprland.package "hyprctl"} keyword monitor '${config.lib.monitors.hyprName m.name}, ${resolution}, ${position}, ${scale}'
                   fi
                 ''
               ]

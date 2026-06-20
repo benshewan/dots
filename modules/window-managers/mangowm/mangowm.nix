@@ -15,18 +15,6 @@
     programs.dconf.enable = true;
 
     programs.mangowc.enable = true;
-    # Enable UWSM and register MangoWM as a valid compositor session
-    programs.uwsm = {
-      enable = true;
-      waylandCompositors = {
-        mango = {
-          prettyName = "MangoWM";
-          comment = "MangoWM compositor managed by UWSM";
-          # Points to the system binary path provided by programs.mango
-          binPath = lib.getExe config.programs.mangowc.package;
-        };
-      };
-    };
     # Required Services
     # ----------------------------------------
     services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
@@ -84,8 +72,8 @@
 
     wayland.windowManager.mango = {
       enable = true;
-      systemd.enable = false; # Import important vars
-      systemd.xdgAutostart = false; # allow apps to autostart with systemd
+      systemd.enable = true; # Import important vars
+      systemd.xdgAutostart = true; # allow apps to autostart with systemd
       # Script to run at startup
       # autostart_sh = ''
 
@@ -96,7 +84,6 @@
       # Support for xwayland
       env = ["DISPLAY,:2"];
       exec-once = [
-        "${lib.getExe pkgs.uwsm} finalize"
         "${lib.getExe pkgs.xwayland-satellite} :2"
       ];
 
@@ -118,17 +105,19 @@
       gappoh = 3; # outer horizontal
       gappov = 3; # outer vertical
 
-      # input
-      trackpad_natural_scrolling = 1;
+      ov_tab_mode = 0; # don't cycle with toggleoverview
+      # mouse general
       focus_cross_monitor = 1; # Allow directional focus to cross monitor boundaries.
       drag_tile_to_tile = 1; # Allow dragging a tiled window onto another to swap their positions.
-      trackpad_scroll_factor = 0.5;
+      drag_warp_cursor = 1; # Prevent the window from snapping by warping the cursor to that corner
+      # Mouse input
+      axis_scroll_factor = 2;
       mouse_accel_profile = 0;
+      # trackpad input
+      trackpad_natural_scrolling = 1;
+      trackpad_scroll_factor = 0.5;
       tap_to_click = 1;
       tap_and_drag = 1;
-      ov_tab_mode = 0; # don't cycle with toggleoverview
-      # Prevent the window from snapping by warping the cursor to that corner
-      drag_warp_cursor = 1;
 
       # Animations
       animations = 1;
@@ -206,12 +195,24 @@
         )
         config.monitors);
 
+      tagrule = [
+        "id:1,layout_name:fair"
+        "id:2,layout_name:fair"
+        "id:3,layout_name:fair"
+        "id:4,layout_name:fair"
+        "id:5,layout_name:fair"
+        "id:6,layout_name:fair"
+        "id:7,layout_name:fair"
+        "id:8,layout_name:fair"
+        "id:9,layout_name:fair"
+      ];
+
       monitorrule = map (
         m: let
           resolution = "width:${toString m.width},height:${toString m.height},refresh:${toString m.refreshRate}";
           position = "x:${toString m.x},y:${toString m.y}";
           scale = "scale:${toString m.scale}";
-        in "${m.name},${resolution},${position},${scale}"
+        in "${config.lib.monitors.mangoName m.name},${resolution},${position},${scale}"
       ) (config.monitors);
     };
   };

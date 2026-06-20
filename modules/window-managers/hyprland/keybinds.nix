@@ -141,13 +141,13 @@
               position = "${toString m.x}x${toString m.y}";
               scale = toString m.scale;
             in
-              if m.name == "eDP-1"
+              if lib.hasInfix "eDP-1" m.name
               then [
                 # ",switch:Lid Switch,exec,${lib.getExe config.programs.hyprlock.package} --immediate" # depricated - now handled by swayidle
                 # Tell laptop screen to turn off if lid is closed
                 # This should only run if more than one monitor is connected
-                ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${m.name}, ${resolution}, ${position}, ${scale}'"
-                ", switch:on:Lid Switch,exec,if (( $(${lib.getExe pkgs.wlr-randr} | grep Model: | wc -l) > 1 )); then hyprctl keyword monitor '${m.name}, disable'; fi;"
+                ", switch:off:Lid Switch,exec,hyprctl keyword monitor '${config.lib.monitors.hyprName m.name}, ${resolution}, ${position}, ${scale}'"
+                ", switch:on:Lid Switch,exec,if (( $(${lib.getExe pkgs.wlr-randr} | grep Model: | wc -l) > 1 )); then hyprctl keyword monitor '${config.lib.monitors.hyprName m.name}, disable'; fi;"
                 #  else systemctl suspend-then-hibernate;
               ]
               else []

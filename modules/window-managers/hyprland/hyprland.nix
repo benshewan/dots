@@ -233,6 +233,8 @@
 
       # Dynamic settings
       monitor =
+        # Skip monitors Hyprland can't address (serial:* has no Hyprland equivalent;
+        # they fall through to the catch-all default rule below).
         (map (
           m: let
             resolution = "${toString m.width}x${toString m.height}@${toString m.refreshRate}";
@@ -247,12 +249,12 @@
                 then ", bitdepth, 10"
                 else ""
               );
-          in "${m.name},${
+          in "${config.lib.monitors.hyprName m.name},${
             if m.enabled
             then "${resolution},${position},${scale},${rotate},${colorProfile}"
             else "disable"
           }"
-        ) (config.monitors))
+        ) (lib.filter (m: config.lib.monitors.hyprName m.name != null) config.monitors))
         # set default for any random monitor
         ++ [",preferred,auto-right,auto"];
 
