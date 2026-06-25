@@ -14,7 +14,11 @@
 
     programs.dconf.enable = true;
 
-    programs.mangowc.enable = true;
+    # enable ddc control
+    hardware.i2c.enable = true;
+    users.users.${flake.config.flake.meta.user.username}.extraGroups = ["i2c" "video"];
+
+    programs.mango.enable = true;
     # Required Services
     # ----------------------------------------
     services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
@@ -23,44 +27,12 @@
     programs.seahorse.enable = true; # Manage Keys with a GUI
     programs.gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
 
-    xdg.portal = {
-      enable = true;
-      wlr.enable = true;
-      extraPortals = [
-        pkgs.xdg-desktop-portal-gtk
-        pkgs.xdg-desktop-portal-wlr
-      ];
-      wlr.settings.preferred = {
-        default = "gtk";
-        "org.freedesktop.impl.portal.SecreenCast" = "wlr";
-        "org.freedesktop.impl.portal.Screenshot" = "wlr";
-        "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
-        "org.freedesktop.impl.portal.Inhibit" = "none";
-      };
-    };
-
     # UI
     # ----------------------------------------
 
     environment.systemPackages = with pkgs; [
       adwaita-icon-theme
     ];
-
-    # For GUI sudo authentication
-    # ----------------------------------------
-    # systemd.user.services.polkit-gnome-authentication-agent-1 = {
-    #   description = "polkit-gnome-authentication-agent-1";
-    #   wantedBy = ["graphical-session.target"];
-    #   wants = ["graphical-session.target"];
-    #   after = ["graphical-session.target"];
-    #   serviceConfig = {
-    #     Type = "simple";
-    #     ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-    #     Restart = "on-failure";
-    #     RestartSec = 1;
-    #     TimeoutStopSec = 10;
-    #   };
-    # };
   };
   flake.modules.homeManager."window-managers/mangowm" = {
     pkgs,
@@ -74,16 +46,13 @@
       enable = true;
       systemd.enable = true; # Import important vars
       systemd.xdgAutostart = true; # allow apps to autostart with systemd
-      # Script to run at startup
-      # autostart_sh = ''
-
-      # '';
     };
 
     wayland.windowManager.mango.settings = {
       # Support for xwayland
       env = ["DISPLAY,:2"];
       exec-once = [
+        "systemctl --user start mango-session.target"
         "${lib.getExe pkgs.xwayland-satellite} :2"
       ];
 

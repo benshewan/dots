@@ -3,7 +3,7 @@
     noctalia.url = "github:noctalia-dev/noctalia";
     noctalia.inputs.nixpkgs.follows = "nixpkgs";
   };
-  flake.modules.homeManager."window-managers/mangowm" = {
+  flake.modules.homeManager."window-managers/hyprland" = {
     pkgs,
     lib,
     config,
@@ -13,7 +13,7 @@
   in {
     imports = [inputs.noctalia.homeModules.default];
 
-    wayland.windowManager.mango.settings.exec-once = ["${lib.getExe (config.programs.noctalia.package)}"];
+    wayland.windowManager.hyprland.settings.exec-once = ["${lib.getExe (config.programs.noctalia.package)}"];
     home.packages = with pkgs; [ddcutil]; # needed for ddc control
     programs.noctalia = {
       enable = true;
@@ -35,7 +35,7 @@
           border = "outline";
           border_width = 0.0;
           shadow = false;
-          margin_edge = 3; # gap from screen top, match mongo outer vertical gap
+          margin_edge = 3; # gap from screen top, match hyprland outer vertical gap
           margin_ends = 0; # gap from screen edge
           radius = 0; # disable radius
           # radius_bottom_left = -8;

@@ -29,16 +29,17 @@
         "SUPER,up,movefocus,u"
         "SUPER,right,movefocus,r"
 
-        "SUPER,1,focusworkspaceoncurrentmonitor,1"
-        "SUPER,2,focusworkspaceoncurrentmonitor,2"
-        "SUPER,3,focusworkspaceoncurrentmonitor,3"
-        "SUPER,4,focusworkspaceoncurrentmonitor,4"
-        "SUPER,5,focusworkspaceoncurrentmonitor,5"
-        "SUPER,6,focusworkspaceoncurrentmonitor,6"
-        "SUPER,7,focusworkspaceoncurrentmonitor,7"
-        "SUPER,8,focusworkspaceoncurrentmonitor,8"
-        "SUPER,9,focusworkspaceoncurrentmonitor,9"
-        "SUPER,0,focusworkspaceoncurrentmonitor,10"
+        # handled by hyprsplit plugin now
+        # "SUPER,1,focusworkspaceoncurrentmonitor,1"
+        # "SUPER,2,focusworkspaceoncurrentmonitor,2"
+        # "SUPER,3,focusworkspaceoncurrentmonitor,3"
+        # "SUPER,4,focusworkspaceoncurrentmonitor,4"
+        # "SUPER,5,focusworkspaceoncurrentmonitor,5"
+        # "SUPER,6,focusworkspaceoncurrentmonitor,6"
+        # "SUPER,7,focusworkspaceoncurrentmonitor,7"
+        # "SUPER,8,focusworkspaceoncurrentmonitor,8"
+        # "SUPER,9,focusworkspaceoncurrentmonitor,9"
+        # "SUPER,0,focusworkspaceoncurrentmonitor,10"
 
         ################################## Move ###########################################
         # "SUPER SHIFT, H, movewindow, l"
@@ -89,14 +90,13 @@
         "SUPER,e,exec, ${lib.getExe pkgs.kitty} -e ${lib.getExe config.programs.yazi.package}"
         # "SUPER,d,submap, launch_applications"
 
-        # Rofi keybinds
-        "ALT,space,exec,${config.programs.rofi.launcher.command}"
-        "SUPER,v,exec,${config.programs.rofi.clipboard.command}"
-        "SUPER,n,exec,${lib.getExe pkgs.networkmanager_dmenu}"
+        # Noctalia launcher / clipboard
+        "SUPER,space,exec,${lib.getExe config.programs.noctalia.package} msg panel-toggle launcher"
+        "SUPER,v,exec,${lib.getExe config.programs.noctalia.package} msg panel-toggle clipboard"
 
-        # Screenshot keybinds
-        "SUPER, s, exec, ${lib.getExe pkgs.grimblast} --notify --freeze save area - | ${lib.getExe pkgs.satty} -f -"
-        "SUPER SHIFT, s, exec, ${lib.getExe pkgs.grimblast} --notify save output - | ${lib.getExe pkgs.satty} -f -"
+        # Screenshot keybinds (handled by noctalia, piped to satty)
+        "SUPER, s, exec, ${lib.getExe config.programs.noctalia.package} msg screenshot-region"
+        "SUPER SHIFT, s, exec, ${lib.getExe config.programs.noctalia.package} msg screenshot-fullscreen"
 
         # Screen Recording - Use Ctrl + C to stop recording
         # ''SUPER, r, exec, ${lib.getExe pkgs.wf-recorder} -g "$(${lib.getExe pkgs.slurp})"''
@@ -109,15 +109,13 @@
 
       # Repeat if held
       bindel = [
-        # Tell wireplumber to raise/lower volume with volume keys
-        ", XF86AudioLowerVolume, exec, ${scripts/volume_brightness.sh} volume_down"
-        ", XF86AudioRaiseVolume, exec, ${scripts/volume_brightness.sh} volume_up"
+        # Volume keys (handled by noctalia)
+        ", XF86AudioLowerVolume, exec, ${lib.getExe config.programs.noctalia.package} msg volume-down"
+        ", XF86AudioRaiseVolume, exec, ${lib.getExe config.programs.noctalia.package} msg volume-up"
 
-        # Control display brightness
-        ",XF86MonBrightnessUp, exec, ${scripts/volume_brightness.sh} brightness_up"
-        ",XF86MonBrightnessDown, exec, ${scripts/volume_brightness.sh} brightness_down"
-        "ALT,7, exec, ${scripts/adjust-brightness-focused.sh} -"
-        "ALT,8, exec, ${scripts/adjust-brightness-focused.sh} +"
+        # Control display brightness (handled by noctalia)
+        ",XF86MonBrightnessUp, exec, ${lib.getExe config.programs.noctalia.package} msg brightness-up"
+        ",XF86MonBrightnessDown, exec, ${lib.getExe config.programs.noctalia.package} msg brightness-down"
       ];
 
       # Run even when screen locked
@@ -126,11 +124,11 @@
           # Toggle blue light filter
           ", XF86AudioMedia, exec, ${lib.getExe pkgs.hyprshade} toggle blue-light-filter"
 
-          # Set Mutli Media Keys
-          ", XF86AudioMute, exec, ${scripts/volume_brightness.sh} volume_mute"
-          ", XF86AudioPlay, exec, ${scripts/volume_brightness.sh} play_pause"
-          ", XF86AudioNext, exec, ${scripts/volume_brightness.sh} next_track"
-          ", XF86AudioPrev, exec, ${scripts/volume_brightness.sh} prev_track"
+          # Multi Media Keys
+          ", XF86AudioMute, exec, ${lib.getExe config.programs.noctalia.package} msg volume-mute"
+          ", XF86AudioPlay, exec, ${lib.getExe pkgs.playerctl} play-pause"
+          ", XF86AudioNext, exec, ${lib.getExe pkgs.playerctl} next"
+          ", XF86AudioPrev, exec, ${lib.getExe pkgs.playerctl} previous"
 
           # Lock screen
           "SUPER,l,exec,${lib.getExe config.programs.hyprlock.package} --grace 0"

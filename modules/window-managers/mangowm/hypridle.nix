@@ -22,37 +22,39 @@ _: {
       done
     '';
   in {
-    services.swayidle = {
+    services.hypridle = {
       enable = true;
-      systemdTargets = ["graphical-session.target"];
-      timeouts = [
-        {
-          timeout = 30;
-          command = "if ${pidof} hyprlock; then ${disable_all}; fi";
-          resumeCommand = "${enable_all}";
-        }
+      settings.listener = [
+        # {
+        #   timeout = 30;
+        #   on-timeout = "if ${pidof} hyprlock; then ${disable_all}; fi";
+        #   on-resume = "${enable_all}";
+        # }
         {
           timeout = 330;
-          command = "if ${pidof} hyprlock; then systemctl suspend; fi";
+          on-timeout = "if ${pidof} hyprlock; then systemctl suspend; fi";
         }
         {
           timeout = 1800;
-          command = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
+          on-timeout = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
         }
-        {
-          timeout = 1830;
-          command = "${disable_all}";
-          resumeCommand = "${enable_all}";
-        }
+        # {
+        #   timeout = 1830;
+        #   on-timeout = "${disable_all}";
+        #   on-resume = "${enable_all}";
+        # }
         {
           timeout = 2130;
-          command = "systemctl suspend";
+          on-timeout = "systemctl suspend";
         }
       ];
-      events = {
-        lock = hyprlock;
-        before-sleep = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
-        after-resume = "${enable_all}";
+
+      settings.general = {
+        lock_cmd = hyprlock;
+        unlock_cmd = "";
+        after_sleep_cmd = "${enable_all}";
+        before_sleep_cmd = "${lib.getExe' pkgs.systemd "loginctl"} lock-session";
+        inhibit_sleep = 3;
       };
     };
   };

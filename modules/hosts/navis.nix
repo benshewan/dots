@@ -72,7 +72,6 @@ in {
       ];
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-zen4;
 
-      environment.systemPackages = with pkgs; [local.audiorelay];
       services.mongodb = {
         enable = true;
         package = pkgs.stable.mongodb;
@@ -147,6 +146,8 @@ in {
           syncthingtray
           stable.handbrake
           brasero
+          local.audiorelay
+          stable.orca-slicer
 
           # Audio
           qpwgraph

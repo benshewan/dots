@@ -32,7 +32,7 @@
         };
       };
 
-      config = {
+      config = lib.mkIf cfg.enable {
         environment.systemPackages = [cfg.package]; # for the CLI
         systemd.packages = [cfg.package];
         systemd.services = {

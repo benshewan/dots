@@ -41,11 +41,6 @@
     services.blueman.enable = true; # GTK Bluetooth manager
     programs.gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
 
-    services.udisks2.enable = true; # Auto mount removable drives on connect
-    # services.udisks2.settings = {
-    #   "drive.conf".ATA.WriteCacheEnabled = false;
-    # };
-
     xdg.portal = {
       enable = true;
       extraPortals = [
@@ -54,29 +49,25 @@
       ];
     };
 
-    # UI
-    # ----------------------------------------
-    programs.waybar.enable = true;
-
     environment.systemPackages = with pkgs; [
       adwaita-icon-theme
     ];
 
-    # For GUI sudo authentication
+    # For GUI sudo authentication - noctalia implements this
     # ----------------------------------------
-    systemd.user.services.polkit-gnome-authentication-agent-1 = {
-      description = "polkit-gnome-authentication-agent-1";
-      wantedBy = ["graphical-session.target"];
-      wants = ["graphical-session.target"];
-      after = ["graphical-session.target"];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        Restart = "on-failure";
-        RestartSec = 1;
-        TimeoutStopSec = 10;
-      };
-    };
+    # systemd.user.services.polkit-gnome-authentication-agent-1 = {
+    #   description = "polkit-gnome-authentication-agent-1";
+    #   wantedBy = ["graphical-session.target"];
+    #   wants = ["graphical-session.target"];
+    #   after = ["graphical-session.target"];
+    #   serviceConfig = {
+    #     Type = "simple";
+    #     ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+    #     Restart = "on-failure";
+    #     RestartSec = 1;
+    #     TimeoutStopSec = 10;
+    #   };
+    # };
 
     # Add lock screen to pam for authentication
     # ----------------------------------------
@@ -95,12 +86,6 @@
     # TEMP for DDC Util
     hardware.i2c.enable = true;
     users.users.${flake.config.flake.meta.user.username}.extraGroups = ["i2c" "video"];
-
-    # brightnessctl: install udev rules so backlight is writable by the `video`
-    # group. Lets it write sysfs directly instead of via systemd-logind, which
-    # rejects calls from non-active sessions (editor terminal, hyprland keybind)
-    # with "Failed to set brightness: Invalid request descriptor".
-    services.udev.packages = [pkgs.brightnessctl];
   };
   flake.modules.homeManager."window-managers/hyprland" = {
     pkgs,
@@ -109,19 +94,16 @@
     ...
   }: {
     wayland.windowManager.hyprland.enable = true;
+    # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
+    wayland.windowManager.hyprland.package = null;
+    wayland.windowManager.hyprland.portalPackage = null;
+
     wayland.windowManager.hyprland.systemd.enable = false;
     wayland.windowManager.hyprland.configType = "hyprlang";
+    wayland.windowManager.hyprland.systemd.variables = ["--all"];
 
     home.packages = with pkgs; [
-      libnotify # Send notifications
-
       inputs.hyprland-qtutils.packages.${stdenv.hostPlatform.system}.hyprland-qtutils
-
-      # TEMP fix later
-      brightnessctl
-      ddcutil
-      playerctl
-      jq
     ];
 
     # Setup wallpaper
@@ -136,18 +118,12 @@
     # Base config taken from github:redyf/nixdots and mixed with github:justinlime/dotfiles
     wayland.windowManager.hyprland.settings = {
       exec-once = [
-        # System
-        "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" # allow xdg portal to get the variables it needs
-
-        "${pkgs.udiskie}/bin/udiskie --file-manager dolphin &"
-
         # Clipboard
-        "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
-        "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --type text --watch ${lib.getExe pkgs.cliphist} store"
-        "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --type image --watch ${lib.getExe pkgs.cliphist} store"
+        # "${lib.getExe pkgs.wl-clip-persist} --clipboard both"
+        # "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --type text --watch ${lib.getExe pkgs.cliphist} store"
+        # "${lib.getExe' pkgs.wl-clipboard "wl-paste"} --type image --watch ${lib.getExe pkgs.cliphist} store"
 
         # Style
-        "${lib.getExe pkgs.dunst}"
         ''hyprctl setcursor "${config.stylix.cursor.name}" ${toString config.stylix.cursor.size}''
       ];
 
@@ -262,5 +238,11 @@
         m: "${m.name},${m.workspace}"
       ) (lib.filter (m: m.enabled && m.workspace != null) config.monitors);
     };
+    # UWSM env injection — sources home-manager's session vars (including
+    # home.sessionPath additions like ~/.local/bin) into the Hyprland session
+    # via UWSM. Without this, Hyprland-spawned processes can't find
+    # home.file-installed scripts in ~/.local/bin (rofi menus, pypr-toggle-smart,
+    # etc.). Per https://wiki.hypr.land/Nix/Hyprland-on-Home-Manager/#nixos-uwsm.
+    xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
   };
 }

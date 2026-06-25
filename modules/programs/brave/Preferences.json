@@ -5,7 +5,7 @@
       "show_on_all_tabs": false
     },
     "ai_chat": {
-      "context_menu_enabled": true,
+      "context_menu_enabled": false,
       "custom_models": [
         {
           "api_key": "",
@@ -33,6 +33,12 @@
       "vertical_tabs_hide_completely_when_collapsed": false,
       "vertical_tabs_show_title_on_window": false
     },
+    "toolbar": {
+      "pinned_actions": ["kActionCopyUrl", "kActionShowDownloads"],
+      "pinned_cast_migration_complete": true,
+      "pinned_chrome_labs_migration_complete": true,
+      "tab_search_migration_complete": true
+    },
     "sidebar": {
       "hidden_built_in_items": [1, 2],
       "sidebar_items": [
@@ -49,7 +55,7 @@
           "type": 0
         }
       ],
-      "sidebar_show_option": 0
+      "sidebar_show_option": 3
     }
   }
 }
