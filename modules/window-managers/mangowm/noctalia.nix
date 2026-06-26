@@ -45,7 +45,7 @@
 
           start = ["workspaces"];
           center = ["clock-12h"];
-          end = ["tray" "notifications" "caffeine" "network" "bluetooth" "volume" "brightness" "battery" "control-center" "session"];
+          end = ["tray" "notifications" "caffeine" "network" "bluetooth" "volume" "brightness" "battery" "session"];
         };
 
         # Use Stylix wallpaper
@@ -63,6 +63,9 @@
 
         # enable DDC controls for real monitors
         brightness.enable_ddcutil = true;
+
+        # Disable media playing osd
+        osd.kinds.media = false;
 
         shell.animation.speed = 2.0;
         shell.clipboard_auto_paste = "off";

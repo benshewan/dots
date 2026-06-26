@@ -1,6 +1,6 @@
 // Overrides
 user_pref("browser.startup.page", 3); // browser should restore previous session
-user_pref("browser.newtab.url",	"https://home.benshewan.dev");
+user_pref("browser.newtab.url",	"https://google.com");
 //fix for hover on drag (fixes sideberry tab drag, does not work on hyprland) https://bugzilla.mozilla.org/show_bug.cgi?id=1818517
 // user_pref("widget.gtk.ignore-bogus-leave-notify", 1);
 user_pref("widget.use-xdg-desktop-portal", true); // tell firefox to use my XDG Portal
@@ -55,6 +55,17 @@ user_pref("mousewheel.default.delta_multiplier_y", 300); // 250-400; adjust this
 
 /*///////////////////////////////////////////////////////////////////////////////////////\
 
+Natsumi browser configuration
+
+
+\////////////////////////////////////////////////////////////////////////////////////////*/
+
+
+// user_pref("userChromeJS.persistent_domcontent_callback", true);
+
+
+/*///////////////////////////////////////////////////////////////////////////////////////\
+
 ┏┓┏┓  ┳┳┓ ┏┳┓┳┳┳┓┏┓
 ┣ ┣   ┃┃┃  ┃ ┃┃┃┃┣┫
 ┻ ┻   ┗┛┗┛ ┻ ┻┛ ┗┛┗
@@ -82,7 +93,7 @@ user_pref("user.theme.fluent.thinkpad", false);
 
 /* nav bar */
 user_pref("ultima.navbar.autohide", false);
-user_pref("ultima.navbar.float", true);
+user_pref("ultima.navbar.float", false);
 user_pref("ultima.navbar.float.fullsize", false);
 user_pref("ultima.navbar.hide.buttons", false);
 user_pref("ultima.navbar.position", "top"); // top or bottomuser_pref("ultima.navbar.bookmarks.autotruehide", true);

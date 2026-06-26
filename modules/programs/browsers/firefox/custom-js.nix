@@ -44,6 +44,10 @@ _: {
     home.file.".config/mozilla/firefox/${profile}/chrome/utils" = {
       recursive = true;
       source = "${userchromejs-loader}/profile/chrome/utils";
+      # source = pkgs.lib.cleanSourceWith {
+      #   src = "${userchromejs-loader}/profile/chrome/utils";
+      #   filter = path: type: baseNameOf path != "chrome.manifest";
+      # };
     };
 
     # Make it so pressing CTRL+F again will close the findbar
