@@ -20,8 +20,16 @@
     };
     hyprland.url = "github:hyprwm/Hyprland";
     hyprland-qtutils.url = "github:hyprwm/hyprland-qtutils";
+    hyprsplit = {
+      url = "github:shezdy/hyprsplit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     import-tree.url = "github:vic/import-tree";
     lan-mouse.url = "github:feschber/lan-mouse";
+    maki = {
+      url = "github:tontinton/maki";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mangowm = {
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";

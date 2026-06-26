@@ -63,6 +63,7 @@ in {
         "programs/python"
         # "programs/claude-code"
         "programs/opencode"
+        "programs/maki"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
