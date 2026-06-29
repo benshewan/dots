@@ -62,5 +62,9 @@
   flake.modules.homeManager.system = {
     xdg.enable = true;
     home.preferXdgDirectories = true;
+    # Disable home-manager's generated manual pages. Building them runs nixpkgs'
+    # make-options-doc, which produces an unreliable options.json derivation
+    # (the "builtins.derivation named 'options.json'" warning).
+    manual.manpages.enable = false;
   };
 }

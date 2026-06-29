@@ -84,12 +84,12 @@ in {
         {appId = "org.inkscape.Inkscape";}
       ];
 
-      networking.firewall = rec {
+      networking.firewall = {
         allowedTCPPorts = [
-          7100
-          59100
+          7100 # freecore
+          59100 # audio relay
         ];
-        allowedUDPPorts = [59100 59200];
+        allowedUDPPorts = [59100 59200]; # audio relay
       };
       services.pipewire.extraConfig.pipewire = {
         "10-null-sink" = {
