@@ -41,7 +41,7 @@
   in {
     home.packages = with pkgs; [
       trash-cli
-      ouch
+      (ouch.override {enableUnfree = true;})
       # f3d
     ];
 
@@ -139,7 +139,7 @@
           extract = [
             # ---- ouch zip compression plugin ----
             {
-              run = ''${lib.getExe pkgs.ouch} d -y "$@"'';
+              run = ''${lib.getExe (pkgs.ouch.override {enableUnfree = true;})} d -y "$@"'';
               desc = "Extract here with ouch";
               for = "unix";
             }

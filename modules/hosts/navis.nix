@@ -63,7 +63,7 @@ in {
         "programs/python"
         # "programs/claude-code"
         "programs/opencode"
-        "programs/maki"
+        # "programs/maki"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -146,9 +146,10 @@ in {
           # Messing around
           syncthingtray
           stable.handbrake
-          brasero
+          brasero # CD burning/copying
           local.audiorelay
           stable.orca-slicer
+          peazip
 
           # Audio
           qpwgraph
