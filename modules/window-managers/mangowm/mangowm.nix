@@ -1,6 +1,6 @@
 {inputs, ...} @ flake: {
   flake-file.inputs = {
-    mangowm.url = "github:mangowm/mango";
+    mangowm.url = "github:mangowm/mango/0.14.4";
     mangowm.inputs.nixpkgs.follows = "nixpkgs";
   };
   # NixOS
@@ -26,6 +26,11 @@
 
     programs.seahorse.enable = true; # Manage Keys with a GUI
     programs.gnupg.agent.pinentryPackage = pkgs.pinentry-qt;
+
+    xdg.portal.extraPortals = lib.mkForce [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.stable.xdg-desktop-portal-wlr
+    ];
 
     # UI
     # ----------------------------------------
@@ -114,7 +119,15 @@
           resolution = "width:${toString m.width},height:${toString m.height},refresh:${toString m.refreshRate}";
           position = "x:${toString m.x},y:${toString m.y}";
           scale = "scale:${toString m.scale}";
-        in "${config.lib.monitors.mangoName m.name},${resolution},${position},${scale}"
+          hdr =
+            if m.colorProfile == "hdr"
+            then ",hdr:1"
+            else "";
+          vrr =
+            if m.vrr != 0
+            then ",vrr:1"
+            else "";
+        in "${config.lib.monitors.mangoName m.name},${resolution},${position},${scale}${hdr}${vrr}"
       ) (config.monitors);
     };
   };

@@ -1,7 +1,7 @@
 # DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
     agenix.url = "github:ryantm/agenix";
@@ -31,11 +31,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mangowm = {
-      url = "github:mangowm/mango";
+      url = "github:mangowm/mango/0.14.4";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-26.05";
     nix-flatpak.url = "github:gmodena/nix-flatpak";
     nix-index-database = {
       url = "github:Mic92/nix-index-database";

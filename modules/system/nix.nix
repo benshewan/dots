@@ -59,7 +59,7 @@ in {
 
     darwin.url = "github:LnL7/nix-darwin";
 
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-26.05";
     # mac-app-util.url = "github:hraban/mac-app-util";
   };
 

@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  lib,
   ...
 }: let
   hostMeta = {
@@ -21,11 +20,12 @@ in {
 
     modules.nixos."hosts/${hostMeta.name}" = {pkgs, ...}: {
       age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDg4CemGcdSt0uDCZ5yBUyBswjBdzo6MrIz1wztSS+O root@navis";
+      users.users.${config.flake.meta.user.username}.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDfq19XAukOGrSyQoVQBf5Yq629cqq/+gaDCnxil4+i gaming-vm"];
       imports = config.flake.lib.resolve [
         # Desktop preset (users, security, development, shell, system, desktop environment)
         "presets/laptop"
         "presets/mangowm"
-        "theme/gruvbox-dark"
+        "theme/everforest"
 
         # virtualization
         "virtualization/docker"
@@ -52,7 +52,7 @@ in {
         # "programs/helium"
         "programs/obsidian"
         # "services/sunshine"
-        "programs/steam"
+        # "programs/steam"
         "programs/brave"
         # "services/easyeffects"
 
@@ -132,6 +132,7 @@ in {
           distrobox
           kdePackages.kate
           mpv
+          rofi
           moonlight-qt
           (proxmark3.override {withGeneric = true;})
           chameleon-cli
@@ -145,11 +146,10 @@ in {
 
           # Messing around
           syncthingtray
-          stable.handbrake
-          brasero # CD burning/copying
-          local.audiorelay
+          # stable.handbrake
+          # brasero # CD burning/copying
+          # local.audiorelay
           stable.orca-slicer
-          peazip
 
           # Audio
           qpwgraph
@@ -168,21 +168,40 @@ in {
           }
 
           # Work Monitors
+          # {
+          #   # Dell Inc. DELL P2417H KH0NG95K15KL
+          #   name = "serial:KH0NG95K15KL";
+          #   width = 1920;
+          #   height = 1080;
+          #   x = 1031;
+          #   y = 72;
+          # }
+          # {
+          #   # Dell Inc. DELL P2417H KH0NG95F0AMI
+          #   name = "serial:KH0NG95F0AMI";
+          #   width = 1920;
+          #   height = 1080;
+          #   x = 2951;
+          #   y = 72;
+          # }
+          # New Work Monitors
           {
-            # Dell Inc. DELL P2417H KH0NG95K15KL
-            name = "serial:KH0NG95K15KL";
-            width = 1920;
-            height = 1080;
-            x = 1031;
-            y = 72;
+            # TODO: Replace with your first new 1440p monitor's identifier
+            name = "name:DP-9";
+            width = 2560;
+            height = 1440;
+            scale = 1.25;
+            x = 1024;
+            y = 0;
           }
           {
-            # Dell Inc. DELL P2417H KH0NG95F0AMI
-            name = "serial:KH0NG95F0AMI";
-            width = 1920;
-            height = 1080;
-            x = 2951;
-            y = 72;
+            # TODO: Replace with your second new 1440p monitor's identifier
+            name = "name:DP-11";
+            width = 2560;
+            height = 1440;
+            scale = 1.25;
+            x = 3072;
+            y = 0;
           }
 
           # Home Monitors
@@ -202,6 +221,7 @@ in {
             width = 3440;
             height = 1440;
             refreshRate = 165;
+            # colorProfile = "hdr";
             scale = 1.25;
             x = 2048;
             y = 0;

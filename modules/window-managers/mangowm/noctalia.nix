@@ -35,7 +35,7 @@
           border = "outline";
           border_width = 0.0;
           shadow = false;
-          margin_edge = 3; # gap from screen top, match mongo outer vertical gap
+          margin_edge = 0; # gap from screen top, match mongo outer vertical gap
           margin_ends = 0; # gap from screen edge
           radius = 0; # disable radius
           # radius_bottom_left = -8;
