@@ -29,7 +29,7 @@
 
     xdg.portal.extraPortals = lib.mkForce [
       pkgs.xdg-desktop-portal-gtk
-      pkgs.stable.xdg-desktop-portal-wlr
+      pkgs.xdg-desktop-portal-wlr
     ];
 
     # UI

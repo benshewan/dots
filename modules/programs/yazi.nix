@@ -42,6 +42,7 @@
     home.packages = with pkgs; [
       trash-cli
       (ouch.override {enableUnfree = true;})
+      ripdrag
       # f3d
     ];
 
@@ -232,6 +233,12 @@
           run = "plugin vcs-files";
           desc = "Show Git file changes";
         }
+        # ---- Drag and drop plugin ----
+        {
+          on = ["<C-d>"];
+          run = "plugin drag";
+          desc = "Drag Files";
+        }
       ];
 
       initLua = ''
@@ -244,7 +251,7 @@
       '';
 
       plugins = {
-        inherit (pkgs.yaziPlugins) vcs-files piper smart-filter git wl-clipboard mount recycle-bin ouch; # Nix Pkgs
+        inherit (pkgs.yaziPlugins) vcs-files piper smart-filter git wl-clipboard mount recycle-bin ouch drag; # Nix Pkgs
         inherit kdeconnect-send office open-with-cmd sshfs; # Git (local defs)
       };
     };
