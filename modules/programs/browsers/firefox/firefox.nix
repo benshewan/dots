@@ -62,6 +62,7 @@
       profiles = {
         "${profile}" = {
           id = 0;
+          path = profile;
           isDefault = true;
           extraConfig =
             builtins.readFile

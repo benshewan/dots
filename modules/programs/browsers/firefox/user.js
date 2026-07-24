@@ -43,6 +43,9 @@ user_pref("ui.key.menuAccessKeyFocuses", false);
 //For https://github.com/aminought/firefox-second-sidebar
 user_pref("dom.allow_scripts_to_close_windows", true);
 
+// enable native window decorations, for tiling window managers
+user_pref("browser.tabs.inTitlebar", 0);
+
 // Smooth fox
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
