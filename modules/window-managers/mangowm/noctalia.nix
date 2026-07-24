@@ -67,6 +67,8 @@
         # Disable media playing osd
         osd.kinds.media = false;
 
+        lockscreen.enabled = false;
+
         shell.animation.speed = 2.0;
         shell.clipboard_auto_paste = "off";
         shell.polkit_agent = true;

@@ -38,7 +38,7 @@ in {
         "programs/solaar"
         "services/kdeconnect"
         "programs/lan-mouse"
-        "programs/vivaldi"
+        # "programs/vivaldi"
         "programs/yazi"
         # "programs/spotify"
         "programs/obs"
@@ -63,7 +63,7 @@ in {
         "programs/python"
         # "programs/claude-code"
         "programs/opencode"
-        # "programs/maki"
+        "programs/maki"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -88,8 +88,12 @@ in {
         allowedTCPPorts = [
           7100 # freecore
           59100 # audio relay
+          7236 7250 # miracast
         ];
-        allowedUDPPorts = [59100 59200]; # audio relay
+        allowedUDPPorts = [
+          59100 59200 # audio relay
+          7236 5353 # miracast
+        ];
       };
       services.pipewire.extraConfig.pipewire = {
         "10-null-sink" = {
@@ -132,10 +136,10 @@ in {
           distrobox
           kdePackages.kate
           mpv
-          rofi
           moonlight-qt
           (proxmark3.override {withGeneric = true;})
           chameleon-cli
+          wdisplays
 
           # Work stuff
           libreoffice-fresh
