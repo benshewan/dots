@@ -1,6 +1,6 @@
 {inputs, ...} @ flake: {
   flake-file.inputs = {
-    mangowm.url = "github:mangowm/mango/0.14.4";
+    mangowm.url = "github:mangowm/mango";
     mangowm.inputs.nixpkgs.follows = "nixpkgs";
   };
   # NixOS
@@ -31,6 +31,15 @@
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-wlr
     ];
+
+    xdg.portal.wlr.settings = {
+      screencast ={
+        chooser_type = "dmenu";
+        chooser_cmd = "${lib.getExe inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default} dmenu -p \"Select Screen\"";
+        max_fps = 60;
+        force_mod_linear = true;
+      };
+    };
 
     # UI
     # ----------------------------------------

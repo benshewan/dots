@@ -29,19 +29,21 @@ in {
 
         # Software
         "programs/adb"
-        "services/keylightd"
         "programs/yazi"
         "programs/dolphin"
         "programs/npm"
         "programs/python"
         "services/kdeconnect"
+        "programs/obs"
         "programs/opencode"
+        # "programs/thunderbird"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
       ];
 
       environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = 1;
+      services.qemuGuest.enable = true;
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
         monitors = [
