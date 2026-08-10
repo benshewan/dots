@@ -10,7 +10,7 @@ _: {
         target = "Documents/Obsidian Vault";
       };
       defaultSettings.communityPlugins = with pkgs; [
-        local.harper-obsidian-plugin
+        # local.harper-obsidian-plugin
       ];
     };
   };

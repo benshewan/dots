@@ -14,6 +14,7 @@ _: {
         "angular" # Angular support
         "lua" # Lua support
         "xml" # XML support
+        "csharp" # C# support
         # Comfort
         "comment" # Hightlight special comments eg. TODO
         "codebook" # Spell checker

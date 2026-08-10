@@ -1,6 +1,6 @@
 {inputs, ...} @ flake: {
   flake-file.inputs = {
-    mangowm.url = "github:mangowm/mango";
+    mangowm.url = "github:mangowm/mango/wl-only";
     mangowm.inputs.nixpkgs.follows = "nixpkgs";
   };
   # NixOS
@@ -63,21 +63,27 @@
     };
 
     wayland.windowManager.mango.settings = {
-      # Support for xwayland
-      env = ["DISPLAY,:2"];
+
+      env = [
+        "DISPLAY,:2" # Support for xwayland
+        "WLR_RENDERER,vulkan" # Support for HDR
+      ];
       exec-once = [
         "systemctl --user start mango-session.target"
         "${lib.getExe pkgs.xwayland-satellite} :2"
       ];
 
       # style
-      blur = 1;
-      blur_optimized = 1;
-      blur_params = {
-        radius = 5;
-        num_passes = 2;
-      };
-      border_radius = 3;
+
+      # Can't use on wl-only branch
+      # blur = 1;
+      # blur_optimized = 1;
+      # blur_params = {
+      #   radius = 5;
+      #   num_passes = 2;
+      # };
+      # border_radius = 3;
+
       borderpx = 2;
       focused_opacity = 1.0;
       cursor_size = config.stylix.cursor.size;
@@ -122,6 +128,10 @@
         "id:8,layout_name:fair"
         "id:9,layout_name:fair"
       ];
+
+      # layerrule = [
+      #   "layer_name:noctalia-notification,shield_when_capture:1"
+      # ];
 
       monitorrule = map (
         m: let
