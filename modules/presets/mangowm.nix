@@ -23,7 +23,7 @@
   # For Home Manager contexts (e.g., macOS with home-manager only)
   flake.modules.homeManager."presets/mangowm" = {pkgs, ...}: {
     home.packages = with pkgs; [
-      stable.pavucontrol # Audio Control
+      pavucontrol # Audio Control
 
       # Should move these somewhere else, not really preset material
       loupe

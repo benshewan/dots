@@ -9,7 +9,7 @@ _: {
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs
         obs-pipewire-audio-capture # Capture individual application audio
-        obs-backgroundremoval # Remove background from camera
+        # obs-backgroundremoval # Remove background from camera
       ];
     };
   };

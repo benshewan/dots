@@ -1,7 +1,7 @@
 _: {
   flake.modules.homeManager."programs/mongodb-compass" = {pkgs, ...}: {
     home.packages = with pkgs; [
-      stable.mongodb-compass
+      mongodb-compass
       mongodb-tools
     ];
 
