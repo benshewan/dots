@@ -84,7 +84,7 @@
           "editor.linkedEditing" = true;
           "typescript.updateImportsOnFileMove.enabled" = "always";
 
-          "extensions.autoUpdate" = false;
+          "extensions.autoUpdate" = "off";
           "extensions.autoCheckUpdates" = false;
           "update.mode" = "none";
 
