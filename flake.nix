@@ -26,6 +26,7 @@
     };
     import-tree.url = "github:vic/import-tree";
     lan-mouse.url = "github:feschber/lan-mouse";
+    llm-agents.url = "github:numtide/llm-agents.nix";
     maki = {
       url = "github:tontinton/maki";
       inputs.nixpkgs.follows = "nixpkgs";

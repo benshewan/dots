@@ -37,7 +37,7 @@ in {
         "services/tailscale"
         "programs/solaar"
         "services/kdeconnect"
-        "programs/lan-mouse"
+        # "programs/lan-mouse"
         # "programs/vivaldi"
         "programs/yazi"
         # "programs/spotify"
@@ -63,7 +63,9 @@ in {
         "programs/python"
         # "programs/claude-code"
         "programs/opencode"
-        "programs/maki"
+        # "programs/maki"
+        "programs/pi"
+        "programs/opencode2"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -147,6 +149,7 @@ in {
           local.wisenet-viewer
           yaak
           parsec-bin
+          github-cli
 
           # Messing around
           syncthingtray
