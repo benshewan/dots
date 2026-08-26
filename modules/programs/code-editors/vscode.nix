@@ -10,7 +10,7 @@
     config,
     ...
   }: let
-    inherit (pkgs.stdenv) isLinux;
+    isLinux = pkgs.stdenv.hostPlatform.isLinux;
   in {
     stylix.targets.vscode.profileNames = ["default"];
     programs.vscode = {

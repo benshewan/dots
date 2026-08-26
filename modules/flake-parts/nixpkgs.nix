@@ -26,7 +26,7 @@
       inherit system;
       config.allowUnfree = true;
     };
-    enableByName = pkgs.stdenv.isLinux;
+    enableByName = pkgs.stdenv.hostPlatform.isLinux;
     inputsScope = lib.makeScope pkgs.newScope (_self: {
       inherit inputs;
     });
