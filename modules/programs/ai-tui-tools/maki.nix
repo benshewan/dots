@@ -1,8 +1,16 @@
 {inputs, ...}: {
   flake-file.inputs = {
+    # maki pins an old rust-overlay whose lib uses the deprecated
+    # stdenv.isLinux/isDarwin; follow a current one instead.
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     maki = {
       url = "github:tontinton/maki";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
   };
 

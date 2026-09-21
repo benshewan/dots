@@ -11,3 +11,9 @@ devenv.local.yaml
 
 # Nix pkg build
 /result
+
+# sops / age: never commit decryption keys or plaintext secrets
+*.key
+keys.txt
+secrets/**/*.plain.*
+secrets/**/*.decrypted.*

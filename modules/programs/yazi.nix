@@ -161,7 +161,7 @@
           #   ];
           #   office = [
           #     {
-          #       run = ''${lib.getExe pkgs.libreoffice-fresh} "$@"'';
+          #       run = ''${lib.getExe pkgs.libreoffice-stable} "$@"'';
           #       desc = "Open with Office";
           #       orphan = true;
           #     }

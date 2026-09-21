@@ -1,9 +1,7 @@
 _: {
-  # A Logitech pairing app
-  flake.modules.nixos."programs/solaar" = {pkgs, ...}: {
-    hardware.logitech.wireless = {
-      enable = true;
-      enableGraphical = true;
-    };
+  # Solaar is the driver/GUI for Logitech devices.
+  # (hardware.logitech.wireless.enableGraphical was renamed to programs.solaar.enable)
+  flake.modules.nixos."programs/solaar" = {
+    programs.solaar.enable = true;
   };
 }

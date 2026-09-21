@@ -19,7 +19,6 @@ in {
     meta.hosts = [hostMeta];
 
     modules.nixos."hosts/${hostMeta.name}" = {pkgs, ...}: {
-      age.rekey.hostPubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEDg4CemGcdSt0uDCZ5yBUyBswjBdzo6MrIz1wztSS+O root@navis";
       users.users.${config.flake.meta.user.username}.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDDfq19XAukOGrSyQoVQBf5Yq629cqq/+gaDCnxil4+i gaming-vm"];
       imports = config.flake.lib.resolve [
         # Desktop preset (users, security, development, shell, system, desktop environment)
@@ -63,9 +62,9 @@ in {
         "programs/python"
         # "programs/claude-code"
         "programs/opencode"
-        # "programs/maki"
-        "programs/pi"
-        "programs/opencode2"
+        "programs/maki"
+        # "programs/pi"
+        # "programs/opencode2"
 
         # hardware configuration
         ../../machines/navis/hardware.nix
@@ -144,7 +143,7 @@ in {
           wdisplays
 
           # Work stuff
-          libreoffice-fresh
+          libreoffice-stable
           gnome-network-displays
           local.wisenet-viewer
           yaak
