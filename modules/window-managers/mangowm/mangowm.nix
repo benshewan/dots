@@ -94,7 +94,7 @@
       gappoh = 3; # outer horizontal
       gappov = 3; # outer vertical
 
-      ov_tab_mode = 0; # don't cycle with toggleoverview
+      # ov_tab_mode = 0; # don't cycle with toggleoverview
       # mouse general
       focus_cross_monitor = 1; # Allow directional focus to cross monitor boundaries.
       drag_tile_to_tile = 1; # Allow dragging a tiled window onto another to swap their positions.

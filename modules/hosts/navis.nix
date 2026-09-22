@@ -37,12 +37,10 @@ in {
         "programs/solaar"
         "services/kdeconnect"
         # "programs/lan-mouse"
-        # "programs/vivaldi"
         "programs/yazi"
         # "programs/spotify"
         "programs/obs"
         "programs/chromium"
-        "programs/mongodb-compass"
         # "programs/filebot"
         "programs/bottles"
         "programs/prism-launcher"
@@ -60,7 +58,6 @@ in {
         "programs/vscode"
         "programs/npm"
         "programs/python"
-        # "programs/claude-code"
         "programs/opencode"
         "programs/maki"
         # "programs/pi"
@@ -74,10 +71,6 @@ in {
       ];
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-zen4;
 
-      services.mongodb = {
-        enable = true;
-        package = pkgs.stable.mongodb;
-      };
       services.keylightd.enable = true;
 
       # Because of stylix forcing a rebuild updates take forever otherwise
@@ -144,8 +137,6 @@ in {
 
           # Work stuff
           libreoffice-stable
-          gnome-network-displays
-          local.wisenet-viewer
           yaak
           parsec-bin
           github-cli
@@ -171,43 +162,6 @@ in {
             scale = 1.566667;
             x = 2048;
             y = 1152;
-          }
-
-          # Work Monitors
-          # {
-          #   # Dell Inc. DELL P2417H KH0NG95K15KL
-          #   name = "serial:KH0NG95K15KL";
-          #   width = 1920;
-          #   height = 1080;
-          #   x = 1031;
-          #   y = 72;
-          # }
-          # {
-          #   # Dell Inc. DELL P2417H KH0NG95F0AMI
-          #   name = "serial:KH0NG95F0AMI";
-          #   width = 1920;
-          #   height = 1080;
-          #   x = 2951;
-          #   y = 72;
-          # }
-          # New Work Monitors
-          {
-            # TODO: Replace with your first new 1440p monitor's identifier
-            name = "name:DP-9";
-            width = 2560;
-            height = 1440;
-            scale = 1.25;
-            x = 1024;
-            y = 0;
-          }
-          {
-            # TODO: Replace with your second new 1440p monitor's identifier
-            name = "name:DP-11";
-            width = 2560;
-            height = 1440;
-            scale = 1.25;
-            x = 3072;
-            y = 0;
           }
 
           # Home Monitors

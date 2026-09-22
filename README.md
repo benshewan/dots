@@ -38,12 +38,16 @@ nix shell nixpkgs#sops nixpkgs#age -c sops secrets/common.yaml
 
 ### Bootstrapping a host
 
-Install the host's private key before first activation, then build:
-
 ```bash
-sudo install -Dm600 ~/.config/sops/age/hosts/navis.key /var/lib/sops-nix/key.txt
 ./bootstrap.sh navis
 ```
+
+If `~/.config/sops/age/hosts/navis.key` does not exist, the script generates a
+new PQ key with `age-keygen -pq`, installs it to `/var/lib/sops-nix/key.txt`,
+and prints the recipient to add to `.sops.yaml`. Add it to the relevant
+`creation_rules`, run `sops updatekeys secrets/common.yaml`, then re-run the
+script. If the host is already registered in `.sops.yaml`, the script refuses to
+generate a new key (it would not decrypt the existing secrets).
 
 Replace `navis` with the target host (`caelum`, `navis`, ...). Optional second
 arg: `switch` (default), `boot`, or `test`.

@@ -88,8 +88,14 @@
       programs.rofi = {
         enable = true;
         package = pkgs.rofi;
-        location = "center";
-        terminal = lib.getExe pkgs.kitty;
+        # `location`/`terminal` are native rasi settings now. `font` is left to
+        # stylix's rofi target, which still sets the deprecated
+        # `programs.rofi.font` (fixed upstream in nix-community/stylix#2501).
+        settings = {
+          # Rofi's numeric location enum; 0 is "center".
+          location = 0;
+          terminal = lib.getExe pkgs.kitty;
+        };
       };
     };
   };
