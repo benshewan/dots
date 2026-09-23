@@ -1,0 +1,181 @@
+diff --git a/maki-agent/src/agent/tool_dispatch.rs b/maki-agent/src/agent/tool_dispatch.rs
+index 0ef460f..a867848 100644
+--- a/maki-agent/src/agent/tool_dispatch.rs
++++ b/maki-agent/src/agent/tool_dispatch.rs
+@@ -20,6 +20,7 @@ use crate::tools::{
+ };
+ use crate::{AgentError, AgentEvent, ToolDoneEvent, ToolOutput, ToolStartEvent};
+ use maki_config::ToolKey;
++use maki_providers::{ImageMediaType, ImageSource};
+ use maki_storage::id::SessionRef;
+ 
+ const DOOM_LOOP_THRESHOLD: usize = 3;
+@@ -824,11 +825,50 @@ async fn execute_mcp_tool(
+     // next request; a denied one must not load anything.
+     mcp.mark_loaded(&tool, origin);
+     match mcp.call_tool(&tool, input).await {
+-        Ok(text) => done(text, false),
++        // Pixels the server sent reach the model as vision input; the caption
++        // stays the tool_result text, so the transcript still reads on its own.
++        Ok(out) => match mcp_image(&out.images) {
++            None => done(out.text, false),
++            Some((source, count)) => {
++                let text = if out.text.trim().is_empty() {
++                    format!("[image from {tool}]")
++                } else if count > 1 {
++                    format!(
++                        "{}\n({} more images in this result; only the first is shown)",
++                        out.text,
++                        count - 1
++                    )
++                } else {
++                    out.text
++                };
++                ToolDoneEvent {
++                    id: id.to_owned(),
++                    tool: Arc::clone(&tool),
++                    output: Arc::new(ToolOutput::Image { source, text }),
++                    is_error: false,
++                    annotation: None,
++                    written_path: None,
++                }
++            }
++        },
+         Err(e) => done(e.to_string(), true),
+     }
+ }
+ 
++/// The first image of an MCP result, with how many the result carried.
++///
++/// The media type is best effort: maki relabels an image whose bytes disagree
++/// with it, so an unknown mime still reaches the model instead of being
++/// dropped. A tool result carries one image here, exactly as `view_image` does.
++fn mcp_image(images: &[(String, String)]) -> Option<(ImageSource, usize)> {
++    let (mime_type, data) = images.first()?;
++    let media_type = ImageMediaType::from_mime(mime_type).unwrap_or(ImageMediaType::Png);
++    Some((
++        ImageSource::new(media_type, Arc::from(data.as_str())),
++        images.len(),
++    ))
++}
++
+ /// Deduplicates doom-loop repeats, then runs remaining calls in parallel.
+ pub(super) async fn process_tool_calls(
+     response: maki_providers::StreamResponse,
+diff --git a/maki-agent/src/mcp/mod.rs b/maki-agent/src/mcp/mod.rs
+index 6f5f2cf..eff83da 100644
+--- a/maki-agent/src/mcp/mod.rs
++++ b/maki-agent/src/mcp/mod.rs
+@@ -43,7 +43,7 @@ use self::config::{
+ use self::error::McpError;
+ use self::http::HttpTransport;
+ use self::stdio::StdioTransport;
+-use self::transport::McpTransport;
++use self::transport::{McpTransport, ToolCallOutput};
+ use crate::tools::CallOrigin;
+ use crate::tools::schema::sanitize_tool_input_schema;
+ 
+@@ -548,7 +548,11 @@ impl McpHandle {
+         })
+     }
+ 
+-    pub async fn call_tool(&self, qualified_name: &str, args: &Value) -> Result<String, McpError> {
++    pub async fn call_tool(
++        &self,
++        qualified_name: &str,
++        args: &Value,
++    ) -> Result<ToolCallOutput, McpError> {
+         let (raw_name, transport) = {
+             let idx = self.index.load();
+             let Some(t) = idx.tools.get(qualified_name) else {
+diff --git a/maki-agent/src/mcp/protocol.rs b/maki-agent/src/mcp/protocol.rs
+index dff73e9..54ae8b8 100644
+--- a/maki-agent/src/mcp/protocol.rs
++++ b/maki-agent/src/mcp/protocol.rs
+@@ -81,8 +81,17 @@ pub struct ToolsListResult {
+ 
+ #[derive(Deserialize)]
+ pub struct CallToolContent {
++    /// `"text"`, `"image"`, `"audio"`, `"resource"`… Kept so the text
++    /// extraction below can ignore a kind deliberately instead of by accident.
++    #[serde(default, rename = "type")]
++    pub kind: Option<String>,
+     #[serde(default)]
+     pub text: String,
++    /// Base64 payload, present on an `image` block.
++    #[serde(default)]
++    pub data: Option<String>,
++    #[serde(default, rename = "mimeType")]
++    pub mime_type: Option<String>,
+ }
+ 
+ #[derive(Deserialize)]
+@@ -100,6 +109,27 @@ impl CallToolResult {
+             .collect::<Vec<_>>()
+             .join("\n")
+     }
++
++    /// Images as `(mime type, base64 payload)`, in the order the server sent
++    /// them. A server that publishes pixels uses an `image` block, which
++    /// flattens to an empty line in [`Self::joined_text`]; without this they
++    /// would never reach the model.
++    ///
++    /// A block without a media type falls back to png: maki relabels an image
++    /// whose bytes disagree with the declared type, so the pixels still land.
++    pub fn images(&self) -> Vec<(String, String)> {
++        self.content
++            .iter()
++            .filter(|c| c.kind.as_deref() == Some("image"))
++            .filter_map(|c| {
++                let data = c.data.as_deref().filter(|d| !d.is_empty())?;
++                Some((
++                    c.mime_type.clone().unwrap_or_else(|| "image/png".to_string()),
++                    data.to_string(),
++                ))
++            })
++            .collect()
++    }
+ }
+ 
+ #[derive(Deserialize, Clone)]
+diff --git a/maki-agent/src/mcp/transport.rs b/maki-agent/src/mcp/transport.rs
+index f904cb4..1d1cc36 100644
+--- a/maki-agent/src/mcp/transport.rs
++++ b/maki-agent/src/mcp/transport.rs
+@@ -99,11 +99,20 @@ pub async fn get_prompt(
+     Ok(parsed.messages)
+ }
+ 
++/// What one `tools/call` produced: the text blocks joined, plus any image
++/// blocks the server sent. The images ride on to the model as vision input,
++/// the same way the files `view_image` publishes do.
++pub struct ToolCallOutput {
++    pub text: String,
++    /// `(mime type, base64 payload)` per image block, in server order.
++    pub images: Vec<(String, String)>,
++}
++
+ pub async fn call_tool(
+     transport: &dyn McpTransport,
+     tool_name: &str,
+     args: &Value,
+-) -> Result<String, McpError> {
++) -> Result<ToolCallOutput, McpError> {
+     let server = &**transport.server_name();
+     let start = Instant::now();
+     let params = serde_json::json!({
+@@ -128,9 +137,13 @@ pub async fn call_tool(
+         server,
+         tool = tool_name,
+         duration_ms = start.elapsed().as_millis() as u64,
++        images = call_result.images().len(),
+         "MCP tools/call response"
+     );
+-    Ok(text)
++    Ok(ToolCallOutput {
++        text,
++        images: call_result.images(),
++    })
+ }
+ 
+ #[cfg(test)]
