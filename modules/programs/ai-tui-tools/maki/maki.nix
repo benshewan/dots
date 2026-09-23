@@ -33,12 +33,28 @@
     home.file.".config/maki/init.lua".text = ''
       -- Managed by Nix. Extend this file with more maki.setup() options if needed.
       maki.setup({
+          always_yolo = true,
           ui = {
               theme = "stylix",
           },
-          -- agent.rtk defaults to true and turns on once rtk is installed
-          -- (see home.packages); set it to false to disable rewriting.
+          plugins = {
+              completion = { enabled = true },
+            },
       })
+      require("opencode_usage")
+    '';
+
+    # OpenCode Go usage HUD (./opencode_usage.lua). Needs fs_read for the key
+    # in maki's auth dir, net as fallback, and run for the curl workaround
+    # (maki.net.request deadlocks inside the plugin executor).
+    home.file.".config/maki/lua/opencode_usage.lua".source = ./opencode_usage.lua;
+    home.file.".config/maki/plugin.toml".text = ''
+      min_maki_version = "0.4.12"
+
+      [permissions]
+      fs_read = true
+      net = true
+      run = true
     '';
   };
 }
