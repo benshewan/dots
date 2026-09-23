@@ -17,7 +17,12 @@ local API_URL = "https://opencode.ai/zen/go/v1/usage"
 local POLL_MS = 5 * 60 * 1000        -- background poll cadence
 local FETCH_COOLDOWN_SECS = 20       -- skip event-driven refetches fresher than this
 local TOOL_STALE_SECS = 120          -- the tool refetches when data is older
-local WIN_WIDTH = 46
+-- wide enough for the longest row: bars + reset timer, and the decode
+-- line "~999 tok/s last turn"
+local WIN_WIDTH = 56
+-- open_win/set_config height counts the whole frame, borders included, so
+-- content rows need this much on top when the border is not "none".
+local BORDER_ROWS = 2
 
 local state = {
   key = nil,
@@ -26,6 +31,7 @@ local state = {
   err = nil,
   win = nil,
   buf = nil,
+  win_rows = nil, -- content rows the open window was sized for
   job_id = nil,      -- live curl job while a fetch is in flight
   poll_timer = nil,  -- pending defer_fn handle for the background poll
   fetching = false,  -- one fetch at a time, uses the freshness cooldown
@@ -38,6 +44,15 @@ local LABELS = {
   monthly = "month",
 }
 
+-- A missing/logged-out key is re-tried on every fetch but logged only once:
+-- the poller runs every POLL_MS and would otherwise fill the log.
+local function warn_key_once(msg)
+  if not state.warned_key then
+    state.warned_key = true
+    maki.log.warn("opencode_usage: " .. msg)
+  end
+end
+
 local function read_key()
   if state.key then
     return state.key
@@ -45,41 +60,60 @@ local function read_key()
   local path = maki.fs.joinpath(maki.env.state_dir(), "auth", "opencode-go.json")
   local text, err = maki.fs.read(path)
   if not text then
-    maki.log.warn("opencode_usage: cannot read maki auth file: " .. tostring(err))
+    warn_key_once("cannot read maki auth file: " .. tostring(err))
     return nil
   end
   local ok, data = pcall(maki.json.decode, text)
   if not ok or type(data) ~= "table" or type(data.api_key) ~= "string" or data.api_key == "" then
-    maki.log.warn("opencode_usage: no api_key in maki auth/opencode-go.json")
+    warn_key_once("no api_key in maki auth/opencode-go.json")
     return nil
   end
   state.key = data.api_key
+  state.warned_key = false
   return state.key
 end
 
-local function parse_iso(s)
-  local y, mo, d, h, mi, sec = s:match("(%d+)-(%d+)-(%d+)T(%d+):(%d+):(%d+)")
-  if not y then
-    return nil
-  end
-  return os.time({ year = y, month = mo, day = d, hour = h, min = mi, sec = sec })
+-- resetsAt is UTC, and os.time() reads its table as local time while
+-- guessing DST, so no os.time() conversion is used here: civil dates are
+-- turned into epochs with plain arithmetic (days since 1970-01-01), which
+-- is exact in every timezone. Verified against America/New_York and
+-- Asia/Tokyo, where the os.time() routes were off by the UTC offset.
+local function days_from_civil(y, m, d)
+  y = m <= 2 and y - 1 or y
+  local era = math.floor(y / 400)
+  local yoe = y - era * 400
+  local doy = math.floor((153 * (m + (m > 2 and -3 or 9)) + 2) / 5) + d - 1
+  local doe = yoe * 365 + math.floor(yoe / 4) - math.floor(yoe / 100) + doy
+  return era * 146097 + doe - 719468
+end
+
+local function utc_epoch(y, mo, d, h, mi, sec)
+  return days_from_civil(y, mo, d) * 86400 + h * 3600 + mi * 60 + sec
 end
 
 local function until_str(resets_at)
-  local t = parse_iso(resets_at)
-  if not t then
-    return ""
+  if type(resets_at) ~= "string" then
+    return nil
   end
-  local secs = t - os.time()
+  local y, mo, d, h, mi, sec = resets_at:match("(%d+)-(%d+)-(%d+)T(%d+):(%d+):(%d+)")
+  if not y then
+    return nil
+  end
+  local reset = utc_epoch(
+    tonumber(y), tonumber(mo), tonumber(d),
+    tonumber(h), tonumber(mi), tonumber(sec)
+  )
+  local now = os.date("!*t")
+  local secs = reset - utc_epoch(now.year, now.month, now.day, now.hour, now.min, now.sec)
   if secs < 0 then
     return "now"
   end
-  local h = math.floor(secs / 3600)
-  local m = math.floor((secs % 3600) / 60)
-  if h > 0 then
-    return string.format("%dh%02dm", h, m)
+  local hh = math.floor(secs / 3600)
+  local mm = math.floor((secs % 3600) / 60)
+  if hh > 0 then
+    return string.format("%dh%02dm", hh, mm)
   end
-  return string.format("%dm", m)
+  return string.format("%dm", mm)
 end
 
 local function bar(percent, width)
@@ -120,17 +154,11 @@ local function http_get(url, key)
   if maki.fn.executable("curl") then
     return curl_get(url, key)
   end
-  local res, err = maki.net.request(url, {
-    headers = key and { Authorization = "Bearer " .. key } or {},
-    timeout = 15,
-  })
-  if not res then
-    return nil, err
-  end
-  if res.status ~= 200 then
-    return nil, "HTTP " .. res.status
-  end
-  return res.body
+  -- No curl: maki.net.request cannot be used as a fallback. It deadlocks
+  -- resolving the host (upstream net.rs bug), so the fetch would never
+  -- return, `fetching` would stay true forever and every later fetch would
+  -- be skipped as busy. Refusing keeps the plugin's state honest.
+  return nil, "curl not found on PATH (required; maki.net.request deadlocks)"
 end
 
 local function fetch_usage()
@@ -155,38 +183,81 @@ local function fetch_usage()
   return state.usage
 end
 
+-- Build the popup content as a fresh lines table (NEVER buf:line-append:
+-- re-rendering must replace the buffer contents or every refresh grows the
+-- buffer and a dead scrollbar appears in the fixed-size window). Returns
+-- the lines for sizing too.
 local function render(buf)
   local usage = state.usage
-  buf:set_lines({ " opencode go" })
-  if not usage then
-    buf:line("")
-    buf:line({ { "  " .. (state.err or "no data yet"), "dim" } })
-    return
+  -- window border already carries the title; first content row is blank
+  local lines = {{}}
+  local function add(l)
+    lines[#lines + 1] = l
   end
-  buf:line("")
-  for _, name in ipairs({ "rolling", "weekly", "monthly" }) do
-    local w = usage[name]
-    if w then
-      local pct = tonumber(w.percent) or 0
-      local spans = {
-        { string.format("  %-5s ", LABELS[name] or name), "key" },
-        { bar(pct) .. " ", pct >= 90 and "error" or (pct >= 70 and "warn" or "ok") },
-        { string.format("%3d%%", pct), "key" },
-      }
-      if w.resetsAt then
-        spans[#spans + 1] = { "  resets in " .. until_str(w.resetsAt), "dim" }
+  if not usage then
+    add({ { "  " .. (state.err or "no data yet"), "dim" } })
+  else
+    for _, name in ipairs({ "rolling", "weekly", "monthly" }) do
+      local w = usage[name]
+      if w then
+        local pct = tonumber(w.percent) or 0
+        local spans = {
+          { string.format("  %-5s ", LABELS[name] or name), "key" },
+          { bar(pct) .. " ", pct >= 90 and "error" or (pct >= 70 and "warn" or "ok") },
+          { string.format("%3d%%", pct), "key" },
+        }
+        local resets = w.resetsAt and until_str(w.resetsAt)
+        if resets then
+          spans[#spans + 1] = { "  resets in " .. resets, "dim" }
+        end
+        if w.status and w.status ~= "ok" then
+          spans[#spans + 1] = { "  " .. w.status, "error" }
+        end
+        add(spans)
       end
-      if w.status and w.status ~= "ok" then
-        spans[#spans + 1] = { "  " .. w.status, "error" }
-      end
-      buf:line(spans)
     end
   end
+  buf:set_lines(lines)
+  return #lines
+end
+
+-- Make the window exactly content-sized. A set_config-only resize has
+-- on this host failed while pcall swallowed the error, leaving the content
+-- taller than the window (dead scrollbar) - so failures here are logged
+-- and the window is rebuilt with the right size instead of trusted.
+local function show_win(rows, fresh_buf)
+  if state.win and state.win:is_open() then
+    local ok, err = pcall(state.win.set_config, state.win, { height = rows + BORDER_ROWS })
+    if ok then
+      state.win_rows = rows
+      return
+    end
+    maki.log.debug("opencode_usage: set_config failed, rebuilding window: " .. tostring(err))
+    state.win:close()
+    state.win = nil
+  end
+  local buf = fresh_buf or state.buf
+  state.buf = buf
+  state.win = maki.ui.open_win(buf, {
+    title = "opencode go",
+    width = WIN_WIDTH,
+    height = rows + BORDER_ROWS,
+    anchor = "NE",
+    row = 1,
+    col = 1,
+    border = "rounded",
+    focus = false,
+    stack = true,
+  })
+  state.win_rows = rows
 end
 
 local function refresh_view()
   if state.win and state.win:is_open() and state.buf then
-    render(state.buf)
+    local rows = render(state.buf)
+    if rows ~= state.win_rows then
+      show_win(rows)
+    end
   end
 end
 
@@ -281,6 +352,7 @@ local function close_win()
     state.win:close()
     state.win = nil
     state.buf = nil
+    state.win_rows = nil
   end
 end
 
@@ -291,18 +363,7 @@ local function toggle_win()
   end
   local buf = maki.ui.buf()
   state.buf = buf
-  render(buf)
-  state.win = maki.ui.open_win(buf, {
-    title = "opencode go",
-    width = WIN_WIDTH,
-    height = 7,
-    anchor = "NE",
-    row = 1,
-    col = 1,
-    border = "rounded",
-    focus = false,
-    stack = true,
-  })
+  show_win(render(buf))
 end
 
 maki.api.register_command({
@@ -335,7 +396,7 @@ maki.api.register_tool({
           LABELS[name],
           tonumber(w.percent) or 0,
           w.status or "unknown",
-          until_str(w.resetsAt)
+          w.resetsAt and until_str(w.resetsAt) or "unknown"
         )
       end
     end
@@ -343,7 +404,13 @@ maki.api.register_tool({
   end,
 })
 
-maki.api.create_autocmd({ "TurnEnd", "ModelChanged", "SessionFocusChanged" }, {
+maki.api.create_autocmd("TurnEnd", {
+  callback = function()
+    refresh() -- quota may have moved
+  end,
+})
+
+maki.api.create_autocmd({ "ModelChanged", "SessionFocusChanged" }, {
   callback = function()
     refresh()
   end,
