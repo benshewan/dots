@@ -71,7 +71,7 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
 user_pref("widget.windows.mica.popups", 0);
 
-user_pref("sidebar.revamp ", false);
+user_pref("sidebar.revamp", false);
 
 
 /*///////////////////////////////////////////////////////////////////////////////////////\

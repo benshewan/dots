@@ -31,6 +31,31 @@
     };
     node = pkgs.nodejs;
 
+    # GitHub MCP (official Go server). The PAT is never baked into the store:
+    # the wrapper resolves it at runtime from the environment, a token file, or
+    # the gh CLI, and the store only holds the script that reads it.
+    githubMcpServer = pkgs.github-mcp-server;
+    githubMcpWrapper = pkgs.writeShellScript "maki-github-mcp" ''
+      set -eu
+      token="''${GITHUB_PERSONAL_ACCESS_TOKEN:-}"
+      if [ -z "$token" ]; then
+        file="''${XDG_CONFIG_HOME:-$HOME/.config}/maki/github-mcp.token"
+        if [ -r "$file" ]; then
+          token=$(cat "$file")
+        fi
+      fi
+      if [ -z "$token" ] && command -v gh >/dev/null 2>&1; then
+        token=$(gh auth token 2>/dev/null || true)
+      fi
+      if [ -z "$token" ]; then
+        echo "github-mcp: no token; set GITHUB_PERSONAL_ACCESS_TOKEN or write ~/.config/maki/github-mcp.token" >&2
+        exit 1
+      fi
+      GITHUB_PERSONAL_ACCESS_TOKEN="$token"
+      export GITHUB_PERSONAL_ACCESS_TOKEN
+      exec ${githubMcpServer}/bin/github-mcp-server "$@"
+    '';
+
     # Server settings, spelled out in playwright-core's config.d.ts: chromium
     # from the store, a throwaway in-memory profile, headless, and artifacts
     # kept out of the repos they were taken in. `capabilities` is opt-in and
@@ -94,6 +119,13 @@
       require("opencode_usage")
     '';
 
+    # Instruction file for every session in every project: maki also loads
+    # ~/.config/maki/AGENTS.md and appends it to the system prompt (the
+    # {{instructions}} slot at the end). This is where "you are on NixOS, pull
+    # any tool with `nix shell`" is stated once. It is paid on every request,
+    # so keep it short; per-repo rules belong in that repo's own AGENTS.md.
+    home.file.".config/maki/AGENTS.md".source = ./AGENTS.md;
+
     # OpenCode Go usage HUD (./opencode_usage.lua). Needs fs_read for the key
     # in maki's auth dir and run for the curl workaround (maki.net.request
     # deadlocks inside the plugin executor). A plugin.toml you wrote yourself
@@ -126,6 +158,22 @@
         "${config.home.homeDirectory}/.config/maki/playwright-mcp.json",
       ]
       environment = { PLAYWRIGHT_BROWSERS_PATH = "${playwrightBrowsers}" }
+      timeout = 60000
+      always_load = false
+
+      # GitHub MCP: repos and code search, issues, pull requests, users and
+      # copilot (the server's `default` toolset). Reads the PAT from the
+      # environment, ~/.config/maki/github-mcp.token (chmod 600), or `gh auth
+      # token`. Add toolsets ("default,actions,notifications") or restrict the
+      # server to reads with "--read-only" by appending args below. Deferred
+      # behind tool_search like the browser tools.
+      [mcp.github]
+      command = [
+        "${githubMcpWrapper}",
+        "stdio",
+        "--toolsets",
+        "default",
+      ]
       timeout = 60000
       always_load = false
     '';

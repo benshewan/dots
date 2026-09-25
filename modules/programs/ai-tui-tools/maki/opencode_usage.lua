@@ -4,7 +4,9 @@
 -- weekly / monthly limit percentages:
 --   * a compact line in the status-bar hints, refreshed after every fetch
 --   * a popup with reset timers via /opencode-usage
---   * a tool ("opencode_usage") the model can call
+--
+-- This plugin is for the user only: it registers no model-facing tool, so
+-- the numbers never enter a prompt unless the user reads them off the screen.
 --
 -- NOTE: fetches go through curl via maki.fn.jobstart, NOT maki.net.request.
 -- maki's net module deadlocks when resolving the host inside the plugin
@@ -16,7 +18,6 @@
 local API_URL = "https://opencode.ai/zen/go/v1/usage"
 local POLL_MS = 5 * 60 * 1000        -- background poll cadence
 local FETCH_COOLDOWN_SECS = 20       -- skip event-driven refetches fresher than this
-local TOOL_STALE_SECS = 120          -- the tool refetches when data is older
 -- wide enough for the longest row: bars + reset timer, and the decode
 -- line "~999 tok/s last turn"
 local WIN_WIDTH = 56
@@ -262,7 +263,7 @@ local function refresh_view()
 end
 
 -- The status-bar hint only shows while an OpenCode Go model is selected;
--- the popup and tool work regardless.
+-- the popup works regardless.
 local function on_go_model()
   local ok, m = pcall(maki.model.get)
   return ok and m ~= nil and m.provider == "opencode-go"
@@ -372,35 +373,6 @@ maki.api.register_command({
   handler = function()
     refresh()
     toggle_win()
-  end,
-})
-
-maki.api.register_tool({
-  name = "opencode_usage",
-  description = [[Show the user's current OpenCode Go subscription usage limits: rolling 5-hour, weekly, and monthly percentage used, plus reset timers. Use whenever the user asks about their OpenCode usage, quota, or limits.]],
-  schema = { type = "object", properties = {} },
-  handler = function()
-    -- Serve cached data; refetch only when it is missing or stale. A call
-    -- while a background fetch is in flight just serves the older cache.
-    fetch_if_stale(TOOL_STALE_SECS)
-    local usage = state.usage
-    if not usage then
-      return { llm_output = "error: " .. tostring(state.err or "no data yet"), is_error = true }
-    end
-    local lines = {}
-    for _, name in ipairs({ "rolling", "weekly", "monthly" }) do
-      local w = state.usage[name]
-      if w then
-        lines[#lines + 1] = string.format(
-          "%s: %d%% used, status %s, resets in %s",
-          LABELS[name],
-          tonumber(w.percent) or 0,
-          w.status or "unknown",
-          w.resetsAt and until_str(w.resetsAt) or "unknown"
-        )
-      end
-    end
-    return { llm_output = table.concat(lines, "\n") }
   end,
 })
 

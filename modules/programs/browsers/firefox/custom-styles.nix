@@ -8,6 +8,9 @@ _: {
     # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
     profile = "dev-edition-default";
 
+    # Sidebery's AMO extension id (firefox derives the moz-extension uuid from it)
+    sideberyId = "{3c078156-979c-498b-8990-85f7987dd929}";
+
     c = config.lib.stylix.colors;
 
     chan = base: suffix: c."${base}-${suffix}";
@@ -90,13 +93,7 @@ _: {
         --dtui-theme-text-color: ${rgbTriplet "base05"};
       }
     '';
-    home.file.".config/mozilla/firefox/${profile}/chrome/JS/sidebery-theme.uc.js".text = let
-      sideberyCss = ''
-        @-moz-document regexp("moz-extension://.*/sidebar/sidebar.html") {
-        ${themedSidebery}
-        }
-      '';
-    in ''
+    home.file.".config/mozilla/firefox/${profile}/chrome/JS/sidebery-theme.uc.js".text = ''
       // ==UserScript==
       // @name           sidebery-theme
       // @description    Inject themed DownToneUI Sidebery CSS as an agent sheet
@@ -105,14 +102,45 @@ _: {
 
       (function () {
         const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Ci.nsIStyleSheetService);
-        let css = ${builtins.toJSON sideberyCss};
+
+        // Since firefox 155 @-moz-document conditions of add-on documents are matched against
+        // the extension's base url (moz-extension://<uuid>/) instead of the page url, so match
+        // that prefix - url-prefix also still matches the full page url (firefox <= 154).
+        let uuid = null;
+        try {
+          uuid = JSON.parse(Services.prefs.getStringPref("extensions.webextensions.uuids", "{}"))["${sideberyId}"];
+        } catch (e) {}
+        if (!uuid) {
+          console.warn("sidebery-theme: Sidebery's moz-extension uuid is unknown, falling back to a broad @-moz-document pattern");
+        }
+        const scope = uuid
+          ? 'url-prefix("moz-extension://' + uuid + '/")'
+          : 'regexp("moz-extension://.*")';
+
+        let css = '@-moz-document ' + scope + ' {\n' + ${builtins.toJSON themedSidebery} + '\n}';
         css = css.replace(/([^;{}]+:[^;{}]+)(;)/g, (m, d, e) =>
           /!important\s*$/.test(d) ? m : d + " !important" + e
         );
         const uri = Services.io.newURI("data:text/css;charset=utf-8," + encodeURIComponent(css));
-        if (!sss.sheetRegistered(uri, sss.AGENT_SHEET)) {
+
+        const register = () => {
+          if (sss.sheetRegistered(uri, sss.AGENT_SHEET)) {
+            sss.unregisterSheet(uri, sss.AGENT_SHEET);
+          }
           sss.loadAndRegisterSheet(uri, sss.AGENT_SHEET);
-        }
+        };
+
+        register();
+        // Agent sheets are only sent to content processes that already exist when they are
+        // registered, so sidebery's own process (created when the sidebar/panel loads) misses
+        // the sheet. Re-registering whenever a content process comes up delivers it there too.
+        Services.obs.addObserver((subject, topic) => {
+          if (topic === "ipc:content-created") {
+            try {
+              register();
+            } catch (e) {}
+          }
+        }, "ipc:content-created");
       })();
     '';
 
