@@ -117,6 +117,7 @@
             },
       })
       require("opencode_usage")
+      require("zai_usage")
     '';
 
     # Instruction file for every session in every project: maki also loads
@@ -131,6 +132,12 @@
     # deadlocks inside the plugin executor). A plugin.toml you wrote yourself
     # defaults to granted, so this list documents intent rather than gating it.
     home.file.".config/maki/lua/opencode_usage.lua".source = ./opencode_usage.lua;
+
+    # Z.ai GLM Coding Plan usage HUD (./zai_usage.lua). Same permissions as
+    # the OpenCode Go one: fs_read for the key in maki's auth dir, run for
+    # the curl workaround (maki.net.request deadlocks in the plugin
+    # executor). The endpoint is undocumented; see the header comment there.
+    home.file.".config/maki/lua/zai_usage.lua".source = ./zai_usage.lua;
     home.file.".config/maki/plugin.toml".text = ''
       min_maki_version = "0.4.12"
 
