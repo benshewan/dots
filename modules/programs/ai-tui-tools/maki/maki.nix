@@ -112,6 +112,14 @@
           ui = {
               theme = "stylix",
           },
+          -- Reserve only 10% of the window for compaction, so auto-compaction
+          -- fires at ~90% context instead of the default 80% (20% buffer).
+          agent = {
+              compaction_buffer = "10%",
+          },
+          provider = {
+              default_model = "opencode-go/deepseek-v4.1-flash",
+          },
           plugins = {
               completion = { enabled = true },
             },
@@ -138,6 +146,13 @@
     # the curl workaround (maki.net.request deadlocks in the plugin
     # executor). The endpoint is undocumented; see the header comment there.
     home.file.".config/maki/lua/zai_usage.lua".source = ./zai_usage.lua;
+
+    # The two HUDs above share one status-hint slot, because maki keys hints by
+    # plugin and everything init.lua requires is one plugin
+    # ("global/init.lua"). This module owns that slot so the line follows the
+    # selected model instead of the plugin that wrote last.
+    home.file.".config/maki/lua/usage_hint.lua".source = ./usage_hint.lua;
+
     home.file.".config/maki/plugin.toml".text = ''
       min_maki_version = "0.4.12"
 

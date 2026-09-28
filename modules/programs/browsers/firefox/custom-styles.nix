@@ -8,8 +8,10 @@ _: {
     # Name of firefox profile (P.S. should be "default" in regular firefox and "dev-edition-default" for firefox dev edition)
     profile = "dev-edition-default";
 
-    # Sidebery's AMO extension id (firefox derives the moz-extension uuid from it)
-    sideberyId = "{3c078156-979c-498b-8990-85f7987dd929}";
+    # Sidebery's moz-extension uuid, from extensions.webextensions.uuids in
+    # about:config (key = sidebery's AMO id {3c078156-979c-498b-8990-85f7987dd929}).
+    # Stable per profile; re-check there if sidebery is ever reinstalled.
+    sideberyUuid = "9a1f69e0-57fa-4290-9010-be184ed86755";
 
     c = config.lib.stylix.colors;
 
@@ -49,6 +51,51 @@ _: {
       ]
       (builtins.readFile "${DownToneUI-firefox-theme}/sidebery/sidebery_style.css");
 
+    # Themed sidebery css with !important appended to every declaration that does not
+    # have it yet (user-!important beats sidebery's own author-level styles).
+    # NOTE: this gets inlined into userContent.css as text, NOT @import'ed - firefox
+    # rejects @import targets whose real path lies outside the profile dir, so imports
+    # through home-manager store symlinks silently never load.
+    sideberyOverrideCss = pkgs.runCommand "sidebery-important.css" {} ''
+      # append !important to every declaration that does not have it yet
+      ${pkgs.perl}/bin/perl -0777 -pe 's{([^;{}]+:[^;{}]+)(;)}{$1 =~ /!important\s*$/ ? "$1$2" : "$1 !important;"}ge' \
+        ${pkgs.writeText "sidebery-themed.css" themedSidebery} > $out
+    '';
+
+    # userContent.css with all of DownToneUI's content styles inlined (no @import -
+    # see note above) plus our sidebery theming, scoped to sidebery's extension page.
+    userContentCss =
+      builtins.concatStringsSep "\n" [
+        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/_globals.css")
+        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_about.css")
+        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_extern.css")
+        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_scrollbar.css")
+        ''
+          /* Your own customizations */
+          * {
+            --dtui-theme-color-scheme: ${colorScheme};
+            --dtui-theme-main-color: ${rgbTriplet "base00"};
+            --dtui-theme-secondary-color: ${rgbTriplet "base01"};
+            --dtui-theme-accent-color: ${rgbTriplet "base0D"};
+            --dtui-theme-accent-high-contrast: ${accentHighContrast};
+            --dtui-theme-text-color: ${rgbTriplet "base05"};
+          }
+
+          /* Sidebery theming */
+          @-moz-document url-prefix("moz-extension://${sideberyUuid}/") {
+        ''
+        (builtins.readFile sideberyOverrideCss)
+        "}"
+      ];
+
+    # DownToneUI chrome dir minus userContent.css (we generate that one ourselves,
+    # inlined - see note above).
+    downtoneChrome = pkgs.runCommand "downtone-chrome" {} ''
+      cp -r ${DownToneUI-firefox-theme}/chrome $out
+      chmod -R u+w $out
+      rm -f $out/userContent.css
+    '';
+
     ff-ultima-theme = pkgs.fetchFromGitHub {
       owner = "soulhotel";
       repo = "FF-ULTIMA";
@@ -81,8 +128,9 @@ _: {
 
     home.file.".config/mozilla/firefox/${profile}/chrome" = {
       recursive = true;
-      source = "${DownToneUI-firefox-theme}/chrome";
+      source = "${downtoneChrome}";
     };
+    home.file.".config/mozilla/firefox/${profile}/chrome/userContent.css".text = userContentCss;
     home.file.".config/mozilla/firefox/${profile}/chrome/DownToneUI/override_globals.css".text = ''
       * {
         --dtui-theme-color-scheme: ${colorScheme};
@@ -92,56 +140,6 @@ _: {
         --dtui-theme-accent-high-contrast: ${accentHighContrast};
         --dtui-theme-text-color: ${rgbTriplet "base05"};
       }
-    '';
-    home.file.".config/mozilla/firefox/${profile}/chrome/JS/sidebery-theme.uc.js".text = ''
-      // ==UserScript==
-      // @name           sidebery-theme
-      // @description    Inject themed DownToneUI Sidebery CSS as an agent sheet
-      // @onlyonce
-      // ==/UserScript==
-
-      (function () {
-        const sss = Cc["@mozilla.org/content/style-sheet-service;1"].getService(Ci.nsIStyleSheetService);
-
-        // Since firefox 155 @-moz-document conditions of add-on documents are matched against
-        // the extension's base url (moz-extension://<uuid>/) instead of the page url, so match
-        // that prefix - url-prefix also still matches the full page url (firefox <= 154).
-        let uuid = null;
-        try {
-          uuid = JSON.parse(Services.prefs.getStringPref("extensions.webextensions.uuids", "{}"))["${sideberyId}"];
-        } catch (e) {}
-        if (!uuid) {
-          console.warn("sidebery-theme: Sidebery's moz-extension uuid is unknown, falling back to a broad @-moz-document pattern");
-        }
-        const scope = uuid
-          ? 'url-prefix("moz-extension://' + uuid + '/")'
-          : 'regexp("moz-extension://.*")';
-
-        let css = '@-moz-document ' + scope + ' {\n' + ${builtins.toJSON themedSidebery} + '\n}';
-        css = css.replace(/([^;{}]+:[^;{}]+)(;)/g, (m, d, e) =>
-          /!important\s*$/.test(d) ? m : d + " !important" + e
-        );
-        const uri = Services.io.newURI("data:text/css;charset=utf-8," + encodeURIComponent(css));
-
-        const register = () => {
-          if (sss.sheetRegistered(uri, sss.AGENT_SHEET)) {
-            sss.unregisterSheet(uri, sss.AGENT_SHEET);
-          }
-          sss.loadAndRegisterSheet(uri, sss.AGENT_SHEET);
-        };
-
-        register();
-        // Agent sheets are only sent to content processes that already exist when they are
-        // registered, so sidebery's own process (created when the sidebar/panel loads) misses
-        // the sheet. Re-registering whenever a content process comes up delivers it there too.
-        Services.obs.addObserver((subject, topic) => {
-          if (topic === "ipc:content-created") {
-            try {
-              register();
-            } catch (e) {}
-          }
-        }, "ipc:content-created");
-      })();
     '';
 
     # FF-Ultima

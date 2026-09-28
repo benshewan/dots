@@ -71,16 +71,16 @@ _: {
       };
 
       # New Tab Home Page
-      "extension@tabliss.io" = {
-        installation_mode = "normal_installed";
-        install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
-      };
+      # "extension@tabliss.io" = {
+      #   installation_mode = "normal_installed";
+      #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
+      # };
 
       # Multi-Account Containers
-      "@testpilot-containers" = {
-        installation_mode = "normal_installed";
-        install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
-      };
+      # "@testpilot-containers" = {
+      #   installation_mode = "normal_installed";
+      #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/multi-account-containers/latest.xpi";
+      # };
 
       # Tab Sessions
       "Tab-Session-Manager@sienori" = {
@@ -98,9 +98,9 @@ _: {
       # ----------------------------------------------------------------------------------
 
       # Youtube customization
-      "enhancerforyoutube@maximerf.addons.mozilla.org" = {
+      "control-panel-for-youtube@jbscript.dev" = {
         installation_mode = "normal_installed";
-        install_url = "https://addons.mozilla.org/firefox/downloads/latest/enhancer-for-youtube/latest.xpi";
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/control-panel-for-youtube/latest.xpi";
       };
 
       # View Xpi Id's in Firefox Extension Store
@@ -124,16 +124,16 @@ _: {
       # ----------------------------------------------------------------------------------
 
       # React Integration
-      "@react-devtools" = {
-        installation_mode = "normal_installed";
-        install_url = "https://addons.mozilla.org/firefox/downloads/latest/react-devtools/latest.xpi";
-      };
+      # "@react-devtools" = {
+      #   installation_mode = "normal_installed";
+      #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/react-devtools/latest.xpi";
+      # };
 
       # Redux Integration
-      "extension@redux.devtools" = {
-        installation_mode = "normal_installed";
-        install_url = "https://addons.mozilla.org/firefox/downloads/latest/reduxdevtools/latest.xpi";
-      };
+      # "extension@redux.devtools" = {
+      #   installation_mode = "normal_installed";
+      #   install_url = "https://addons.mozilla.org/firefox/downloads/latest/reduxdevtools/latest.xpi";
+      # };
 
       # Other
       # ----------------------------------------------------------------------------------
@@ -155,6 +155,12 @@ _: {
       "en-CA@dictionaries.addons.mozilla.org" = {
         installation_mode = "normal_installed";
         install_url = "https://addons.mozilla.org/firefox/downloads/latest/canadian-english-dictionary/latest.xpi";
+      };
+
+      # Vimium
+      "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
+        installation_mode = "normal_installed";
+        install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium-ff/latest.xpi";
       };
 
       # Legacy Extensions

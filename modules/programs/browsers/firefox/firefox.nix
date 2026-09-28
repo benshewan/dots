@@ -20,9 +20,9 @@
 
     programs.firefox = {
       enable = true;
-      nativeMessagingHosts =
-        [pkgs.tridactyl-native]
-        ++ lib.optional config.services.kdeconnect.enable pkgs.kdePackages.plasma-browser-integration;
+      nativeMessagingHosts = [pkgs.tridactyl-native];
+
+      # Enterprise Polices ---------------------------------------------
       policies = {
         CaptivePortal = false;
         DisableFirefoxStudies = true;
@@ -38,8 +38,15 @@
           Locked = true;
         };
         NoDefaultBookmarks = true;
+
         OfferToSaveLogins = false;
         PasswordManagerEnabled = false;
+
+        AutofillAddressEnabled = false;
+        AutofillCreditCardEnabled = false;
+
+        DisableFormHistory = true;
+
         FirefoxHome = {
           Search = true;
           Pocket = false;
@@ -51,7 +58,44 @@
           ExtensionRecommendations = false;
           SkipOnboarding = true;
         };
-        SearchEngines.Default = "Google";
+
+        # Searching ---------------------------------------------
+        SearchSuggestEnabled = false;
+        SearchEngines = {
+          PreventInstalls = true;
+          Remove = [
+            "eBay"
+            # "Google"
+            "Bing"
+            "Ecosia"
+            "Wikipedia"
+            "Perplexity"
+          ];
+          Add = [
+            {
+              "Name" = "Brave Search";
+              "URLTemplate" = "https://search.brave.com/search?q={searchTerms}&summary=0";
+              "IconURL" = "https://cdn.search.brave.com/serp/v1/static/brand/eebf5f2ce06b0b0ee6bbd72d7e18621d4618b9663471d42463c692d019068072-brave-lion-favicon.png";
+              "Alias" = "brave";
+            }
+            {
+              "Name" = "DuckDuckGo";
+              "URLTemplate" = "https://duckduckgo.com/?q={searchTerms}&ia=web&assist=false";
+              "IconURL" = "https://duckduckgo.com/favicon.ico";
+              "Alias" = "ddg";
+              "Description" = "Duckduckgo without AI integrations";
+            }
+            {
+              "Name" = "Wikipedia";
+              "URLTemplate" = "https://en.wikipedia.org/wiki/Special:Search?go=Go&search={searchTerms}";
+              "IconURL" = "https://en.wikipedia.org/favicon.ico";
+              "Alias" = "wiki";
+            }
+          ];
+          Default = "Google";
+        };
+
+        # Disable browser Notification ---------------------------------------------
         Permissions.Notifications = {
           # Allow: ["https://example.org"],;
           # "Block": ["https://example.edu"],;
@@ -59,6 +103,8 @@
           Locked = true;
         };
       };
+
+      # Betterfox + Custom Settings ---------------------------------------------
       profiles = {
         "${profile}" = {
           id = 0;
@@ -68,8 +114,8 @@
             builtins.readFile
             (builtins.fetchurl
               {
-                url = "https://raw.githubusercontent.com/yokoffing/Betterfox/f1c8e3809dbd23f4f9aa1e5e70805c61734b1f14/user.js";
-                sha256 = "sha256:1cz6fbbhg30ci795inmb8l1l95qln565lasv1142cdh5syn6jr6s";
+                url = "https://raw.githubusercontent.com/yokoffing/Betterfox/067172a4b0dc90e78e5b8b94d9abfe6430c6a7be/user.js";
+                sha256 = "sha256:0h2j5lsv07r81qp8ysjg3d9i9cdzhjw9ip96mxxrh9ajn73p3a9q";
               })
             # Overrides
             + builtins.readFile ./user.js;

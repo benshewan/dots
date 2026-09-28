@@ -36,6 +36,8 @@ local WIN_WIDTH = 56
 -- content rows need this much on top when the border is not "none".
 local BORDER_ROWS = 2
 
+local usage_hint = require("usage_hint")
+
 -- unit code -> short suffix, for the row label ("5h", "1w", "1mo")
 local UNIT_NAMES = { [2] = "min", [3] = "h", [4] = "d", [5] = "mo", [6] = "w" }
 
@@ -257,27 +259,28 @@ local function refresh_view()
 end
 
 -- The status-bar hint only shows while a z.ai model is selected; the popup
--- works regardless.
-local function on_zai_model()
-  local ok, m = pcall(maki.model.get)
-  return ok and m ~= nil and m.provider == "zai"
-end
-
-local function set_hint()
-  if not on_zai_model() then
-    pcall(maki.ui.set_status_hint, {})
-    return
-  end
-  local usage = state.usage
-  if not usage then
-    return
-  end
-  local parts = {}
-  for _, lim in ipairs(usage.limits or {}) do
-    parts[#parts + 1] = string.format("%s %d%%", row_label(lim), tonumber(lim.percentage) or 0)
-  end
-  maki.ui.set_status_hint({ { "zai: " .. table.concat(parts, " · "), "dim" } })
-end
+-- works regardless. The hint slot is shared with opencode_usage.lua (every
+-- module the global init.lua requires is one maki plugin), so the line is
+-- published through usage_hint, which picks whichever of the two applies.
+-- Clearing the slot here whenever the selected model was not z.ai is what
+-- used to wipe the OpenCode Go line, and vice versa.
+usage_hint.register("zai", {
+  active = function()
+    local ok, m = pcall(maki.model.get)
+    return ok and m ~= nil and m.provider == "zai"
+  end,
+  text = function()
+    local usage = state.usage
+    if not usage then
+      return nil
+    end
+    local parts = {}
+    for _, lim in ipairs(usage.limits or {}) do
+      parts[#parts + 1] = string.format("%s %d%%", row_label(lim), tonumber(lim.percentage) or 0)
+    end
+    return "zai: " .. table.concat(parts, " · ")
+  end,
+})
 
 -- Fetch data unless it is already fresh (newer than {min_age} seconds) or a
 -- fetch is in flight. Returns ok, usage, err.
@@ -306,12 +309,13 @@ local function refresh(after_fetch)
       -- teardown raced us; drop the result instead of touching the UI
       return
     end
-    if fetched and usage then
-      pcall(set_hint)
-    elseif fetched and not usage then
+    if fetched and not usage then
       state.err = err
       maki.log.debug("zai_usage: fetch failed: " .. tostring(err))
     end
+    -- Published on every refresh, not only after a fetch: the selected model
+    -- may have changed, and the data may already be fresh.
+    pcall(usage_hint.refresh)
     pcall(refresh_view)
     if after_fetch then
       after_fetch()

@@ -25,6 +25,8 @@ local WIN_WIDTH = 56
 -- content rows need this much on top when the border is not "none".
 local BORDER_ROWS = 2
 
+local usage_hint = require("usage_hint")
+
 local state = {
   key = nil,
   usage = nil, -- { rolling = {...}, weekly = {...}, monthly = {...} }
@@ -262,31 +264,32 @@ local function refresh_view()
   end
 end
 
--- The status-bar hint only shows while an OpenCode Go model is selected;
--- the popup works regardless.
-local function on_go_model()
-  local ok, m = pcall(maki.model.get)
-  return ok and m ~= nil and m.provider == "opencode-go"
-end
-
-local function set_hint()
-  if not on_go_model() then
-    pcall(maki.ui.set_status_hint, {})
-    return
-  end
-  local usage = state.usage
-  if not usage then
-    return
-  end
-  local parts = {}
-  for _, name in ipairs({ "rolling", "weekly", "monthly" }) do
-    local w = usage[name]
-    if w then
-      parts[#parts + 1] = string.format("%s %d%%", LABELS[name], tonumber(w.percent) or 0)
+-- The status-bar hint only shows while an OpenCode Go model is selected; the
+-- popup works regardless. The hint slot is shared with zai_usage.lua (every
+-- module the global init.lua requires is one maki plugin), so the line is
+-- published through usage_hint, which picks whichever of the two applies.
+-- Clearing the slot here whenever the selected model was not OpenCode Go is
+-- what used to wipe the z.ai line, and vice versa.
+usage_hint.register("opencode-go", {
+  active = function()
+    local ok, m = pcall(maki.model.get)
+    return ok and m ~= nil and m.provider == "opencode-go"
+  end,
+  text = function()
+    local usage = state.usage
+    if not usage then
+      return nil
     end
-  end
-  maki.ui.set_status_hint({ { "go: " .. table.concat(parts, " · "), "dim" } })
-end
+    local parts = {}
+    for _, name in ipairs({ "rolling", "weekly", "monthly" }) do
+      local w = usage[name]
+      if w then
+        parts[#parts + 1] = string.format("%s %d%%", LABELS[name], tonumber(w.percent) or 0)
+      end
+    end
+    return "go: " .. table.concat(parts, " · ")
+  end,
+})
 
 -- Fetch data unless it is already fresh (newer than {min_age} seconds) or a
 -- fetch is in flight. Returns ok, usage, err.
@@ -315,12 +318,13 @@ local function refresh(after_fetch)
       -- teardown raced us; drop the result instead of touching the UI
       return
     end
-    if fetched and usage then
-      pcall(set_hint)
-    elseif fetched and not usage then
+    if fetched and not usage then
       state.err = err
       maki.log.debug("opencode_usage: fetch failed: " .. tostring(err))
     end
+    -- Published on every refresh, not only after a fetch: the selected model
+    -- may have changed, and the data may already be fresh.
+    pcall(usage_hint.refresh)
     pcall(refresh_view)
     if after_fetch then
       after_fetch()
