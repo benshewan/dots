@@ -90,7 +90,7 @@
     # (maki-agent only, ~90 lines), so it rides as a patch until it lands
     # upstream.
     maki = inputs.maki.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-      patches = (old.patches or []) ++ [./mcp-images.patch];
+      # patches = (old.patches or []) ++ [./mcp-images.patch];
     });
   in {
     home.packages = [
@@ -135,23 +135,23 @@
     # so keep it short; per-repo rules belong in that repo's own AGENTS.md.
     home.file.".config/maki/AGENTS.md".source = ./AGENTS.md;
 
-    # OpenCode Go usage HUD (./opencode_usage.lua). Needs fs_read for the key
+    # OpenCode Go usage HUD (./custom-plugins/opencode_usage.lua). Needs fs_read for the key
     # in maki's auth dir and run for the curl workaround (maki.net.request
     # deadlocks inside the plugin executor). A plugin.toml you wrote yourself
     # defaults to granted, so this list documents intent rather than gating it.
-    home.file.".config/maki/lua/opencode_usage.lua".source = ./opencode_usage.lua;
+    home.file.".config/maki/lua/opencode_usage.lua".source = ./custom-plugins/opencode_usage.lua;
 
-    # Z.ai GLM Coding Plan usage HUD (./zai_usage.lua). Same permissions as
+    # Z.ai GLM Coding Plan usage HUD (./custom-plugins/zai_usage.lua). Same permissions as
     # the OpenCode Go one: fs_read for the key in maki's auth dir, run for
     # the curl workaround (maki.net.request deadlocks in the plugin
     # executor). The endpoint is undocumented; see the header comment there.
-    home.file.".config/maki/lua/zai_usage.lua".source = ./zai_usage.lua;
+    home.file.".config/maki/lua/zai_usage.lua".source = ./custom-plugins/zai_usage.lua;
 
     # The two HUDs above share one status-hint slot, because maki keys hints by
     # plugin and everything init.lua requires is one plugin
     # ("global/init.lua"). This module owns that slot so the line follows the
     # selected model instead of the plugin that wrote last.
-    home.file.".config/maki/lua/usage_hint.lua".source = ./usage_hint.lua;
+    home.file.".config/maki/lua/usage_hint.lua".source = ./custom-plugins/usage_hint.lua;
 
     home.file.".config/maki/plugin.toml".text = ''
       min_maki_version = "0.4.12"
