@@ -30,11 +30,11 @@
     // sharedCachixConfig;
 
   # NixOS-specific nix settings
-  nixosNixSettings =
-    sharedNixSettings
-    // {
-      auto-optimise-store = true;
-    };
+  # `auto-optimise-store` is intentionally NOT set: it hashes and hardlinks every
+  # file written to the store against /nix/store/.links, which is ~1M entries
+  # here. Measured ~2x slower store writes on small-file workloads. Disk space is
+  # still reclaimed by the periodic optimiser enabled below (nix.optimise.automatic).
+  nixosNixSettings = sharedNixSettings;
 
   # Shared home-manager config
   sharedHomeManagerConfig = {
@@ -52,7 +52,10 @@
   dynamicOverlays = map (file: import file args) nixFiles;
 in {
   flake-file.inputs = {
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
 

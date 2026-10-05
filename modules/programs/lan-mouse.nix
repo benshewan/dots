@@ -1,6 +1,9 @@
 {inputs, ...}: {
   flake-file.inputs = {
-    lan-mouse.url = "github:feschber/lan-mouse";
+    lan-mouse = {
+      url = "github:feschber/lan-mouse";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   flake.modules.homeManager."programs/lan-mouse" = {
     pkgs,
