@@ -13,6 +13,15 @@
   # hardware.framework.enableKmod = true; # Allow userspace access to LEDs and battery charge limit
   services.hardware.bolt.enable = true;
 
+  services.pipewire.wireplumber.extraConfig."50-caldigit-soft-mixer" = {
+    "monitor.alsa.rules" = [
+      {
+        matches = [{"device.name" = "alsa_card.usb-CalDigit_Inc._CalDigit_TS4_Audio_-_Front-00";}];
+        actions = {"update-props" = {"api.alsa.soft-mixer" = true;};};
+      }
+    ];
+  };
+
   # powerprofilesctl configure-action amdgpu_dpm --enable
   boot.kernelParams = [
     "amdgpu.abmlevel=0" # Force off because it looks ugly
@@ -45,8 +54,13 @@
 
     # Disable wake-on-lan for all PCIe devices
     ''ACTION=="add", SUBSYSTEM=="pci", DRIVER=="pcieport", ATTR{power/wakeup}="disabled"''
+
+    # soft-mixer leaves the CalDigit's hardware mixer untouched, so pin it to 0 dB
+    # (max) whenever the card appears, otherwise the last value it was left at
+    # becomes permanent attenuation.
+    #  max is 44 but a static noise floor gets introduced when set that high, 35 (80%) has no noise and is way more than enough
+    ''ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", ATTRS{idVendor}=="2188", ATTRS{idProduct}=="6537", RUN+="${pkgs.alsa-utils}/bin/amixer -c Front sset Speaker 35"''
   ];
-  #  SUBSYSTEM=="power_supply",ATTR{status}=="Discharging",ATTR{capacity_level}=="Low",RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
 
   # Firmware
   services.fwupd = {
