@@ -68,7 +68,7 @@
         "DISPLAY,:2" # Support for xwayland
         "WLR_RENDERER,vulkan" # Support for HDR
       ];
-      exec-once = [
+      exec_once = [
         "systemctl --user start mango-session.target"
         "${lib.getExe pkgs.xwayland-satellite} :2"
       ];
@@ -84,15 +84,15 @@
       # };
       # border_radius = 3;
 
-      borderpx = 2;
+      border_px = 2;
       focused_opacity = 1.0;
       cursor_size = config.stylix.cursor.size;
       cursor_theme = config.stylix.cursor.name;
 
-      gappih = 3; # inner horizontal
-      gappiv = 3; # inner vertical
-      gappoh = 3; # outer horizontal
-      gappov = 3; # outer vertical
+      gap_inner_horizontal = 3; # inner horizontal
+      gap_inner_vertical = 3; # inner vertical
+      gap_outer_horizontal = 3; # outer horizontal
+      gap_outer_vertical = 3; # outer vertical
 
       # ov_tab_mode = 0; # don't cycle with toggleoverview
       # mouse general
@@ -117,7 +117,7 @@
       animation_type_close = "slide";
       animation_duration_close = 400;
 
-      tagrule = [
+      tag_rule = [
         "id:1,layout_name:fair"
         "id:2,layout_name:fair"
         "id:3,layout_name:fair"
@@ -133,7 +133,7 @@
       #   "layer_name:noctalia-notification,shield_when_capture:1"
       # ];
 
-      monitorrule = map (
+      monitor_rule = map (
         m: let
           resolution = "width:${toString m.width},height:${toString m.height},refresh:${toString m.refreshRate}";
           position = "x:${toString m.x},y:${toString m.y}";

@@ -1,4 +1,6 @@
-{inputs, ...}: {
+flake @ {inputs, ...}: let
+  username = flake.config.flake.meta.user.username;
+in {
   flake-file.inputs = {
     # maki pins an old rust-overlay whose lib uses the deprecated
     # stdenv.isLinux/isDarwin; follow a current one instead.
@@ -102,6 +104,22 @@
       pkgs.rtk
     ];
 
+    # maki's builtin websearch (Exa backend) reads its key only from the
+    # EXA_API_KEY environment variable at call time: the plugin in the binary
+    # resolves `maki.uv.os_getenv("EXA_API_KEY")` and sends it as `x-api-key` to
+    # https://mcp.exa.ai/mcp. There is no init.lua or mcp.toml knob for it (the
+    # documented `plugins.websearch.provider` only picks exa vs youcom).
+    # hm-session-vars.sh is sourced at login, so this exports the key into every
+    # shell that later launches maki. The value is not here: it lives in the
+    # sops-managed file declared in flake.modules.nixos."programs/maki" below,
+    # and only its path reaches the world-readable store.
+    home.sessionVariablesExtra = ''
+      if [ -z "''${EXA_API_KEY:-}" ] && [ -r "$HOME/.config/maki/exa.token" ]; then
+        EXA_API_KEY="$(cat "$HOME/.config/maki/exa.token")"
+        export EXA_API_KEY
+      fi
+    '';
+
     # Themes live in ./theme.nix, which merges into this same module.
     # Force-apply the stylix theme on every startup, overriding any
     # interactively-selected theme.
@@ -199,5 +217,23 @@
       timeout = 60000
       always_load = false
     '';
+  };
+
+  # The Exa API key, decrypted by sops-nix straight to the file the export
+  # above reads (~/.config/maki/exa.token). Add or rotate the value with:
+  #
+  #   sops secrets/common.yaml          # edit the `exa-api-key` entry
+  #
+  # The key is `exa-api-key` in secrets/common.yaml; sops resolves the age
+  # recipient from .sops.yaml. Until that entry exists, the next rebuild's
+  # sops-install-secrets step fails (validateSopsFiles is on), so add the
+  # secret before switching.
+  flake.modules.nixos."programs/maki" = {
+    sops.secrets."exa-api-key" = {
+      owner = username;
+      group = "users";
+      mode = "0400";
+      path = "/home/${username}/.config/maki/exa.token";
+    };
   };
 }

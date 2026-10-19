@@ -142,7 +142,8 @@ in {
           github-cli
 
           # Messing around
-          syncthingtray
+          # syncthingtray
+          keyguard
           # stable.handbrake
           # brasero # CD burning/copying
           # local.audiorelay

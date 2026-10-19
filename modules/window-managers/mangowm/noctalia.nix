@@ -1,19 +1,11 @@
-{inputs, ...} @ flake: {
-  flake-file.inputs = {
-    noctalia.url = "github:noctalia-dev/noctalia";
-    noctalia.inputs.nixpkgs.follows = "nixpkgs";
-  };
+{...}: {
   flake.modules.homeManager."window-managers/mangowm" = {
     pkgs,
     lib,
     config,
     ...
-  }: let
-    c = config.lib.stylix.colors.withHashtag;
-  in {
-    imports = [inputs.noctalia.homeModules.default];
-
-    wayland.windowManager.mango.settings.exec-once = ["${lib.getExe (config.programs.noctalia.package)}"];
+  }:{
+    wayland.windowManager.mango.settings.exec_once = ["${lib.getExe (config.programs.noctalia.package)}"];
     home.packages = with pkgs; [ddcutil]; # needed for ddc control
     programs.noctalia = {
       enable = true;

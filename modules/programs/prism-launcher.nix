@@ -9,7 +9,7 @@ _: {
       package = pkgs.jdk;
     };
     home.packages = with pkgs; [
-      (prismlauncher.override {jdks = [jdk8 jdk17 jdk21 zulu25];})
+      (prismlauncher.override {jdks = [openjdk8 zulu17 zulu21 zulu25];})
     ];
   };
 }
