@@ -1,9 +1,10 @@
 flake @ {inputs, ...}: let
   username = flake.config.flake.meta.user.username;
+  # sops-nix template for EXA_API_KEY (nixos module below), rendered to tmpfs.
+  exaEnvPath = "/run/secrets/rendered/maki-env";
 in {
   flake-file.inputs = {
-    # maki pins an old rust-overlay whose lib uses the deprecated
-    # stdenv.isLinux/isDarwin; follow a current one instead.
+    # rust-overlay: maki pins an old copy whose lib uses the deprecated stdenv.isLinux.
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -18,13 +19,12 @@ in {
 
   flake.modules.homeManager."programs/maki" = {
     pkgs,
+    lib,
     config,
     ...
   }: let
-    # Browser control is Playwright MCP over stdio (./mcp.toml below). The
-    # server ships inside playwright-core, so the browser stack we install is
-    # just a node runtime plus the chromium it drives: no npm, and nothing is
-    # downloaded at runtime.
+    # Browser stack: playwright-core ships the MCP server; this is just node +
+    # chromium from the store (steps in ./mcp.toml below; nothing at runtime).
     playwright = pkgs.playwright;
     playwrightBrowsers = pkgs.playwright-driver.selectBrowsers {
       withFirefox = false;
@@ -33,9 +33,8 @@ in {
     };
     node = pkgs.nodejs;
 
-    # GitHub MCP (official Go server). The PAT is never baked into the store:
-    # the wrapper resolves it at runtime from the environment, a token file, or
-    # the gh CLI, and the store only holds the script that reads it.
+    # GitHub MCP: PAT resolved at runtime (env, ~/.config/maki/github-mcp.token, or `gh`);
+    # never baked into the store.
     githubMcpServer = pkgs.github-mcp-server;
     githubMcpWrapper = pkgs.writeShellScript "maki-github-mcp" ''
       set -eu
@@ -58,11 +57,8 @@ in {
       exec ${githubMcpServer}/bin/github-mcp-server "$@"
     '';
 
-    # Server settings, spelled out in playwright-core's config.d.ts: chromium
-    # from the store, a throwaway in-memory profile, headless, and artifacts
-    # kept out of the repos they were taken in. `capabilities` is opt-in and
-    # adds to the core set (network mocking, cookies/storage, coordinate
-    # tools, PDF); the rest is on by default.
+    # Chromium from the store, in-memory profile, headless; capabilities per
+    # playwright-core's config.d.ts.
     playwrightConfig = {
       browser = {
         browserName = "chromium";
@@ -84,112 +80,56 @@ in {
       ];
     };
 
-    # maki's MCP client flattens every tool-result content block to text
-    # (mcp/transport.rs -> CallToolResult::joined_text), so an `image` block
-    # from the server arrives as an empty result and a screenshot is invisible
-    # to the model. The patch carries those blocks through as vision input, the
-    # same way the builtin view_image publishes a file it reads. Self-contained
-    # (maki-agent only, ~90 lines), so it rides as a patch until it lands
-    # upstream.
-    maki = inputs.maki.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-      # patches = (old.patches or []) ++ [./mcp-images.patch];
-    });
+    maki = inputs.maki.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+    # Rendered into ~/.config/maki/init.lua by lib.generators.toLua.
+    makiSetupOptions = {
+      always_yolo = true;
+      ui.theme = "stylix";
+      agent.compaction_buffer = "10%";
+      provider.default_model = "opencode-go/deepseek-v4.1-flash";
+      plugins.completion.enabled = true;
+    };
   in {
     home.packages = [
       maki
-
-      # rtk: maki's bash plugin rewrites commands through it (probes
-      # `rtk --version` at runtime; on by default via agent.rtk). Optional:
-      # without it on PATH maki just runs commands unrewritten.
       pkgs.rtk
     ];
 
-    # maki's builtin websearch (Exa backend) reads its key only from the
-    # EXA_API_KEY environment variable at call time: the plugin in the binary
-    # resolves `maki.uv.os_getenv("EXA_API_KEY")` and sends it as `x-api-key` to
-    # https://mcp.exa.ai/mcp. There is no init.lua or mcp.toml knob for it (the
-    # documented `plugins.websearch.provider` only picks exa vs youcom).
-    # hm-session-vars.sh is sourced at login, so this exports the key into every
-    # shell that later launches maki. The value is not here: it lives in the
-    # sops-managed file declared in flake.modules.nixos."programs/maki" below,
-    # and only its path reaches the world-readable store.
+    # The only way to hand the builtin websearch its Exa key is EXA_API_KEY in
+    # the env (see the nixos module below for where it is decrypted).
     home.sessionVariablesExtra = ''
-      if [ -z "''${EXA_API_KEY:-}" ] && [ -r "$HOME/.config/maki/exa.token" ]; then
-        EXA_API_KEY="$(cat "$HOME/.config/maki/exa.token")"
-        export EXA_API_KEY
-      fi
+      [ -r "${exaEnvPath}" ] && . "${exaEnvPath}"
     '';
 
-    # Themes live in ./theme.nix, which merges into this same module.
-    # Force-apply the stylix theme on every startup, overriding any
-    # interactively-selected theme.
     home.file.".config/maki/init.lua".text = ''
       -- Managed by Nix. Extend this file with more maki.setup() options if needed.
-      maki.setup({
-          always_yolo = true,
-          ui = {
-              theme = "stylix",
-          },
-          -- Reserve only 10% of the window for compaction, so auto-compaction
-          -- fires at ~90% context instead of the default 80% (20% buffer).
-          agent = {
-              compaction_buffer = "10%",
-          },
-          provider = {
-              default_model = "opencode-go/deepseek-v4.1-flash",
-          },
-          plugins = {
-              completion = { enabled = true },
-            },
-      })
+      maki.setup(${lib.generators.toLua {} makiSetupOptions})
       require("opencode_usage")
       require("zai_usage")
     '';
 
-    # Instruction file for every session in every project: maki also loads
-    # ~/.config/maki/AGENTS.md and appends it to the system prompt (the
-    # {{instructions}} slot at the end). This is where "you are on NixOS, pull
-    # any tool with `nix shell`" is stated once. It is paid on every request,
-    # so keep it short; per-repo rules belong in that repo's own AGENTS.md.
-    home.file.".config/maki/AGENTS.md".source = ./AGENTS.md;
+    home.file.".config/maki/AGENTS.md".source = ./INITIAL_PROMPT.md;
 
-    # OpenCode Go usage HUD (./custom-plugins/opencode_usage.lua). Needs fs_read for the key
-    # in maki's auth dir and run for the curl workaround (maki.net.request
-    # deadlocks inside the plugin executor). A plugin.toml you wrote yourself
-    # defaults to granted, so this list documents intent rather than gating it.
+    # Usage HUD plugins (fs_read: key in maki's auth dir; run: curl workaround,
+    # maki.net.request deadlocks in the plugin executor). usage_hint.lua owns
+    # the shared status-hint slot so the line follows the selected model.
     home.file.".config/maki/lua/opencode_usage.lua".source = ./custom-plugins/opencode_usage.lua;
-
-    # Z.ai GLM Coding Plan usage HUD (./custom-plugins/zai_usage.lua). Same permissions as
-    # the OpenCode Go one: fs_read for the key in maki's auth dir, run for
-    # the curl workaround (maki.net.request deadlocks in the plugin
-    # executor). The endpoint is undocumented; see the header comment there.
     home.file.".config/maki/lua/zai_usage.lua".source = ./custom-plugins/zai_usage.lua;
-
-    # The two HUDs above share one status-hint slot, because maki keys hints by
-    # plugin and everything init.lua requires is one plugin
-    # ("global/init.lua"). This module owns that slot so the line follows the
-    # selected model instead of the plugin that wrote last.
     home.file.".config/maki/lua/usage_hint.lua".source = ./custom-plugins/usage_hint.lua;
 
-    home.file.".config/maki/plugin.toml".text = ''
-      min_maki_version = "0.4.12"
+    home.file.".config/maki/plugin.toml".source = pkgs.writers.writeTOML "maki-plugin.toml" {
+      min_maki_version = "0.4.12";
+      permissions.fs_read = true;
+      permissions.run = true;
+    };
 
-      [permissions]
-      fs_read = true
-      run = true
-    '';
-
-    # Browser tools. `timeout` is milliseconds and covers both the startup
-    # handshake and every call, so it has to clear the server's own navigation
-    # timeout (30s, set in playwright-mcp.json) or maki gives up while a page is
-    # still loading. The definitions are deferred behind maki's tool_search, so
-    # 52 tools do not cost the whole catalogue in every request; flip
-    # always_load to true to keep them in context.
+    # `timeout` covers startup + every call, so it clears the 30s navigation
+    # timeout in playwright-mcp.json. always_load = false: deferred behind
+    # tool_search instead of costing the full catalogue in every request.
     home.file.".config/maki/playwright-mcp.json".text = builtins.toJSON playwrightConfig + "\n";
     home.file.".config/maki/mcp.toml".text = ''
-      # Playwright MCP: browser_navigate, browser_snapshot (accessibility tree
-      # with refs), click/fill/hover/drag/upload, tabs, dialogs, network
-      # mocking, cookies and storage, emulate/device, screenshots and PDF.
+      # browser navigation/snapshot/click/tabs/dialogs/network/cookies/PDF.
       [mcp.playwright]
       command = [
         "${node}/bin/node",
@@ -201,12 +141,8 @@ in {
       timeout = 60000
       always_load = false
 
-      # GitHub MCP: repos and code search, issues, pull requests, users and
-      # copilot (the server's `default` toolset). Reads the PAT from the
-      # environment, ~/.config/maki/github-mcp.token (chmod 600), or `gh auth
-      # token`. Add toolsets ("default,actions,notifications") or restrict the
-      # server to reads with "--read-only" by appending args below. Deferred
-      # behind tool_search like the browser tools.
+      # repos/issues/PRs/users/copilot (default toolset). PAT: env, token file, or
+      # `gh auth token`. Append args for "--toolsets default,actions" or "--read-only".
       [mcp.github]
       command = [
         "${githubMcpWrapper}",
@@ -219,21 +155,20 @@ in {
     '';
   };
 
-  # The Exa API key, decrypted by sops-nix straight to the file the export
-  # above reads (~/.config/maki/exa.token). Add or rotate the value with:
+  # Exa API key: decrypted by the system sops-nix module at boot (see
+  # modules/flake-parts/sops-nix.nix). The raw secret (default path, root) is
+  # never consumed directly; the template renders the export line to tmpfs so
+  # no plaintext key lands under ~.
   #
-  #   sops secrets/common.yaml          # edit the `exa-api-key` entry
-  #
-  # The key is `exa-api-key` in secrets/common.yaml; sops resolves the age
-  # recipient from .sops.yaml. Until that entry exists, the next rebuild's
-  # sops-install-secrets step fails (validateSopsFiles is on), so add the
-  # secret before switching.
-  flake.modules.nixos."programs/maki" = {
-    sops.secrets."exa-api-key" = {
+  # Rotate with `sops secrets/common.yaml` (key: `exa-api-key`; age recipient
+  # from .sops.yaml). The entry must exist before the next switch.
+  flake.modules.nixos."programs/maki" = {config, ...}: {
+    sops.secrets."exa-api-key" = {};
+
+    sops.templates."maki-env" = {
       owner = username;
-      group = "users";
       mode = "0400";
-      path = "/home/${username}/.config/maki/exa.token";
+      content = "export EXA_API_KEY=\"${config.sops.placeholder."exa-api-key"}\"\n";
     };
   };
 }

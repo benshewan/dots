@@ -4,46 +4,20 @@
     lib,
     ...
   }: let
-    kdeconnect-send = pkgs.fetchFromGitHub {
-      owner = "Deepak22903";
-      repo = "kdeconnect-send.yazi";
-      rev = "06674d12779bd7243793bb29cf0a5f1273467d3d";
-      sha256 = "sha256-katk13VE8J/Gn7N2Ez30/Xq0ldBV3yP2kowA0qVWYEg=";
-    };
-
-    office = pkgs.fetchFromGitHub {
-      owner = "macydnah";
-      repo = "office.yazi";
-      rev = "41ebef8be9dded98b5179e8af65be71b30a1ac4d";
-      sha256 = "sha256-QFto48D+Z8qHl7LHoDDprvr5mIJY8E7j37cUpRjKdNk=";
-    };
-
     open-with-cmd = pkgs.fetchFromGitHub {
       owner = "Ape";
       repo = "open-with-cmd.yazi";
-      rev = "eba191d9915cdca48333740290bb604400392ef6";
-      sha256 = "sha256-5Etw2bKTfhWHBXkIR6VZsbEbCN079QfIGLnQEYiR7Lw=";
+      rev = "56705e2d378f8ab6c898981d90bddeb65ed4b748";
+      sha256 = "sha256-VClpoa3T4uVrJzdGlWHpCnaWLY1Kdk5xIIDksibScpM=";
     };
-
-    sshfs = pkgs.fetchFromGitHub {
-      owner = "uhs-robert";
-      repo = "sshfs.yazi";
-      rev = "a8b8903c0da5a4febe91713108a9b0c8a2749475";
-      sha256 = "sha256-RYZ0wFkYfR/TfYntRipNPvpSl4gvtmNukLBQONRk1jU=";
-    };
-    # broken
-    # f3d-preview = pkgs.fetchFromGitHub {
-    #   owner = "christopher-nies";
-    #   repo = "f3d-preview.yazi";
-    #   rev = "76d115d94280828a2116aab3a46e43538f291331";
-    #   sha256 = "sha256-pfvmjQw8m/0yUdCK+TW0mvZDWAfyx1skmPjvWSTvk00=";
-    # };
   in {
     home.packages = with pkgs; [
-      trash-cli
       (ouch.override {enableUnfree = true;})
-      ripdrag
       # f3d
+
+      # For the office plugin ----------------------------------------
+      libreoffice
+      xpdf
     ];
 
     programs.yazi = {
@@ -74,46 +48,7 @@
         ];
 
         plugin.prepend_preloaders = [
-          # ---- f3d-preview plugin ----
-          # {
-          #   url = "*.{3mf,obj,pts,ply,stl,step,stp}";
-          #   run = "f3d-preview";
-          # }
-          # Office Documents
-          {
-            mime = "application/oasis.opendocument.*";
-            run = "office";
-          }
-          {
-            mime = "application/ms-*";
-            run = "office";
-          }
-          {
-            mime = "application/msword";
-            run = "office";
-          }
-          {
-            url = "*.docx";
-            run = "office";
-          }
-        ];
-
-        plugin.prepend_previewers = [
-          # ---- f3d-preview plugin ----
-          # {
-          #   url = "*.{3mf,obj,pts,ply,stl,step,stp}";
-          #   run = "f3d-preview";
-          # }
-          # {
-          #   url = "*.md";
-          #   run = ''piper -- CLICOLOR_FORCE=1 ${lib.getExe pkgs.glow} -w=$w -s=dark "$1"'';
-          # }
-          # {
-          #   url = "*.json";
-          #   run = ''piper -- ${lib.getExe pkgs.jq} -C . "$1"'';
-          # }
-
-          # Office Documents
+          # Office Documents ----------------------------------------
           {
             mime = "application/openxmlformats-officedocument.*";
             run = "office";
@@ -136,43 +71,51 @@
           }
         ];
 
+        plugin.prepend_previewers = [
+          # Office Documents ----------------------------------------
+          {
+            mime = "application/openxmlformats-officedocument.*";
+            run = "office";
+          }
+          {
+            mime = "application/oasis.opendocument.*";
+            run = "office";
+          }
+          {
+            mime = "application/ms-*";
+            run = "office";
+          }
+          {
+            mime = "application/msword";
+            run = "office";
+          }
+          {
+            url = "*.docx";
+            run = "office";
+          }
+
+          # Compressed Documents ----------------------------------------
+          {
+            mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
+            run = "ouch --show-file-icons";
+          }
+        ];
+
         opener = {
           extract = [
-            # ---- ouch zip compression plugin ----
             {
-              run = ''${lib.getExe (pkgs.ouch.override {enableUnfree = true;})} d -y "$@"'';
+              run = ''${lib.getExe (pkgs.ouch.override {enableUnfree = true;})} d -y %s'';
               desc = "Extract here with ouch";
-              for = "unix";
             }
           ];
-          #   play = [
-          #     {
-          #       run = ''${lib.getExe pkgs.mpv} "$@"'';
-          #       desc = "Play with MPV";
-          #       orphan = true;
-          #     }
-          #   ];
-          #   edit = [
-          #     {
-          #       run = ''${lib.getExe pkgs.kdePackages.kate} "$@"'';
-          #       desc = "Edit with Kate";
-          #       orphan = true;
-          #     }
-          #   ];
-          #   office = [
-          #     {
-          #       run = ''${lib.getExe pkgs.libreoffice-stable} "$@"'';
-          #       desc = "Open with Office";
-          #       orphan = true;
-          #     }
-          #   ];
+          play = [
+            {
+              run = ''${lib.getExe pkgs.mpv} %s'';
+              desc = "Play with MPV";
+              orphan = true;
+            }
+          ];
         };
-        # open.prepend_rules = [
-        #   {
-        #     name = "*";
-        #     use = "edit";
-        #   }
-        # ];
       };
 
       keymap.mgr.prepend_keymap = [
@@ -192,16 +135,19 @@
           on = ["<C-s>"];
           desc = "Send selected files via KDE Connect";
         }
+        # ---- Smart Filter plugin ----
         {
           run = "plugin smart-filter";
           on = ["F"];
           desc = "Smart filter";
         }
+        # ---- clipboard plugin ----
         {
           on = ["<C-y>"];
           run = "plugin wl-clipboard";
           desc = "Copy to clipboard";
         }
+        # ---- Open with command plugin ----
         {
           on = ["<C-o>"];
           run = "plugin open-with-cmd";
@@ -213,46 +159,35 @@
           run = "plugin mount";
           desc = "Mount drive";
         }
-
-        # ---- recycle bin plugin ----
+        # ---- ouch plugin ----
         {
-          on = ["R"];
-          run = "plugin recycle-bin";
-          desc = "Open Recycle Bin menu";
-        }
-
-        # ---- ouch compression plugin ----
-        {
-          on = ["C"];
+          on = ["c" "a"];
           run = "plugin ouch";
-          desc = "Compress with ouch";
+          desc = "Archive selected files";
         }
-        # ---- VCS plugin ----
+        # ---- easyjump plugin ----
         {
-          on = ["G" "c"];
-          run = "plugin vcs-files";
-          desc = "Show Git file changes";
-        }
-        # ---- Drag and drop plugin ----
-        {
-          on = ["<C-d>"];
-          run = "plugin drag";
-          desc = "Drag Files";
+          on = ["i"];
+          run = "plugin easyjump";
+          desc = "easyjump";
         }
       ];
 
       initLua = ''
+        require("easyjump"):setup()
         require("git"):setup {
           -- Order of status signs showing in the linemode
           order = 1500,
         }
         require("sshfs"):setup()
-        require("recycle-bin"):setup()
+        require("kdeconnect-send"):setup({
+            auto_select_single = true,
+        })
       '';
 
       plugins = {
-        inherit (pkgs.yaziPlugins) vcs-files piper smart-filter git wl-clipboard mount recycle-bin ouch drag; # Nix Pkgs
-        inherit kdeconnect-send office open-with-cmd sshfs; # Git (local defs)
+        inherit (pkgs.yaziPlugins) piper smart-filter git wl-clipboard mount sshfs office kdeconnect-send ouch easyjump; # Nix Pkgs
+        inherit open-with-cmd; # Git (local defs)
       };
     };
   };
