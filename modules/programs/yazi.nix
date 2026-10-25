@@ -10,10 +10,18 @@
       rev = "56705e2d378f8ab6c898981d90bddeb65ed4b748";
       sha256 = "sha256-VClpoa3T4uVrJzdGlWHpCnaWLY1Kdk5xIIDksibScpM=";
     };
+  in let
+    office-mimes = [
+      "application/openxmlformats-officedocument.*"
+      "application/oasis.opendocument.*"
+      "application/ms-*"
+      "application/msword"
+    ];
+    office-rules = run:
+      (map (mime: {inherit mime run;}) office-mimes) ++ [{url = "*.docx"; inherit run;}];
   in {
     home.packages = with pkgs; [
       (ouch.override {enableUnfree = true;})
-      # f3d
 
       # For the office plugin ----------------------------------------
       libreoffice
@@ -47,60 +55,17 @@
           }
         ];
 
-        plugin.prepend_preloaders = [
-          # Office Documents ----------------------------------------
-          {
-            mime = "application/openxmlformats-officedocument.*";
-            run = "office";
-          }
-          {
-            mime = "application/oasis.opendocument.*";
-            run = "office";
-          }
-          {
-            mime = "application/ms-*";
-            run = "office";
-          }
-          {
-            mime = "application/msword";
-            run = "office";
-          }
-          {
-            url = "*.docx";
-            run = "office";
-          }
-        ];
+        plugin.prepend_preloaders = office-rules "office";
 
-        plugin.prepend_previewers = [
-          # Office Documents ----------------------------------------
-          {
-            mime = "application/openxmlformats-officedocument.*";
-            run = "office";
-          }
-          {
-            mime = "application/oasis.opendocument.*";
-            run = "office";
-          }
-          {
-            mime = "application/ms-*";
-            run = "office";
-          }
-          {
-            mime = "application/msword";
-            run = "office";
-          }
-          {
-            url = "*.docx";
-            run = "office";
-          }
-
-          # Compressed Documents ----------------------------------------
-          {
-            mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
-            run = "ouch --show-file-icons";
-          }
-        ];
-
+        plugin.prepend_previewers =
+          office-rules "office"
+          ++ [
+            # Compressed archives ------------------------------------
+            {
+              mime = "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}";
+              run = "ouch --show-file-icons";
+            }
+          ];
         opener = {
           extract = [
             {
