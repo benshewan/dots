@@ -35,9 +35,7 @@
     boot = {
       # Plymouth
       kernelParams = ["quiet" "splash"];
-      initrd.systemd.enable = true;
       consoleLogLevel = 0;
-      initrd.verbose = false;
       plymouth.enable = true;
 
       # Systemd-boot
