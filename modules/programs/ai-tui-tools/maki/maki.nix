@@ -152,6 +152,19 @@ in {
       ]
       timeout = 60000
       always_load = false
+
+      # Reverse-engineering workbench (Ghidra bridges, decompile, xrefs, call
+      # graphs). No Ghidra-side install: REA packages its own Java bridge and
+      # drives Ghidra 12.1.x headless via GHIDRA_INSTALL_DIR (or PATH discovery).
+      # 42+ tools → deferred behind tool_search.
+      [mcp.rea]
+      command = [
+        "${pkgs.local.rea}/bin/rea",
+        "mcp",
+      ]
+      environment = { GHIDRA_INSTALL_DIR = "${pkgs.ghidra}/lib/ghidra" }
+      timeout = 60000
+      always_load = false
     '';
   };
 

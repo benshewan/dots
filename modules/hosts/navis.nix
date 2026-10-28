@@ -56,11 +56,14 @@ in {
         # Programming
         # "programs/webstorm"
         "programs/vscode"
+        "programs/nvim"
+        "programs/helix"
         "programs/npm"
         "programs/python"
-        "programs/opencode"
         "programs/maki"
+        "programs/rea"
         # "programs/pi"
+        # "programs/opencode"
         # "programs/opencode2"
 
         # hardware configuration
