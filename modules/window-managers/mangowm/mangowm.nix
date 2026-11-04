@@ -33,7 +33,7 @@
     ];
 
     xdg.portal.wlr.settings = {
-      screencast ={
+      screencast = {
         chooser_type = "dmenu";
         chooser_cmd = "${lib.getExe inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default} dmenu -p \"Select Screen\"";
         max_fps = 60;
@@ -63,7 +63,6 @@
     };
 
     wayland.windowManager.mango.settings = {
-
       env = [
         "DISPLAY,:2" # Support for xwayland
         "WLR_RENDERER,vulkan" # Support for HDR
@@ -73,6 +72,7 @@
         "${lib.getExe pkgs.xwayland-satellite} :2"
       ];
 
+      auto_reload_config = 1;
       # style
 
       # Can't use on wl-only branch
@@ -99,6 +99,7 @@
       focus_cross_monitor = 1; # Allow directional focus to cross monitor boundaries.
       drag_tile_to_tile = 1; # Allow dragging a tiled window onto another to swap their positions.
       drag_warp_cursor = 1; # Prevent the window from snapping by warping the cursor to that corner
+      disable_middle_paste = 1;
       # Mouse input
       axis_scroll_factor = 2;
       mouse_accel_profile = 0;

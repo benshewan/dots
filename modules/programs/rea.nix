@@ -1,35 +1,30 @@
-{
-  config,
-  ...
-}: let
-  # programs/rea needs the user python env from programs/python, so import it
-  # here rather than relying on the host to resolve it. The key matches what
-  # flake.lib.resolveHm generates (see modules/flake-parts/lib.nix), so when a
-  # host resolves both, the module system deduplicates them into one instance.
-  importPython = {
-    key = "dendritic-hm-programs/python";
-    imports = [config.flake.modules.homeManager."programs/python"];
-  };
-in {
-  # NixOS side: usbmon for USB packet capture + wireshark (with dumpcap group setup),
-  # and the rea CLI (uses pkgs.local, proven at the nixos level).
+{config, ...}: {
+  # NixOS side: usbmon for USB packet capture + wireshark (dumpcap wrapper is
+  # restricted to the `wireshark` group), and the rea CLI (uses pkgs.local,
+  # proven at the nixos level).
   flake.modules.nixos."programs/rea" = {
     pkgs,
     lib,
     ...
   }: {
+    imports = config.flake.lib.resolve ["programs/python"];
     boot.kernelModules = ["usbmon"];
     programs.wireshark.enable = true;
+    users.users.${config.flake.meta.user.username}.extraGroups = [
+      "wireshark" # setcap'd dumpcap wrapper → usbmon packet capture
+    ];
+    # usbmon char nodes come up as root:root 0600 (devtmpfs default). The
+    # wrapper's cap set (net_raw, net_admin) does not include dac_override,
+    # so without this rule open(2) on /dev/usbmon<N> fails with EACCES even
+    # for wireshark-group members.
+    services.udev.extraRules = ''
+      SUBSYSTEM=="usbmon", GROUP="wireshark", MODE="0660"
+    '';
     environment.systemPackages = [pkgs.local.rea];
   };
 
   # Home-manager side: interactive/static RE toolchain.
-  flake.modules.homeManager."programs/rea" = {
-    pkgs,
-    ...
-  }: {
-    imports = [importPython];
-
+  flake.modules.homeManager."programs/rea" = {pkgs, ...}: {
     home.packages = with pkgs; [
       ghidra # REA drives this for native decompilation
       usbutils

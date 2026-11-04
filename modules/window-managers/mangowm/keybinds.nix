@@ -24,7 +24,7 @@
 
           "SUPER,Return,spawn,${lib.getExe pkgs.kitty}"
           "SUPER,e,spawn,${lib.getExe pkgs.kitty} -e ${lib.getExe config.programs.yazi.package}"
-          "SUPER,r,reload_config"
+          "SUPER+SHIFT,h,togglehdr"
 
           # noctalia
           "SUPER,space,spawn,${lib.getExe config.programs.noctalia.package} msg panel-toggle launcher"

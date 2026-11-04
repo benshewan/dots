@@ -72,7 +72,7 @@ in {
 
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
-      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-zen4;
+      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-zen4;
 
       services.keylightd.enable = true;
 
@@ -140,7 +140,7 @@ in {
 
           # Work stuff
           libreoffice-stable
-          yaak
+          # yaak
           parsec-bin
           github-cli
 
