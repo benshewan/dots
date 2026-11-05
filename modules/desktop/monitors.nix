@@ -21,13 +21,34 @@
       if builtins.length parts > 1 && builtins.elem head ["name" "desc" "serial"]
       then {match = head; inherit value;}
       else {match = "name"; value = name;};
+
+    # There is no Wayland protocol field for "this output is the built-in
+    # panel", so the connector type is the only reliable signal. eDP, LVDS and
+    # DSI are internal panel types (this is also what Mutter/KWin use); a
+    # connector declared by serial/desc needs an explicit `internal = true`.
+    isInternalName = name: let
+      p = parseMonitorName name;
+    in
+      p.match == "name" && builtins.match "(eDP|LVDS|DSI)-[0-9]+" p.value != null;
   in {
     options.monitors = mkOption {
-      type = types.listOf (types.submodule {
+      type = types.listOf (types.submodule ({config, ...}: {
         options = {
           name = mkOption {
             type = types.str;
             example = "DP-1";
+          };
+          # Drives the lid/clamshell handling: the internal panel is disabled
+          # while the lid is shut. Auto-detected from the connector type, but
+          # overridable for setups that identify the panel by serial/desc.
+          internal = mkOption {
+            type = types.bool;
+            default = isInternalName config.name;
+            description = ''
+              Whether this output is the built-in laptop panel. Defaults to
+              detecting an internal connector type (eDP, LVDS, DSI) from
+              {option}`name`.
+            '';
           };
           primary = mkOption {
             type = types.bool;
@@ -91,7 +112,7 @@
             '';
           };
         };
-      });
+      }));
       default = [];
     };
     config = {
@@ -101,6 +122,7 @@
       # serial, so serial:* resolves to null (callers should skip those entries).
       lib.monitors = {
         parseName = parseMonitorName;
+        isInternal = isInternalName;
         mangoName = name: let p = parseMonitorName name; in "${p.match}:${p.value}";
         hyprName = name: let p = parseMonitorName name; in
           if p.match == "serial"

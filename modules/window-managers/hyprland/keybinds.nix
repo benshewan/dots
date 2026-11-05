@@ -139,7 +139,7 @@
               position = "${toString m.x}x${toString m.y}";
               scale = toString m.scale;
             in
-              if lib.hasInfix "eDP-1" m.name
+              if m.internal
               then [
                 # ",switch:Lid Switch,exec,${lib.getExe config.programs.hyprlock.package} --immediate" # depricated - now handled by swayidle
                 # Tell laptop screen to turn off if lid is closed

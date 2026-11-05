@@ -1,0 +1,82 @@
+diff --git a/backend/drm/drm.c b/backend/drm/drm.c
+index bd29872..e65bb23 100644
+--- a/backend/drm/drm.c
++++ b/backend/drm/drm.c
+@@ -1772,6 +1772,59 @@ static bool connect_drm_connector(struct wlr_drm_connector *wlr_conn,
+ 
+ static void disconnect_drm_connector(struct wlr_drm_connector *conn);
+ 
++static bool str_same(const char *a, const char *b) {
++	if (a == NULL || b == NULL) {
++		return a == b;
++	}
++	return strcmp(a, b) == 0;
++}
++
++/* A connector can stay DRM_MODE_CONNECTED while the sink behind it changes:
++ * DP-MST hubs re-associate their downstream sinks with hub ports when the
++ * topology is reprobed, which happens on resume while the kernel keeps
++ * reporting the connector as connected. wlroots only reads the EDID and the
++ * mode list on a DISCONNECTED -> CONNECTED transition, so the compositor-facing
++ * output would keep a stale make/model/serial and mode list, and per-monitor
++ * configuration keyed on those is then applied to the wrong display
++ * (https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/1807).
++ *
++ * Returns whether the freshly probed EDID identity differs from the cached one.
++ * The freshly parsed values are left on the output; it gets re-created right
++ * after when this returns true. */
++static bool drm_connector_edid_identity_changed(
++		struct wlr_drm_connector *wlr_conn) {
++	struct wlr_drm_backend *drm = wlr_conn->backend;
++	struct wlr_output *output = &wlr_conn->output;
++
++	size_t edid_len = 0;
++	uint8_t *edid = get_drm_prop_blob(drm->fd, wlr_conn->id,
++		wlr_conn->props.edid, &edid_len);
++	if (edid == NULL || edid_len == 0) {
++		free(edid);
++		return false;
++	}
++
++	char *old_make = output->make != NULL ? strdup(output->make) : NULL;
++	char *old_model = output->model != NULL ? strdup(output->model) : NULL;
++	char *old_serial = output->serial != NULL ? strdup(output->serial) : NULL;
++
++	parse_edid(wlr_conn, edid_len, edid);
++	free(edid);
++
++	/* An incomplete EDID means the sink is still initialising (common right
++	 * after resume): don't second-guess the cached identity in that case. */
++	bool changed = (output->make != NULL && output->model != NULL &&
++			output->serial != NULL) &&
++		(!str_same(old_make, output->make) ||
++		 !str_same(old_model, output->model) ||
++		 !str_same(old_serial, output->serial));
++
++	free(old_make);
++	free(old_model);
++	free(old_serial);
++	return changed;
++}
++
+ void scan_drm_connectors(struct wlr_drm_backend *drm,
+ 		struct wlr_device_hotplug_event *event) {
+ 	if (event != NULL && event->connector_id != 0) {
+@@ -1836,6 +1889,17 @@ void scan_drm_connectors(struct wlr_drm_backend *drm,
+ 			wlr_log(WLR_INFO, "Found connector '%s'", wlr_conn->name);
+ 		} else {
+ 			seen[index] = true;
++
++			/* Force a disconnect/reconnect when the sink behind a still
++			 * connected connector changed, so the output gets re-created with
++			 * fresh EDID, modes and wl_output description. */
++			if (wlr_conn->status == DRM_MODE_CONNECTED &&
++					drm_conn->connection == DRM_MODE_CONNECTED &&
++					drm_connector_edid_identity_changed(wlr_conn)) {
++				wlr_drm_conn_log(wlr_conn, WLR_INFO,
++					"EDID changed while connected, reconnecting");
++				disconnect_drm_connector(wlr_conn);
++			}
+ 		}
+ 
+ 		// This can only happen *after* hotplug, since we haven't read the

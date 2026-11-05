@@ -18,7 +18,13 @@
     hardware.i2c.enable = true;
     users.users.${flake.config.flake.meta.user.username}.extraGroups = ["i2c" "video"];
 
-    programs.mango.enable = true;
+    programs.mango = {
+      enable = true;
+      # wlroots patch: re-read EDID on connector scans so DP-MST sinks that get
+      # re-associated on resume do not keep stale monitor identities
+      # (overlays/mango-edid-refresh.nix).
+      package = lib.mkIf pkgs.stdenv.hostPlatform.isLinux pkgs.mango-edid-refresh;
+    };
     # Required Services
     # ----------------------------------------
     services.gnome.gnome-keyring.enable = true; # Store secrets securely (Wifi passwords,git tokens, etc...)
@@ -58,6 +64,9 @@
 
     wayland.windowManager.mango = {
       enable = true;
+      # Same patched wlroots as programs.mango (overlays/mango-edid-refresh.nix);
+      # keeps the `mmsg` used by the lid/wake scripts on the same build.
+      package = lib.mkIf pkgs.stdenv.hostPlatform.isLinux pkgs.mango-edid-refresh;
       systemd.enable = true; # Import important vars
       systemd.xdgAutostart = true; # allow apps to autostart with systemd
     };

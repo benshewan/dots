@@ -51,16 +51,10 @@
         "none,down,3,toggleoverview"
       ];
 
-      switchbind = lib.flatten (map (
-          m:
-            if lib.strings.hasInfix "eDP-1" m.name
-            then [
-              "fold,spawn,${lib.getExe pkgs.wlr-randr} --output eDP-1 --off"
-              "unfold,spawn,${lib.getExe pkgs.wlr-randr} --output eDP-1 --on --pos ${toString m.x},${toString m.y} --scale ${toString m.scale} --mode ${toString m.width}x${toString m.height}"
-            ]
-            else []
-        )
-        config.monitors);
+      switchbind = lib.optionals config.lib.mango.lid.present [
+        "fold,spawn,${config.lib.mango.lid.apply}"
+        "unfold,spawn,${config.lib.mango.lid.apply}"
+      ];
     };
   };
 }
