@@ -42,7 +42,7 @@ in {
         "programs/obs"
         "programs/chromium"
         # "programs/filebot"
-        "programs/bottles"
+        # "programs/bottles"
         "programs/prism-launcher"
         "programs/partition-manager"
         "programs/dolphin"
@@ -83,7 +83,6 @@ in {
 
       networking.firewall = {
         allowedTCPPorts = [
-          7100 # freecore
           59100 # audio relay
           7236 7250 # miracast
         ];
@@ -91,41 +90,6 @@ in {
           59100 59200 # audio relay
           7236 5353 # miracast
         ];
-      };
-      services.pipewire.extraConfig.pipewire = {
-        "10-null-sink" = {
-          "context.objects" = [
-            {
-              factory = "adapter";
-              args = {
-                "factory.name" = "support.null-audio-sink";
-                "node.name" = "audiorelay-virtual-mic-sink";
-                "node.description" = "Virtual Mic Sink";
-                "media.class" = "Audio/Sink";
-                "audio.position" = "FL,FR";
-              };
-            }
-          ];
-        };
-        "20-virtual-mic" = {
-          "context.modules" = [
-            {
-              name = "libpipewire-module-loopback";
-              args = {
-                "capture.props" = {
-                  "node.target" = "audiorelay-virtual-mic-sink";
-                };
-                "playback.props" = {
-                  "node.name" = "audiorelay-virtual-mic";
-                  "node.description" = "Virtual Mic";
-                  "media.class" = "Audio/Source";
-                  "audio.position" = "FL,FR";
-                  "node.passive" = true;
-                };
-              };
-            }
-          ];
-        };
       };
       # Home Manager configuration for user
       home-manager.users.${config.flake.meta.user.username} = {
@@ -141,16 +105,15 @@ in {
           # Work stuff
           libreoffice-stable
           # yaak
-          parsec-bin
+          # parsec-bin
           github-cli
 
           # Messing around
           # syncthingtray
-          keyguard
+          # keyguard
           # stable.handbrake
           # brasero # CD burning/copying
-          # local.audiorelay
-          stable.orca-slicer
+          # stable.orca-slicer
 
           # Audio
           qpwgraph
@@ -172,7 +135,6 @@ in {
           {
             # Lenovo Group Limited P24q-10 U4P00001
             name = "serial:U4P00001";
-            # rotate = 1;
             width = 2560;
             height = 1440;
             scale = 1.25;
@@ -185,7 +147,6 @@ in {
             width = 3440;
             height = 1440;
             refreshRate = 165;
-            # colorProfile = "hdr";
             scale = 1.25;
             x = 2048;
             y = 0;

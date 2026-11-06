@@ -66,7 +66,6 @@
         shell.polkit_agent = true;
         shell.setup_wizard_enabled = false;
         shell.telemetry_enabled = false;
-        shell.middle_click_opens_widget_settings = false;
         shell.font_family = config.stylix.fonts.sansSerif.name;
       };
 
