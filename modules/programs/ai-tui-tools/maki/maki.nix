@@ -111,17 +111,18 @@ in {
 
     home.file.".config/maki/AGENTS.md".source = ./INITIAL_PROMPT.md;
 
-    # Usage HUD plugins (fs_read: key in maki's auth dir; run: curl workaround,
-    # maki.net.request deadlocks in the plugin executor). usage_hint.lua owns
-    # the shared status-hint slot so the line follows the selected model.
+    # Usage HUD plugins (fs_read: key in maki's auth dir; net: quota endpoint).
+    # usage_hint.lua owns the shared status-hint slot so the line follows the
+    # selected model; usage_hud.lua owns the shared poll/fetch/popup scaffolding.
     home.file.".config/maki/lua/opencode_usage.lua".source = ./custom-plugins/opencode_usage.lua;
     home.file.".config/maki/lua/zai_usage.lua".source = ./custom-plugins/zai_usage.lua;
     home.file.".config/maki/lua/usage_hint.lua".source = ./custom-plugins/usage_hint.lua;
+    home.file.".config/maki/lua/usage_hud.lua".source = ./custom-plugins/usage_hud.lua;
 
     home.file.".config/maki/plugin.toml".source = pkgs.writers.writeTOML "maki-plugin.toml" {
-      min_maki_version = "0.4.12";
+      min_maki_version = "0.7.0";
       permissions.fs_read = true;
-      permissions.run = true;
+      permissions.net = true;
     };
 
     # `timeout` covers startup + every call, so it clears the 30s navigation

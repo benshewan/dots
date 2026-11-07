@@ -4,7 +4,7 @@
     lib,
     config,
     ...
-  }:{
+  }: {
     wayland.windowManager.mango.settings.exec_once = ["${lib.getExe (config.programs.noctalia.package)}"];
     home.packages = with pkgs; [ddcutil]; # needed for ddc control
     programs.noctalia = {

@@ -1,8 +1,4 @@
 {...}: {
-  flake-file.inputs = {
-    noctalia.url = "github:noctalia-dev/noctalia";
-    noctalia.inputs.nixpkgs.follows = "nixpkgs";
-  };
   flake.modules.homeManager."window-managers/hyprland" = {
     pkgs,
     lib,

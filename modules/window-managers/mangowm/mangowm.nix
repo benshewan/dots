@@ -41,7 +41,7 @@
     xdg.portal.wlr.settings = {
       screencast = {
         chooser_type = "dmenu";
-        chooser_cmd = "${lib.getExe inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default} dmenu -p \"Select Screen\"";
+        chooser_cmd = "${lib.getExe (config.programs.noctalia.package)} dmenu -p \"Select Screen\"";
         max_fps = 60;
         force_mod_linear = true;
       };

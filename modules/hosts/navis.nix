@@ -50,7 +50,7 @@ in {
         "programs/obsidian"
         # "services/sunshine"
         # "programs/steam"
-        "programs/brave"
+        # "programs/brave" # it was pulled from nixpkgs for now
         # "services/easyeffects"
 
         # Programming
