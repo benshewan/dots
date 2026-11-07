@@ -18,4 +18,14 @@
 
     networking.firewall.trustedInterfaces = ["docker0"];
   };
+
+  # Home Manager: point docker CLI config at XDG locations.
+  # DOCKER_CONFIG holds config.json/contexts (real config);
+  # buildx stores build state there by default, so divert it to state home.
+  flake.modules.homeManager."virtualization/docker" = {config, ...}: {
+    home.sessionVariables = {
+      DOCKER_CONFIG = "${config.xdg.configHome}/docker";
+      BUILDX_CONFIG = "${config.xdg.stateHome}/docker/buildx";
+    };
+  };
 }

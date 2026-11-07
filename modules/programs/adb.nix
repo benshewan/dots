@@ -5,4 +5,9 @@
 
     services.udev.packages = [ pkgs.libmtp.out ]; # Needed for regular file transfer over MTP
   };
+
+  # Home Manager: move ~/.android to XDG data location
+  flake.modules.homeManager."programs/adb" = {config, ...}: {
+    home.sessionVariables.ANDROID_USER_HOME = "${config.xdg.dataHome}/android";
+  };
 }
