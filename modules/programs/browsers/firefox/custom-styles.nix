@@ -142,6 +142,13 @@ _: {
       }
     '';
 
+    # Our own chrome tweaks (userChrome.css already @imports override_chrome.css).
+    home.file.".config/mozilla/firefox/${profile}/chrome/DownToneUI/override_chrome.css".text = ''
+      #sidebar-box {
+        padding-inline-start: 0 !important;
+      }
+    '';
+
     # FF-Ultima
     # -------------------------------------------------------------------
     # home.file.".config/mozilla/firefox/${profile}/chrome/userChrome.css".source = "${ff-ultima-theme}/userChrome.css";
