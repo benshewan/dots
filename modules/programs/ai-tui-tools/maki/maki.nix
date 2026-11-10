@@ -154,21 +154,21 @@ in {
       timeout = 60000
       always_load = false
 
-      # Reverse-engineering workbench (Ghidra bridges, decompile, xrefs, call
-      # graphs). No Ghidra-side install: REA packages its own Java bridge and
-      # drives Ghidra 12.1.x headless via GHIDRA_INSTALL_DIR (or PATH discovery).
-      # 42+ tools → deferred behind tool_search.
-      [mcp.rea]
-      command = [
-        "${pkgs.local.rea}/bin/rea",
-        "mcp",
-      ]
-      environment = { GHIDRA_INSTALL_DIR = "${pkgs.ghidra}/lib/ghidra" }
-      # Ghidra first-import of an 11+ MB stripped blob takes ~17 min of
-      # headless auto-analysis inside a single tool call; aborted calls kill
-      # it and force a full re-import. 30 min covers M0-M3 decomp work.
-      timeout = 1800000
-      always_load = false
+      # # Reverse-engineering workbench (Ghidra bridges, decompile, xrefs, call
+      # # graphs). No Ghidra-side install: REA packages its own Java bridge and
+      # # drives Ghidra 12.1.x headless via GHIDRA_INSTALL_DIR (or PATH discovery).
+      # # 42+ tools → deferred behind tool_search.
+      # [mcp.rea]
+      # command = [
+      #   "${pkgs.local.rea}/bin/rea",
+      #   "mcp",
+      # ]
+      # environment = { GHIDRA_INSTALL_DIR = "${pkgs.ghidra}/lib/ghidra" }
+      # # Ghidra first-import of an 11+ MB stripped blob takes ~17 min of
+      # # headless auto-analysis inside a single tool call; aborted calls kill
+      # # it and force a full re-import. 30 min covers M0-M3 decomp work.
+      # timeout = 1800000
+      # always_load = false
     '';
   };
 

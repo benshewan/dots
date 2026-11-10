@@ -29,12 +29,12 @@ in {
         # Software
         "programs/adb"
         "programs/yazi"
-        "programs/dolphin"
+        # "programs/dolphin"
         "programs/npm"
         "programs/python"
-        "services/kdeconnect"
-        "programs/obs"
-        "programs/opencode"
+        # "services/kdeconnect"
+        # "programs/obs"
+        "programs/maki"
         # "programs/thunderbird"
 
         # hardware configuration
