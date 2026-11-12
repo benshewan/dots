@@ -41,4 +41,22 @@
       };
     };
   };
+
+  # Preservation companion for "virtualization/libvirt".
+  # `config.flake.lib.resolve` imports it (together with the base preservation
+  # module) automatically because of the "preservation/" prefix. Upstream
+  # ignores `preserveAt` until `preservation.enable` is true.
+  flake.modules.nixos."preservation/virtualization/libvirt" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
+      # NVRAM, disk images, snapshots and libvirt's own state.
+      "/var/lib/libvirt"
+
+      # VM domain definitions (XML) and disk/volume authentication secrets.
+      # /etc/libvirt/libvirt.conf itself is managed by the NixOS module and must
+      # not be mounted over. Without the secrets, VMs with encrypted storage
+      # fail to start.
+      "/etc/libvirt/qemu"
+      "/etc/libvirt/secrets"
+    ];
+  };
 }

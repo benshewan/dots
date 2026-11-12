@@ -28,6 +28,20 @@ in
     # inputs.mangowm already follows this flake's nixpkgs, so the only thing to
     # replace is the wlroots input: scenefx, xwayland, etc. keep coming from
     # the same package set the mangowm flake pins.
-    mango-edid-refresh =
-      inputs.mangowm.packages.${system}.mango.override {wlroots_0_20 = wlroots;};
+    mango-edid-refresh = let
+      mango = inputs.mangowm.packages.${system}.mango.override {wlroots_0_20 = wlroots;};
+    in
+      mango.overrideAttrs (old: {
+        # Vulkan is the only renderer that supports HDR, but under a hypervisor
+        # wlroots' Vulkan renderer comes up with a black screen. Choose the
+        # renderer at runtime instead of hardcoding `WLR_RENDERER` in the mango
+        # config, so the same config works on bare metal and in a VM.
+        nativeBuildInputs = (old.nativeBuildInputs or []) ++ [prev.makeWrapper];
+        postFixup =
+          (old.postFixup or "")
+          + ''
+            wrapProgram $out/bin/mango \
+              --run 'if ! ${prev.systemd}/bin/systemd-detect-virt --quiet --vm; then export WLR_RENDERER=vulkan; fi'
+          '';
+      });
   }

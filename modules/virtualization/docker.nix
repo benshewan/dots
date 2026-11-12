@@ -28,4 +28,15 @@
       BUILDX_CONFIG = "${config.xdg.stateHome}/docker/buildx";
     };
   };
+
+  # Preservation companion for "virtualization/docker". `config.flake.lib.resolve`
+  # imports it (together with the base preservation module) automatically
+  # because of the "preservation/" prefix. Upstream ignores `preserveAt` until
+  # `preservation.enable` is true, so no guard is needed here.
+  flake.modules.nixos."preservation/virtualization/docker" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
+      # Images, containers, volumes and build cache.
+      "/var/lib/docker"
+    ];
+  };
 }

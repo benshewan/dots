@@ -45,10 +45,30 @@ in {
       in
         builtins.isString m && builtins.hasAttr m (mods.${namespace} or {});
 
+      # Companion modules: a feature may ship an extra module holding the state
+      # that should survive a reboot, named after the feature it belongs to with
+      # this prefix (e.g. `services/ssh` -> `preservation/services/ssh`).
+      # Companions are imported automatically, so a feature does not have to know
+      # whether the host uses preservation at all.
+      preservationPrefix = "preservation/";
+
+      withCompanions = namespace: names: let
+        ns = (config.flake.modules or {}).${namespace} or {};
+        companions =
+          builtins.map (n: preservationPrefix + n)
+          (builtins.filter (n: builtins.hasAttr (preservationPrefix + n) ns) names);
+      in
+        lib.unique (
+          names
+          # The base module declares modules.preservation.* and upstream's options.
+          ++ lib.optional (namespace == "nixos" && companions != []) "preservation"
+          ++ companions
+        );
+
       # Group modules by their target namespace based on existence
-      nixosStr = builtins.filter (hasModule "nixos") modules;
-      darwinStr = builtins.filter (hasModule "darwin") modules;
-      hmStr = builtins.filter (hasModule "homeManager") modules;
+      nixosStr = withCompanions "nixos" (builtins.filter (hasModule "nixos") modules);
+      darwinStr = withCompanions "darwin" (builtins.filter (hasModule "darwin") modules);
+      hmStr = withCompanions "homeManager" (builtins.filter (hasModule "homeManager") modules);
 
       # Paths or other non-string imports default to standard system imports
       nonStrings = builtins.filter (m: !builtins.isString m) modules;

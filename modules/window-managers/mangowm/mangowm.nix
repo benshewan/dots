@@ -74,7 +74,9 @@
     wayland.windowManager.mango.settings = {
       env = [
         "DISPLAY,:2" # Support for xwayland
-        "WLR_RENDERER,vulkan" # Support for HDR
+        # WLR_RENDERER=vulkan (needed for HDR) is exported by the wrapper in
+        # overlays/mango-edid-refresh.nix, but only when not running in a VM
+        # (wlroots' Vulkan renderer is a black screen under a hypervisor).
       ];
       exec_once = [
         "systemctl --user start mango-session.target"
