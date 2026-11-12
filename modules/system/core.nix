@@ -35,7 +35,7 @@
     boot = {
       # Plymouth
       kernelParams = ["quiet" "splash"];
-      consoleLogLevel = 0;
+      consoleLogLevel = lib.mkDefault 0;
       plymouth.enable = true;
 
       # Systemd-boot
