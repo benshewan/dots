@@ -26,6 +26,10 @@ in {
         "presets/mangowm"
         "theme/gruvbox-dark"
 
+        # Storage: disko layout + preservation state management
+        "disko"
+        "preservation"
+
         # Software
         "programs/adb"
         "programs/yazi"
@@ -39,6 +43,19 @@ in {
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
+
+        # declarative disk layout (disko)
+        ../../machines/caelum/disko.nix
+      ];
+
+      # Erase-your-darlings: everything durable is bind-mounted from
+      # /persistent (see machines/caelum/disko.nix). Companions for ssh,
+      # NetworkManager/sops and bluetooth attach automatically.
+      modules.preservation.enable = true;
+      preservation.preserveAt."/persistent".directories = [
+        # User homes: the ~/.nix repo, cloned sources and sops host keys
+        # (~/.config/sops) live here.
+        "/home"
       ];
 
       environment.sessionVariables.WLR_NO_HARDWARE_CURSORS = 1;
