@@ -4,6 +4,9 @@
   ...
 }: let
   flakePath = config.flake.meta.flake-path;
+  # Flake-level user metadata; config.flake does not exist inside NixOS
+  # modules, which shadow `config` with the host config.
+  username = config.flake.meta.user.username;
 in {
   flake-file.inputs = {
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
@@ -208,5 +211,22 @@ in {
     ...
   }: {
     nixpkgs.overlays = [inputs.nix-vscode-extensions.overlays.default];
+  };
+
+  # Preservation companion for "programs/vscode" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/programs/vscode" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username}.directories = [
+      # Everything under Code: User holds globalStorage, workspaceStorage
+      # and History; Local Storage / Trust Tokens hold webview session
+      # state; the remainder is Chromium engine data that rides along.
+      # settings.json, keybindings and the extensions dir are declaratively
+      # managed by the module above (mutableExtensionsDir = false).
+      ".config/Code"
+      # argv.json (CLI args, crash-reporter opt-in) and the HM-managed
+      # extensions dir live here; .vscode-shared holds Chromium
+      # shared-storage webview state, same class as Local Storage.
+      ".vscode"
+      ".vscode-shared"
+    ];
   };
 }

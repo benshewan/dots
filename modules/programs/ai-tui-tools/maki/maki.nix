@@ -172,4 +172,14 @@ in {
       content = "export EXA_API_KEY=\"${config.sops.placeholder."exa-api-key"}\"\n";
     };
   };
+
+  # Preservation companion for "programs/maki" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/programs/maki" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username}.directories = [
+      # Most of .config/maki is rendered by the module above, but runtime
+      # secrets (github-mcp.token) and anything maki itself writes live
+      # next to it.
+      {directory = ".config/maki"; mode = "0700";}
+    ];
+  };
 }

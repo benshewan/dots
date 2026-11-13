@@ -1,4 +1,8 @@
-{...}: {
+{config, ...}: let
+  # Flake-level user metadata; config.flake does not exist inside NixOS
+  # modules, which shadow `config` with the host config.
+  username = config.flake.meta.user.username;
+in {
   flake.modules.homeManager."programs/yazi" = {
     pkgs,
     lib,
@@ -161,5 +165,13 @@
         inherit open-with-cmd; # Git (local defs)
       };
     };
+  };
+
+  # Preservation companion for "programs/yazi" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/programs/yazi" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username}.directories = [
+      # Bookmarks, tabs and mru entries.
+      ".local/state/yazi"
+    ];
   };
 }

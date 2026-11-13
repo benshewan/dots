@@ -1,5 +1,5 @@
-{config, ...}: {
-  flake.modules.nixos."services/timezone" = {pkgs, ...}: {
+_: {
+  flake.modules.nixos."services/timezone" = {...}: {
     services.automatic-timezoned.enable = true;
 
     services.geoclue2 = {

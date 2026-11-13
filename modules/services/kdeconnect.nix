@@ -1,5 +1,9 @@
-{config, ...}: {
-  flake.modules.homeManager."services/kdeconnect" = {pkgs, ...}: {
+{config, ...}: let
+  # Flake-level user metadata; config.flake does not exist inside NixOS
+  # modules, which shadow `config` with the host config.
+  username = config.flake.meta.user.username;
+in {
+  flake.modules.homeManager."services/kdeconnect" = {...}: {
     xdg.desktopEntries = {
       "org.kde.kdeconnect.sms" = {
         exec = "";
@@ -28,7 +32,7 @@
       indicator = false;
     };
   };
-  flake.modules.nixos."services/kdeconnect" = {pkgs, ...}: {
+  flake.modules.nixos."services/kdeconnect" = {...}: {
     networking.firewall = rec {
       allowedTCPPortRanges = [
         {
@@ -38,5 +42,13 @@
       ];
       allowedUDPPortRanges = allowedTCPPortRanges;
     };
+  };
+
+  # Preservation companion for "services/kdeconnect" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/services/kdeconnect" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username}.directories = [
+      # Pairing database and per-device settings.
+      ".config/kdeconnect"
+    ];
   };
 }

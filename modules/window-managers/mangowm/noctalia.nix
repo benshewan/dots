@@ -1,4 +1,8 @@
-{...}: {
+{config, ...}: let
+  # Flake-level user metadata; config.flake does not exist inside NixOS
+  # modules, which shadow `config` with the host config.
+  username = config.flake.meta.user.username;
+in {
   flake.modules.homeManager."window-managers/mangowm" = {
     pkgs,
     lib,
@@ -76,5 +80,15 @@
         custom_palette = "stylix";
       };
     };
+  };
+
+  # Preservation companion for "window-managers/mangowm" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/window-managers/mangowm" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username}.directories = [
+      # Noctalia's settings.json is declarative, but its runtime state is
+      # not. Lives under the window-manager key because that is the feature
+      # the host resolves (noctalia is part of the mangowm module).
+      ".local/state/noctalia"
+    ];
   };
 }

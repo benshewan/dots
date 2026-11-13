@@ -1,5 +1,5 @@
 {
-  flake.modules.nixos."services/power-profiles-daemon" = {pkgs, ...}: {
+  flake.modules.nixos."services/power-profiles-daemon" = {...}: {
     services.power-profiles-daemon.enable = true;
   };
 

@@ -1,5 +1,5 @@
 {config, ...}: {
-  flake.modules.nixos."services/printing" = {pkgs, ...}: {
+  flake.modules.nixos."services/printing" = {...}: {
     # For network auto discovery
     imports = config.flake.lib.resolve ["services/avahi"];
 

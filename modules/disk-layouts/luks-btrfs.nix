@@ -22,8 +22,8 @@
 #
 # Unlike tmpfs root this has no RAM ceiling, and unlike separate ext4
 # partitions /nix and /persistent share one free pool. `preservation`
-# bind-mounts everything worth keeping back from /persistent, and /home is
-# preserved by the host module.
+# bind-mounts everything worth keeping back from /persistent, and user homes
+# are preserved granularly (system/preservation-home).
 #
 # A host opts in with one import plus the machine-specific parameters:
 #

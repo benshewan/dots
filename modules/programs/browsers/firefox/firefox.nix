@@ -1,4 +1,8 @@
-{...}: {
+{config, ...}: let
+  # Flake-level user metadata; config.flake does not exist inside NixOS
+  # modules, which shadow `config` with the host config.
+  username = config.flake.meta.user.username;
+in {
   flake.modules.homeManager."programs/firefox" = {
     pkgs,
     config,
@@ -122,5 +126,15 @@
         };
       };
     };
+  };
+
+  # Preservation companion for "programs/firefox" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/programs/firefox" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username}.directories = [
+      # Profile data (places.sqlite, session, extension storage). The chrome/
+        # trees inside the profile are Home-Manager-managed and are rewritten
+        # on activation, but they live inside this bind mount.
+      ".config/mozilla"
+    ];
   };
 }

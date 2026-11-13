@@ -1,5 +1,5 @@
 _: {
-  flake.modules.nixos."services/upower" = {pkgs, ...}: {
+  flake.modules.nixos."services/upower" = {...}: {
     # For handling battery powered devices i.e. laptops
     services.upower = {
       enable = true;

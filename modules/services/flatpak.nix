@@ -2,7 +2,11 @@
   inputs,
   config,
   ...
-}: {
+}: let
+  # Flake-level user metadata; config.flake does not exist inside NixOS
+  # modules, which shadow `config` with the host config.
+  username = config.flake.meta.user.username;
+in {
   flake-file.inputs = {
     nix-flatpak.url = "github:gmodena/nix-flatpak";
   };
@@ -57,9 +61,16 @@
 
   # Preservation companion for "services/flatpak" (auto-resolved by the prefix).
   flake.modules.nixos."preservation/services/flatpak" = {config, ...}: {
-    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
-      # System-wide apps, runtimes and OSTree repo.
-      "/var/lib/flatpak"
-    ];
+    preservation.preserveAt.${config.modules.preservation.persistentPath} = {
+      directories = [
+        # System-wide apps, runtimes and OSTree repo.
+        "/var/lib/flatpak"
+      ];
+      users.${username}.directories = [
+        # Per-app sandboxed data: flatpak redirects config/data/cache of
+        # every app into ~/.var/app/<app-id>/, so that is what survives.
+        ".var"
+      ];
+    };
   };
 }

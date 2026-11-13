@@ -50,25 +50,48 @@ in {
       # this prefix (e.g. `services/ssh` -> `preservation/services/ssh`).
       # Companions are imported automatically, so a feature does not have to know
       # whether the host uses preservation at all.
+      #
+      # A companion lives in the namespace of the side it configures
+      # (preservation state is NixOS-only), while the feature it belongs to may
+      # exist in another namespace entirely (a Home-Manager-only app). The
+      # lookup therefore scans every feature name in the list against the
+      # target namespace, not just the names that also resolve there.
       preservationPrefix = "preservation/";
 
-      withCompanions = namespace: names: let
+      companionsFor = namespace: let
         ns = (config.flake.modules or {}).${namespace} or {};
-        companions =
-          builtins.map (n: preservationPrefix + n)
-          (builtins.filter (n: builtins.hasAttr (preservationPrefix + n) ns) names);
       in
         lib.unique (
-          names
-          # The base module declares modules.preservation.* and upstream's options.
-          ++ lib.optional (namespace == "nixos" && companions != []) "preservation"
-          ++ companions
+          builtins.map (n: preservationPrefix + n)
+          (
+            builtins.filter
+            (n: builtins.isString n && builtins.hasAttr (preservationPrefix + n) ns)
+            modules
+          )
         );
 
-      # Group modules by their target namespace based on existence
-      nixosStr = withCompanions "nixos" (builtins.filter (hasModule "nixos") modules);
-      darwinStr = withCompanions "darwin" (builtins.filter (hasModule "darwin") modules);
-      hmStr = withCompanions "homeManager" (builtins.filter (hasModule "homeManager") modules);
+      nixosCompanions = companionsFor "nixos";
+      darwinCompanions = companionsFor "darwin";
+      hmCompanions = companionsFor "homeManager";
+
+      # Group modules by their target namespace based on existence, appending
+      # the companions. The "preservation" base module declares
+      # modules.preservation.* and upstream's options; it is pulled in
+      # automatically whenever any NixOS-side companion needs it.
+      nixosStr =
+        lib.unique (
+          builtins.filter (hasModule "nixos") modules
+          ++ lib.optional (nixosCompanions != []) "preservation"
+          ++ nixosCompanions
+        );
+      darwinStr =
+        lib.unique (
+          builtins.filter (hasModule "darwin") modules ++ darwinCompanions
+        );
+      hmStr =
+        lib.unique (
+          builtins.filter (hasModule "homeManager") modules ++ hmCompanions
+        );
 
       # Paths or other non-string imports default to standard system imports
       nonStrings = builtins.filter (m: !builtins.isString m) modules;
