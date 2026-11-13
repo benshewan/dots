@@ -5,43 +5,48 @@ in {
     home.packages = with pkgs; [
       local.audiorelay
     ];
+  };
 
-    # HM services.pipewire has no extraConfig; the equivalent is a
-    # configPackages drop-in for share/pipewire/pipewire.conf.d/
-    # (NixOS: services.pipewire.extraConfig.pipewire).
-    services.pipewire.configPackages = [
-      (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/10-audiorelay-virtual-mic.conf" ''
-        context.objects = [
+  # The virtual-mic pipewire graph only works at the NixOS level
+  # (services.pipewire.extraConfig doesn't exist in HM — its configPackages
+  # equivalent turned out unnecessary). Kept as its own NixOS module in
+  # this file so it attaches wherever "programs/audio-relay" is resolved.
+  flake.modules.nixos."programs/audio-relay" = {
+    services.pipewire.extraConfig.pipewire = {
+      "10-null-sink" = {
+        "context.objects" = [
           {
-            factory = adapter
+            factory = "adapter";
             args = {
-              factory.name = support.null-audio-sink
-              node.name = audiorelay-virtual-mic-sink
-              node.description = "Virtual Mic Sink"
-              media.class = Audio/Sink
-              audio.position = "FL,FR"
-            }
+              "factory.name" = "support.null-audio-sink";
+              "node.name" = "audiorelay-virtual-mic-sink";
+              "node.description" = "Virtual Mic Sink";
+              "media.class" = "Audio/Sink";
+              "audio.position" = "FL,FR";
+            };
           }
-        ]
-        context.modules = [
+        ];
+      };
+      "20-virtual-mic" = {
+        "context.modules" = [
           {
-            name = libpipewire-module-loopback
+            name = "libpipewire-module-loopback";
             args = {
-              capture.props = {
-                node.target = audiorelay-virtual-mic-sink
-              }
-              playback.props = {
-                node.name = audiorelay-virtual-mic
-                node.description = "Virtual Mic"
-                media.class = Audio/Source
-                audio.position = "FL,FR"
-                node.passive = true
-              }
-            }
+              "capture.props" = {
+                "node.target" = "audiorelay-virtual-mic-sink";
+              };
+              "playback.props" = {
+                "node.name" = "audiorelay-virtual-mic";
+                "node.description" = "Virtual Mic";
+                "media.class" = "Audio/Source";
+                "audio.position" = "FL,FR";
+                "node.passive" = true;
+              };
+            };
           }
-        ]
-      '')
-    ];
+        ];
+      };
+    };
   };
 
   # Preservation companion for "programs/audio-relay" (auto-resolved by the

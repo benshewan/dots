@@ -16,7 +16,6 @@ in {
 
   # Preservation companion for "programs/webstorm" (auto-resolved by the
   # prefix). JetBrains writes outside XDG too:
-  # - WebstormProjects (home root) — default projects dir.
   # - .local/share/JetBrains holds Daemon pid/socket (runtime, rides along)
   #   and the per-IDE user-plugin dir, which only appears after the first
   #   plugin install — whole dir so that isn't lost.
@@ -31,7 +30,6 @@ in {
       directories = [
         ".config/JetBrains"
         ".local/share/JetBrains"
-        "WebstormProjects"
       ];
     };
   };
