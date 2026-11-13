@@ -12,6 +12,11 @@ in {
   # equivalent turned out unnecessary). Kept as its own NixOS module in
   # this file so it attaches wherever "programs/audio-relay" is resolved.
   flake.modules.nixos."programs/audio-relay" = {
+    # 59100 TCP+UDP: control channel / audio streaming; 59200 UDP: audio
+    # stream. Both hosts use these defaults.
+    networking.firewall.allowedTCPPorts = [59100];
+    networking.firewall.allowedUDPPorts = [59100 59200];
+
     services.pipewire.extraConfig.pipewire = {
       "10-null-sink" = {
         "context.objects" = [

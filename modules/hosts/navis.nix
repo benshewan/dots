@@ -82,14 +82,13 @@ in {
       ];
 
       networking.firewall = {
+        # 59100 TCP+UDP / 59200 UDP are audio-relay's ports — opened by the
+        # audio-relay feature module.
         allowedTCPPorts = [
-          59100 # audio relay
           7236
           7250 # miracast
         ];
         allowedUDPPorts = [
-          59100
-          59200 # audio relay
           7236
           5353 # miracast
         ];
