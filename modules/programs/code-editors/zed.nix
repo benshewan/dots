@@ -1,4 +1,6 @@
-_: {
+{config, ...}: let
+  flakePath = config.flake.meta.flake-path;
+in {
   flake.modules.homeManager."programs/zed" = {
     pkgs,
     lib,
@@ -59,10 +61,22 @@ _: {
         };
 
         # Nix language support
-        lsp.nil.binary.path = lib.getExe pkgs.nil;
+        lsp.nixd = {
+          binary.path = lib.getExe pkgs.nixd;
+          settings = {
+            nixd = {
+              nixpkgs.expr = "import (builtins.getFlake \"${flakePath}\").inputs.nixpkgs { }";
+              formatting.command = [(lib.getExe pkgs.alejandra)];
+              options = {
+                nixos.expr = "let fl = builtins.getFlake \"${flakePath}\"; in fl.nixosConfigurations.caelum.options // fl.nixosConfigurations.navis.options";
+                home-manager.expr = "let fl = builtins.getFlake \"${flakePath}\"; in fl.nixosConfigurations.caelum.options.home-manager.users.type.getSubOptions [] // fl.nixosConfigurations.navis.options.home-manager.users.type.getSubOptions []";
+              };
+            };
+          };
+        };
         languages = {
           Nix = {
-            language_servers = ["nil" "!nixd"];
+            language_servers = ["nixd" "!nil"];
             formatter.external = {
               command = lib.getExe pkgs.alejandra;
               arguments = ["--quiet" "--"];

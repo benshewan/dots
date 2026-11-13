@@ -1,4 +1,6 @@
-{inputs, ...}: {
+{inputs, config, ...}: let
+  flakePath = config.flake.meta.flake-path;
+in {
   flake-file.inputs = {
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions"; # alternate https://github.com/nix-community/nix4vscode
     nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
@@ -182,20 +184,13 @@
           # Nix LSP Config
           # ----------------------------------------------------------------------------------------------------
           "nix.enableLanguageServer" = true;
-          "nix.serverPath" = lib.getExe pkgs.nil;
-          "nix.serverSettings.nil.formatting.command" = [(lib.getExe pkgs.alejandra)];
+          "nix.serverPath" = lib.getExe pkgs.nixd;
           "nix.hiddenLanguageServerErrors" = ["textDocument/formatting"];
-          # "nix.serverSettings.nixd.formatting.command" = [(lib.getExe pkgs.alejandra)];
+          "nix.serverSettings.nixd.formatting.command" = [(lib.getExe pkgs.alejandra)];
 
-          "nix.serverSettings.nil.nix.binary" = "nix";
-          "nix.serverSettings.nil.nix.maxMemoryMB" = 3072;
-          # "nix.serverSettings.nil.nix.flake.autoArchive" = true;
-          "nix.serverSettings.nil.nix.flake.autoEvalInputs" = false;
-          "nix.serverSettings.nil.nix.flake.nixpkgsInputName" = "nixpkgs";
-
-          # "nix.serverSettings.nixd.options.home-manager.expr" = "(builtins.getFlake \"${config.night-sky.user.home}/.nix\").homeConfigurations.\"${config.night-sky.user.name}@${host}\".options";
-          # "nix.serverSettings.nixd.options.nixos.expr" = "(builtins.getFlake \"${config.night-sky.user.home}/.nix\").nixosConfigurations.${host}.options";
-          # "nix.serverSettings.nixd.options.nixpkgs.expr" = "(builtins.getFlake \"${config.night-sky.user.home}/.nix\").nixosConfigurations.${host}.pkgs";
+          "nix.serverSettings.nixd.nixpkgs.expr" = "import (builtins.getFlake \"${flakePath}\").inputs.nixpkgs { }";
+          "nix.serverSettings.nixd.options.nixos.expr" = "let fl = builtins.getFlake \"${flakePath}\"; in fl.nixosConfigurations.caelum.options // fl.nixosConfigurations.navis.options";
+          "nix.serverSettings.nixd.options.home-manager.expr" = "let fl = builtins.getFlake \"${flakePath}\"; in fl.nixosConfigurations.caelum.options.home-manager.users.type.getSubOptions [] // fl.nixosConfigurations.navis.options.home-manager.users.type.getSubOptions []";
 
           "[nix]"."editor.defaultFormatter" = "jnoortheen.nix-ide";
         };
