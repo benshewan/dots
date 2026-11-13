@@ -48,6 +48,9 @@ in {
         "programs/dolphin"
         # "programs/helium"
         "programs/obsidian"
+        "programs/libreoffice"
+        "programs/moonlight"
+        "programs/proxmark3"
         # "services/sunshine"
         # "programs/steam"
         # "programs/brave" # it was pulled from nixpkgs for now
@@ -99,13 +102,10 @@ in {
           distrobox
           kdePackages.kate
           mpv
-          moonlight-qt
-          (stable.proxmark3.override {withGeneric = true;})
           chameleon-cli
           wdisplays
 
           # Work stuff
-          libreoffice-stable
           # yaak
           # parsec-bin
           github-cli
