@@ -150,10 +150,11 @@ Rules for choosing entries:
     `~/.local/share/applications/jetbrainsd.desktop`.
   - Helium (Chromium fork) uses `.config/net.imput.helium` (app-id dir),
     NOT `.config/helium`.
-- HM gotcha: HM `services.pipewire` has NO `extraConfig` (NixOS-only);
-  the HM equivalent is `services.pipewire.configPackages = [ (pkgs
-  .writeTextDir "share/pipewire/<file>.conf.d/10-name.conf" "...") ]`
-  (audio-relay module). Also HM `xdg.mimeApps.associations` is split into
+- HM gotcha: HM `services.pipewire` has NO `extraConfig` (NixOS-only).
+  Resolution for audio-relay: keep the virtual-mic graph in its own
+  `flake.modules.nixos."programs/audio-relay"` module in the same file —
+  NixOS extraConfig attaches wherever the feature resolves, no HM
+  workaround. Also HM `xdg.mimeApps.associations` is split into
   `added`/`removed` sub-attrs.
 
 Before trusting a directory needs preserving, check whether HM already
