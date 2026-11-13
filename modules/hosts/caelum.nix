@@ -87,6 +87,8 @@ in {
         "programs/helix"
         "programs/vivaldi"
         "programs/helium"
+        "programs/libreoffice"
+        "programs/moonlight"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
