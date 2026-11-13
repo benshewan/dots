@@ -89,6 +89,7 @@ in {
         # webstorm, filebot, lan-mouse, helix, vivaldi, helium,
         # libreoffice, moonlight.
         "programs/proxmark3"
+        "programs/distrobox"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix

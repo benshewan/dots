@@ -102,7 +102,6 @@ in {
           distrobox
           kdePackages.kate
           mpv
-          chameleon-cli
           wdisplays
 
           # Work stuff
