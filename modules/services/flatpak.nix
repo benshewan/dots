@@ -54,4 +54,12 @@
       };
     };
   };
+
+  # Preservation companion for "services/flatpak" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/services/flatpak" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
+      # System-wide apps, runtimes and OSTree repo.
+      "/var/lib/flatpak"
+    ];
+  };
 }

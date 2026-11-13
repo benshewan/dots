@@ -12,4 +12,12 @@
       # jack.enable = true; # `services.pipewire.jack.enable` is deprecated, because it introduces global impurity via `LD_LIBRARY_PATH`. Use the `pw-jack` wrapper from `pipewire.jack` where necessary instead.
     };
   };
+
+  # Preservation companion for "desktop" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/desktop" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
+      # ALSA mixer levels.
+      "/var/lib/alsa"
+    ];
+  };
 }

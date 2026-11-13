@@ -7,4 +7,12 @@ _: {
       criticalPowerAction = "Hibernate";
     };
   };
+
+  # Preservation companion for "services/upower" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/services/upower" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
+      # Battery charge history.
+      "/var/lib/upower"
+    ];
+  };
 }

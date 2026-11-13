@@ -1,5 +1,5 @@
-# Kernel/module support for the QEMU guest. Filesystems are declared by
-# machines/caelum/disko.nix (disko), not here.
+# Kernel/module support for the QEMU guest. Filesystems are declared by the
+# shared layout modules/disk-layouts/luks-btrfs.nix (disko), not here.
 {
   config,
   lib,

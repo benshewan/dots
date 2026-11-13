@@ -14,4 +14,15 @@
     # for usb auto discovery
     services.ipp-usb.enable = true;
   };
+
+  # Preservation companion for "services/printing" (auto-resolved by the prefix).
+  flake.modules.nixos."preservation/services/printing" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
+      # Print queues, PPDs and the IPP TLS certificate.
+      {
+        directory = "/var/lib/cups";
+        mode = "0755";
+      }
+    ];
+  };
 }

@@ -24,17 +24,10 @@ _: {
     };
   };
 
-  # Preservation companion for "services/ssh". `config.flake.lib.resolve`
-  # imports it (together with the base preservation module) automatically
-  # because of the "preservation/" prefix.
-  #
-  # The entries are declared unconditionally: the base module is always present
-  # when this module is loaded, and upstream ignores `preservation.preserveAt`
-  # until `preservation.enable` is true.
+  # Preservation companion for "services/ssh" (auto-resolved by the prefix).
   flake.modules.nixos."preservation/services/ssh" = {config, ...}: {
     preservation.preserveAt.${config.modules.preservation.persistentPath}.files = [
-      # Host keys: keep them stable across reboots and reinstalls. Symlinks
-      # are fine here because sshd starts long after preservation has run.
+      # SSH host keys, symlinked so they survive reboots and reinstalls.
       {
         file = "/etc/ssh/ssh_host_ed25519_key";
         how = "symlink";

@@ -28,6 +28,7 @@
   flake.modules.nixos.preservation = {
     config,
     lib,
+    pkgs,
     ...
   }: let
     cfg = config.modules.preservation;
@@ -109,50 +110,70 @@
         enable = true;
         preserveAt.${cfg.persistentPath} = {
           directories = [
-            # journald, coredumps and systemd bookkeeping
+            # Journal, boot log and accounting records.
             "/var/log"
+            # UID/GID assignments and rebuild bookkeeping.
             {
               directory = "/var/lib/nixos";
               inInitrd = true;
             }
-            "/var/lib/systemd/coredump"
-            "/var/lib/systemd/rfkill"
-            "/var/lib/systemd/timers"
-
-            # State of services running with DynamicUser=yes
+            # systemd's own state, preserved wholesale. The nixpkgs systemd
+            # state manual recommends the whole directory because the
+            # interesting subdirs (random-seed, timers, coredump, rfkill,
+            # backlight, timesyncd clock, linger, credential.secret, ...) are
+            # "not meant to be exhaustive". One initrd bind mount covers all
+            # of them plus anything upstream adds, so random-seed and
+            # credential.secret no longer need their own file rules: they are
+            # created directly on persistent storage (systemd-creds setup
+            # refuses to replace an invalid file, which its tmpfiles rule for
+            # credential.secret would have created). catalog/ and
+            # ephemeral-trees/ come along too; the latter is wiped every boot
+            # by systemd's own tmpfiles rule (age 0) anyway.
+            {
+              directory = "/var/lib/systemd";
+              inInitrd = true;
+            }
+            # State of DynamicUser services.
             {
               directory = "/var/lib/private";
               mode = "0700";
             }
-
-            # Per-device backlight levels restored by systemd-backlight.
-            "/var/lib/systemd/backlight"
+            # Last-login records.
+            "/var/lib/lastlog"
           ];
 
           files = [
-            # Machine identity, needed before sysinit.
+            # Machine identity.
             {
               file = "/etc/machine-id";
               inInitrd = true;
             }
-
-            # Written lazily by systemd-timedated, so symlink instead of
-            # bind-mounting (the target must not exist before initialization).
+            # Clock drift and UTC flag, written lazily by systemd-timedated.
             {
               file = "/etc/adjtime";
               how = "symlink";
             }
-
-            # Boot-time RNG state; upstream docs recommend a symlink in the
-            # initrd so the file is created directly on persistent storage.
-            {
-              file = "/var/lib/systemd/random-seed";
-              how = "symlink";
-              inInitrd = true;
-            }
           ];
         };
       };
+
+      # Older revisions of the LUKS layout created the persistent parent with
+      # mode 0700 (pcrlock.json privacy). Bind-mounted wholesale that mode
+      # becomes /var/lib/systemd itself and breaks the non-root writers below
+      # it: systemd-timesyncd owns timesync/, systemd-coredump saves dumps
+      # into coredump/. systemd's own tmpfiles rule (systemd.conf) wants 0755,
+      # so match it. `d` rules only apply mode when creating the directory,
+      # hence the explicit fix for existing volumes; fresh installs get 0755
+      # from the preservation tmpfiles rules directly.
+      system.activationScripts.preservation-systemd-dir-mode = ''
+        if [ -d ${cfg.persistentPath}/var/lib/systemd ]; then
+          ${pkgs.coreutils}/bin/chmod 0755 ${cfg.persistentPath}/var/lib/systemd
+        fi
+      '';
+
+      # logrotate atomically renames its state file, which fails on a bind mount
+      # (EBUSY); point it at the persistent path instead.
+      services.logrotate.extraArgs = ["--state" "${cfg.persistentPath}/var/lib/logrotate.status"];
     };
   };
 }
