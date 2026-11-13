@@ -1,11 +1,16 @@
-{config, ...}: {
+{config, ...}: let
+  # Flake-level metadata, captured here because the NixOS module below shadows
+  # `config` with the module-system config.
+  inherit (config.flake) meta;
+in {
   # NixOS
   flake.modules.nixos.system = {
     pkgs,
     lib,
+    config,
     ...
   }: {
-    time.timeZone = lib.mkDefault config.flake.meta.hosts.timezone;
+    time.timeZone = lib.mkDefault meta.hosts.timezone;
     # Disable systemd TPM2 setup services - they wait for measured UKI which we don't use
     # This prevents a 60+ second timeout during boot
     systemd.services = {
@@ -20,6 +25,9 @@
     # Enable ~/.local/bin in PATH for user-installed binaries (e.g. uv tools)
     environment.localBinInPath = true;
 
+    # Bound the journal: the default is 10% of the filesystem (up to 4 GiB).
+    services.journald.settings.Journal.SystemMaxUse = "1G";
+
     # Firmware
     hardware.enableAllFirmware = true;
 
@@ -33,10 +41,10 @@
     };
 
     boot = {
-      # Plymouth
-      kernelParams = ["quiet" "splash"];
+      # Silence the console behind the boot splash (splash param itself is
+      # added by the plymouth module in modules/system/plymouth.nix).
+      kernelParams = ["quiet"];
       consoleLogLevel = lib.mkDefault 0;
-      plymouth.enable = true;
 
       # Systemd-boot
       loader = {
