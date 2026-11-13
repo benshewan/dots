@@ -1,4 +1,6 @@
-_: {
+{config, ...}: let
+  username = config.flake.meta.user.username;
+in {
   flake.modules.homeManager."programs/vivaldi" = {
     pkgs,
     config,
@@ -36,6 +38,7 @@ _: {
         # {id = "fmkadmapgofadopljbjfkapdkoienihi";} # React Dev Tools
       ];
     };
+
     home.file.".config/vivaldi/theme/phi.css".source = "${phi-theme}/phi.css";
     home.file.".config/vivaldi/theme/phi-settings.css".text = ''
       body
@@ -61,5 +64,17 @@ _: {
           --phi--is-hide-content-blocker: 1;
       }
     '';
+  };
+
+  # Preservation companion for "programs/vivaldi" (auto-resolved by the
+  # prefix). Whole profile dir, same rationale as .config/Code: Default/
+  # and Local State are LevelDB stores too fragile to split. HM's phi
+  # theme files regenerate inside the mount.
+  flake.modules.nixos."preservation/programs/vivaldi" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username} = {
+      directories = [
+        ".config/vivaldi"
+      ];
+    };
   };
 }

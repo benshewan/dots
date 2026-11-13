@@ -79,14 +79,14 @@ in {
         # State-audit batches rotate one set at a time through caelum.
         # Unloaded so far (companions stay in their module files): dolphin,
         # npm, python, kdeconnect, obs, thunderbird, steam, spotify,
-        # obsidian, bottles, vscode.
-        "programs/prism-launcher"
-        "programs/partition-manager"
-        "programs/mongodb-compass"
-        "programs/audio-relay"
-        "programs/solaar"
-        "services/sunshine"
-        "programs/chromium"
+        # obsidian, bottles, vscode, prism-launcher, partition-manager,
+        # mongodb-compass, audio-relay, solaar, sunshine, chromium.
+        "programs/webstorm"
+        "programs/filebot"
+        "programs/lan-mouse"
+        "programs/helix"
+        "programs/vivaldi"
+        "programs/helium"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
