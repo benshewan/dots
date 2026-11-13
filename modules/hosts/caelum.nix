@@ -91,6 +91,8 @@ in {
         "programs/proxmark3"
         "programs/distrobox"
         "programs/parsec"
+        "programs/github-cli"
+        "programs/orcaslicer"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
