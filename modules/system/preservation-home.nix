@@ -51,6 +51,12 @@ in {
           # own per-profile DB and never touches this.
           ".local/share/pki"
 
+          # java.util.prefs userRoot, shared by every Java app using the
+          # standard Preferences API (per-app subtrees like com/azefsw).
+          # Apps with their own config dirs (JetBrains, Minecraft) don't
+          # use it. Overridable via java.util.prefs.userRoot (rare).
+          ".java"
+
           # GSettings application database, shared by every desktop app
           # (loupe, foliate, nautilus, ...); belongs to no single feature.
           ".config/dconf"

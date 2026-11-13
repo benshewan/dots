@@ -46,17 +46,15 @@ in {
 
   # Preservation companion for "programs/audio-relay" (auto-resolved by the
   # prefix).
-  # Settings live in Java Preferences (.java/.userPrefs/com/azefsw/*).
-  # Deliberately NOT preserved:
+  # Settings live in Java Preferences (java.util.prefs userRoot →
+  # ~/.java/.userPrefs/com/azefsw) which is SHARED across all Java apps
+  # using the standard Preferences API — preserved with the granular home
+  # essentials instead. Deliberately NOT preserved:
   # - .local/share/audiorelay — only single-instance lock files (runtime).
   # - .skiko — Compose/Skiko native library cache (regenerated).
-  # - .config/pulse/cookie — cross-app libpulse auth cookie, preserved with
-  #   the granular home essentials instead.
+  # - .config/pulse/cookie — cross-app libpulse auth cookie, in the
+  #   essentials too.
   flake.modules.nixos."preservation/programs/audio-relay" = {config, ...}: {
-    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username} = {
-      directories = [
-        ".java"
-      ];
-    };
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username} = {};
   };
 }
