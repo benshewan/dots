@@ -11,7 +11,6 @@
   hardware.framework.laptop13.audioEnhancement.enable = false;
   hardware.framework.laptop13.audioEnhancement.hideRawDevice = false;
   # hardware.framework.enableKmod = true; # Allow userspace access to LEDs and battery charge limit
-  services.hardware.bolt.enable = true;
 
   services.pipewire.wireplumber.extraConfig."50-caldigit-soft-mixer" = {
     "monitor.alsa.rules" = [
@@ -61,12 +60,6 @@
     #  max is 44 but a static noise floor gets introduced when set that high, 35 (80%) has no noise and is way more than enough
     ''ACTION=="add", SUBSYSTEM=="sound", KERNEL=="controlC*", ATTRS{idVendor}=="2188", ATTRS{idProduct}=="6537", RUN+="${pkgs.alsa-utils}/bin/amixer -c Front sset Speaker 35"''
   ];
-
-  # Firmware
-  services.fwupd = {
-    enable = true;
-    extraRemotes = ["lvfs-testing"]; # Enable beta bios
-  };
 
   # Fingerprint
   services.fprintd.enable = false;

@@ -15,7 +15,6 @@
 
       # Software
       "programs/satty"
-      "programs/rofi"
       "programs/kitty"
     ];
   };

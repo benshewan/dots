@@ -14,6 +14,11 @@ in {
     # Decrypt before user creation so hashedPasswordFile is available.
     sops.secrets."user-password".neededForUsers = true;
 
+    # Password is fully declarative: the shadow hash is forced from the sops
+    # secret on every activation, and passwd(1) changes are reverted. Update
+    # the password by editing the `user-password` secret, not with passwd(1).
+    users.mutableUsers = false;
+
     users.users.${username} = {
       isNormalUser = true;
       description = flake.config.flake.meta.user.fullName;

@@ -11,6 +11,9 @@
     imports = config.flake.lib.resolve [
       "presets/desktop"
       "services/upower"
+      "services/bolt"
+      "services/fwupd"
+      "services/power-profiles-daemon"
     ];
   };
 }
