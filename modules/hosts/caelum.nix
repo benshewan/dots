@@ -88,11 +88,19 @@ in {
         # mongodb-compass, audio-relay, solaar, sunshine, chromium,
         # webstorm, filebot, lan-mouse, helix, vivaldi, helium,
         # libreoffice, moonlight.
-        "programs/proxmark3"
-        "programs/distrobox"
-        "programs/parsec"
-        "programs/github-cli"
-        "programs/orcaslicer"
+        # State-audit batches rotate one set at a time through caelum.
+        # Unloaded so far (companions stay in their module files): dolphin,
+        # npm (re-added), python (re-added), kdeconnect, obs, thunderbird,
+        # steam, spotify, obsidian, bottles, vscode, prism-launcher,
+        # partition-manager, mongodb-compass, audio-relay, solaar, sunshine,
+        # chromium, webstorm, filebot, lan-mouse, helix, vivaldi, helium,
+        # libreoffice, moonlight, docker, libvirt, proxmark3, distrobox,
+        # parsec, github-cli, orcaslicer.
+        "programs/brave"
+        "programs/python"
+        "programs/npm"
+        "services/easyeffects"
+        "services/syncthing"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix

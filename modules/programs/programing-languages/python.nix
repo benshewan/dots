@@ -1,4 +1,6 @@
-_: {
+{config, ...}: let
+  username = config.flake.meta.user.username;
+in {
   flake.modules.homeManager."programs/python" = {
     pkgs,
     config,
@@ -24,5 +26,15 @@ _: {
         (pkgs.python3.withPackages (ps: config.programs.python.extraPackages))
       ];
     };
+  };
+
+  # Preservation companion for "programs/python" (auto-resolved by the
+  # prefix). Intentionally EMPTY: PYTHON_HISTORY is diverted to
+  # ~/.cache/python_history (sessionVariables) and the interpreter is a
+  # single nix-managed withPackages env — nothing durable in home. Caveat:
+  # `pip install --user` writes ~/.local/lib/python*/ + ~/.local/bin, which
+  # is generic home state outside this companion.
+  flake.modules.nixos."preservation/programs/python" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username} = {};
   };
 }

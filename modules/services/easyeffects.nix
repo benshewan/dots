@@ -1,4 +1,6 @@
-{config, ...}: {
+{config, ...}: let
+  username = config.flake.meta.user.username;
+in {
   flake.modules.homeManager."services/easyeffects" = {pkgs, ...}: {
     services.easyeffects.enable = true;
     # taken from: https://github.com/jtrv/dotfiles/blob/e02c2f30c872bfa83d88bf35ac7d26d78b599879/.local/share/easyeffects/input/fifine_masc_voice_noise_reduction.json
@@ -278,6 +280,19 @@
           "wet" = 0.0;
         };
       };
+    };
+  };
+
+  # Preservation companion for "services/easyeffects" (auto-resolved by the
+  # prefix). Whole dir: HM's extraPresets symlinks regenerate inside the
+  # mount, and the daemon writes its own state there on top (autoloaded
+  # preset, per-device settings, the db/ state it keeps under
+  # .config/easyeffects/db).
+  flake.modules.nixos."preservation/services/easyeffects" = {config, ...}: {
+    preservation.preserveAt.${config.modules.preservation.persistentPath}.users.${username} = {
+      directories = [
+        ".config/easyeffects"
+      ];
     };
   };
 }
