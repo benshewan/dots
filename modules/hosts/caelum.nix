@@ -90,6 +90,7 @@ in {
         # libreoffice, moonlight.
         "programs/proxmark3"
         "programs/distrobox"
+        "programs/parsec"
 
         # hardware configuration
         ../../machines/caelum/hardware-configuration.nix
