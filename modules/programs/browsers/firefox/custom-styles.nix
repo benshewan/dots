@@ -22,10 +22,14 @@ _: {
       r = lib.toInt (chan base "rgb-r");
       g = lib.toInt (chan base "rgb-g");
       b = lib.toInt (chan base "rgb-b");
-    in r * 299 + g * 587 + b * 114;
+    in
+      r * 299 + g * 587 + b * 114;
 
     isDark = (brightness "base00") < (brightness "base05");
-    colorScheme = if isDark then "dark" else "light";
+    colorScheme =
+      if isDark
+      then "dark"
+      else "light";
     accentHighContrast =
       if isDark
       then "color-mix(in srgb, white 30%, rgb(${rgbTriplet "base0D"}))"
@@ -64,29 +68,28 @@ _: {
 
     # userContent.css with all of DownToneUI's content styles inlined (no @import -
     # see note above) plus our sidebery theming, scoped to sidebery's extension page.
-    userContentCss =
-      builtins.concatStringsSep "\n" [
-        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/_globals.css")
-        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_about.css")
-        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_extern.css")
-        (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_scrollbar.css")
-        ''
-          /* Your own customizations */
-          * {
-            --dtui-theme-color-scheme: ${colorScheme};
-            --dtui-theme-main-color: ${rgbTriplet "base00"};
-            --dtui-theme-secondary-color: ${rgbTriplet "base01"};
-            --dtui-theme-accent-color: ${rgbTriplet "base0D"};
-            --dtui-theme-accent-high-contrast: ${accentHighContrast};
-            --dtui-theme-text-color: ${rgbTriplet "base05"};
-          }
+    userContentCss = builtins.concatStringsSep "\n" [
+      (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/_globals.css")
+      (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_about.css")
+      (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_extern.css")
+      (builtins.readFile "${DownToneUI-firefox-theme}/chrome/DownToneUI/theme_scrollbar.css")
+      ''
+        /* Your own customizations */
+        * {
+          --dtui-theme-color-scheme: ${colorScheme};
+          --dtui-theme-main-color: ${rgbTriplet "base00"};
+          --dtui-theme-secondary-color: ${rgbTriplet "base01"};
+          --dtui-theme-accent-color: ${rgbTriplet "base0D"};
+          --dtui-theme-accent-high-contrast: ${accentHighContrast};
+          --dtui-theme-text-color: ${rgbTriplet "base05"};
+        }
 
-          /* Sidebery theming */
-          @-moz-document url-prefix("moz-extension://${sideberyUuid}/") {
-        ''
-        (builtins.readFile sideberyOverrideCss)
-        "}"
-      ];
+        /* Sidebery theming */
+        @-moz-document url-prefix("moz-extension://${sideberyUuid}/") {
+      ''
+      (builtins.readFile sideberyOverrideCss)
+      "}"
+    ];
 
     # DownToneUI chrome dir minus userContent.css (we generate that one ourselves,
     # inlined - see note above).
@@ -110,7 +113,6 @@ _: {
       sha256 = "sha256-BzeUNg3aY7uHubv2ackuH01AAeiyCXnXMBNtfBdvcFY=";
     };
 
-
     DownToneUI-firefox-theme = pkgs.fetchFromGitHub {
       owner = "oviung";
       repo = "DownToneUI-Firefox";
@@ -125,7 +127,6 @@ _: {
       sha256 = "sha256-aJs74EqAVMJBPS6ox2V7S9Vp47PoHlGbBuF5DBWqwiI=";
     };
   in {
-
     home.file.".config/mozilla/firefox/${profile}/chrome" = {
       recursive = true;
       source = "${downtoneChrome}";

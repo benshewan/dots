@@ -1,7 +1,4 @@
-{
-  lib,
-  ...
-} @ flake: let
+{lib, ...} @ flake: let
   username = flake.config.flake.meta.user.username;
 in {
   # Nix OS

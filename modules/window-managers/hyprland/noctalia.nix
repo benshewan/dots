@@ -4,7 +4,7 @@
     lib,
     config,
     ...
-  }:{
+  }: {
     wayland.windowManager.hyprland.settings.exec-once = ["${lib.getExe (config.programs.noctalia.package)}"];
     home.packages = with pkgs; [ddcutil]; # needed for ddc control
     programs.noctalia = {

@@ -46,8 +46,6 @@ in {
 
         # Colab
         collaboration_panel.button = false;
-        chat_panel.button = false;
-        notification_panel.button = false;
 
         # Apperance
         buffer_font_size = lib.mkForce 14.0; # Override stylix font size
@@ -77,6 +75,7 @@ in {
         languages = {
           Nix = {
             language_servers = ["nixd" "!nil"];
+            format_on_save = "on";
             formatter.external = {
               command = lib.getExe pkgs.alejandra;
               arguments = ["--quiet" "--"];
@@ -90,7 +89,7 @@ in {
             "command" = lib.getExe pkgs.biome;
             "arguments" = ["format" "--stdin-file-path" "{buffer_path}"];
           };
-          formatter.code_actions = {
+          code_actions_on_format = {
             "source.fixAll.eslint" = true;
           };
         };

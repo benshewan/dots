@@ -20,16 +20,18 @@ in {
     # Host metadata
     meta.hosts = [hostMeta];
 
-    modules.nixos."hosts/${hostMeta.name}" = {config, lib, ...}: {
+    modules.nixos."hosts/${hostMeta.name}" = {
+      config,
+      lib,
+      ...
+    }: {
       # Rescue access from navis: works even if sops decryption fails (no
       # password hash set), since authorized keys are plain NixOS config.
-      users.users.${flake.meta.user.username}.openssh.authorizedKeys.keys =
-        ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMm0WtaU9Sb6g9UC+HFL6h4L+rOsHUMN/iWOU3qRGgaI benbshewan@gmail.com"];
+      users.users.${flake.meta.user.username}.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMm0WtaU9Sb6g9UC+HFL6h4L+rOsHUMN/iWOU3qRGgaI benbshewan@gmail.com"];
 
       # Root rescue access, same key. Key-only: prohibit-password still forbids
       # password root login, and root has no declarative password at all.
-      users.users.root.openssh.authorizedKeys.keys =
-        ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMm0WtaU9Sb6g9UC+HFL6h4L+rOsHUMN/iWOU3qRGgaI benbshewan@gmail.com"];
+      users.users.root.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMm0WtaU9Sb6g9UC+HFL6h4L+rOsHUMN/iWOU3qRGgaI benbshewan@gmail.com"];
       services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
 
       # The q35 chipset emulates an iTCO watchdog which libvirt attaches

@@ -3,8 +3,7 @@
   stdenv,
   lib,
   ...
-}:
-let
+}: let
   volkMeta = stdenv.mkDerivation {
     pname = "volk-meta";
     version = "1.4.350";
@@ -39,61 +38,61 @@ let
     hash = "sha256-Kflx8MXFenfRmKuE9r5rnLb9Ze9D8CD0isC2A+P/3iQ=";
   };
 in
-stdenv.mkDerivation {
-  pname = "gemini-watermark-tool";
-  version = "0.3.1";
+  stdenv.mkDerivation {
+    pname = "gemini-watermark-tool";
+    version = "0.3.1";
 
-  src = pkgs.fetchFromGitHub {
-    owner = "allenk";
-    repo = "GeminiWatermarkTool";
-    rev = "v0.3.1";
-    hash = "sha256-uH8x3Jc9i2d8V2w96vHpkaUMLy22yVvHaHnDhTBDbK0=";
-  };
+    src = pkgs.fetchFromGitHub {
+      owner = "allenk";
+      repo = "GeminiWatermarkTool";
+      rev = "v0.3.1";
+      hash = "sha256-uH8x3Jc9i2d8V2w96vHpkaUMLy22yVvHaHnDhTBDbK0=";
+    };
 
-  postUnpack = ''
-    mkdir -p $sourceRoot/external/ncnn/ncnn-20260113-src
-    cp -r ${ncnnSrc}/* $sourceRoot/external/ncnn/ncnn-20260113-src/
-    chmod -R u+w $sourceRoot/external/ncnn/ncnn-20260113-src
-  '';
+    postUnpack = ''
+      mkdir -p $sourceRoot/external/ncnn/ncnn-20260113-src
+      cp -r ${ncnnSrc}/* $sourceRoot/external/ncnn/ncnn-20260113-src/
+      chmod -R u+w $sourceRoot/external/ncnn/ncnn-20260113-src
+    '';
 
-  nativeBuildInputs = with pkgs; [
-    cmake
-    ninja
-    pkg-config
-    makeWrapper
-  ];
+    nativeBuildInputs = with pkgs; [
+      cmake
+      ninja
+      pkg-config
+      makeWrapper
+    ];
 
-  buildInputs = with pkgs; [
-    opencv4
-    fmt
-    cli11
-    spdlog
-    vulkan-headers
-    vulkan-loader
-    volkMeta
-    glslang
-    shaderc
-  ];
+    buildInputs = with pkgs; [
+      opencv4
+      fmt
+      cli11
+      spdlog
+      vulkan-headers
+      vulkan-loader
+      volkMeta
+      glslang
+      shaderc
+    ];
 
-  cmakeFlags = [
-    "-DCMAKE_BUILD_TYPE=Release"
-    "-DBUILD_GUI=OFF"
-    "-DENABLE_AI_DENOISE=ON"
-    "-DNCNN_SYSTEM_GLSLANG=ON"
-  ];
+    cmakeFlags = [
+      "-DCMAKE_BUILD_TYPE=Release"
+      "-DBUILD_GUI=OFF"
+      "-DENABLE_AI_DENOISE=ON"
+      "-DNCNN_SYSTEM_GLSLANG=ON"
+    ];
 
-  postFixup = ''
-    mv $out/bin/GeminiWatermarkTool $out/bin/.GeminiWatermarkTool-wrapped
-    makeWrapper $out/bin/.GeminiWatermarkTool-wrapped $out/bin/gemini-watermark-tool \
-      --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.vulkan-loader]}
-    ln -s gemini-watermark-tool $out/bin/GeminiWatermarkTool
-  '';
+    postFixup = ''
+      mv $out/bin/GeminiWatermarkTool $out/bin/.GeminiWatermarkTool-wrapped
+      makeWrapper $out/bin/.GeminiWatermarkTool-wrapped $out/bin/gemini-watermark-tool \
+        --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.vulkan-loader]}
+      ln -s gemini-watermark-tool $out/bin/GeminiWatermarkTool
+    '';
 
-  meta = with lib; {
-    description = "Remove Gemini visible watermarks from images using reverse alpha blending";
-    homepage = "https://github.com/allenk/GeminiWatermarkTool";
-    license = licenses.mit;
-    platforms = platforms.linux ++ platforms.darwin;
-    maintainers = [maintainers.benshewan];
-  };
-}
+    meta = with lib; {
+      description = "Remove Gemini visible watermarks from images using reverse alpha blending";
+      homepage = "https://github.com/allenk/GeminiWatermarkTool";
+      license = licenses.mit;
+      platforms = platforms.linux ++ platforms.darwin;
+      maintainers = [maintainers.benshewan];
+    };
+  }

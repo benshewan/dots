@@ -35,14 +35,16 @@ _: {
 
     disableInternal = pkgs.writeShellScript "mango-lid-disable-internal" ''
       ${lib.concatMapStringsSep "\n" (m: ''
-        ${mango} dispatch disable_monitor,"${m.spec}" || true
-      '') internal}
+          ${mango} dispatch disable_monitor,"${m.spec}" || true
+        '')
+        internal}
     '';
 
     enableInternal = pkgs.writeShellScript "mango-lid-enable-internal" ''
       ${lib.concatMapStringsSep "\n" (m: ''
-        ${wlr-randr} --output "${m.name}" --on --pos ${toString m.x},${toString m.y} --scale ${toString m.scale} --mode ${toString m.width}x${toString m.height} || true
-      '') internal}
+          ${wlr-randr} --output "${m.name}" --on --pos ${toString m.x},${toString m.y} --scale ${toString m.scale} --mode ${toString m.width}x${toString m.height} || true
+        '')
+        internal}
     '';
 
     # Bring the internal panel in line with the current lid state.
@@ -61,12 +63,12 @@ _: {
       lid=$(${lidState})
       ${wlr-randr} --json | ${jq} -r '.[].name' | while IFS= read -r output; do
         ${lib.optionalString (internal != []) ''
-          case "$output" in
-            ${lib.concatMapStringsSep "|" (m: m.name) internal})
-              [ "$lid" = closed ] && continue
-              ;;
-          esac
-        ''}
+        case "$output" in
+          ${lib.concatMapStringsSep "|" (m: m.name) internal})
+            [ "$lid" = closed ] && continue
+            ;;
+        esac
+      ''}
         ${mango} dispatch enable_monitor,"$output" || true
       done
       ${apply}
@@ -83,18 +85,19 @@ _: {
         last=0
         while IFS= read -r snapshot; do
           ${lib.concatMapStringsSep "\n" (m: ''
-            if echo "$snapshot" | ${jq} -e --arg name "${m.name}" \
-                'any(.monitors[]; .name == $name and .width > 0)
-                 and any(.monitors[]; .name != $name and .width > 0)' >/dev/null 2>&1; then
-              [ "$(${lidState})" = closed ] || continue
-              # Events arrive in bursts while outputs settle; one disable is
-              # enough and repeated layout changes can disturb focus.
-              if [ $((SECONDS - last)) -ge 1 ]; then
-                ${mango} dispatch disable_monitor,"${m.spec}" >/dev/null 2>&1 || true
-                last=$SECONDS
-              fi
+          if echo "$snapshot" | ${jq} -e --arg name "${m.name}" \
+              'any(.monitors[]; .name == $name and .width > 0)
+               and any(.monitors[]; .name != $name and .width > 0)' >/dev/null 2>&1; then
+            [ "$(${lidState})" = closed ] || continue
+            # Events arrive in bursts while outputs settle; one disable is
+            # enough and repeated layout changes can disturb focus.
+            if [ $((SECONDS - last)) -ge 1 ]; then
+              ${mango} dispatch disable_monitor,"${m.spec}" >/dev/null 2>&1 || true
+              last=$SECONDS
             fi
-          '') internal}
+          fi
+        '')
+        internal}
         done < <(${mango} watch all-monitors)
         sleep 2
       done

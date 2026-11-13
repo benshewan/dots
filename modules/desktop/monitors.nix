@@ -19,8 +19,14 @@
       value = lib.concatStringsSep ":" (builtins.tail parts);
     in
       if builtins.length parts > 1 && builtins.elem head ["name" "desc" "serial"]
-      then {match = head; inherit value;}
-      else {match = "name"; value = name;};
+      then {
+        match = head;
+        inherit value;
+      }
+      else {
+        match = "name";
+        value = name;
+      };
 
     # There is no Wayland protocol field for "this output is the built-in
     # panel", so the connector type is the only reliable signal. eDP, LVDS and
@@ -124,7 +130,9 @@
         parseName = parseMonitorName;
         isInternal = isInternalName;
         mangoName = name: let p = parseMonitorName name; in "${p.match}:${p.value}";
-        hyprName = name: let p = parseMonitorName name; in
+        hyprName = name: let
+          p = parseMonitorName name;
+        in
           if p.match == "serial"
           then null
           else if p.match == "name"

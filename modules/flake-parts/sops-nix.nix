@@ -28,7 +28,10 @@
   flake.modules.nixos."preservation/system" = {config, ...}: {
     preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
       # sops-nix age identity, mounted in the initrd for activation-time decryption.
-      { directory = "/var/lib/sops-nix"; inInitrd = true; }
+      {
+        directory = "/var/lib/sops-nix";
+        inInitrd = true;
+      }
     ];
   };
 }

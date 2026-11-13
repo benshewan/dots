@@ -102,8 +102,7 @@ _: {
         # property right after logind reports READY (Type=notify-reload, so
         # ExecStartPost runs with the D-Bus name already up, and re-runs if
         # logind restarts). Single-user machine: nobody to broadcast to.
-        systemd-logind.serviceConfig.ExecStartPost =
-          "${config.systemd.package}/bin/busctl set-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager EnableWallMessages b false";
+        systemd-logind.serviceConfig.ExecStartPost = "${config.systemd.package}/bin/busctl set-property org.freedesktop.login1 /org/freedesktop/login1 org.freedesktop.login1.Manager EnableWallMessages b false";
       };
 
     # Without plymouthd-fd-escrow in the shutdown ramfs, plymouthd dies in the

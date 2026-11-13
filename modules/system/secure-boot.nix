@@ -72,16 +72,12 @@
 
   # Secure Boot key set and GUID, which must survive the root wipe to sign
   # future generations.
-  flake.modules.nixos."preservation/system/secure-boot" = {
-    config,
-    ...
-  }: {
+  flake.modules.nixos."preservation/system/secure-boot" = {config, ...}: {
     preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
       # sbctl key set (PK/KEK/db) and machine GUID.
       {directory = "/var/lib/sbctl";}
     ];
     # Parent directory, created before preservation's bind mount.
-    systemd.tmpfiles.rules =
-      ["d ${config.modules.preservation.persistentPath}/var/lib/sbctl 0700 root root - -"];
+    systemd.tmpfiles.rules = ["d ${config.modules.preservation.persistentPath}/var/lib/sbctl 0700 root root - -"];
   };
 }

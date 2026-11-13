@@ -52,9 +52,17 @@ _: {
 
     # Style shorthands. `bg` values are either a palette name or a hex colour.
     fg = color: style {fg = color;};
-    fgMod = color: modifiers: style {fg = color; inherit modifiers;};
+    fgMod = color: modifiers:
+      style {
+        fg = color;
+        inherit modifiers;
+      };
     bg = color: style {bg = color;};
-    fgBg = foreground: background: style {fg = foreground; bg = background;};
+    fgBg = foreground: background:
+      style {
+        fg = foreground;
+        bg = background;
+      };
 
     # `"<scope>" = <style>` lines, groups separated by a blank line.
     scopes = groups:

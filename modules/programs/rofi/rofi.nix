@@ -75,7 +75,7 @@
         wl-clipboard
       ];
 
-      home.file.".config/rofi/shared/colors.rasi".text = ''        
+      home.file.".config/rofi/shared/colors.rasi".text = ''
         * {
             background:     ${colors.base01};
             background-alt: ${colors.base00};

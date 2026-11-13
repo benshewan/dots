@@ -1,6 +1,4 @@
-{
-  ...
-}: {
+{...}: {
   flake.modules.nixos.system = {config, ...}: {
     sops.secrets."github-netrc" = {
       owner = "root";

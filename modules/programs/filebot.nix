@@ -1,6 +1,4 @@
-{
-  ...
-} @ flake: let
+{...} @ flake: let
   username = flake.config.flake.meta.user.username;
 in {
   flake.modules.homeManager."programs/filebot" = {pkgs, ...}: {

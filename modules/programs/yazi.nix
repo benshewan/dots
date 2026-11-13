@@ -18,7 +18,13 @@
       "application/msword"
     ];
     office-rules = run:
-      (map (mime: {inherit mime run;}) office-mimes) ++ [{url = "*.docx"; inherit run;}];
+      (map (mime: {inherit mime run;}) office-mimes)
+      ++ [
+        {
+          url = "*.docx";
+          inherit run;
+        }
+      ];
   in {
     home.packages = with pkgs; [
       (ouch.override {enableUnfree = true;})

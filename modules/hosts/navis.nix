@@ -84,11 +84,14 @@ in {
       networking.firewall = {
         allowedTCPPorts = [
           59100 # audio relay
-          7236 7250 # miracast
+          7236
+          7250 # miracast
         ];
         allowedUDPPorts = [
-          59100 59200 # audio relay
-          7236 5353 # miracast
+          59100
+          59200 # audio relay
+          7236
+          5353 # miracast
         ];
       };
       # Home Manager configuration for user

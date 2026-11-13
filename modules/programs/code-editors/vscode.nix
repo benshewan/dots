@@ -1,4 +1,8 @@
-{inputs, config, ...}: let
+{
+  inputs,
+  config,
+  ...
+}: let
   flakePath = config.flake.meta.flake-path;
 in {
   flake-file.inputs = {
