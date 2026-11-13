@@ -129,8 +129,11 @@ Rules for choosing entries:
     which edits `~/.config/mimeapps.list` with `sed -i` (atomic rename →
     file mount would EBUSY). Declare the associations declaratively
     instead: HM `xdg.mimeApps.{defaultApplications, associations.added}`.
-  - Electron/Chromium also seeds `~/.local/share/pki/nssdb` (client TLS
-    cert store) — preserve if certs may ever be imported.
+  - NSS client-cert store: `~/.local/share/pki/nssdb` (Chromium M146+
+    default) is the SHARED NSS DB of all Chromium/Electron apps, not
+    per-app → goes in the preservation-home essentials (legacy alias
+    `~/.pki/nssdb` is used instead if it exists). Firefox has its own
+    per-profile DB and never touches it.
   - libpulse auth cookie `~/.config/pulse/cookie` is cross-app, written
     once on first pipewire-pulse connection → file entry in the
     preservation-home essentials, not in any app's companion.

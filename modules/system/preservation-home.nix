@@ -44,6 +44,13 @@ in {
           # clients).
           ".local/share/keyrings"
 
+          # NSS Shared DB for client certificates. Shared by ALL
+          # Chromium-based apps (Chromium itself and Electron) — opened via
+          # the multi-process-safe sql: URI; default path since Chromium
+          # M146, keeping legacy ~/.pki/nssdb if it exists. Firefox has its
+          # own per-profile DB and never touches this.
+          ".local/share/pki"
+
           # GSettings application database, shared by every desktop app
           # (loupe, foliate, nautilus, ...); belongs to no single feature.
           ".config/dconf"

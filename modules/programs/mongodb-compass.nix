@@ -45,10 +45,6 @@ in {
         # Electron profile: connections, cookies, preferences, workspace
         # state (same whole-dir rationale as .config/Code).
         ".config/MongoDB Compass"
-
-        # NSS client-certificate store Compass initializes on first run
-        # (used for client-side TLS certs).
-        ".local/share/pki"
       ];
     };
   };
