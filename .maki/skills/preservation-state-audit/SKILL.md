@@ -137,6 +137,19 @@ Rules for choosing entries:
   - libpulse auth cookie `~/.config/pulse/cookie` is cross-app, written
     once on first pipewire-pulse connection → file entry in the
     preservation-home essentials, not in any app's companion.
+  - Shared framework roots → essentials, never the app's companion:
+    `.local/share/pki` (NSS Shared DB of ALL Chromium/Electron apps,
+    Chromium M146+ default path; legacy `~/.pki/nssdb` wins if it exists;
+    Firefox never touches it), `.java` (java.util.prefs userRoot for all
+    Java apps using the standard Preferences API; JetBrains/Minecraft-class
+    apps don't). Companion then carries only a pointer comment.
+  - JetBrains (batch 5): also writes `~/<Ide>Projects` in the home ROOT
+    (default projects dir), `~/.java/.userPrefs/jetbrains` (usage-stats
+    prefs), a jetbrains:// mime registration (xdg-mime, sed -i → volatile;
+    re-registered on each launch) and a runtime-generated
+    `~/.local/share/applications/jetbrainsd.desktop`.
+  - Helium (Chromium fork) uses `.config/net.imput.helium` (app-id dir),
+    NOT `.config/helium`.
 - HM gotcha: HM `services.pipewire` has NO `extraConfig` (NixOS-only);
   the HM equivalent is `services.pipewire.configPackages = [ (pkgs
   .writeTextDir "share/pipewire/<file>.conf.d/10-name.conf" "...") ]`
@@ -179,6 +192,27 @@ A live switch is enough for the audit; use a reboot only when you want to
 prove state survives the wipe (worth doing once per app: write a marker file
 into the app's state dir, reboot, confirm it is still there and that the
 volatile copy is gone).
+
+**Unloading a companion mid-rotation can fail the switch**: when the batch's
+features are removed from the resolve list, the switch tries to stop the
+removed `home-*` mount units and exits non-zero if one can't be unmounted
+(bit us with sunshine). The new config still activates. Check for leftover
+stale mounts afterwards: `mount | grep /home/ben` and `umount` any path
+whose companion is gone.
+
+**sops secrets vs preservation mounts (batch 5 trap)**: on this host sops
+renders secrets during the INITRD NixOS activation ("NixOS Activation" /
+"setting up secrets for users"), which runs BEFORE stage-2 preservation
+mounts — a secret whose `path` sits under a mounted dir gets its symlink
+created on the volatile side and then SHADOWED by the mount. Fix: a tmpfiles
+`L+` rule (stage-2 tmpfiles runs after the mounts, and re-runs on every
+switch) re-creating the symlink inside the mount, e.g.
+`L+ /home/u/.local/share/filebot/data/.license - - - - /run/secrets/<name>`.
+Related: sops-install-secrets creates the secret's PARENT dirs root-owned;
+pre-create the chain with `d` tmpfiles rules (it leaves existing dirs alone)
+if the app must write beside the secret. Verify the end state empirically —
+an `ls` through the mount vs `/persistent` during debugging can lie if you
+unmount/re-mount mid-investigation.
 
 ## 4. Diff live state against preserved state
 
