@@ -42,15 +42,22 @@
     };
   };
 
-  # Preservation companion for "virtualization/libvirt" (auto-resolved by the prefix).
+  # Preservation companion for "virtualization/libvirt" (auto-resolved by the
+  # prefix).
+  # VERIFIED empirically (libvirt 11.x on nixpkgs 26.11, defined test
+  # domain/network/pool/secret on caelum): EVERYTHING libvirt persists now
+  # lives under /var/lib/libvirt — domain XMLs (qemu/<name>.xml),
+  # networks (qemu/networks/), storage pools (storage/), secrets +
+  # secrets-encryption-key (secrets/), nwfilter rules, hooks/, and the
+  # runtime copies qemu.conf/network.conf; plus nvram/ram/varstore (UEFI),
+  # save/, snapshot/, checkpoint/, dump/ and per-VM swtpm state (swtpm/).
+  # The former /etc/libvirt/qemu and /etc/libvirt/secrets entries are
+  # legacy: those paths stay EMPTY on this libvirt version (and don't even
+  # exist on hosts that never had them). swtpm-localca keeps its own
+  # top-level dir below.
   flake.modules.nixos."preservation/virtualization/libvirt" = {config, ...}: {
     preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
-      # VM NVRAM, disk images and snapshots.
       "/var/lib/libvirt"
-      # VM domain definitions (XML).
-      "/etc/libvirt/qemu"
-      # Storage authentication secrets (not /etc/libvirt: libvirt.conf is generated).
-      "/etc/libvirt/secrets"
       # swtpm local CA, used to sign TPM endorsement certs for VMs.
       "/var/lib/swtpm-localca"
     ];
