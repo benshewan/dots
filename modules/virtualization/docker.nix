@@ -1,4 +1,6 @@
-{config, ...}: {
+{config, ...}: let
+  username = config.flake.meta.user.username;
+in {
   flake.modules.nixos."virtualization/docker" = {pkgs, ...}: {
     # Docker
     virtualisation.docker = {
@@ -31,9 +33,21 @@
 
   # Preservation companion for "virtualization/docker" (auto-resolved by the prefix).
   flake.modules.nixos."preservation/virtualization/docker" = {config, ...}: {
-    preservation.preserveAt.${config.modules.preservation.persistentPath}.directories = [
-      # Images, containers, volumes and build cache.
-      "/var/lib/docker"
-    ];
+    preservation.preserveAt.${config.modules.preservation.persistentPath} = {
+      directories = [
+        # Images, containers, volumes and build cache.
+        "/var/lib/docker"
+      ];
+      users.${username} = {
+        directories = [
+          # DOCKER_CONFIG: config.json, contexts (and registry creds unless a
+          # credential helper takes over).
+          ".config/docker"
+          # BUILDX_CONFIG: buildx builder instances and their state, diverted
+          # here by the HM sessionVariables above.
+          ".local/state/docker/buildx"
+        ];
+      };
+    };
   };
 }
