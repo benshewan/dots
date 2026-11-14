@@ -1,11 +1,6 @@
-{config, ...}: let
-  # Flake-level metadata, captured here because the NixOS module below shadows
-  # `config` with the module-system config.
-  inherit (config.flake) meta;
-in {
+{lib, ...}: {
   # NixOS
   flake.modules.nixos.system = {lib, ...}: {
-    time.timeZone = lib.mkDefault meta.hosts.timezone;
     # Disable systemd TPM2 setup services - they wait for measured UKI which we don't use
     # This prevents a 60+ second timeout during boot
     systemd.services = {

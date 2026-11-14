@@ -31,12 +31,11 @@ in {
         "disk-layouts/btrfs"
         "preservation"
         "system/preservation-home"
+        "system/audit"
+        "services/attic"
       ];
 
-      # Erase-your-darlings: everything durable is bind-mounted from
-      # /persistent (see modules/disk-layouts/btrfs.nix). Companions for ssh,
-      # sops and NetworkManager attach automatically. User state is granular
-      # (system/preservation-home) instead of a wholesale /home mount.
+      # Erase-your-darlings
       modules.preservation.enable = true;
       modules.preservation.home = true;
 
@@ -50,6 +49,9 @@ in {
       };
 
       # Server-only tweaks (services, firewall, ...) go here
+
+      # Host-specific secret file for the atticd JWT
+      sops.secrets."atticd-env".sopsFile = ../../secrets/hosts/apus.yaml;
     };
   };
 }

@@ -27,6 +27,7 @@
       # Should move these somewhere else, not really preset material
       loupe
       foliate
+      wl-clipboard
     ];
   };
 }

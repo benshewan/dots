@@ -10,6 +10,9 @@
   mkHostConfig = hostType: name: hostModule: let
     hostId = lib.removePrefix prefix name;
 
+    # Per-host defaults from flake.meta.hosts (a list keyed by name)
+    hostMeta = lib.findFirst (h: h.name == hostId) {} config.flake.meta.hosts;
+
     # Machine-scoped modules registered as machines/<hostId>/* attach to that
     # host automatically, so host definitions never import them by hand.
     machinePrefix = "machines/${hostId}/";
@@ -65,6 +68,7 @@
           platformDefaults.homeManagerModule
           {
             networking.hostName = hostId;
+            time.timeZone = lib.mkDefault hostMeta.timezone;
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
