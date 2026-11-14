@@ -1,7 +1,16 @@
 # DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
+  outputs =
+    inputs:
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } (
+      { ... }: {
+        imports = [
+          (inputs.import-tree ./modules)
+          (inputs.import-tree (it: it.matchNot "/[^/]+/hardware-configuration\\.nix$") ./machines)
+        ];
+      }
+    );
 
   inputs = {
     darwin.url = "github:LnL7/nix-darwin";

@@ -1,8 +1,8 @@
 _: {
-  # Plymouth splash, boot and shutdown. Contributing to the `system` module
-  # (core.nix provides the silence around it: kernelParams quiet +
-  # consoleLogLevel = 0).
-  flake.modules.nixos.system = {
+  # Plymouth splash, boot and shutdown. Resolved as `system/plymouth` (the
+  # desktop preset pulls it in; core.nix provides the silence around it:
+  # kernelParams quiet + consoleLogLevel = 0).
+  flake.modules.nixos."system/plymouth" = {
     lib,
     config,
     pkgs,

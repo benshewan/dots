@@ -10,6 +10,22 @@
   mkHostConfig = hostType: name: hostModule: let
     hostId = lib.removePrefix prefix name;
 
+    # Machine-scoped modules registered as machines/<hostId>/* attach to that
+    # host automatically, so host definitions never import them by hand.
+    machinePrefix = "machines/${hostId}/";
+    machineModules =
+      lib.attrValues
+      (lib.filterAttrs (n: _: lib.hasPrefix machinePrefix n) (
+        if hostType == "nixos"
+        then config.flake.modules.nixos
+        else config.flake.modules.darwin or {}
+      ));
+
+    # hardware-configuration.nix stays a raw nixos-generate-config module so
+    # nixos-anywhere --generate-hardware-config can overwrite it verbatim; it
+    # is imported by path here (and excluded from the import-tree scan).
+    hardwareConfig = ../../machines/${hostId}/hardware-configuration.nix;
+
     # Platform-specific defaults
     platformDefaults =
       {
@@ -43,17 +59,20 @@
     name = hostId;
     value = platformDefaults.builder {
       system = evalSystem;
-      modules = [
-        hostModule
-        platformDefaults.homeManagerModule
-        {
-          networking.hostName = hostId;
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-          };
-        }
-      ];
+      modules =
+        [
+          hostModule
+          platformDefaults.homeManagerModule
+          {
+            networking.hostName = hostId;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+            };
+          }
+        ]
+        ++ machineModules
+        ++ lib.optional (builtins.pathExists hardwareConfig) hardwareConfig;
     };
   };
 

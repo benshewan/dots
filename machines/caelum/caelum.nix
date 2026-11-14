@@ -102,13 +102,7 @@ in {
         "services/easyeffects"
         "services/syncthing"
 
-        # hardware configuration
-        ../../machines/caelum/hardware-configuration.nix
-
-        # LUKS post-install provisioning: measured-boot pcrlock keyslot,
-        # optional FIDO2 token, sops recovery keyslot (Secure Boot itself is
-        # in modules/system/secure-boot.nix)
-        ../../machines/caelum/provisioning.nix
+        # hardware: machines/caelum/* modules attach automatically
       ];
 
       # Machine-specific parameters for the shared layout

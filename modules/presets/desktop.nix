@@ -31,6 +31,9 @@
       # NixOS-specific
       "system"
       "system/ananicy"
+      "system/fonts"
+      "system/plymouth"
+      "system/stylix"
     ];
   };
 }

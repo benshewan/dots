@@ -12,7 +12,7 @@ in {
     stylix.url = "github:danth/stylix";
     stylix.inputs.nixpkgs.follows = "nixpkgs";
   };
-  flake.modules.nixos.system = {
+  flake.modules.nixos."system/stylix" = {
     imports = [inputs.stylix.nixosModules.stylix];
     stylix.enable = lib.mkDefault true;
 

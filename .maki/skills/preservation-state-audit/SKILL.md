@@ -171,7 +171,7 @@ this reason.)
 
 ## 2. Enable, stage, evaluate
 
-1. Add the feature to the host's `resolve` list in `modules/hosts/<host>.nix`.
+1. Add the feature to the host's `resolve` list in `machines/<host>/<host>.nix`.
 2. `git add -A modules/`
 3. `nix eval --json --apply 'f: let n = f.config; in
    { drv = n.system.build.toplevel.drvPath or "FAIL";

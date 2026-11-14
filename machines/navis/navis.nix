@@ -65,14 +65,12 @@ in {
         "programs/python"
         "programs/maki"
         "programs/rea"
+        "programs/github-cli"
         # "programs/pi"
         # "programs/opencode"
         # "programs/opencode2"
 
-        # hardware configuration
-        ../../machines/navis/hardware.nix
-        ../../machines/navis/hardware-configuration.nix
-
+        # hardware: machines/navis/* modules attach automatically
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
       boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-zen4;
@@ -107,7 +105,6 @@ in {
           # Work stuff
           # yaak
           # parsec-bin
-          github-cli
 
           # Messing around
           # syncthingtray

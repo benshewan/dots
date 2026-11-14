@@ -3,9 +3,7 @@
   lib,
   ...
 }: let
-  # Generic factory to create dendritic pattern path resolvers.
-  # It wraps string module paths into an attribute set with a unique `key`
-  # to ensure proper deduplication during Nix module evaluation.
+  # Wrap string module names into keyed imports so the module system dedupes them.
   mkResolver = namespace: prefix:
     builtins.map (
       m:
@@ -17,130 +15,105 @@
         else m
     );
 
-  # Pre-bake our specific path resolvers using the factory
   resolveNix = mkResolver "nixos" "nixos";
   resolveHm = mkResolver "homeManager" "hm";
   resolveDarwin = mkResolver "darwin" "darwin";
 in {
   config.flake.lib = {
-    # Resolve NixOS module paths
-    # Usage: imports = config.flake.lib.resolveNix [ "presets/server" "secrets" ../../hardware.nix ];
+    # NixOS modules: imports = config.flake.lib.resolveNix [ "presets/server" "secrets" ../../hardware.nix ];
     inherit resolveNix;
 
-    # Resolve Home Manager module paths
-    # Usage: home-manager.users.username.imports = config.flake.lib.resolveHm [ "users" "dotfiles" ];
+    # Home Manager modules: imports = config.flake.lib.resolveHm [ "users" "dotfiles" ];
     inherit resolveHm;
 
-    # Resolve Darwin module paths
-    # Usage: imports = config.flake.lib.resolveDarwin [ "security" "homebrew" ];
+    # Darwin modules: imports = config.flake.lib.resolveDarwin [ "security" "homebrew" ];
     inherit resolveDarwin;
 
-    # Dendritic pattern helpers for module path resolution
-    # Takes a single list of modules and automatically distributes them
-    # to NixOS, Darwin, and Home Manager based on their existence in the flake.
+    # Distribute a module list to NixOS, Darwin, and Home Manager by existence.
     resolve = modules: let
-      # Helper to safely check if a string module exists in a given namespace
-      hasModule = namespace: m: let
-        mods = config.flake.modules or {};
-      in
-        builtins.isString m && builtins.hasAttr m (mods.${namespace} or {});
+      mods = config.flake.modules or {};
+      namespaces = ["nixos" "darwin" "homeManager"];
 
-      # Companion modules: a feature may ship an extra module holding the state
-      # that should survive a reboot, named after the feature it belongs to with
-      # this prefix (e.g. `services/ssh` -> `preservation/services/ssh`).
-      # Companions are imported automatically, so a feature does not have to know
-      # whether the host uses preservation at all.
-      #
-      # A companion lives in the namespace of the side it configures
-      # (preservation state is NixOS-only), while the feature it belongs to may
-      # exist in another namespace entirely (a Home-Manager-only app). The
-      # lookup therefore scans every feature name in the list against the
-      # target namespace, not just the names that also resolve there.
+      # Does a string name exist in this namespace?
+      hasModule = ns: m: builtins.isString m && builtins.hasAttr m (mods.${ns} or {});
+
+      # A feature may ship a companion module named `preservation/<feature>`
+      # holding its reboot-persistent state, in the namespace it configures.
+      # Companions are imported automatically so features stay preservation-agnostic.
+      # Every name is scanned against the target namespace because the feature
+      # itself may live in another namespace (e.g. a Home-Manager-only app).
       preservationPrefix = "preservation/";
-
-      companionsFor = namespace: let
-        ns = (config.flake.modules or {}).${namespace} or {};
-      in
-        lib.unique (
+      companionsFor = ns: let
+        names = mods.${ns} or {};
+        candidates =
           builtins.map (n: preservationPrefix + n)
-          (
-            builtins.filter
-            (n: builtins.isString n && builtins.hasAttr (preservationPrefix + n) ns)
-            modules
-          )
-        );
+          (builtins.filter builtins.isString modules);
+      in
+        lib.unique (builtins.filter (c: builtins.hasAttr c names) candidates);
 
       nixosCompanions = companionsFor "nixos";
       darwinCompanions = companionsFor "darwin";
       hmCompanions = companionsFor "homeManager";
 
-      # Group modules by their target namespace based on existence, appending
-      # the companions. The "preservation" base module declares
-      # modules.preservation.* and upstream's options; it is pulled in
-      # automatically whenever any NixOS-side companion needs it.
-      nixosStr =
-        lib.unique (
-          builtins.filter (hasModule "nixos") modules
-          ++ lib.optional (nixosCompanions != []) "preservation"
-          ++ nixosCompanions
-        );
-      darwinStr =
-        lib.unique (
-          builtins.filter (hasModule "darwin") modules ++ darwinCompanions
-        );
-      hmStr =
-        lib.unique (
-          builtins.filter (hasModule "homeManager") modules ++ hmCompanions
-        );
+      # Names per namespace plus companions; the "preservation" base module is
+      # pulled in automatically whenever a NixOS-side companion needs it.
+      stringsFor = ns: companions:
+        lib.unique (builtins.filter (hasModule ns) modules ++ companions);
 
-      # Paths or other non-string imports default to standard system imports
+      nixosStr = stringsFor "nixos" (lib.optional (nixosCompanions != []) "preservation" ++ nixosCompanions);
+      darwinStr = stringsFor "darwin" darwinCompanions;
+      hmStr = stringsFor "homeManager" hmCompanions;
+
+      # Paths and other non-strings pass through as normal imports
       nonStrings = builtins.filter (m: !builtins.isString m) modules;
 
-      # If a string module isn't found anywhere, pass it to system imports
-      # so Nix can throw a standard, readable "attribute missing" evaluation error.
+      # Unknown names fail fast with a readable error instead of Nix's
+      # bare "attribute missing" one.
+      showNames = ns: let
+        names = builtins.attrNames (mods.${ns} or {});
+      in
+        if names == []
+        then "(none)"
+        else lib.concatStringsSep ", " names;
       missingStrings =
-        builtins.filter (
-          m:
-            builtins.isString m
-            && !(hasModule "nixos" m)
-            && !(hasModule "darwin" m)
-            && !(hasModule "homeManager" m)
-        )
-        modules;
+        builtins.map (m: {
+          key = "dendritic-missing-${m}";
+          imports = [
+            (throw ''
+              flake.lib.resolve: module "${m}" does not exist in any namespace.
 
-      # Map the string names to their actual flake module values statically.
-      # We reuse the resolvers defined above to enforce explicit keys for deduplication.
+              String entries must name modules declared under flake.modules.<namespace>.
+
+              Available modules:
+                nixos:       ${showNames "nixos"}
+                darwin:      ${showNames "darwin"}
+                homeManager: ${showNames "homeManager"}
+            '')
+          ];
+        })
+        (builtins.filter (m: builtins.isString m && !builtins.any (ns: hasModule ns m) namespaces) modules);
+
       resolvedNixos = resolveNix nixosStr;
       resolvedDarwin = resolveDarwin darwinStr;
       resolvedHm = resolveHm hmStr;
 
-      # Apply Home Manager modules to the default user of the system
       defaultUser = config.flake.meta.user.username or "default";
     in
       [
-        # 1. OS-Specific Modules (NixOS / Darwin)
-        # We use an anonymous module function to detect the evaluation target.
-        # This prevents Darwin modules from being injected into NixOS and vice versa.
-        ({...} @ hostArgs: let
-          # NixOS consistently injects `modulesPath` via specialArgs.
-          isNixos = hostArgs ? modulesPath;
-        in {
+        # NixOS or darwin depending on target (NixOS injects `modulesPath`).
+        ({...} @ hostArgs: {
           imports =
             nonStrings
             ++ missingStrings
-            ++ lib.optionals isNixos resolvedNixos
-            ++ lib.optionals (!isNixos) resolvedDarwin;
+            ++ lib.optionals (hostArgs ? modulesPath) resolvedNixos
+            ++ lib.optionals (!(hostArgs ? modulesPath)) resolvedDarwin;
         })
       ]
+      # HM modules attach to the default user; a static attrset avoids HM dedup
+      # issues that arise when wrapped dynamically.
       ++ lib.optionals (resolvedHm != []) [
-        # 2. Home Manager Modules
-        # We append this as a completely static attribute set.
-        # Keeping it outside the lambda prevents complex Home Manager submodule
-        # evaluation duplicate errors that can arise when HM configs are wrapped dynamically.
         {
-          home-manager.users.${defaultUser} = {
-            imports = resolvedHm;
-          };
+          home-manager.users.${defaultUser}.imports = resolvedHm;
         }
       ];
 

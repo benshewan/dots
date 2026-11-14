@@ -63,14 +63,36 @@ skip straight to `./bootstrap.sh <host>` instead.
 ### 1. Add the host to the repo
 
 ```text
-machines/<host>/hardware-configuration.nix   # kernel/module bits (qemu-guest, etc.)
-modules/hosts/<host>.nix                     # host module: resolve list, hostMeta, tweaks
+machines/<host>/<host>.nix                   # host module: resolve list, hostMeta, tweaks
+machines/<host>/hardware-configuration.nix   # optional; generated during install (step 3)
 ```
+
+`machines/<host>/<host>.nix` is a flake-parts module registering itself as
+`flake.modules.nixos."hosts/<host>"`. Any other `.nix` file under
+`machines/<host>/` is a flake-parts module registering as
+`flake.modules.nixos."machines/<host>/<name>"`; both are attached to the host
+automatically by `modules/flake-parts/hosts.nix` — no explicit imports
+anywhere. One exception: `hardware-configuration.nix` stays a raw
+nixos-generate-config module (so nixos-anywhere can overwrite it verbatim);
+`hosts.nix` imports it by path, and the import-tree scan skips it.
+
+A brand-new host needs only `<host>.nix`: the hardware configuration does not
+have to exist up front, because nixos-anywhere generates it on the target
+during the install (see step 3). Note `--vm-test` cannot run before the
+hardware configuration exists — it rehearses a locally built system and there
+is nothing to query yet; run it after the install once the file is committed.
 
 - Reuse a layout from `modules/disk-layouts/` instead of writing one per host:
   - `luks-btrfs` (used by `caelum`): GPT + LUKS2 + btrfs with `root` /
     `root-blank` / `nix` / `persistent` subvolumes, rolled back to blank at
     every boot. Hosts set `modules.diskLayouts.luksBtrfs.device` and `swapSize`.
+  - `btrfs` (new for `apus`): unencrypted GPT + ESP + btrfs with wiped `root` /
+    `root-blank` / `nix` / `persistent` subvolumes — caelum's `luks-btrfs`
+    layout without LUKS, TPM or Secure Boot, for hosts whose threat model does
+    not include physical disk access (e.g. VMs on a trusted host). Requires
+    `preservation` to be resolved and enabled (asserted). Hosts set
+    `modules.diskLayouts.btrfs.device` and `swapSize` (null = no swap; no
+    hibernation support).
   - `ext4`: plain unencrypted ESP + ext4 root with an optional `/swapfile`
     (no swap partition; `swapSize` is in MiB and `null` disables swap), the
     scheme of a stock `nixos-generate-config` install (`navis` runs such a
@@ -81,9 +103,14 @@ modules/hosts/<host>.nix                     # host module: resolve list, hostMe
   the measured TPM keyslot. On a machine without a TPM2 (or without an EFI
   event log) set `modules.diskLayouts.luksBtrfs.measuredBoot = false`: pcrlock
   runs during every activation and a failure aborts the switch/install.
-- Shortcut: let nixos-anywhere generate the hardware config during the install
-  (step 3) with
-  `--generate-hardware-config nixos-generate-config machines/<host>/hardware-configuration.nix`.
+- Shortcut: on a fresh host there is no hardware configuration yet. Pass
+  `--generate-hardware-config nixos-generate-config machines/<host>/hardware-configuration.nix`
+  and nixos-anywhere fills that gap itself: after kexec it runs
+  `nixos-generate-config --show-hardware-config --no-filesystems` on the real
+  hardware, writes the file into the repo, `git add -N`s it, and only then
+  builds the flake — so one command takes an unknown machine from ISO to
+  installed system. (The flake must reference the path, which `<host>.nix`
+  does not need to do: `hosts.nix` attaches it automatically.)
 - With `luks-btrfs` the host module must also resolve `"preservation"` and
   enable `modules.preservation.enable` (the layout asserts this: without it
   the root rollback would silently throw away all state every boot). Anything that needs to survive a
@@ -142,8 +169,15 @@ key) and start sshd, then from a machine that has this repo:
 tmp=$(mktemp -d)
 install -Dm600 ~/.config/sops/age/hosts/<host>.key "$tmp/persistent/var/lib/sops-nix/key.txt"
 nix run nixpkgs#nixos-anywhere -- \
+  --generate-hardware-config nixos-generate-config machines/<host>/hardware-configuration.nix \
   --extra-files "$tmp" --flake .#<host> root@<target-ip>
 ```
+
+`--generate-hardware-config` is what makes a completely fresh host work: after
+kexec the generator runs on the real hardware and writes
+`machines/<host>/hardware-configuration.nix` into the repo before the flake is
+evaluated. Drop the flag on re-runs (the file already exists, and overwriting
+it on a working machine is still safe but pointless).
 
 `--extra-files` copies its contents onto the target's root `/` as-is, so the
 key is staged under `persistent/var/lib/sops-nix/` (where the bind-mounted

@@ -9,6 +9,11 @@
     flake-file.url = lib.mkDefault "github:denful/flake-file";
   };
   flake-file.outputs = ''
-    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules)
+    inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } ({...}: {
+      imports = [
+        (inputs.import-tree ./modules)
+        (inputs.import-tree (it: it.matchNot "/[^/]+/hardware-configuration\\.nix$") ./machines)
+      ];
+    })
   '';
 }

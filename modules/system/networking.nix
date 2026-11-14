@@ -1,10 +1,6 @@
 {config, ...}: {
   # NixOS
-  flake.modules.nixos.system = {
-    pkgs,
-    lib,
-    ...
-  }: {
+  flake.modules.nixos.system = {...}: {
     networking.networkmanager.enable = true;
     networking.networkmanager.dns = "dnsmasq";
     users.users.${config.flake.meta.user.username}.extraGroups = ["networkmanager"];
