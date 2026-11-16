@@ -82,6 +82,10 @@ Pick a disk layout from `modules/disk-layouts/` and set
 - `luks-btrfs` (caelum): LUKS2 + btrfs, root rolled back to blank at boot.
   Requires `preservation` enabled. TPM measured boot is automatic; set
   `measuredBoot = false` on machines without a TPM2.
+- `luks-zfs`: same shape with a zpool instead of btrfs; swap is a second LUKS
+  container because ZFS cannot host a swapfile. Hibernation is on by default
+  and still carries OpenZFS's known freeze risk; `hibernation = false` keeps
+  the swap for memory pressure only.
 - `btrfs` (apus): same as above without LUKS/TPM/Secure Boot, for trusted-host VMs.
 - `ext4` (navis): plain ESP + ext4 with optional swapfile; no preservation needed.
 

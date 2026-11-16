@@ -44,7 +44,7 @@ in {
       # TODO: set apus's actual disk before installing (README step 3) —
       # the whole disk is claimed (ESP + btrfs pool).
       modules.diskLayouts.btrfs = {
-        device = "/dev/vda";
+        device = "/dev/sda";
         swapSize = 4 * 1024;
       };
 

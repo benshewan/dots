@@ -55,6 +55,7 @@ in {
         # Storage: encrypted btrfs layout + preservation state management
         "preservation"
         "system/preservation-home"
+        "system/audit"
         "disk-layouts/luks-btrfs"
 
         # Secure Boot: lanzaboote with automatic key generation + enrollment
