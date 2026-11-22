@@ -64,7 +64,7 @@ in {
         "programs/npm"
         "programs/python"
         "programs/maki"
-        "programs/rea"
+        # "programs/rea"
         "programs/github-cli"
         # "programs/pi"
         # "programs/opencode"

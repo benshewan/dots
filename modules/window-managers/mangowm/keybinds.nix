@@ -52,8 +52,8 @@
       ];
 
       switchbind = lib.optionals config.lib.mango.lid.present [
-        "fold,spawn,${config.lib.mango.lid.apply}"
-        "unfold,spawn,${config.lib.mango.lid.apply}"
+        "lid_on,spawn,${config.lib.mango.lid.apply}"
+        "lid_off,spawn,${config.lib.mango.lid.apply}"
       ];
     };
   };
