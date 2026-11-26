@@ -26,8 +26,12 @@ in {
         "presets/mangowm"
         "theme/everforest"
 
+        "preservation"
+        "system/preservation-home"
+        "disk-layouts/luks-btrfs"
+        "system/secure-boot"
         # virtualization
-        "virtualization/docker"
+        "virtualization/podman"
         "virtualization/libvirt"
 
         # Software
@@ -58,9 +62,9 @@ in {
 
         # Programming
         # "programs/webstorm"
-        "programs/vscode"
-        "programs/nvim"
-        "programs/helix"
+        #"programs/vscode"
+        #"programs/nvim"
+        #"programs/helix"
         "programs/npm"
         "programs/python"
         "programs/maki"
@@ -73,9 +77,15 @@ in {
         # hardware: machines/navis/* modules attach automatically
         inputs.nixos-hardware.nixosModules.framework-13-7040-amd
       ];
-      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-zen4;
 
-      services.keylightd.enable = true;
+      modules.diskLayouts.luksBtrfs = {
+        device = "/dev/nvme0n1";
+        swapSize = 64 * 1024;
+      };
+      modules.preservation.enable = true;
+      modules.preservation.home = true;
+
+      boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-zen4;
 
       # Because of stylix forcing a rebuild updates take forever otherwise
       services.flatpak.packages = [
@@ -114,7 +124,7 @@ in {
           # stable.orca-slicer
 
           # Audio
-          qpwgraph
+          # qpwgraph
         ];
 
         monitors = [

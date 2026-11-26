@@ -31,12 +31,12 @@
       "pcie_aspm.policy=powersupersave"
       "nvme_core.default_ps_max_latency_us=5500"
     ];
-    # systemd.sleep.extraConfig = "HibernateDelaySec=1h";
+    systemd.sleep.settings.Sleep.HibernateDelaySec = "1h";
     services.logind.settings = {
       Login = {
-        HandleLidSwitch = "suspend";
+        HandleLidSwitch = "suspend-then-hibernate";
         HandleLidSwitchDocked = "ignore";
-        HandlePowerKey = "suspend";
+        HandlePowerKey = "suspend-then-hibernate";
         idleAction = "ignore"; # Disable logind's internal idle handling
         idleActionSec = "0m"; # Optional, ensures it's disabled
       };
