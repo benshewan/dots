@@ -1,14 +1,19 @@
-# Maki theming: generates ~/.config/maki/themes/stylix.toml from the Stylix
-# base16 palette. Split out of maki.nix and merged back into the same
-# `programs/maki` home-manager module by flake-parts, the same way
-# `programs/browsers/firefox/custom-styles.nix` extends the firefox module.
+# Maki theme: renders ~/.config/maki/themes/stylix.toml from the Stylix base16
+# palette via writeTOML. Merged into the `programs/maki` module by flake-parts
+# (like mcp.nix); self-disables on hosts without stylix — e.g. apus.
 _: {
   flake.modules.homeManager."programs/maki" = {
+    pkgs,
     lib,
     config,
     ...
   }: let
     themeName = "stylix";
+
+    # `config.lib` always exists in home-manager (lib.file.*), so the hasAttr
+    # is safe to force everywhere; Nix's lazy `&&` only forces
+    # config.stylix.enable where the module — and thus the option — exists.
+    stylixActive = config.lib ? stylix && config.stylix.enable;
 
     base16 = config.lib.stylix.colors;
     inherit (base16) withHashtag;
@@ -16,67 +21,34 @@ _: {
     # Value of a base16 colour channel, e.g. `chan "base00" "rgb-r"` -> 29.
     chan = slot: channel: lib.toInt base16."${slot}-${channel}";
 
+    # Zero-padded two-digit lowercase hex byte (Nix has no modulo operator).
     hexDigits = "0123456789abcdef";
-
-    # Zero-padded two-digit lowercase hex byte. Nix has no modulo operator:
-    # n - (n / d) * d.
     hexByte = n:
       lib.substring (n / 16) 1 hexDigits
       + lib.substring (n - (n / 16) * 16) 1 hexDigits;
 
-    # Darken a base16 slot by num/denom (integer math), e.g.
-    # `darken "base00" 88 100` = 88% of the slot's channels.
+    # Darken a base16 slot by num/denom (integer math), e.g. 88 100 = 88%.
     darken = slot: num: denom: let
       scale = channel: chan slot channel * num / denom;
     in "#${hexByte (scale "rgb-r")}${hexByte (scale "rgb-g")}${hexByte (scale "rgb-b")}";
 
-    # -- maki theme format -----------------------------------------------------
-    # A theme is TOML built from `"<scope>" = { fg, bg, modifiers }` entries
-    # plus `[palette]` and `[ui]` tables. Rendering them from attrsets keeps the
-    # definitions below declarative instead of hand-written TOML, and lets a
-    # slot be referenced by name ("base08") rather than by its hex value.
-
-    # One `{ fg = ..., bg = ..., modifiers = [...] }` inline table.
-    style = {
-      fg ? null,
-      bg ? null,
-      modifiers ? [],
-    }:
-      "{ "
-      + lib.concatStringsSep ", " (
-        lib.optional (fg != null) ''fg = "${fg}"''
-        ++ lib.optional (bg != null) ''bg = "${bg}"''
-        ++ lib.optional (modifiers != []) "modifiers = [${lib.concatMapStringsSep ", " (m: ''"${m}"'') modifiers}]"
-      )
-      + " }";
-
-    # Style shorthands. `bg` values are either a palette name or a hex colour.
-    fg = color: style {fg = color;};
-    fgMod = color: modifiers:
-      style {
-        fg = color;
-        inherit modifiers;
-      };
-    bg = color: style {bg = color;};
-    fgBg = foreground: background:
-      style {
-        fg = foreground;
-        bg = background;
-      };
-
-    # `"<scope>" = <style>` lines, groups separated by a blank line.
-    scopes = groups:
-      lib.concatMapStringsSep "\n" (
-        group: lib.concatLines (lib.mapAttrsToList (name: s: ''"${name}" = ${s}'') group)
-      )
-      groups;
-
-    # `key = "value"` lines for string-only tables such as [palette].
-    stringTable = entries:
-      lib.concatLines (lib.mapAttrsToList (k: v: ''${k} = "${v}"'') entries);
+    # A maki theme is `"<scope>" = { fg, bg, modifiers }` entries plus
+    # [palette] and [ui] tables. writeTOML renders each scope as a table;
+    # remarshal quotes dotted keys (["comment.block"]) so scope names stay
+    # intact. `bg` values are a palette name or a hex colour.
+    fg = color: {fg = color;};
+    fgMod = color: modifiers: {
+      fg = color;
+      inherit modifiers;
+    };
+    bg = color: {bg = color;};
+    fgBg = foreground: background: {
+      fg = foreground;
+      bg = background;
+    };
 
     # -- palette ---------------------------------------------------------------
-    # Maps the standard base16 roles onto maki's palette names.
+    # Standard base16 roles onto maki's palette names.
     palette = {
       background = withHashtag.base00;
       foreground = withHashtag.base05;
@@ -161,7 +133,7 @@ _: {
         "markup.list" = fg "cyan";
         "markup.quote" = fgMod "yellow" ["italic"];
         "markup.raw" = fg "foreground";
-        "markup.strikethrough" = style {modifiers = ["crossed_out"];};
+        "markup.strikethrough" = {modifiers = ["crossed_out"];};
       }
       {
         "punctuation" = fg "foreground";
@@ -251,21 +223,18 @@ _: {
       progress_bar = fgBg "cyan" "background";
       shell_prefix = fgMod "yellow" ["bold"];
     };
-  in {
-    home.file.".config/maki/themes/${themeName}.toml".text = ''
-      # Custom "${themeName}" theme generated by Nix from the Stylix base16 palette.
-      # Palette slots map onto the standard base16 roles:
-      #   base00 bg, base01 current_line, base02 selection, base03 comment,
-      #   base05 fg, base08 red, base09 orange, base0A yellow, base0B green,
-      #   base0C cyan, base0D blue, base0E purple/pink, base0F brown.
 
-      ${scopes highlightGroups}
+    # mergeAttrs throws on a duplicate scope — one scope, one owner.
+    theme =
+      lib.foldl' lib.mergeAttrs {} highlightGroups
+      // {inherit palette ui;};
+  in
+    lib.mkIf stylixActive {
+      # Merges into maki.nix's modules.maki.setup option, so the core module
+      # stays palette-agnostic.
+      modules.maki.setup.ui.theme = themeName;
 
-      [palette]
-      ${stringTable palette}
-
-      [ui]
-      ${scopes [ui]}
-    '';
-  };
+      home.file.".config/maki/themes/${themeName}.toml".source =
+        pkgs.writers.writeTOML "maki-theme-${themeName}.toml" theme;
+    };
 }
