@@ -397,9 +397,27 @@ in {
       # from `tpmPreSeal` above, which survives on this layout. Without one the
       # unit fails and the passphrase remains the fallback.
       #
-      # The policy and the per-generation components live DIRECTLY on the
-      # persistent subvolume (non-default paths, so preservation is not
-      # involved).
+      # Split state: the policy JSON lives DIRECTLY on the persistent
+      # subvolume (non-default path, preservation not involved), while the
+      # components directory stays at systemd's DEFAULT /var/lib/pcrlock.d and
+      # survives the root wipe through the preservation entry further below.
+      #
+      # The components directory must stay on that default path: the upstream
+      # pcrlock units (lock-secureboot-policy / -secureboot-authority, gated on
+      # ConditionSecurity=uefi-secureboot and ordered Before make-policy)
+      # record their PCR 7 predictions into /var/lib/pcrlock.d hardcoded —
+      # there is no setting to redirect them. Pointing pcrlockDirectory
+      # elsewhere (this module previously used /persistent/var/lib/pcrlock.d)
+      # means make-policy's --components never sees those recordings, so PCR 7
+      # is dropped from the protection mask on every regeneration and the seal
+      # cannot detect Secure Boot being disabled in firmware (observed on
+      # navis: the mask ended up "PCR 4 only").
+      #
+      # It must also survive the wipe: lzbt's per-UKI PCR 4 components
+      # (written at every install/switch) and the lock units' recordings have
+      # to be present when make-policy regenerates the policy from sysinit on
+      # every boot, or the mask silently shrinks at boot time and the boot
+      # credential written to the ESP degrades with it.
       #
       # This is load-bearing: systemd-pcrlock reuses the NV index, SRK and PIN
       # blobs from the *previous* policy file when it regenerates one ("When we
@@ -415,6 +433,33 @@ in {
       # (Do NOT use preservation's `files` for this: its file mode also creates
       # an empty file at the volatile path, and systemd-pcrlock refuses to
       # parse an empty policy — that broke nixos-install's bootloader step.)
+      #
+      # MIGRATION TRAP (observed on caelum, 2026-11-25, when this layout
+      # moved pcrlockDirectory from /persistent/var/lib/pcrlock.d to the
+      # upstream default + this preservation entry): at the FIRST switch
+      # after such a move, lzbt runs before the new mount unit exists, so
+      # the component for the UKI it just installed lands on the volatile
+      # root and is destroyed by the rollback. The next boot then measures
+      # an unpredicted PCR 4, the token refuses (passphrase fallback — by
+      # design), and the system DEADLOCKS in that state: regenerating the
+      # policy requires authorizing against the NV index with the OLD
+      # policy's PCR 4 alternatives, which the booted UKI no longer
+      # matches, so make-policy fails at every boot and every switch.
+      # Recovery that worked (no console interaction beyond one passphrase
+      # boot): (1) a re-switch after the mount is up re-writes the current
+      # UKI's component durably; (2) delete pcrlockPolicy and switch again
+      # to mint a FRESH policy (new NV index — sidesteps the blocked
+      # update auth); (3) re-enroll the token against it with the sops
+      # passphrase, mirroring auto-cryptenroll but with
+      # --unlock-key-file=/run/secrets/luks-passphrase; (4) two reboots:
+      # the first regenerates the mask back to 0/4/7 and rewrites the ESP
+      # credential, the second proves the healthy invariant ("Prediction
+      # is identical to current policy, skipping update"). To avoid the
+      # prompt entirely, migrate by booting a still-predicted generation
+      # and switching from there. Only the FIRST post-migration boot is
+      # exposed; once converged the persistent components dir keeps every
+      # subsequent switch self-consistent.
+      #
       # `optionalAttrs` guarded on option existence, not mkIf: nixpkgs checks
       # definitions for unknown option paths *before* discharging a false
       # `mkIf` condition, so a host without lanzaboote would still be rejected
@@ -425,7 +470,8 @@ in {
           enable = true;
           pcrs = [0 4 7];
           pcrlockPolicy = persistentPath + "/var/lib/systemd/pcrlock.json";
-          pcrlockDirectory = persistentPath + "/var/lib/pcrlock.d";
+          # Upstream default, restated on purpose — see the comment above.
+          pcrlockDirectory = "/var/lib/pcrlock.d";
           autoCryptenroll = {
             enable = true;
             device = cfg.luksDevice;
@@ -445,10 +491,14 @@ in {
         ];
       })
 
-      # Marker that the TPM2 keyslot is already enrolled.
+      # Marker that the TPM2 keyslot is already enrolled, plus the pcrlock
+      # components directory: it must stay at the upstream default path (the
+      # lock units write there hardcoded), so its durability goes through
+      # preservation instead of a non-default pcrlockDirectory.
       (lib.optionalAttrs (options ? preservation.preserveAt) {
         preservation.preserveAt.${persistentPath}.directories = lib.mkIf cfg.measuredBoot [
           {directory = "/var/lib/auto-cryptenroll";}
+          {directory = "/var/lib/pcrlock.d";}
         ];
       })
     ];
