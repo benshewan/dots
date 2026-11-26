@@ -1,8 +1,4 @@
-{
-  inputs,
-  config,
-  ...
-}: let
+{config, ...}: let
   hostMeta = {
     name = "caelum";
     dnsServers = [
@@ -21,7 +17,6 @@ in {
     meta.hosts = [hostMeta];
 
     modules.nixos."hosts/${hostMeta.name}" = {
-      config,
       lib,
       pkgs,
       ...
@@ -78,30 +73,26 @@ in {
         # "programs/thunderbird"
 
         # State-audit batches rotate one set at a time through caelum.
-        # Unloaded so far (companions stay in their module files): dolphin,
-        # npm, python, kdeconnect, obs, thunderbird, steam, spotify,
-        # obsidian, bottles, vscode, prism-launcher, partition-manager,
-        # mongodb-compass, audio-relay, solaar, sunshine, chromium.
-        # State-audit batches rotate one set at a time through caelum.
+        # Update this block in place — do not stack a new copy.
         # Unloaded so far (companions stay in their module files): dolphin,
         # npm, python, kdeconnect, obs, thunderbird, steam, spotify,
         # obsidian, bottles, vscode, prism-launcher, partition-manager,
         # mongodb-compass, audio-relay, solaar, sunshine, chromium,
-        # webstorm, filebot, lan-mouse, helix, vivaldi, helium,
-        # libreoffice, moonlight.
-        # State-audit batches rotate one set at a time through caelum.
-        # Unloaded so far (companions stay in their module files): dolphin,
-        # npm (re-added), python (re-added), kdeconnect, obs, thunderbird,
-        # steam, spotify, obsidian, bottles, vscode, prism-launcher,
-        # partition-manager, mongodb-compass, audio-relay, solaar, sunshine,
-        # chromium, webstorm, filebot, lan-mouse, helix, vivaldi, helium,
-        # libreoffice, moonlight, docker, libvirt, proxmark3, distrobox,
-        # parsec, github-cli, orcaslicer.
-        "programs/brave"
-        "programs/python"
-        "programs/npm"
-        "services/easyeffects"
-        "services/syncthing"
+        # webstorm, filebot, lan-mouse, helix, vivaldi, helium, libreoffice,
+        # moonlight, docker (superseded by podman), libvirt, proxmark3,
+        # distrobox, parsec, github-cli, orcaslicer.
+        # "programs/brave"
+        # "programs/python"
+        # "programs/npm"
+        # "services/easyeffects"
+        # "services/syncthing"
+
+        # State-audit: ghidra + wireshark (reverse-engineering batch).
+        "programs/ghidra"
+        "programs/wireshark"
+
+        # State-audit: podman with docker/docker-compose compatibility.
+        "virtualization/podman"
 
         # hardware: machines/caelum/* modules attach automatically
       ];
@@ -146,14 +137,6 @@ in {
         enable = true;
         command = "env XDG_CURRENT_DESKTOP=mango:wlroots ${lib.getExe pkgs.mango-edid-refresh}";
       };
-
-      # /persistent/home/<user> is created by preservation itself (with the
-      # user's homeMode), but the volatile /home/<user> is a real directory
-      # on the wiped root: preservation only creates its children there, so
-      # ownership has to be pinned explicitly.
-      systemd.tmpfiles.rules = [
-        "d /home/${flake.meta.user.username} 0700 ${flake.meta.user.username} users - -"
-      ];
 
       # Home Manager configuration for user
       home-manager.users.${flake.meta.user.username} = {

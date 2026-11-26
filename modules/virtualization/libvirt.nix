@@ -9,10 +9,19 @@
       enable = true;
       qemu = {
         package = pkgs.qemu_kvm;
-        runAsRoot = true;
+        runAsRoot = false;
         swtpm.enable = true;
       };
     };
+
+    # NixOS only installs the "default" network definition; it does not mark
+    # it autostart. Libvirt represents autostart as a symlink under
+    # networks/autostart/; asserting it with tmpfiles (L+ re-creates it on
+    # every boot, before libvirtd starts) lets the daemon itself start the
+    # network at startup — no extra unit or virsh plumbing needed.
+    systemd.tmpfiles.rules = [
+      "L+ /var/lib/libvirt/qemu/networks/autostart/default.xml - - - - /var/lib/libvirt/qemu/networks/default.xml"
+    ];
 
     programs.virt-manager.enable = true;
 
@@ -33,7 +42,7 @@
 
     networking.firewall.trustedInterfaces = ["virbr0"];
   };
-  flake.modules.homeManager."virtualization/libvirt" = {pkgs, ...}: {
+  flake.modules.homeManager."virtualization/libvirt" = {...}: {
     dconf.settings = {
       "org/virt-manager/virt-manager/connections" = {
         autoconnect = ["qemu:///system"];

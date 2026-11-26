@@ -42,6 +42,10 @@ correctly with evidence, not guesswork.
   `string '<key>' doesn't represent an absolute path`.
 - Hosts: caelum is the rehearsal VM (`root@192.168.122.193` over SSH, works
   non-interactively). Test there first; navis follows later.
+- A user path is owned by exactly one companion per host. If two features
+  register the same path (docker's and podman's `.config/docker`), only
+  one may be resolved at a time — swap them in the resolve list, never
+  resolve both.
 
 ## 1. Set up the preservation companion
 
@@ -91,24 +95,13 @@ Rules for choosing entries:
   with a real volatile file). When in doubt, leave the file volatile and
   note the decision in a comment.
 
-  **KDE/KConfig is the flagship case**: every KDE app's settings live as
-  loose `*rc` files in the ROOT of `~/.config` (dolphinrc, baloofilerc,
-  kdeconnectrc, kdeglobals, ...) and KConfig/KSaveFile saves them by
-  atomic rename *by design* — a working config file must always be in
-  place, and `setDirectWriteFallback` only triggers on EACCES (read-only
-  dir), never on EBUSY, and is opt-in per app. KF6 honors
-  `XDG_CONFIG_HOME`, not the old `KDEHOME` redirect. Consequences for
-  this repo:
-  - individual KDE rc files CANNOT be persisted as file mounts;
-  - the only mount-based way to keep them is binding `~/.config`
-    wholesale (the Level-2 anchor we deliberately rejected for hygiene);
-  - therefore KDE rc files stay volatile unless the app offers a config
-    path override, and the durable state of KDE apps lives in
-    `~/.local/share/<app>` (which IS a directory and preserves fine);
-  - generic non-mount alternatives exist (btrfs snapshot homes,
-    copy-forward-on-boot / copy-back-on-shutdown with reflinks, or
-    redirecting the app's config path — impermanence issue #175 and the
-    fish history issue #10730 cover all of these); none are used here.
+  **KDE/KConfig is the flagship case**: settings live as loose `*rc` files
+  in the root of `~/.config` (dolphinrc, kdeconnectrc, ...), saved by
+  atomic rename *by design*. File mounts EBUSY on the rename and the
+  symlink method loses the update, so KDE rc files stay volatile (the
+  only mount-based fix is a wholesale `~/.config` anchor, rejected here
+  for hygiene). An app's durable KDE state is `~/.local/share/<app>`,
+  which IS a directory and preserves fine.
 - Skip anything HM generates (`xdg.configFile`/`home.file` in the module or
   stylix targets): it is regenerated at every activation.
 - Skip caches (`.cache/*`, SQLite `-wal`/`-shm` siblings are fine to skip,
@@ -117,39 +110,23 @@ Rules for choosing entries:
   `~/.steampid`/`~/.steampath` → into `.steam`); note the decision in a
   comment so nobody "fixes" it later.
 - Watch for apps writing to the home ROOT, not XDG dirs (`.vscode`,
-- Watch for apps writing to the home ROOT, not XDG dirs (`.vscode`,
-  `.vscode-shared`): sweep depth 1, not just `.config`.
-- Framework-specific strays seen in batch 4 (all home-root or shared XDG):
-  - Java apps (audiorelay) → `~/.java/.userPrefs/com/<vendor>` IS the
-    settings store; `~/.skiko` is a Compose/Skiko lib cache (skip);
-    `~/.local/share/<app>/locks` are single-instance locks (skip).
-  - Electron apps write the whole `~/.config/<Vendor Name>` profile
-    (connections/cookies/LevelDB) — preserve the whole dir, same rationale
-    as `.config/Code`; they also register mime handlers via `xdg-mime`,
-    which edits `~/.config/mimeapps.list` with `sed -i` (atomic rename →
-    file mount would EBUSY). Declare the associations declaratively
-    instead: HM `xdg.mimeApps.{defaultApplications, associations.added}`.
-  - NSS client-cert store: `~/.local/share/pki/nssdb` (Chromium M146+
-    default) is the SHARED NSS DB of all Chromium/Electron apps, not
-    per-app → goes in the preservation-home essentials (legacy alias
-    `~/.pki/nssdb` is used instead if it exists). Firefox has its own
-    per-profile DB and never touches it.
-  - libpulse auth cookie `~/.config/pulse/cookie` is cross-app, written
-    once on first pipewire-pulse connection → file entry in the
-    preservation-home essentials, not in any app's companion.
-  - Shared framework roots → essentials, never the app's companion:
-    `.local/share/pki` (NSS Shared DB of ALL Chromium/Electron apps,
-    Chromium M146+ default path; legacy `~/.pki/nssdb` wins if it exists;
-    Firefox never touches it), `.java` (java.util.prefs userRoot for all
-    Java apps using the standard Preferences API; JetBrains/Minecraft-class
-    apps don't). Companion then carries only a pointer comment.
-  - JetBrains (batch 5): also writes `~/<Ide>Projects` in the home ROOT
-    (default projects dir), `~/.java/.userPrefs/jetbrains` (usage-stats
-    prefs), a jetbrains:// mime registration (xdg-mime, sed -i → volatile;
-    re-registered on each launch) and a runtime-generated
-    `~/.local/share/applications/jetbrainsd.desktop`.
-  - Helium (Chromium fork) uses `.config/net.imput.helium` (app-id dir),
-    NOT `.config/helium`.
+  `.vscode-shared`, `~/<Ide>Projects`): sweep depth 1, not just `.config`.
+- Recurring patterns (full rationale lives in preservation-home.nix
+  comments):
+  - Electron/Chromium: preserve the whole `~/.config/<Vendor Name>`
+    profile dir (connections/cookies/LevelDB). Mime registrations edit
+    `~/.config/mimeapps.list` by atomic rename → volatile; declare the
+    associations via HM `xdg.mimeApps` instead.
+  - Shared framework roots → preservation-home essentials, never an app
+    companion: `.local/share/pki` (NSS DB of all Chromium/Electron apps;
+    Firefox has its own), `.java` (java.util.prefs userRoot),
+    `~/.config/pulse/cookie` (cross-app libpulse auth, written once — a
+    safe file mount). The companion then carries only a pointer comment.
+  - Java apps: `~/.java/.userPrefs/com/<vendor>` IS the settings store;
+    `~/.skiko` and `<app>/locks` are caches/locks — skip.
+  - JetBrains also writes `~/.java/.userPrefs/jetbrains`.
+  - App-id dirs don't always match the app name: Helium (Chromium fork)
+    uses `.config/net.imput.helium`, NOT `.config/helium`.
 - HM gotcha: HM `services.pipewire` has NO `extraConfig` (NixOS-only).
   Resolution for audio-relay: keep the virtual-mic graph in its own
   `flake.modules.nixos."programs/audio-relay"` module in the same file —
@@ -172,8 +149,10 @@ this reason.)
 ## 2. Enable, stage, evaluate
 
 1. Add the feature to the host's `resolve` list in `machines/<host>/<host>.nix`.
-2. `git add -A modules/`
-3. `nix eval --json --apply 'f: let n = f.config; in
+2. Update the host's single "State-audit batches" comment block in place
+   when rotating features — never stack a new copy of it.
+3. `git add -A modules/`
+4. `nix eval --json --apply 'f: let n = f.config; in
    { drv = n.system.build.toplevel.drvPath or "FAIL";
      dirs = map (d: d.directory or d)
        (n.preservation.preserveAt."/persistent".users.ben.directories); }'
@@ -254,6 +233,31 @@ done
   `du -sh /persistent/home/ben/<dir>` after the app ran (a mounted but empty
   dir after real use usually means the app writes elsewhere).
 
+**Why "0 new paths" can be a PASS**: the snap `find -xdev` deliberately
+never descends into preservation bind mounts, so an app whose state lands
+entirely inside its mounts reports no new paths. Don't misread that as a
+broken diff — verify via `du` on the persistent side instead.
+
+**Global unpreserved sweep** — the per-app diff only catches state written
+during the audit window by apps you relaunch. The wipe is the oracle for
+the rest: the root is rolled back every boot, so EVERY file in the live
+home that is not under a preservation mount was written since boot and
+dies at the next reboot. One command lists it all:
+
+```sh
+# run as root on the host
+find /home/ben -xdev -mindepth 1 \
+  \( -path '*/.cache*' -prune \) -o \
+  ! -type l -print
+```
+
+`-xdev` stops at every preservation mount (by construction), `-type l`
+drops HM-generated store symlinks and runtime pointers, `.cache` is
+junk by policy. Everything left is unpreserved state — classify each
+hit with the rules in step 1, then either register it or note why it is
+fine to lose. Run this after any audit batch to catch state written by
+apps that were never re-run for their companion review.
+
 ## 5. Launching apps for the audit (GUI, over SSH)
 
 The caelum GUI session can be driven from SSH when a user session exists
@@ -276,6 +280,18 @@ sleep 8; systemctl --user -M ben@.host is-active audit-<app>
 ```
 
 Traps learned the hard way on caelum:
+
+- `runuser -u ben` keeps root's cwd (`/root`) — the child fails with
+  "cannot chdir to /root" before the app even starts. `cd /home/ben`
+  first (or ssh straight into it: `ssh root@host 'cd /home/ben && bash -s'`).
+- Root's `DBUS_*` env leaks through runuser and points apps at
+  /run/user/0 (e.g. podman logging "dial unix /run/user/0/bus:
+  permission denied"). Strip it:
+  `env -u DBUS_SESSION_BUS_ADDRESS -u DBUS_SYSTEM_BUS_ADDRESS`.
+- Commands that attach stdin (`docker compose exec -T`, anything reading
+  a pty) silently consume the rest of an `ssh 'bash -s' <<'EOF'` script —
+  the script just stops mid-run. Redirect their stdin (`< /dev/null`) or
+  use a separate ssh call.
 
 - The user-manager PATH does not contain the HM profile — always pass the
   resolved absolute store path.
