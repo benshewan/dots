@@ -1,5 +1,6 @@
 _: {
   flake.modules.homeManager."window-managers/mangowm" = {
+    osConfig,
     pkgs,
     lib,
     config,
@@ -8,13 +9,22 @@ _: {
     pidof = lib.getExe' pkgs.sysvtools "pidof";
     loginctl = lib.getExe' pkgs.systemd "loginctl";
     hyprlock = "${pidof} hyprlock || ${lib.getExe config.programs.hyprlock.package}";
+
+    # Idle timeouts reuse the host's logind sleep action so hibernation stays
+    # a per-host decision; unset or non-sleep logind actions fall back to a
+    # plain suspend.
+    sleepOps = ["suspend" "suspend-then-hibernate" "hibernate" "hybrid-sleep"];
+    sleepOp = lib.findFirst (op: lib.elem op sleepOps) "suspend" [
+      (osConfig.services.logind.settings.Login.HandleLidSwitch or null)
+      (osConfig.services.logind.settings.Login.HandlePowerKey or null)
+    ];
   in {
     services.hypridle = {
       enable = true;
       settings.listener = [
         {
           timeout = 330;
-          on-timeout = "if ${pidof} hyprlock; then systemctl suspend; fi";
+          on-timeout = "if ${pidof} hyprlock; then systemctl ${sleepOp}; fi";
         }
         {
           timeout = 1800;
@@ -22,7 +32,7 @@ _: {
         }
         {
           timeout = 2130;
-          on-timeout = "systemctl suspend";
+          on-timeout = "systemctl ${sleepOp}";
         }
       ];
 

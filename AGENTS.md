@@ -100,7 +100,7 @@ install.sh              Historical navis-specific nixos-anywhere invocation (REA
 A feature module is a *flake-parts* file that registers one or more
 namespaced modules, keyed by feature name. Hosts opt in by listing feature
 names in `config.flake.lib.resolve [...]`. Canonical shape (from
-`modules/programs/yazi.nix`, abridged):
+`modules/programs/file-managers/yazi.nix`, abridged):
 
 ```nix
 {config, ...}: let

@@ -50,6 +50,7 @@ in {
         "programs/prism-launcher"
         "programs/partition-manager"
         "programs/dolphin"
+        "programs/nemo"
         # "programs/helium"
         "programs/obsidian"
         "programs/libreoffice"

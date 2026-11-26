@@ -94,6 +94,9 @@ in {
         # State-audit: podman with docker/docker-compose compatibility.
         "virtualization/podman"
 
+        # State-audit: nemo (file-manager batch).
+        "programs/nemo"
+
         # hardware: machines/caelum/* modules attach automatically
       ];
 
