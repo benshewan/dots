@@ -50,6 +50,12 @@ in {
         # Colab
         collaboration_panel.button = false;
 
+        # Panels
+        project_panel.dock = "left";
+        git_panel.dock = "left";
+        # No "enabled" key exists; hiding the status-bar toggle is the removal lever
+        outline_panel.button = false;
+
         # Apperance
         buffer_font_size = lib.mkForce 14.0; # Override stylix font size
         title_bar.show_sign_in = false;
@@ -101,44 +107,12 @@ in {
         languages.CSV = {
           soft_wrap = "none";
         };
-        # AI
-        language_models.openai_compatible.Orion = {
-          api_url = "http://192.168.2.39:8433/v1";
-          available_models = [
-            {
-              name = "unsloth/gemma-4-E4B-it-GGUF";
-              max_tokens = 200000;
-              max_output_tokens = 32000;
-              max_completion_tokens = 200000;
-              capabilities = {
-                tools = true;
-                images = true;
-                parallel_tool_calls = false;
-                prompt_cache_key = false;
-                chat_completions = true;
-              };
-            }
-          ];
-        };
-        edit_predictions = {
-          open_ai_compatible_api = {
-            max_output_tokens = 64;
-            model = "unsloth/gemma-4-E4B-it-GGUF";
-            api_url = "http://192.168.2.39:8433/v1";
-          };
-          provider = "open_ai_compatible_api";
-        };
+        # AI: off entirely (agent panel, edit predictions, inline assist)
+        disable_ai = true;
+        # disable_ai alone leaves the terminal Inline Assist button on some builds
         agent = {
-          use_modifier_to_send = true;
-          thinking_display = "always_collapsed";
-          default_model = {
-            provider = "Orion";
-            model = "unsloth/gemma-4-E4B-it-GGUF";
-            enable_thinking = true;
-          };
-
-          model_parameters = [];
-          enable_feedback = false;
+          enabled = false;
+          button = false;
         };
 
         auto_update = false;
