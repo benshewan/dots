@@ -1596,11 +1596,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1795042227,
-        "narHash": "sha256-1VZNttI2BWHzT9UIVEJ0ifKfI+EGz8FxtVeJWAQS2lw=",
+        "lastModified": 1795608683,
+        "narHash": "sha256-65D2u72h6fvjREyR9F+hm2eOy9BgP003CGVX/asmfDI=",
         "owner": "tontinton",
         "repo": "maki",
-        "rev": "cc85b51b4f8955b54f1c0e96b9bde0b44abd06c2",
+        "rev": "2b6aaeeb71a4ce81d3f2176fccd6677ea5da91e3",
         "type": "github"
       },
       "original": {
