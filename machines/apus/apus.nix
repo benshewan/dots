@@ -16,10 +16,14 @@ in {
     # Host metadata
     meta.hosts = [hostMeta];
 
-    modules.nixos."hosts/apus" = {
+    modules.nixos."hosts/apus" = {pkgs, ...}: {
       # Rescue access: plain authorized keys work even if sops decryption
       # fails (no declarative password hash set on a fresh install).
-      users.users.${config.flake.meta.user.username}.openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMm0WtaU9Sb6g9UC+HFL6h4L+rOsHUMN/iWOU3qRGgaI benbshewan@gmail.com"];
+      users.users.${config.flake.meta.user.username}.openssh.authorizedKeys.keys = [
+         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMm0WtaU9Sb6g9UC+HFL6h4L+rOsHUMN/iWOU3qRGgaI benbshewan@gmail.com"
+	 "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEEe9hjNrBzDSOZjLDAtAoBWWxvkbOTVk3NAar6A5mvUhDt/OGAH2XfNv1RZzAKxbapk5s+9FmsA+P0Ba4OYFHA= haven-ssh-4c32d8f6"
+         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMdDgwvuauqtjMVV4iP5bg4Fu2KJnkxvs4v2crJ6fSNK quest-3"
+      ];
 
       imports = config.flake.lib.resolve [
         # Server base (users, ssh, system)
@@ -32,7 +36,10 @@ in {
         "preservation"
         "system/preservation-home"
         "system/audit"
-        "services/attic"
+        "programs/maki"
+        "programs/opencode"
+        # "services/attic"
+	"programs/direnv"
       ];
 
       # Erase-your-darlings
@@ -48,6 +55,10 @@ in {
         swapSize = 4 * 1024;
       };
 
+
+      environment.systemPackages = with pkgs; [
+	tmux
+	];
       # Server-only tweaks (services, firewall, ...) go here
 
       # Host-specific secret file for the atticd JWT
